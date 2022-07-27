@@ -1,0 +1,177 @@
+html, body {
+}
+body {
+	font: normal .7em/1.6 $font-fam;
+	color: $col-body;
+	background-image: url(../images/structure/bg.gif);
+}
+h1 {
+	font: 900 1.6em $font-fam;
+	color: $col-hi;
+}
+
+img {
+	/*max-width: 100%;
+    height: auto;
+    -msinterpolation-mode: bicubic;*/
+	border: none;
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+nav {
+    border-width: 0 0 .3em 0;
+        margin: 1.4em 0 0;
+}
+
+aside img {
+    border: 1px solid $col-hi;
+    border-width: 0 0 .75em 0;
+}
+
+#nav, main {
+    display: flex;
+    li {
+    flex: 1 1 1em;
+        ul li {
+    @include hide();
+        }
+    @include show();
+    }
+}
+
+h1 {
+    color: $col-hi;
+}
+
+header h1 {
+    width: 7em;
+    height: 0;
+    background: url("../images/logo_txt.gif") no-repeat;
+    background-repeat: no-repeat;
+    padding: 0%; /* reset */
+    padding-top: calc(7em * 0.248);
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 4px 0 0 15%;
+}
+
+header {
+    background: $col-bg  url("../images/logo.gif") no-repeat 3% 20%;
+    padding: 0 0 0;
+    margin: 0 1em;
+    border: 1em solid #FFF;
+    background-image: url("../images/logo.gif"), linear-gradient(#FFF, $col-bg);
+  background-position: 2% 0, left top;
+  background-repeat: no-repeat, no-repeat;
+}
+
+main#content {
+    padding: 1em;
+    background-image: none;
+}
+
+#nav {
+    text-align: center;
+    width: auto;
+    height: auto;
+    border: 2px solid #FFF;
+    border-width: 3px 0;
+    background-image: linear-gradient(#FFF, $col-bg);
+    li {
+    border-right: solid 1px #999;
+    border-left: solid 1px #FFF;
+    border-top: .5em solid $col-hi;
+    border-bottom: solid 1px #999;
+    
+        display: block;
+        a {
+    border-width: .5em 0 0;
+    display: block;
+    color: $col-nav;
+    font-weight: bold;
+            padding: .5em 0;
+            width: 100%;
+}
+        a:hover {
+           color: $col-hi; 
+            background-image: linear-gradient($col-bg, #FFF);
+        }
+        &:nth-child(1){
+    border-left: solid 0 #FFF;
+}
+}
+}
+
+main > section {
+    flex: 5 1 10em;
+    margin: 0 2em 0 0;
+    
+}
+
+main > aside {
+    flex: 3 1 10em;
+}
+
+main > * {
+    border: solid 1em #FFF;
+    padding: 1em;
+    background-color: lighten($col-bg, 20%);
+}
+
+a {
+    color: #069;
+    font-weight: 700;
+}
+
+main aside section {
+    @include border;
+    text-align: center;
+}
+
+#wrapper {
+	width: 60%;
+    margin: 10px auto;
+    padding: 10px 0;
+    @include border($color: $col-border);
+}
+
+p {
+    margin: 1.5em 0;
+}
+main aside section h2 {
+    color: #FFF;
+    text-transform: uppercase;
+    line-height: 1;
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+    background-color: lighten($col-nav, 11%);
+    padding: .8em 0;
+    text-align: left;
+
+}
+main aside section h2:before {
+    content: '';
+    width: 1em;
+    height: 1em;
+    color: $col-hi;
+    background-color: $col-hi;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 .3em 0 .5em;
+    text-transform: uppercase;
+    box-shadow: inset 1px 1px 2px rgba(255,255,255, 0.6), inset -1px -1px 2px rgba(0,0,0, 0.6);
+}
+main aside section a {
+    color: $col-hi;
+display: block;
+}
+
+
+
+#wrapper {
+    background-color: $col-bg;
+    border: 1em solid #FFF;
+}

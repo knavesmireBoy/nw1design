@@ -1,3 +1,13 @@
 @mixin border($style: solid, $weight: 1px, $color: black){
     border: $style $weight $color;
 }
+
+@mixin hide() {
+    position: absolute;
+    left: -9999px;
+}
+
+@mixin show($pos: relative) {
+    position: $pos;
+    left: 0;
+}
