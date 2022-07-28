@@ -115,9 +115,9 @@ a {
   font-weight: 700;
 }
 
-p {
+main p {
   margin: 1em 0;
-  font-size: calc(11px + 3 * (100vw - 574px) / 706);
+  font-size: calc(12px + 3 * (100vw - 667px) / 613);
 }
 
 img {
@@ -133,6 +133,17 @@ img {
 nav {
   border-width: 0 0 0.3em 0;
   margin: 1.4em 0 0;
+}
+
+footer {
+  text-align: right;
+  padding: 1em 2em 1em 0;
+  border: dotted 1px white;
+  border-width: 1px 0 0;
+}
+
+footer strong:after {
+  content: " | ";
 }
 
 input {
@@ -154,18 +165,12 @@ header > a {
   vertical-align: top;
 }
 
-#menu-toggle:checked ~ a {
-  position: absolute;
-  left: -9999px;
-}
-
 header nav > ul {
   display: flex;
 }
 header nav > ul > li {
   flex: 1 3 10em;
   position: relative;
-  width: 15em;
 }
 header nav > ul > li:nth-child(4) {
   flex: 1 1 10em;
@@ -344,6 +349,71 @@ main aside section:nth-child(3) > a {
 
 #about nav li:nth-child(2) a {
   color: #c33;
+}
+
+@media only screen and (max-width: 768px) {
+  main {
+    display: block;
+  }
+  main > section {
+    margin: 0;
+  }
+  #menu-toggle ~ a + nav {
+    position: absolute;
+    left: -9999px;
+  }
+  main aside, #nav li ul {
+    position: absolute;
+    left: -9999px;
+  }
+  aside {
+    border-top: 0.4em solid white;
+  }
+  main > aside > section {
+    width: 100%;
+  }
+  header nav {
+    position: absolute;
+  }
+  #menu-toggle:checked ~ a + nav {
+    left: 0;
+  }
+  header > nav ul {
+    display: block;
+    background: hsla(255deg, 100%, 100%, 0.95);
+    border: 0 solid;
+    text-align: left;
+    line-height: 2;
+    margin: -1em 0 0 1em;
+    display: inline-block;
+    padding: 0 1em;
+    box-shadow: 1px 1px 2px #000;
+  }
+  header > nav ul li {
+    border: 1px solid #999;
+    border-width: 0 0 1px;
+  }
+  header > nav ul li:last-child {
+    border-width: 0;
+  }
+  header > nav ul li a {
+    padding: 0;
+  }
+  header > nav ul li a:hover {
+    background: none;
+  }
+  #wrapper, header {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    border-width: 0;
+  }
+  header {
+    padding: 2em 0 0;
+  }
+  header > a {
+    margin: 0 0 1em;
+  }
 }
 
 /*# sourceMappingURL=main.css.map */
