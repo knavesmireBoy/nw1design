@@ -415,5 +415,14 @@ main aside section:nth-child(3) > a {
     margin: 0 0 1em;
   }
 }
+#about main aside section a:last-of-type {
+  padding: 1em 2em 0;
+}
+
+#about main aside section p {
+  line-height: 1;
+  text-transform: uppercase;
+  font-weight: 700;
+}
 
 /*# sourceMappingURL=main.css.map */
