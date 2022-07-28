@@ -96,7 +96,7 @@ ol, ul, dl {
 }
 
 body {
-  font: normal 0.7em/1.6 Verdana, Arial, Helvetica, sans-serif;
+  font: normal 0.8em/1.6 Verdana, Arial, Helvetica, sans-serif;
   color: #3F4554;
   background-image: url(../images/structure/bg.gif);
 }
@@ -159,7 +159,7 @@ header nav > ul > li ul li {
 }
 
 header nav > ul li ul li {
-  background: #e9f0f2;
+  background: #d7e7ea;
 }
 
 header nav > ul li:hover ul {
@@ -175,15 +175,14 @@ header aside img {
 }
 
 header {
-  background: #a9c6cb url("../images/logo.gif") no-repeat 3% 20%;
+  background: #95bec6 url("../images/logo.gif") no-repeat 3% 20%;
   padding: 0 0 0;
-  margin: 0 1em;
+  margin: 1em 1.5em;
   border: 1em solid #FFF;
-  background-image: url("../images/logo.gif"), linear-gradient(#FFF, #a9c6cb);
+  background-image: url("../images/logo.gif"), linear-gradient(#FFF, #95bec6);
   background-position: 2% 0, left top;
   background-repeat: no-repeat, no-repeat;
 }
-
 header h1 {
   width: 7em;
   height: 0;
@@ -198,7 +197,7 @@ header h1 {
 }
 
 main#content {
-  padding: 1em;
+  padding: 1em 1.5em 3em;
   background-image: none;
 }
 
@@ -208,7 +207,7 @@ header nav > ul {
   height: auto;
   border: 2px solid #FFF;
   border-width: 3px 0;
-  background-image: linear-gradient(#FFF, #a9c6cb);
+  background-image: linear-gradient(#FFF, #95bec6);
 }
 header nav > ul li {
   border: solid 1px #999;
@@ -217,14 +216,14 @@ header nav > ul li {
 header nav > ul li a {
   border-width: 0.5em 0 0;
   display: block;
-  color: hsl(190deg, 25%, 55%);
+  color: hsl(190deg, 30%, 50%);
   font-weight: bold;
   padding: 0.5em 0;
   width: 100%;
 }
 header nav > ul li > a:hover {
   color: #c33;
-  background-image: linear-gradient(#a9c6cb, #FFF);
+  background-image: linear-gradient(#95bec6, #FFF);
 }
 header nav > ul li > :nth-child(1) {
   border-left: solid 0 #FFF;
@@ -248,7 +247,7 @@ main > aside {
 
 main > * {
   border: solid 1em #FFF;
-  background-color: #e9f0f2;
+  background-color: #d7e7ea;
 }
 
 main > section {
@@ -257,7 +256,7 @@ main > section {
 
 main aside section {
   text-align: center;
-  border: 1px solid #a9c6cb;
+  border: 1px solid #95bec6;
   border-width: 0 1px 2em;
   padding: 0 0 1em;
 }
@@ -268,7 +267,7 @@ main aside section h2 {
   width: 100%;
   display: inline-block;
   vertical-align: top;
-  background-color: #93b7be;
+  background-color: #7eafb9;
   padding: 0.8em 0;
   text-align: left;
   white-space: nowrap;
@@ -312,12 +311,20 @@ main aside section:nth-child(3) > a {
 }
 
 #wrapper {
-  background-color: #a9c6cb;
+  background-color: #95bec6;
   border: 1em solid #FFF;
   width: 90%;
   margin: 0.7em auto;
   padding: 0.7em 0;
   border: solid 1px #999;
+}
+
+#home nav li:nth-child(1) a {
+  color: #c33;
+}
+
+#about nav li:nth-child(2) a {
+  color: #c33;
 }
 
 /*# sourceMappingURL=main.css.map */

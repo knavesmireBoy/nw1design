@@ -1,7 +1,9 @@
 $col-border: #999;
 $col-body: #3F4554;
-$col-nav: hsl(190, 25%, 55%);
+$col-nav: hsl(190, 30%, 50%);
 $col-bg: lighten($col-nav, 18%);
 $col-hi: #c33;
+$navlist: ('#home' '#about');
+$current: gold;
 
 $font-fam:  Verdana, Arial, Helvetica, sans-serif;

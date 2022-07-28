@@ -1,6 +1,6 @@
 html, body {}
 body {
-	font: normal .7em/1.6 $font-fam;
+	font: normal .8em/1.6 $font-fam;
 	color: $col-body;
 	background-image: url(../images/structure/bg.gif);
 }
@@ -70,13 +70,12 @@ header aside img {
 header {
 	background: $col-bg url("../images/logo.gif") no-repeat 3% 20%;
 	padding: 0 0 0;
-	margin: 0 1em;
+	margin: 1em 1.5em;
 	border: 1em solid #FFF;
 	background-image: url("../images/logo.gif"), linear-gradient(#FFF, $col-bg);
 	background-position: 2% 0, left top;
 	background-repeat: no-repeat, no-repeat;
-}
-header h1 {
+    h1 {
 	width: 7em;
 	height: 0;
 	background: url("../images/logo_txt.gif") no-repeat;
@@ -87,10 +86,11 @@ header h1 {
 	overflow: hidden;
 	white-space: nowrap;
 	margin: 4px 0 0 calc( 90px + (20 * ((100vw - 574px) / (1280 - 574))));
+    }
 }
 
 main#content {
-	padding: 1em;
+	padding: 1em 1.5em 3em;
 	background-image: none;
 }
 
@@ -211,4 +211,11 @@ main aside section {
 	padding: .7em 0;
 	@include border($color: $col-border);
 }
+
+ @for $i from 1 through length($navlist) {
+     $l: nth($navlist, $i);
+        #{$l} nav li:nth-child(#{$i}) a {
+            color: $col-hi;
+     }
+    }
 //images/buttons/quote.jpg
