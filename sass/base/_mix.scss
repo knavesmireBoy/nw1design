@@ -3,11 +3,6 @@
 }
 
 @mixin hide() {
-    position: absolute;
-    left: -9999px;
-}
-
-@mixin show($pos: relative) {
-    position: $pos;
-    left: 0;
+   position: absolute;
+   left: -9999px;
 }
