@@ -31,10 +31,29 @@ img {
 nav {
 	border-width: 0 0 .3em 0;
 	margin: 1.4em 0 0;
-    label, input {
-        @include hide();
-    }
 }
+
+   input {
+    @include hide();
+    }
+
+label {
+    width: 5em;
+    margin: 0 0 0 1.6em;
+    height: calc(5em * .66);
+    display: inline-block;
+    vertical-align: top;
+    background: url("../images/logo.gif") no-repeat 3% 20%;
+}
+header > a {
+    display: inline-block;
+    vertical-align: top
+}
+
+#menu-toggle:checked ~ a {
+    @include hide();
+}
+
 
 header nav > ul {
 	display: flex;
@@ -68,11 +87,10 @@ header aside img {
 	border-width: 0 0 .75em 0;
 }
 header {
-	background: $col-bg url("../images/logo.gif") no-repeat 3% 20%;
 	padding: 0 0 0;
 	margin: 1em 1.5em;
 	border: 1em solid #FFF;
-	background-image: url("../images/logo.gif"), linear-gradient(#FFF, $col-bg);
+	background-image: linear-gradient(#FFF, $col-bg);
 	background-position: 2% 0, left top;
 	background-repeat: no-repeat, no-repeat;
     h1 {
@@ -85,7 +103,7 @@ header {
 	padding-top: calc(7em * 0.248);
 	overflow: hidden;
 	white-space: nowrap;
-	margin: 4px 0 0 calc( 90px + (20 * ((100vw - 574px) / (1280 - 574))));
+	margin: 4px 0 0 calc( 20px + (10 * ((100vw - 574px) / (1280 - 574))));
     }
 }
 
