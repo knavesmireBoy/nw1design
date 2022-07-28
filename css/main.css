@@ -117,6 +117,7 @@ a {
 
 p {
   margin: 1em 0;
+  font-size: calc(11px + 3 * (100vw - 574px) / 706);
 }
 
 img {
@@ -168,7 +169,7 @@ header nav > ul li:hover ul {
   left: -1px;
 }
 
-aside img {
+header aside img {
   border: 1px solid #c33;
   border-width: 0 0 0.75em 0;
 }
@@ -236,25 +237,30 @@ header nav > ul > li {
 }
 
 main > section {
-  flex: 5 1 10em;
+  flex: 6 3 20em;
   margin: 0 2em 0 0;
 }
 
 main > aside {
-  flex: 3 1 10em;
+  flex: 1 2 20em;
+  background-color: white;
 }
 
 main > * {
   border: solid 1em #FFF;
-  padding: 1em;
   background-color: #e9f0f2;
 }
 
-main aside section {
-  border: solid 1px black;
-  text-align: center;
+main > section {
+  padding: 1em;
 }
 
+main aside section {
+  text-align: center;
+  border: 1px solid #a9c6cb;
+  border-width: 0 1px 2em;
+  padding: 0 0 1em;
+}
 main aside section h2 {
   color: #FFF;
   text-transform: uppercase;
@@ -267,7 +273,9 @@ main aside section h2 {
   text-align: left;
   white-space: nowrap;
 }
-
+main aside section h2 + a {
+  padding: 2em 2em 1em;
+}
 main aside section h2:before {
   content: "";
   width: 1em;
@@ -280,10 +288,27 @@ main aside section h2:before {
   text-transform: uppercase;
   box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.6), inset -1px -1px 2px rgba(0, 0, 0, 0.6);
 }
-
 main aside section a {
   color: #c33;
   display: block;
+}
+main aside section:nth-child(n+2) {
+  border-width: 0 1px;
+}
+main aside section:nth-child(n+2) {
+  padding: 0;
+}
+main aside section:nth-child(n+2) > a {
+  width: 100%;
+  height: 0;
+  margin: 2em 0;
+  padding: 2em 2em 30.0518134715%;
+  background: url(../images/buttons/quote.jpg) no-repeat center 4%/100%;
+}
+main aside section:nth-child(3) > a {
+  background: url(../images/buttons/quote.jpg) no-repeat center 96%/100%;
+  padding: 2em 2em 36.2694300518%;
+  margin: 2em 0 0;
 }
 
 #wrapper {

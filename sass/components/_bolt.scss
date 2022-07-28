@@ -17,6 +17,7 @@ a {
 }
 p {
 	margin: 1em 0;
+    font-size: calc( 11px + (3 * ((100vw - 574px) / (1280 - 574))));
 }
 img {
 	/*max-width: 100%;
@@ -62,7 +63,7 @@ header nav > ul li:hover ul {
     left: -1px;
 }
 
-aside img {
+header aside img {
 	border: 1px solid $col-hi;
 	border-width: 0 0 .75em 0;
 }
@@ -129,25 +130,28 @@ header nav > ul {
     }
 		
 main>section {
-	flex: 5 1 10em;
+	flex: 6 3 20em;
 	margin: 0 2em 0 0;
 }
 main>aside {
-	flex: 3 1 10em;
+	flex: 1 2 20em;
+    background-color: white;
 }
 main>* {
 	border: solid 1em #FFF;
-	padding: 1em;
 	background-color: lighten($col-bg, 20%);
 }
 
-main aside section {
-	@include border;
-	text-align: center;
+main > section {
+    padding: 1em;
 }
 
-
-main aside section h2 {
+main aside section {
+	text-align: center;
+    border: 1px solid $col-bg;
+    border-width: 0 1px 2em;
+    padding: 0 0 1em;
+    h2 {
 	color: #FFF;
 	text-transform: uppercase;
 	line-height: 1;
@@ -158,8 +162,10 @@ main aside section h2 {
 	padding: .8em 0;
 	text-align: left;
     white-space: nowrap;
+        + a {
+    padding: 2em 2em 1em;
 }
-main aside section h2:before {
+        &:before {
 	content: '';
 	width: 1em;
 	height: 1em;
@@ -171,10 +177,32 @@ main aside section h2:before {
 	text-transform: uppercase;
 	box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.6), inset -1px -1px 2px rgba(0, 0, 0, 0.6);
 }
-main aside section a {
-	color: $col-hi;
-	display: block;
 }
+    a {
+    color: $col-hi;
+	display: block;
+    }
+    &:nth-child(n+2) {
+    border-width: 0 1px;
+}
+
+&:nth-child(n+2){
+    padding: 0;
+    & > a {
+    width: 100%;
+    height: 0;
+    margin: 2em 0;
+    padding: 2em 2em calc(100% * 58 / 193);
+    background: url(../images/buttons/quote.jpg) no-repeat center 4% / 100%;
+}
+    }
+&:nth-child(3)> a {
+    background: url(../images/buttons/quote.jpg) no-repeat center 96% / 100%;
+    padding: 2em 2em calc(100% * 70 / 193);
+    margin: 2em 0 0;
+}
+}
+
 #wrapper {
 	background-color: $col-bg;
 	border: 1em solid #FFF;
@@ -183,3 +211,4 @@ main aside section a {
 	padding: .7em 0;
 	@include border($color: $col-border);
 }
+//images/buttons/quote.jpg
