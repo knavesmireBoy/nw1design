@@ -133,14 +133,18 @@ const deferPTL = doPartial(true),
           o = getResult(o);
           return invokeMethod(o, m, v);
       },
-      
+      invokeMethodBridgeCB = (cb) => (m, v, o) => {
+          o = cb(o);
+          return invokeMethod(o, m, v);
+      },
+      getParent = curry2(getter)('parentNode'),
       doMake = deferPTL(invokeMethod, document, 'createElement'),
       doText = ptL(invokeMethod, document, 'createTextNode'),
       doMakeNow = ptL(invokeMethod, document, 'createElement'),
       getClassList = curry2(getter)('classList'),
       getTarget = curry2(getter)('target'),
-      //getAttribute = curry3(invokeMethod)('src')('getAttribute'),
       getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
+      getParentAttribute = ptL(invokeMethodBridgeCB(getParent), 'getAttribute'),
       setAttribute = ptL(lazyInvoke2, 'setAttribute'),
       invokeThen = invokeMethodBridge.wrap(doReturn),
       addListener = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(remove),
@@ -152,7 +156,7 @@ const deferPTL = doPartial(true),
       doImg = doMake('img'),
       prepend = curry2(ptL(invokeMethodBridge, 'appendChild')),
       append = ptL(invokeMethodBridge, 'appendChild'),
-      doClose = append(doText('CLOSE X')),
+      doClose = append(doText('CLOSE')),
       doRender = prepend(document.body),
       doFig = prepend(doMakeNow('figure')),
       doCap = append(doMakeNow('figcaption')),
@@ -160,12 +164,10 @@ const deferPTL = doPartial(true),
       //makeDiv = compose(doOverlay, getClassList, doRender, doDiv),
       makeDiv = compose(doRender, doDiv),
       findNode = find(/figure/i),
-      getSrc = compose(getAttribute('src'), getTarget),
-      getAlt = compose(getAttribute('alt'), getTarget),
-      git = ptL(FF, 'map', [getAttribute('src'), getAttribute('alt')]),
+      getHref = getAttribute('href'),
+      git = ptL(FF, 'map', [getParentAttribute('href'), getAttribute('alt')]),
       sit = ptL(zip, 'map', [setSrc, setAlt]),
       enhance = compose(doOverlay, getClassList).wrap(doReturn),
-      getParent = curry2(getter)('parentNode'),
       doGit = compose(enhance, getParent, curry2(append)(makeDiv), addListener.wrap(doReturn), getParent, getParent, doClose, doCap, getParent, doFig, curry2(invoke)(doImg), ptL(EE, 'forEach'), sit, git, getTarget);
 
 lightbox.addEventListener('click', (e) => {

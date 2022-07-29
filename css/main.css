@@ -449,6 +449,13 @@ main aside section:nth-child(3) > a {
   padding: 1em;
   cursor: pointer;
   font-weight: 700;
+  color: #666;
+}
+
+.overlay figcaption:after {
+  content: " X";
+  color: #000;
+  font-weight: 700;
 }
 
 /*# sourceMappingURL=main.css.map */

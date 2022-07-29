@@ -342,5 +342,11 @@ main aside section {
     padding: 1em;
     cursor: pointer;
     font-weight: 700;
+    color: #666;
+}
+.overlay figcaption:after {
+    content: ' X';
+    color: #000;
+    font-weight: 700;
 }
 //images/buttons/quote.jpg
