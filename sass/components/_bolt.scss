@@ -240,7 +240,7 @@ main aside section {
 
  @for $i from 1 through length($navlist) {
      $l: nth($navlist, $i);
-        #{$l} nav li:nth-child(#{$i}) a {
+        #{$l} nav > ul > li:nth-child(#{$i}) > a {
             color: $col-hi;
      }
     }

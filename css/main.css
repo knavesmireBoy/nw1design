@@ -344,11 +344,15 @@ main aside section:nth-child(3) > a {
   border: solid 1px #999;
 }
 
-#home nav li:nth-child(1) a {
+#home nav > ul > li:nth-child(1) > a {
   color: #c33;
 }
 
-#about nav li:nth-child(2) a {
+#about nav > ul > li:nth-child(2) > a {
+  color: #c33;
+}
+
+#webdesign nav > ul > li:nth-child(3) > a {
   color: #c33;
 }
 
