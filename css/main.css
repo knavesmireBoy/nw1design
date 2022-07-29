@@ -426,7 +426,7 @@ main aside section:nth-child(3) > a {
   font-weight: 700;
 }
 
-div.overlay {
+.overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -434,6 +434,21 @@ div.overlay {
   height: 100vw;
   background-color: rgba(0, 0, 0, 0.9);
   z-index: 1;
+}
+
+.overlay figure {
+  width: 50%;
+  margin: 3em auto;
+  padding: 1em 1em 0;
+  background-color: #FFF;
+}
+
+.overlay figcaption {
+  background-color: #FFF;
+  text-align: right;
+  padding: 1em;
+  cursor: pointer;
+  font-weight: 700;
 }
 
 /*# sourceMappingURL=main.css.map */
