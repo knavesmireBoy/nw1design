@@ -83,14 +83,13 @@ function getResult(o) {
     return o;
 }
 
-function F(m, funs){
-    return function(o){
+
+function FF(m, funs, o){
         o = getResult(o);
         return funs[m]((f) => f(o));
-    };
 }
 
-function E(m, funs){
+function EE(m, funs){
     return function(o){
         o = getResult(o);
         funs[m]((f) => f(o));
@@ -98,10 +97,14 @@ function E(m, funs){
     };
 }
 
-function G(m, funs){
-    return function(array){
-        return array[m]((v, i) => funs[i](v));
-    };
+
+function zip(m, funs, vals){
+        return vals[m]((v, i) => funs[i](v));
+}
+
+function F(o, p, m, v){
+    o = getResult(o);
+    return o[p][m](v);
 }
 
 
@@ -115,31 +118,30 @@ const deferPTL = doPartial(true),
       lightbox = document.querySelector('.lightbox'),
       invoke = (f, v) => f(v),
       invokeMethod = (o, m, v) => o[m](v),
-      //invokeMethodWrap = invokeMethod.wrap(doInvoke),
-      applyMethod = (o, m, v) => o[m].apply(o, [v]),
-      lazyInvoke = (m, v, o) => o[m](v),
-      T = (m, v, o) => {
-          o = getResult(o);
-          return o[m](v);
-      },
       lazyInvoke2 = (m, p, o, v) => o[m](p, v),
+      invokeMethodBridge = (m, v, o) => {
+          o = getResult(o);
+          return invokeMethod(o, m, v);
+      },
+      
       doMake = deferPTL(invokeMethod, document, 'createElement'),
       doMakeNow = ptL(invokeMethod, document, 'createElement'),
       getClassList = curry2(getter)('classList'),
       getTarget = curry2(getter)('target'),
       //getAttribute = curry3(invokeMethod)('src')('getAttribute'),
-      getAttribute = ptL(lazyInvoke, 'getAttribute'),
+      getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
       setAttribute = ptL(lazyInvoke2, 'setAttribute'),
+      invokeThen = invokeMethodBridge.wrap(doReturn),
       addListener = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(remove),
       setSrc = curry2(setAttribute('src')),
       setAlt = curry2(setAttribute('alt')),
-      doOverlay = ptL(lazyInvoke, 'add', 'overlay'),
+      doOverlay = ptL(invokeMethodBridge, 'add', 'overlay'),
       doDiv = doMake('div'),
       doLink = doMake('a'),
       doImg = doMake('img'),
       doCaption = doMake('figcaption'),
-      prepend = curry2(ptL(lazyInvoke, 'appendChild')),
-      append = ptL(T, 'appendChild'),
+      prepend = curry2(ptL(invokeMethodBridge, 'appendChild')),
+      append = ptL(invokeMethodBridge, 'appendChild'),
       doRender = prepend(document.body),
       doFig = prepend(doMakeNow('figure')),
       doTest = ptL(invokeMethod, console, 'log'),
@@ -147,9 +149,10 @@ const deferPTL = doPartial(true),
       makeDiv = compose(doRender, doDiv),
       getSrc = compose(getAttribute('src'), getTarget),
       getAlt = compose(getAttribute('alt'), getTarget),
-      git = F('map', [getAttribute('src'), getAttribute('alt')]),
-      sit = G('map', [setSrc, setAlt]),
-      doGit = compose(doOverlay, getClassList, curry2(getter)('parentNode'), curry2(append)(makeDiv), curry2(getter)('parentNode'), doFig, curry2(invoke)(doImg), ptL(E, 'forEach'), sit, git, getTarget);
+      git = ptL(FF, 'map', [getAttribute('src'), getAttribute('alt')]),
+      sit = ptL(zip, 'map', [setSrc, setAlt]),
+      enhance = compose(doOverlay, getClassList).wrap(doReturn),
+      doGit = compose(addListener, enhance, curry2(getter)('parentNode'), curry2(append)(makeDiv), curry2(getter)('parentNode'), doFig, curry2(invoke)(doImg), ptL(EE, 'forEach'), sit, git, getTarget);
 
 
 lightbox.addEventListener('click', (e) => {
