@@ -139,11 +139,11 @@ const deferPTL = doPartial(true),
       doDiv = doMake('div'),
       doLink = doMake('a'),
       doImg = doMake('img'),
-      doCaption = doMake('figcaption'),
       prepend = curry2(ptL(invokeMethodBridge, 'appendChild')),
       append = ptL(invokeMethodBridge, 'appendChild'),
       doRender = prepend(document.body),
       doFig = prepend(doMakeNow('figure')),
+      doCap = append(doMakeNow('figcaption')),
       doTest = ptL(invokeMethod, console, 'log'),
       //makeDiv = compose(doOverlay, getClassList, doRender, doDiv),
       makeDiv = compose(doRender, doDiv),
@@ -152,8 +152,8 @@ const deferPTL = doPartial(true),
       git = ptL(FF, 'map', [getAttribute('src'), getAttribute('alt')]),
       sit = ptL(zip, 'map', [setSrc, setAlt]),
       enhance = compose(doOverlay, getClassList).wrap(doReturn),
-      doGit = compose(addListener, enhance, curry2(getter)('parentNode'), curry2(append)(makeDiv), curry2(getter)('parentNode'), doFig, curry2(invoke)(doImg), ptL(EE, 'forEach'), sit, git, getTarget);
-
+      getParent = curry2(getter)('parentNode'),
+      doGit = compose(addListener, enhance, getParent, curry2(append)(makeDiv), getParent, doCap, getParent, doFig, curry2(invoke)(doImg), ptL(EE, 'forEach'), sit, git, getTarget);
 
 lightbox.addEventListener('click', (e) => {
     e.preventDefault();    
