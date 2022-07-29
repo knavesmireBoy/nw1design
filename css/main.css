@@ -450,14 +450,6 @@ main aside section:nth-child(3) > a {
     opacity: 1;
   }
 }
-@keyframes fade2 {
-  from {
-    color: white;
-  }
-  to {
-    color: black;
-  }
-}
 .overlay {
   position: absolute;
   top: 0;
@@ -474,6 +466,7 @@ main aside section:nth-child(3) > a {
   padding: 1em 1em 0;
   background-color: #FFF;
   animation: fig 3s ease;
+  box-shadow: 1px 1px 2px 2px black;
 }
 
 .overlay img {

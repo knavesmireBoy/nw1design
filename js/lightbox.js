@@ -121,6 +121,12 @@ function find (reg) {
     return node;
 }
 
+function doWhen(pred, action, v){
+    if(pred(v)){
+        return action(v);
+    }
+}
+
 
 const deferPTL = doPartial(true),
       ptL = doPartial(),
@@ -141,12 +147,14 @@ const deferPTL = doPartial(true),
           o = cb(o);
           return invokeMethod(o, m, v);
       },
+
       getParent = curry2(getter)('parentNode'),
       doMake = deferPTL(invokeMethod, document, 'createElement'),
       doText = ptL(invokeMethod, document, 'createTextNode'),
       doMakeNow = ptL(invokeMethod, document, 'createElement'),
       getClassList = curry2(getter)('classList'),
       getTarget = curry2(getter)('target'),
+      matcher = compose(curry3(invokeMethod)(/img/i)('match'), curry2(getter)('nodeName'), getTarget),
       getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
       getParentAttribute = ptL(invokeMethodBridgeCB(getParent), 'getAttribute'),
       setAttribute = ptL(lazyInvoke2, 'setAttribute'),
@@ -180,5 +188,8 @@ const deferPTL = doPartial(true),
 lightbox.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    doGit(e);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    doWhen(matcher, doGit, e);
+   // doGit(e);
+    
 });
