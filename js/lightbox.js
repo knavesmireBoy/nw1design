@@ -145,7 +145,7 @@ const deferPTL = doPartial(true),
       getAlt = compose(getAttribute('alt'), getTarget),
       git = F('map', [getAttribute('src'), getAttribute('alt')]),
       sit = G('map', [setSrc, setAlt]),
-      doGit = compose(curry2(makeDiv)(null), append, curry2(getter)('parentNode'), doFig, curry2(invoke)(doImg), ptL(E, 'forEach'), sit, git, getTarget);
+      doGit = compose(append, curry2(getter)('parentNode'), doFig, curry2(invoke)(doImg), ptL(E, 'forEach'), sit, git, getTarget);
 
 
 lightbox.addEventListener('click', (e) => {
