@@ -426,6 +426,38 @@ main aside section:nth-child(3) > a {
   font-weight: 700;
 }
 
+@keyframes cap {
+  from {
+    margin: -3em 0 0;
+  }
+  to {
+    margin: 3em 0 0;
+  }
+}
+@keyframes fig {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade2 {
+  from {
+    color: white;
+  }
+  to {
+    color: black;
+  }
+}
 .overlay {
   position: absolute;
   top: 0;
@@ -438,9 +470,17 @@ main aside section:nth-child(3) > a {
 
 .overlay figure {
   width: 50%;
-  margin: 3em auto;
+  margin: 3em auto 0;
   padding: 1em 1em 0;
   background-color: #FFF;
+  animation: fig 3s ease;
+}
+
+.overlay img {
+  opacity: 0;
+  margin: 0 0 -3em;
+  position: relative;
+  animation: fade 0.5s ease 2s forwards;
 }
 
 .overlay figcaption {
@@ -450,6 +490,8 @@ main aside section:nth-child(3) > a {
   cursor: pointer;
   font-weight: 700;
   color: #666;
+  margin: 0;
+  animation: fade 1s ease 4s backwards, cap 1s ease 3s forwards;
 }
 
 .overlay figcaption:after {
