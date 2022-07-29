@@ -76,13 +76,13 @@ function remove() {
     this.parentNode.removeChild(this);
 }
 
-function F(m, ...funs){
+function F(m, funs){
     return function(o){
         return funs[m]((f) => f(o));
     };
 }
 
-function G(m, ...funs){
+function G(m, funs){
     return function(array){
         return array[m]((v, i) => funs[i](v));
     };
@@ -125,12 +125,12 @@ const deferPTL = doPartial(true),
       makeDiv = compose(doRender, doDiv),
       getSrc = compose(getAttribute('src'), getTarget),
       getAlt = compose(getAttribute('alt'), getTarget),
-      git = F('map', getAttribute('src'), getAttribute('alt')),
-      sit = G('map', setAttribute('src'), setAttribute('alt')),
-      doGit = compose(sit, git, getTarget);
+      git = F('map', [getAttribute('src'), getAttribute('alt')]),
+      sit = G('map', [setAttribute('class'), setAttribute('title')]),
+      doGit = compose(ptL(F, 'map'), sit, git, getTarget);
 
 
 lightbox.addEventListener('click', (e) => {
     e.preventDefault();    
-    doGit(e)[1](makeDiv())
+    doGit(e)(makeDiv())
 });
