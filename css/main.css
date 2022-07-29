@@ -426,7 +426,7 @@ main aside section:nth-child(3) > a {
   font-weight: 700;
 }
 
-div.overlay, body > div:last-of-type {
+div.overlay {
   position: absolute;
   top: 0;
   left: 0;
