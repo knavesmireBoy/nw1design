@@ -76,14 +76,31 @@ function remove() {
     this.parentNode.removeChild(this);
 }
 
+function getResult(o) {
+    if(typeof o === 'function'){
+        return o();
+    }
+    return o;
+}
+
 function F(m, funs){
     return function(o){
+        o = getResult(o);
         return funs[m]((f) => f(o));
+    };
+}
+
+function E(m, funs){
+    return function(o){
+        o = getResult(o);
+        funs[m]((f) => f(o));
+        return o;
     };
 }
 
 function G(m, funs){
     return function(array){
+        o = getResult(o);
         return array[m]((v, i) => funs[i](v));
     };
 }
@@ -103,13 +120,12 @@ const deferPTL = doPartial(true),
       applyMethod = (o, m, v) => o[m].apply(o, [v]),
       lazyInvoke = (m, v, o) => o[m](v),
       lazyInvoke2 = (m, p, o, v) => o[m](p, v),
-      lazyInvoke3 = (m, p, v, o) => o[m](p, v),
       doMake = deferPTL(invokeMethod, document, 'createElement'),
       getClassList = curry2(getter)('classList'),
       getTarget = curry2(getter)('target'),
       //getAttribute = curry3(invokeMethod)('src')('getAttribute'),
       getAttribute = ptL(lazyInvoke, 'getAttribute'),
-      setAttribute = ptL(lazyInvoke3, 'setAttribute'),
+      setAttribute = ptL(lazyInvoke2, 'setAttribute'),
       addListener = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(remove),
       setSrc = curry2(setAttribute('src')),
       setAlt = curry2(setAttribute('alt')),
@@ -126,11 +142,11 @@ const deferPTL = doPartial(true),
       getSrc = compose(getAttribute('src'), getTarget),
       getAlt = compose(getAttribute('alt'), getTarget),
       git = F('map', [getAttribute('src'), getAttribute('alt')]),
-      sit = G('map', [setAttribute('class'), setAttribute('title')]),
-      doGit = compose(ptL(F, 'map'), sit, git, getTarget);
+      sit = G('map', [setSrc, setAlt]),
+      doGit = compose(ptL(E, 'forEach'), sit, git, getTarget);
 
 
 lightbox.addEventListener('click', (e) => {
     e.preventDefault();    
-    doGit(e)(makeDiv())
+    con(doGit(e)(doImg))
 });
