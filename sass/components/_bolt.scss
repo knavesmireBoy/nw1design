@@ -3,6 +3,7 @@ body {
 	font: normal .8em/1.6 $font-fam;
 	color: $col-body;
 	background-image: url(../images/structure/bg.gif);
+    position: relative;
 }
 h1 {
 	font: 900 1.6em $font-fam;
@@ -318,5 +319,15 @@ main aside section {
     line-height: 1;
     text-transform: uppercase;
     font-weight: 700;
+}
+
+div.overlay, body > div:last-of-type {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vw;
+    background-color: rgba(0,0,0,.9);
+    z-index: 1;
 }
 //images/buttons/quote.jpg
