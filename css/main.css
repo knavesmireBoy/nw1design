@@ -559,4 +559,29 @@ main aside section a {
   border-color: orange;
 }
 
+.no-js #web.portfolio main ul li:nth-child(n+1) {
+  border-color: green;
+}
+.no-js #web.portfolio main ul li:nth-child(n+5) {
+  border-color: cadetblue;
+}
+.no-js #web.portfolio main ul li:nth-child(n+8) {
+  border-color: orange;
+}
+.no-js #web.portfolio main ul li:nth-child(n+12) {
+  border-color: maroon;
+}
+.no-js #web.portfolio main ul li:nth-child(n+14) {
+  border-color: lime;
+}
+.no-js #web.portfolio main ul li:nth-child(n+16) {
+  border-color: darkblue;
+}
+.no-js #web.portfolio main ul li:nth-child(n+20) {
+  border-color: orangered;
+}
+.no-js #web.portfolio main ul li:nth-child(n+24) {
+  border-color: brown;
+}
+
 /*# sourceMappingURL=main.css.map */
