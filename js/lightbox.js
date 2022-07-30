@@ -149,7 +149,6 @@ const deferPTL = doPartial(true),
 
       getParent = curry2(getter)('parentNode'),
       doMake = deferPTL(invokeMethod, document, 'createElement'),
-      doText = ptL(invokeMethod, document, 'createTextNode'),
       doMakeNow = ptL(invokeMethod, document, 'createElement'),
       getClassList = curry2(getter)('classList'),
       getTarget = curry2(getter)('target'),
