@@ -535,4 +535,28 @@ main aside section a {
   margin: 1em auto 0;
 }
 
+.no-js .portfolio main ul {
+  flex-wrap: wrap;
+}
+
+.no-js .portfolio main ul li {
+  display: inline-block;
+  border: solid 1px firebrick;
+}
+.no-js .portfolio main ul li:nth-child(n+13) {
+  border-color: darkblue;
+}
+.no-js .portfolio main ul li:nth-child(n+25) {
+  border-color: darkgray;
+}
+.no-js .portfolio main ul li:nth-child(n+33) {
+  border-color: dodgerblue;
+}
+.no-js .portfolio main ul li:nth-child(n+40) {
+  border-color: purple;
+}
+.no-js .portfolio main ul li:nth-child(n+48) {
+  border-color: orange;
+}
+
 /*# sourceMappingURL=main.css.map */

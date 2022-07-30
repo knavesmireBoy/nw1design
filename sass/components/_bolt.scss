@@ -427,4 +427,27 @@ main aside section {
     max-width: 8em;
     margin: 1em auto 0;
 }
+.no-js .portfolio main ul {
+    flex-wrap: wrap;
+}
+.no-js .portfolio main ul li {
+    display: inline-block;
+    border: solid 1px firebrick;
+    &:nth-child(n+13) {
+    border-color: darkblue;
+}
+        &:nth-child(n+25) {
+    border-color: darkgray;
+}
+      &:nth-child(n+33) {
+    border-color: dodgerblue;
+}
+     &:nth-child(n+40) {
+    border-color: purple;
+}
+     &:nth-child(n+48) {
+    border-color: orange;
+}
+}
+
 //images/buttons/quote.jpg
