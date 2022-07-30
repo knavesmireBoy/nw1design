@@ -141,6 +141,11 @@ function $q(str, flag = false) {
     return document[m](str);
 }
 
+function test(e) {
+    e.preventDefault();
+    alert(e);
+}
+
 
 const config = [{FOP: 4}, {AFEN: 3}, {'Distillery House': 3}, {'Benson Design': 4}, {BP: 2}, {UKOOA: 4}, {'Orkney Holiday Cottages': 3}, {'Safari Afrika': 4}];
 
@@ -178,10 +183,11 @@ const deferPTL = doPartial(true),
       getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
       getParentAttribute = ptL(invokeMethodBridgeCB(getParent), 'getAttribute'),
       setAttribute = ptL(lazyInvoke2, 'setAttribute'),
-      addListener = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(remove),
+      addListener = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(test).wrap(doReturn),
       setSrc = curry2(setAttribute('src')),
       setAlt = curry2(setAttribute('alt')),
       setId = curry2(setAttribute('id'))('navigation').wrap(doReturn),
+      setHref = curry2(setAttribute('href'))('.').wrap(doReturn),
       getNav = $$('navigation'),
       doOverlay = ptL(invokeMethodBridge, 'add', 'overlay'),
       doDiv = doMake('div'),
@@ -194,7 +200,7 @@ const deferPTL = doPartial(true),
       getKeys = compose(doText, getZero, curryL3(invokeMethod)(window.Object)('keys')),
       getValues = compose(getZero, curryL3(invokeMethod)(window.Object)('values')),
       doRender = prepend(document.body),
-      doRenderNav = compose(prepend($$('navigation')), getParent, prepend(doLink)),
+      doRenderNav = compose(prepend($$('navigation')), setHref, getParent, prepend(doLink)),
       doTest = ptL(invokeMethod, console, 'log'),
       makeDiv = compose(doRender, doDiv),
       getHref = getAttribute('href'),
@@ -202,11 +208,40 @@ const deferPTL = doPartial(true),
       sit = ptL(zip, 'map', [setSrc, setAlt]);
 
 var loader = function(){
-    compose(curry2(invoke)($q('#display ul')), prepend, setId, append(doSection()), prepend(contentarea), doAside)();
+    compose(curry2(invoke)($q('#display ul')), prepend, addListener, setId, append(doSection()), prepend(contentarea), doAside)();
   var nums = config.map(getValues),
-      nodes = config.map(getKeys);
+      nodes = config.map(getKeys),
+      headings = nodes.map(doRenderNav).map(F($q('#navigation ul')));
     
-    nodes.map(doRenderNav);
+    function F(ul){
+        return function(el, i, els){
+           var n = Object.values(config[i])[0],
+               j = 0,
+               lis = ul.children,
+               ol;
+            while(j < n){
+                if(!j) {
+                    ol = doUL();
+                }
+                if(j === n) {
+                    j = -1;
+                }
+                var x = append(lis[0], ol).parentNode;
+                if(els[i+1]){
+                  el.parentNode.insertBefore(x, els[i+1]);  
+                }
+                else {
+                    el.parentNode.append(x);
+                }
+                
+                j++;
+            }
+            if(!els[i+1]){
+                ul.parentNode.removeChild(ul);
+            }
+        };
+    }
+    
 };
 
 
