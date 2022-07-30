@@ -229,7 +229,7 @@ main aside section {
     padding: 2em 2em calc(100% * 70 / 193);
     margin: 2em 0 0;
 }
-    #home &, #about & {
+    #home &, #about &, &:nth-child(n+2) {
         margin: 0;
     }
 }
@@ -419,4 +419,12 @@ main aside section {
     font-weight: 700;
 }
 
+.portfolio #display {
+    max-width: 20em;
+    margin: 0 auto;
+}
+.portfolio #preview {
+    max-width: 8em;
+    margin: 1em auto 0;
+}
 //images/buttons/quote.jpg
