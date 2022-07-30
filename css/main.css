@@ -116,7 +116,7 @@ a {
   font-weight: 700;
 }
 
-main p {
+main > section p {
   margin: 1em 0;
   font-size: calc(12px + 3 * (100vw - 667px) / 613);
 }
@@ -282,8 +282,10 @@ main > section {
 main aside section {
   text-align: center;
   border: 1px solid #95bec6;
-  border-width: 0 1px 2em;
+  border-width: 0 1px 1.5em;
   padding: 0 0 1em;
+  line-height: 1.4;
+  margin: 0 0 1.5em;
 }
 main aside section h2 {
   color: #FFF;
@@ -316,23 +318,26 @@ main aside section a {
   color: #c33;
   display: block;
 }
-main aside section:nth-child(n+2) {
+#home main aside section:nth-child(n+2) {
   border-width: 0 1px;
 }
-main aside section:nth-child(n+2) {
+#home main aside section:nth-child(n+2) {
   padding: 0;
 }
-main aside section:nth-child(n+2) > a {
+#home main aside section:nth-child(n+2) > a {
   width: 100%;
   height: 0;
   margin: 2em 0;
   padding: 2em 2em 30.0518134715%;
   background: url(../images/buttons/quote.jpg) no-repeat center 4%/100%;
 }
-main aside section:nth-child(3) > a {
+#home main aside section:nth-child(3) > a {
   background: url(../images/buttons/quote.jpg) no-repeat center 96%/100%;
   padding: 2em 2em 36.2694300518%;
   margin: 2em 0 0;
+}
+#home main aside section, #about main aside section {
+  margin: 0;
 }
 
 #wrapper {
@@ -353,6 +358,10 @@ main aside section:nth-child(3) > a {
 }
 
 #webdesign nav > ul > li:nth-child(3) > a {
+  color: #c33;
+}
+
+#graphicdesign nav > ul > li:nth-child(4) > a {
   color: #c33;
 }
 
@@ -428,6 +437,7 @@ main aside section:nth-child(3) > a {
   line-height: 1;
   text-transform: uppercase;
   font-weight: 700;
+  margin: 1em 0 0;
 }
 
 @keyframes cap {
@@ -494,6 +504,24 @@ main aside section:nth-child(3) > a {
 .overlay figcaption:after {
   content: " X";
   color: #000;
+  font-weight: 700;
+}
+
+#webdesign main aside section ul {
+  margin: 1em 0 0;
+}
+#webdesign main aside section ul li:first-child {
+  font-weight: 700;
+}
+
+#graphicdesign main ul {
+  list-style: disc;
+  list-style-position: inside;
+  text-align: left;
+  margin: 1em 0 0 2em;
+}
+
+#graphicdesign main aside ul {
   font-weight: 700;
 }
 

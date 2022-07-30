@@ -17,7 +17,7 @@ a {
 	color: #069;
 	font-weight: 700;
 }
-main p {
+main > section p {
 	margin: 1em 0;
     font-size: calc( 12px + (3 * ((100vw - 667px) / (1280 - 667))));
 }
@@ -175,8 +175,10 @@ main > section {
 main aside section {
 	text-align: center;
     border: 1px solid $col-bg;
-    border-width: 0 1px 2em;
+    border-width: 0 1px 1.5em;
     padding: 0 0 1em;
+    line-height: 1.4;
+    margin: 0 0 1.5em;
     h2 {
 	color: #FFF;
 	text-transform: uppercase;
@@ -208,11 +210,11 @@ main aside section {
     color: $col-hi;
 	display: block;
     }
-    &:nth-child(n+2) {
+    #home &:nth-child(n+2) {
     border-width: 0 1px;
 }
 
-&:nth-child(n+2){
+#home &:nth-child(n+2){
     padding: 0;
     & > a {
     width: 100%;
@@ -222,11 +224,14 @@ main aside section {
     background: url(../images/buttons/quote.jpg) no-repeat center 4% / 100%;
 }
     }
-&:nth-child(3)> a {
+#home &:nth-child(3)> a {
     background: url(../images/buttons/quote.jpg) no-repeat center 96% / 100%;
     padding: 2em 2em calc(100% * 70 / 193);
     margin: 2em 0 0;
 }
+    #home &, #about & {
+        margin: 0;
+    }
 }
 
 #wrapper {
@@ -311,7 +316,7 @@ main aside section {
         margin: 0 0 1em;
     }
     
-}
+}//moby
 
 #about main aside section a:last-of-type {
     padding: 1em 2em 0;
@@ -320,6 +325,7 @@ main aside section {
     line-height: 1;
     text-transform: uppercase;
     font-weight: 700;
+    margin: 1em 0 0;
 }
 
 @keyframes cap {
@@ -390,6 +396,26 @@ main aside section {
 .overlay figcaption:after {
     content: ' X';
     color: #000;
+    font-weight: 700;
+}
+
+#webdesign main aside section ul {
+    margin: 1em 0 0;
+    li:first-child{
+        font-weight: 700;
+        
+    }
+    
+}
+
+#graphicdesign main ul {
+    list-style: disc;
+    list-style-position: inside;
+    text-align: left;
+    margin:  1em 0 0 2em;
+}
+
+#graphicdesign main aside ul {
     font-weight: 700;
 }
 
