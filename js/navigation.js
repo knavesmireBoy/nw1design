@@ -164,8 +164,6 @@ function equals(a, b){
             heads[i].classList.add('active');
     }
 
-    
-
 
 const config = [{FOP: 4}, {AFEN: 3}, {'Distillery House': 3}, {'Benson Design': 4}, {BP: 2}, {UKOOA: 4}, {'Orkney Holiday Cottages': 3}, {'Safari Afrika': 4}];
 
