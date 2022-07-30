@@ -126,6 +126,14 @@ function doWhen(pred, action, v){
     }
 }
 
+function $(str){
+    return document.getElementById(str);
+}
+function $q(str, flag = false) {
+    const m = flag ? 'querySelectorAll' : 'querySelector';
+    return document[m](str);
+}
+
 
 const deferPTL = doPartial(true),
       ptL = doPartial(),
@@ -134,23 +142,25 @@ const deferPTL = doPartial(true),
       getter = (o, p) => o[p],
       curry2 = fun => b => a => fun(a, b),
       curry3 = fun => c => b => a => fun(a, b, c),
-      lightbox = document.querySelector('.lightbox'),
       invoke = (f, v) => f(v),
       invokeMethod = (o, m, v) => o[m](v),
       lazyInvoke2 = (m, p, o, v) => o[m](p, v),
       invokeMethodBridge = (m, v, o) => {
           o = getResult(o);
+          con(m,v,o)
           return invokeMethod(o, m, v);
       },
       invokeMethodBridgeCB = (cb) => (m, v, o) => {
           o = cb(o);
           return invokeMethod(o, m, v);
       },
-
+      contentarea = $('content'),
+      lightbox = document.querySelector('.lightbox'),
       getParent = curry2(getter)('parentNode'),
       doMake = deferPTL(invokeMethod, document, 'createElement'),
-      doText = ptL(invokeMethod, document, 'createTextNode'),
       doMakeNow = ptL(invokeMethod, document, 'createElement'),
+       prepend = curry2(ptL(invokeMethodBridgeCB(getResult), 'appendChild')),
+      append = ptL(invokeMethodBridgeCB(getResult), 'appendChild'),
       getClassList = curry2(getter)('classList'),
       getTarget = curry2(getter)('target'),
       matcher = compose(curry3(invokeMethod)(/img/i)('match'), curry2(getter)('nodeName'), getTarget),
@@ -163,27 +173,22 @@ const deferPTL = doPartial(true),
       setAlt = curry2(setAttribute('alt')),
       doOverlay = ptL(invokeMethodBridge, 'add', 'overlay'),
       doDiv = doMake('div'),
+      doAside = doMake('aside'),
+      doSection = doMake('section'),
       doLink = doMake('a'),
       doImg = doMake('img'),
-      prepend = curry2(ptL(invokeMethodBridge, 'appendChild')),
-      append = ptL(invokeMethodBridge, 'appendChild'),
-      doClose = append(doText('CLOSE')),
+     
       doRender = prepend(document.body),
-      /*puzzled as to why figure was being created with an extra image on evry click
-      the argument to prepend was an element and was being extended on evry call, needs a fresh instance per click*/
-      //doFig = prepend(doMakeNow('figure')), 
-      doFig = prepend(doMake('figure')),
-      doCap = append(doMakeNow('figcaption')),
       doTest = ptL(invokeMethod, console, 'log'),
       makeDiv = compose(doRender, doDiv),
-      findNode = find(/figure/i),
       getHref = getAttribute('href'),
       git = ptL(FF, 'map', [getParentAttribute('href'), getAttribute('alt')]),
-      sit = ptL(zip, 'map', [setSrc, setAlt]),
-      enhance = compose(doOverlay, getClassList).wrap(doReturn),
-      doGit = compose(enhance, getParent, curry2(append)(makeDiv), addListener.wrap(doReturn), getParent, getParent, doClose, doCap, getParent, doFig, curry2(invoke)(doImg), ptL(EE, 'forEach'), sit, git, getTarget),
-      doGit1 = compose(addListener, enhance, getParent, curry2(append)(makeDiv), curry2(invoke)(doImg), ptL(EE, 'forEach'), sit, git, getTarget);
+      sit = ptL(zip, 'map', [setSrc, setAlt]);
 
+var loader = function(){
+    compose(curry2(invoke)($q('#display ul')), prepend, append(doSection()), prepend(contentarea), doAside)();
+}
+/*
 lightbox.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -192,3 +197,5 @@ lightbox.addEventListener('click', (e) => {
    // doGit(e);
     
 });
+*/
+window.addEventListener('load', loader);

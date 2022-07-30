@@ -420,11 +420,9 @@ main aside section {
 }
 
 .portfolio #display {
-    max-width: 20em;
     margin: 0 auto;
 }
 .portfolio #preview {
-    max-width: 8em;
     margin: 1em auto 0;
 }
 .no-js .portfolio main ul {
@@ -464,16 +462,16 @@ main aside section {
         &:nth-child(n+8) {
     border-color: orange;
         }
-        &:nth-child(n+12) {
+        &:nth-child(n+11) {
     border-color: maroon;
         }
-        &:nth-child(n+14) {
+        &:nth-child(n+15) {
     border-color: lime;
         }
-         &:nth-child(n+16) {
+         &:nth-child(n+17) {
     border-color: darkblue;
         }
-         &:nth-child(n+20) {
+         &:nth-child(n+21) {
     border-color: orangered;
         }
          &:nth-child(n+24) {

@@ -526,12 +526,10 @@ main aside section a {
 }
 
 .portfolio #display {
-  max-width: 20em;
   margin: 0 auto;
 }
 
 .portfolio #preview {
-  max-width: 8em;
   margin: 1em auto 0;
 }
 
@@ -568,16 +566,16 @@ main aside section a {
 .no-js #web.portfolio main ul li:nth-child(n+8) {
   border-color: orange;
 }
-.no-js #web.portfolio main ul li:nth-child(n+12) {
+.no-js #web.portfolio main ul li:nth-child(n+11) {
   border-color: maroon;
 }
-.no-js #web.portfolio main ul li:nth-child(n+14) {
+.no-js #web.portfolio main ul li:nth-child(n+15) {
   border-color: lime;
 }
-.no-js #web.portfolio main ul li:nth-child(n+16) {
+.no-js #web.portfolio main ul li:nth-child(n+17) {
   border-color: darkblue;
 }
-.no-js #web.portfolio main ul li:nth-child(n+20) {
+.no-js #web.portfolio main ul li:nth-child(n+21) {
   border-color: orangered;
 }
 .no-js #web.portfolio main ul li:nth-child(n+24) {
