@@ -582,4 +582,55 @@ main aside section a {
   border-color: brown;
 }
 
+#navigation {
+  position: relative;
+  text-align: left;
+  font-size: 0.9em;
+}
+
+#navigation ul {
+  padding: 0.5em;
+  /*position: absolute;
+  overflow: hidden;
+  left: -9999px;
+  */
+}
+
+#navigation li a {
+  background-color: aliceblue;
+  padding: 0.25em;
+  border: solid 1px black;
+}
+
+#navigation > a {
+  background-color: cadetblue;
+  color: darkblue;
+  padding: 0.25em 0.6em;
+  border: solid 1px #999;
+  border-width: 1px 0;
+  border-color: white white gray;
+}
+
+#navigation a img {
+  width: 2em;
+  height: 2em;
+}
+
+#navigation ul li {
+  overflow: hidden;
+  margin: 0 0.3em;
+  display: inline-block;
+}
+
+.portfolio main > aside {
+  flex: 1 2 10em;
+  background-color: white;
+}
+
+#navigation > a:after {
+  content: "+";
+  color: white;
+  float: right;
+}
+
 /*# sourceMappingURL=main.css.map */

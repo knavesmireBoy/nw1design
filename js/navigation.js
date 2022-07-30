@@ -218,7 +218,8 @@ var loader = function(){
            var n = Object.values(config[i])[0],
                j = 0,
                lis = ul.children,
-               ol;
+               ol,
+               neu;
             while(j < n){
                 if(!j) {
                     ol = doUL();
@@ -226,16 +227,15 @@ var loader = function(){
                 if(j === n) {
                     j = -1;
                 }
-                var x = append(lis[0], ol).parentNode;
+                neu = append(lis[0], ol).parentNode;
                 if(els[i+1]){
-                  el.parentNode.insertBefore(x, els[i+1]);  
+                  el.parentNode.insertBefore(neu, els[i+1]);  
                 }
                 else {
-                    el.parentNode.append(x);
+                    el.parentNode.append(neu);
                 }
-                
                 j++;
-            }
+            }//
             if(!els[i+1]){
                 ul.parentNode.removeChild(ul);
             }
