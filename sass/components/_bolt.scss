@@ -529,5 +529,9 @@ main aside section {
     color: white;
     float: right;
 }
+#navigation > a.active + ul {
+    position: absolute;
+    left: -9999px
+}
 
 //images/buttons/quote.jpg

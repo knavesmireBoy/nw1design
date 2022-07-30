@@ -146,6 +146,26 @@ function test(e) {
     alert(e);
 }
 
+function equals(a, b){
+    return a === b;
+}
+
+
+
+        function G(e){
+            e.preventDefault();
+            var i,
+                str = compose(getText, getTarget)(e),
+                heads = this.getElementsByTagName('a'),
+                finder = compose(compose(curry2(equals)(str), getText));
+            heads = Array.prototype.slice.call(heads);
+            heads = heads.filter((a) => !a.href.match(/jpg/));
+            i = heads.findIndex(finder);
+            heads[i].classList.add('active');
+    }
+
+    
+
 
 const config = [{FOP: 4}, {AFEN: 3}, {'Distillery House': 3}, {'Benson Design': 4}, {BP: 2}, {UKOOA: 4}, {'Orkney Holiday Cottages': 3}, {'Safari Afrika': 4}];
 
@@ -175,6 +195,7 @@ const deferPTL = doPartial(true),
       doMake = deferPTL(invokeMethod, document, 'createElement'),
       doMakeNow = ptL(invokeMethod, document, 'createElement'),
       doText = ptL(invokeMethod, document, 'createTextNode'),
+      getText = curry2(getter)('innerHTML'),
       prepend = curry2(ptL(invokeMethodBridgeCB(getResult), 'appendChild')),
       append = ptL(invokeMethodBridgeCB(getResult), 'appendChild'),
       getClassList = curry2(getter)('classList'),
@@ -183,7 +204,7 @@ const deferPTL = doPartial(true),
       getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
       getParentAttribute = ptL(invokeMethodBridgeCB(getParent), 'getAttribute'),
       setAttribute = ptL(lazyInvoke2, 'setAttribute'),
-      addListener = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(test).wrap(doReturn),
+      addListener = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(G).wrap(doReturn),
       setSrc = curry2(setAttribute('src')),
       setAlt = curry2(setAttribute('alt')),
       setId = curry2(setAttribute('id'))('navigation').wrap(doReturn),
@@ -197,7 +218,8 @@ const deferPTL = doPartial(true),
       doImg = doMake('img'),
       doUL = doMake('ul'),
       getZero = curry2(getter)(0),
-      getKeys = compose(doText, getZero, curryL3(invokeMethod)(window.Object)('keys')),
+      getKey = compose(getZero, curryL3(invokeMethod)(window.Object)('keys')),
+      getKeys = compose(doText, getKey),
       getValues = compose(getZero, curryL3(invokeMethod)(window.Object)('values')),
       doRender = prepend(document.body),
       doRenderNav = compose(prepend($$('navigation')), setHref, getParent, prepend(doLink)),
@@ -213,7 +235,8 @@ var loader = function(){
       nodes = config.map(getKeys),
       headings = nodes.map(doRenderNav).map(F($q('#navigation ul')));
     
-    function F(ul){
+        function F(ul){
+    
         return function(el, i, els){
            var n = Object.values(config[i])[0],
                j = 0,
@@ -241,7 +264,7 @@ var loader = function(){
             }
         };
     }
-    
+
 };
 
 
