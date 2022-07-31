@@ -145,23 +145,67 @@ function doCurrent(grp, cb){
     doActive(current)
 }
 
+class Grouper {
+    constructor(grp, kls = 'active') {
+        this.grp = grp;
+        this.kls = kls;
+        this.execute(this.grp[0]);
+        this.current = null;
+    }
+    getCurrent () {
+        return compose(ptL(getter, this.grp), doFindIndex(this.strategy))(this.grp);
+    }
+    undo (el) {
+        if(el === this.current){
+            return undoActive(el);
+        }
+    }
+    execute (el) {
+        if(!this.undo(el)){
+            undoActiveCB(this.grp);
+            this.current = doActive(el);
+        }
+    }
+    setStrategy (s) {
+        this.strategy = s;
+        return this;
+    }
+}
+
 function G(e) {
 	e.preventDefault();
 	if (matchLink(e)) {
 		let heads = this.getElementsByTagName('a'),
-			i = -1,
 			str = getTextFromTarget(e),
-			finder = compose(curry2(equals)(str), getText);        
+			finder = compose(curry2(equals)(str), getText);
+        
         heads = toArray(heads, (a) => !a.href.match(/jpg/));
         doCurrent(heads, finder);
 	}
 }
+function GG() {
+    let grouper = null;
+    return function G(e) {
+        e.preventDefault();
+        if (matchLink(e)) {
+            let heads = this.getElementsByTagName('a'),
+                str = getTextFromTarget(e),
+                finder = compose(curry2(equals)(str), getText),
+                grouper = grouper || new Grouper(toArray(heads, (a) => !a.href.match(/jpg/)));
+        grouper.setStrategy(finder).execute(getTarget(e));
+	}
+};
+}
 
 function X(e){
-    e.stopImmediatePropagation();
     if(matchImg(e)){
       $q('#slidepreview img').src = e.target.src;
     }
+}
+
+function Y(){
+    //stop slideshow; set display pic; set index;  trigger click    
+    con(this);
 }
 const config = [{
 	FOP: 4
@@ -229,8 +273,11 @@ const deferPTL = doPartial(true),
 	getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
 	getParentAttribute = ptL(invokeMethodBridgeCB(getParent), 'getAttribute'),
 	setAttribute = ptL(lazyInvoke2, 'setAttribute'),
+      
 	addClickPreview = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(G).wrap(pass),
 	addClickHover = curry2(ptL(lazyInvoke2, 'addEventListener', 'mouseover'))(X).wrap(pass),
+	addImgLoad = curry2(ptL(lazyInvoke2, 'addEventListener', 'load'))(Y).wrap(pass),
+      
 	setSrc = curry2(setAttribute('src')),
 	setAlt = curry2(setAttribute('alt')),
 	setLink = curry2(setAttribute('href')),
@@ -240,8 +287,8 @@ const deferPTL = doPartial(true),
 	getNav = $$('navigation'),
 	addKlas = ptL(invokeMethodBridge, 'add'),
 	remKlas = ptL(invokeMethodBridge, 'remove'),
-	doActive = compose(addKlas('active'), getClassList),
-	undoActive = compose(remKlas('active'), getClassList),
+	doActive = compose(addKlas('active'), getClassList).wrap(pass),
+	undoActive = compose(remKlas('active'), getClassList).wrap(pass),
     doEach = curryL3(invokeMethodBridgeCB(getResult))('forEach'),
     doFindIndex = curryL3(invokeMethodBridgeCB(getResult))('findIndex'),
 	undoActiveCB = doEach(undoActive),
@@ -273,7 +320,7 @@ const deferPTL = doPartial(true),
     setImg = compose(append, curry2(invoke)(doImg), ptL(doIterate, 'forEach'), setImageAttrs)();
 
 var loader = function() {
-    compose(setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doSection()), prepend(contentarea), doAside)();
+    compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doSection()), prepend(contentarea), doAside)();
 	var nums = config.map(getValues),
 		nodes = config.map(getKeys),
 		headings = nodes.map(doRenderNav).map(F($q('#navigation ul')));
