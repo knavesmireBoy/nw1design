@@ -8,7 +8,7 @@ function doPartial(flag) {
 	};
 }
 
-function doReturn(ptl, o) {
+function pass(ptl, o) {
 	ptl(o);
 	return o;
 }
@@ -182,6 +182,7 @@ const deferPTL = doPartial(true),
 	curry3 = fun => c => b => a => fun(a, b, c),
 	curryL3 = fun => a => b => c => fun(a, b, c),
 	invoke = (f, v) => f(v),
+	justinvoke = (f) => f(),
 	invokeMethod = (o, m, v) => o[m](v),
 	lazyInvoke2 = (m, p, o, v) => o[m](p, v),
 	invokeMethodBridge = (m, v, o) => {
@@ -189,6 +190,10 @@ const deferPTL = doPartial(true),
 		return invokeMethod(o, m, v);
 	},
 	invokeMethodBridgeCB = (cb) => (m, v, o) => {
+		o = cb(o);
+		return invokeMethod(o, m, v);
+	},
+      invokeMethodBridgeCBT = (cb) => (m, v, o) => {
 		o = cb(o);
 		return invokeMethod(o, m, v);
 	},
@@ -203,18 +208,23 @@ const deferPTL = doPartial(true),
 	getNodeNameTarget = compose(getText, getTarget),
 	doMake = deferPTL(invokeMethod, document, 'createElement'),
 	doMakeNow = ptL(invokeMethod, document, 'createElement'),
-	doText = ptL(invokeMethod, document, 'createTextNode'),
+	doText = deferPTL(invokeMethod, document, 'createTextNode'),
+	doTextNow = ptL(invokeMethod, document, 'createTextNode'),
+      
 	prepend = curry2(ptL(invokeMethodBridgeCB(getResult), 'appendChild')),
+	prependTest = curry2(curryL3(invokeMethodBridgeCB(getResult))('appendChild')),
 	append = ptL(invokeMethodBridgeCB(getResult), 'appendChild'),
+	appendT = ptL(invokeMethodBridge, 'appendChild'),
+      
 	matchLink = compose(curry3(invokeMethod)(/a/i)('match'), curry2(getter)('nodeName'), getTarget),
 	getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
 	getParentAttribute = ptL(invokeMethodBridgeCB(getParent), 'getAttribute'),
 	setAttribute = ptL(lazyInvoke2, 'setAttribute'),
-	addListener = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(G).wrap(doReturn),
+	addListener = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(G).wrap(pass),
 	setSrc = curry2(setAttribute('src')),
 	setAlt = curry2(setAttribute('alt')),
-	setId = curry2(setAttribute('id'))('navigation').wrap(doReturn),
-	setHref = curry2(setAttribute('href'))('.').wrap(doReturn),
+	setId = curry2(setAttribute('id'))('navigation').wrap(pass),
+	setHref = curry2(setAttribute('href'))('.').wrap(pass),
 	getNav = $$('navigation'),
 	addKlas = ptL(invokeMethodBridge, 'add'),
 	remKlas = ptL(invokeMethodBridge, 'remove'),
@@ -229,9 +239,11 @@ const deferPTL = doPartial(true),
 	doLink = doMake('a'),
 	doImg = doMake('img'),
 	doUL = doMake('ul'),
+      
+    doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
 	getZero = curry2(getter)(0),
 	getKey = compose(getZero, curryL3(invokeMethod)(window.Object)('keys')),
-	getKeys = compose(doText, getKey),
+	getKeys = compose(doTextNow, getKey),
 	getValues = compose(getZero, curryL3(invokeMethod)(window.Object)('values')),
 	doRender = prepend(document.body),
 	doRenderNav = compose(prepend($$('navigation')), setHref, getParent, prepend(doLink)),
@@ -241,7 +253,8 @@ const deferPTL = doPartial(true),
 	git = ptL(FF, 'map', [getParentAttribute('href'), getAttribute('alt')]),
 	sit = ptL(zip, 'map', [setSrc, setAlt]);
 var loader = function() {
-	compose(curry2(invoke)($q('#display ul')), prepend, addListener, setId, append(doSection()), prepend(contentarea), doAside)();
+    compose(doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addListener, setId, append(doSection()), prepend(contentarea), doAside)();
+    
 	var nums = config.map(getValues),
 		nodes = config.map(getKeys),
 		headings = nodes.map(doRenderNav).map(F($q('#navigation ul')));
