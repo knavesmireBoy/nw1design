@@ -41,12 +41,12 @@ function getResult(o) {
 	return o;
 }
 
-function FF(m, funs, o) {
+function invokeCB(m, funs, o) {
 	o = getResult(o);
 	return funs[m]((f) => f(o));
 }
 
-function EE(m, funs) {
+function doIterate(m, funs) {
 	return function(o) {
 		o = getResult(o);
 		funs[m]((f) => f(o));
@@ -181,6 +181,7 @@ const deferPTL = doPartial(true),
 	curry2 = fun => b => a => fun(a, b),
 	curry3 = fun => c => b => a => fun(a, b, c),
 	curryL3 = fun => a => b => c => fun(a, b, c),
+	curryL33 = fun => a => b => c => () => fun(a, b, c),
 	invoke = (f, v) => f(v),
 	justinvoke = (f) => f(),
 	invokeMethod = (o, m, v) => o[m](v),
@@ -223,7 +224,9 @@ const deferPTL = doPartial(true),
 	addListener = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(G).wrap(pass),
 	setSrc = curry2(setAttribute('src')),
 	setAlt = curry2(setAttribute('alt')),
-	setId = curry2(setAttribute('id'))('navigation').wrap(pass),
+	setLink = curry2(setAttribute('href')),
+	setId = curry2(setAttribute('id')),
+	setNavId = curry2(setAttribute('id'))('navigation').wrap(pass),
 	setHref = curry2(setAttribute('href'))('.').wrap(pass),
 	getNav = $$('navigation'),
 	addKlas = ptL(invokeMethodBridge, 'add'),
@@ -239,6 +242,10 @@ const deferPTL = doPartial(true),
 	doLink = doMake('a'),
 	doImg = doMake('img'),
 	doUL = doMake('ul'),
+      doTest = function(x){
+        console.log(x);
+        return x;
+    },
       
     doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
 	getZero = curry2(getter)(0),
@@ -247,14 +254,17 @@ const deferPTL = doPartial(true),
 	getValues = compose(getZero, curryL3(invokeMethod)(window.Object)('values')),
 	doRender = prepend(document.body),
 	doRenderNav = compose(prepend($$('navigation')), setHref, getParent, prepend(doLink)),
-	doTest = ptL(invokeMethod, console, 'log'),
+	
 	makeDiv = compose(doRender, doDiv),
 	getHref = getAttribute('href'),
-	git = ptL(FF, 'map', [getParentAttribute('href'), getAttribute('alt')]),
-	sit = ptL(zip, 'map', [setSrc, setAlt]);
+	//git = ptL(invokeCB, 'map', [getParentAttribute('href'), getAttribute('alt')]),
+	setImageAttrs = curryL33(zip)('map')([setAlt])(['currentpic']),
+	setDivAttrs = curryL33(zip)('map')([setId])(['slidepreview']),
+    setDiv = compose(append, curry2(invoke)(doDiv), ptL(doIterate, 'forEach'), setDivAttrs)(),
+    setImg = compose(append, curry2(invoke)(doImg), ptL(doIterate, 'forEach'), setImageAttrs)();
+
 var loader = function() {
-    compose(doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addListener, setId, append(doSection()), prepend(contentarea), doAside)();
-    
+    compose(setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addListener, setNavId, append(doSection()), prepend(contentarea), doAside)();
 	var nums = config.map(getValues),
 		nodes = config.map(getKeys),
 		headings = nodes.map(doRenderNav).map(F($q('#navigation ul')));
@@ -287,14 +297,5 @@ var loader = function() {
 		};
 	}
 };
-/*
-lightbox.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
-    doWhen(matcher, doGit, e);
-   // doGit(e);
-    
-});
-*/
+
 window.addEventListener('load', loader);

@@ -648,4 +648,11 @@ main aside section a {
   left: 0;
 }
 
+#slidepreview {
+  width: 75%;
+  height: auto;
+  margin: 1em auto;
+  border: solid 1px #999;
+}
+
 /*# sourceMappingURL=main.css.map */
