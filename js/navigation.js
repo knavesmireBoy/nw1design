@@ -156,6 +156,13 @@ function G(e) {
         doCurrent(heads, finder);
 	}
 }
+
+function X(e){
+    e.stopImmediatePropagation();
+    if(matchImg(e)){
+      $q('#slidepreview img').src = e.target.src;
+    }
+}
 const config = [{
 	FOP: 4
 }, {
@@ -217,11 +224,13 @@ const deferPTL = doPartial(true),
 	append = ptL(invokeMethodBridgeCB(getResult), 'appendChild'),
 	appendT = ptL(invokeMethodBridge, 'appendChild'),
       
-	matchLink = compose(curry3(invokeMethod)(/a/i)('match'), curry2(getter)('nodeName'), getTarget),
+	matchLink = compose(curry3(invokeMethod)(/^a$/i)('match'), curry2(getter)('nodeName'), getTarget),
+	matchImg = compose(curry3(invokeMethod)(/^img/i)('match'), curry2(getter)('nodeName'), getTarget),
 	getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
 	getParentAttribute = ptL(invokeMethodBridgeCB(getParent), 'getAttribute'),
 	setAttribute = ptL(lazyInvoke2, 'setAttribute'),
-	addListener = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(G).wrap(pass),
+	addClickPreview = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(G).wrap(pass),
+	addClickHover = curry2(ptL(lazyInvoke2, 'addEventListener', 'mouseover'))(X).wrap(pass),
 	setSrc = curry2(setAttribute('src')),
 	setAlt = curry2(setAttribute('alt')),
 	setLink = curry2(setAttribute('href')),
@@ -264,7 +273,7 @@ const deferPTL = doPartial(true),
     setImg = compose(append, curry2(invoke)(doImg), ptL(doIterate, 'forEach'), setImageAttrs)();
 
 var loader = function() {
-    compose(setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addListener, setNavId, append(doSection()), prepend(contentarea), doAside)();
+    compose(setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doSection()), prepend(contentarea), doAside)();
 	var nums = config.map(getValues),
 		nodes = config.map(getKeys),
 		headings = nodes.map(doRenderNav).map(F($q('#navigation ul')));
