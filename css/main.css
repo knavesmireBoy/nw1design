@@ -586,6 +586,7 @@ main aside section a {
   position: relative;
   text-align: left;
   font-size: 0.9em;
+  padding: 0;
 }
 
 #navigation ul {
@@ -631,6 +632,10 @@ main aside section a {
   content: "+";
   color: white;
   float: right;
+}
+
+#navigation > a.active:after {
+  content: "-";
 }
 
 #navigation ul {

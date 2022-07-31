@@ -136,7 +136,13 @@ class Command {
 }
 
 function doCurrent(grp, cb){
-    return compose(doActive, ptL(getter, grp), doFindIndex(cb))(grp);
+    var el = $q('.active'),
+        current = compose(ptL(getter, grp), doFindIndex(cb))(grp);
+    if(el === current){
+        return undoActive(el);
+        }
+    undoActiveCB(grp);
+    doActive(current)
 }
 
 function G(e) {
@@ -147,7 +153,6 @@ function G(e) {
 			str = getTextFromTarget(e),
 			finder = compose(curry2(equals)(str), getText);        
         heads = toArray(heads, (a) => !a.href.match(/jpg/));
-        undoActiveCB(heads);
         doCurrent(heads, finder);
 	}
 }

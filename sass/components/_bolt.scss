@@ -484,6 +484,7 @@ main aside section {
     position: relative;
     text-align: left;
     font-size: .9em;
+    padding: 0;
 }
 #navigation ul {
     padding: .5em;
@@ -528,6 +529,9 @@ main aside section {
     content: '+';
     color: white;
     float: right;
+}
+#navigation > a.active:after {
+    content: '-';
 }
 #navigation ul {
     position: absolute;
