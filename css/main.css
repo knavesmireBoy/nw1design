@@ -633,9 +633,14 @@ main aside section a {
   float: right;
 }
 
-#navigation > a.active + ul {
+#navigation ul {
   position: absolute;
   left: -9999px;
+}
+
+#navigation > a.active + ul {
+  position: relative;
+  left: 0;
 }
 
 /*# sourceMappingURL=main.css.map */

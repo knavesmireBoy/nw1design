@@ -502,7 +502,7 @@ main aside section {
 #navigation > a {
     background-color: cadetblue;
     color: darkblue;
-   padding: .25em .6em;
+    padding: .25em .6em;
     border: solid 1px #999;
     border-width: 1px 0;
     border-color: white white gray;
@@ -529,9 +529,14 @@ main aside section {
     color: white;
     float: right;
 }
-#navigation > a.active + ul {
+#navigation ul {
     position: absolute;
-    left: -9999px
+    left: -9999px;
+}
+
+#navigation > a.active + ul {
+    position: relative;
+    left: 0;
 }
 
 //images/buttons/quote.jpg
