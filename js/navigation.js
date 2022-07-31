@@ -126,25 +126,6 @@ function toArray(coll, cb = truthy) {
 	return Array.prototype.slice.call(coll).filter(cb);
 }
 
-class Command {
-  constructor(subject) {
-    this.subject = subject;
-  }
-  execute() {
-    console.log(`The ${this.type} rabbit says '${line}'`);
-  }
-}
-
-function doCurrent(grp, cb){
-    var el = $q('.active'),
-        current = compose(ptL(getter, grp), doFindIndex(cb))(grp);
-    if(el === current){
-        return undoActive(el);
-        }
-    undoActiveCB(grp);
-    doActive(current)
-}
-
 class Grouper {
     constructor(grp, kls = 'active') {
         this.grp = grp;
@@ -157,6 +138,7 @@ class Grouper {
     }
     undo (el) {
         if(el === this.current){
+            this.current = null;
             return undoActive(el);
         }
     }
@@ -172,40 +154,27 @@ class Grouper {
     }
 }
 
-function G(e) {
-	e.preventDefault();
-	if (matchLink(e)) {
-		let heads = this.getElementsByTagName('a'),
-			str = getTextFromTarget(e),
-			finder = compose(curry2(equals)(str), getText);
-        
-        heads = toArray(heads, (a) => !a.href.match(/jpg/));
-        doCurrent(heads, finder);
-	}
-}
 function GG() {
     let grouper = null;
     return function G(e) {
         e.preventDefault();
         if (matchLink(e)) {
-            let heads = this.getElementsByTagName('a'),
-                str = getTextFromTarget(e),
-                finder = compose(curry2(equals)(str), getText),
-                grouper = grouper || new Grouper(toArray(heads, (a) => !a.href.match(/jpg/)));
-        grouper.setStrategy(finder).execute(getTarget(e));
+            grouper = grouper || new Grouper(toArray(this.getElementsByTagName('a'), (a) => !a.href.match(/jpg/)));
+            grouper.execute(getTarget(e));
 	}
 };
 }
 
 function X(e){
     if(matchImg(e)){
-      $q('#slidepreview img').src = e.target.src;
+      var src = getAttribute('src')(e.target);
+      $q('#slidepreview img').setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
     }
 }
 
 function Y(){
     //stop slideshow; set display pic; set index;  trigger click    
-    con(this);
+   // con(this);
 }
 const config = [{
 	FOP: 4
@@ -274,7 +243,7 @@ const deferPTL = doPartial(true),
 	getParentAttribute = ptL(invokeMethodBridgeCB(getParent), 'getAttribute'),
 	setAttribute = ptL(lazyInvoke2, 'setAttribute'),
       
-	addClickPreview = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(G).wrap(pass),
+	addClickPreview = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(GG()).wrap(pass),
 	addClickHover = curry2(ptL(lazyInvoke2, 'addEventListener', 'mouseover'))(X).wrap(pass),
 	addImgLoad = curry2(ptL(lazyInvoke2, 'addEventListener', 'load'))(Y).wrap(pass),
       
