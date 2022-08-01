@@ -161,7 +161,7 @@ class Grouper {
             this.current = doActive(el);
         }
     }
-    setFinder (f) {
+    setFinder (f = () => false) {
         this.finder = f;
         return this;
     }
@@ -190,10 +190,11 @@ function makeHeaders(e) {
 }
 
 function X(e){
-    if(matchImg(e)){
+    var preview = $q('#slidepreview img');
+    
+    if(matchImg(e) && e.target !== preview){
       var src = getAttribute('src')(e.target);
-        //src.replace('fullsize', 'thumbs').replace('fs', 'tmb'));
-      $q('#slidepreview img').setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
+      preview.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
     }
 }
 
@@ -407,7 +408,7 @@ var loader = function() {
     headers = new Grouper(headings());
     headers.setFinder(finder("olio/web/fullsize/zoe4_fs"));
     headers.setStrategy(strategy.bind(headers));
-    headers.getCurrent();    
+    //headers.getCurrent();    
  
 };
 
