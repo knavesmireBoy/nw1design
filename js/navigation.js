@@ -134,8 +134,6 @@ function toArray(coll, cb = truthy) {
 }
 
 
-
-
 class Grouper {
     constructor(grp = [], kls = 'active') {
         this.grp = grp;
@@ -144,7 +142,15 @@ class Grouper {
     }
     getCurrent (str) {
         var get = curry3(getTargetNode),
-            ul = this.grp.map(get('nextSibling')(/ul/i));
+            ul = this.grp.map(get('nextSibling')(/ul/i)),
+            getA = get('firstChild')(/^a$/i),
+            match = curryL2(equals)(str),
+            links = ul.map(({children}) => toArray(children)).map(lis => lis.map(getA));
+        links = links.map( as => as.map( getAttrs('href')));
+        links = links.map( strs => strs.findIndex(match)).findIndex( n => n >= 0);
+        this.execute(this.grp[links]);
+        
+        
         //return compose(ptL(getter, this.grp), doFindIndex(this.strategy(str)))(this.grp);
         //return this.grp.map(get('nextSibling')(/ul/i)).map(get('firstChild')(/^a$/i)).map(getAttrs('href'));
     }
@@ -180,7 +186,7 @@ function makeHeaders(e) {
         if (matchLink(e)) {
             headers = headers || new Grouper(toArray(this.getElementsByTagName('a'), (a) => !a.href.match(/jpg/)));
             headers.execute(getTarget(e));
-            console.log(3, headers.getCurrent())
+            headers.getCurrent("../../images/portfolio/web/fullsize/bp1_fs.jpg");
 	}
 }
 
