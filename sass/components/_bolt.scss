@@ -237,7 +237,7 @@ main aside section {
 #wrapper {
 	background-color: $col-bg;
 	border: 1em solid #FFF;
-    width: 90%;
+    width: 80%;
 	margin: .7em auto;
 	padding: .7em 0;
 	@include border($color: $col-border);
@@ -551,9 +551,7 @@ main aside section {
 }
 
 #slideshow {
-    width: 22em;
-    height: 22em;
-    margin: 1em auto;
+    margin: 5em;
     border: solid 1px #999;
     
 }

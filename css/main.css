@@ -343,7 +343,7 @@ main aside section a {
 #wrapper {
   background-color: #95bec6;
   border: 1em solid #FFF;
-  width: 90%;
+  width: 80%;
   margin: 0.7em auto;
   padding: 0.7em 0;
   border: solid 1px #999;
@@ -656,9 +656,7 @@ main aside section a {
 }
 
 #slideshow {
-  width: 22em;
-  height: 22em;
-  margin: 1em auto;
+  margin: 5em;
   border: solid 1px #999;
 }
 
