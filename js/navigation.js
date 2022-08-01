@@ -9,6 +9,30 @@
 			return (...rest) => p(f, ...vs, ...rest);
 		};
 	}
+    
+    
+  function Publisher = () => {
+  let handlers = [];
+      const notify = (...args) => handlers.forEach((handler) => handler(...args)),
+        attach = (handler) => {
+            handlers = [...handlers, handler];
+        };
+      return { notify, attach };
+}
+  
+  const JobPost = (title) => ({ title });
+
+const JobSeeker = (name) => ({
+  onJobPosted: (job) => console.log(`Hi ${name}. New job posted: ${job.title}`),
+});
+    
+    const johnDoe = JobSeeker("John Doe");
+const janeDoe = JobSeeker("Jane Doe");
+const publisher = Publisher();
+publisher.attach(johnDoe.onJobPosted);
+publisher.attach(janeDoe.onJobPosted);
+publisher.notify(JobPost("Software Engineer"));
+
 
 	function pass(ptl, o) {
 		ptl(o);
@@ -104,7 +128,7 @@
 		return Array.prototype.slice.call(coll).filter(cb);
 	}
 
-	function getLinks() {
+	function getLinksDeep() {
 		var get = curry3(getTargetNode),
 			ul = this.grp.map(get('nextSibling')(/ul/i)),
 			getA = get('firstChild')(/^a$/i);
@@ -113,7 +137,11 @@
 		}) => toArray(children)).map(lis => lis.map(compose(getAttrs('href'), getA)));
 	}
     
-    
+    function getLinks() {
+        var get = curry3(getTargetNode)('firstChild')(/^a$/i);
+        return this.grp.map(lis => lis.map(compose(getAttrs('href'), get)));
+    }
+  
     function prepAttrs(keys, vals) {
         return curryL33(zip)('map')(keys)(vals);
     }
@@ -338,7 +366,7 @@
 		}
 
 		function strategy() {
-			var links = getLinks.call(this),
+			var links = getLinksDeep.call(this),
 				i = links.map(strs => strs.findIndex(this.finder)).findIndex(n => n >= 0);
 			if (this.grp[i]) {
 				this.execute(this.grp[i]);
@@ -382,7 +410,6 @@
             src = compose(getAttrs('href'),  $$q('#navigation ul a'))(),
             machImg = prepare2Append(doImg, prepAttrs([setSrc, setAlt], [src, 'current'])),
             strategy = function () {
-                con(this)
                 return this.grp[0];
             };
         //set preview image to first pic
@@ -390,10 +417,16 @@
         //display first pic
 		compose(machImg, machDiv)($('display'));
         headers.setFinder(finder(src));
-        thumbs = Grouper.from(toArray($q('#navigation ul:nth-of-type(1) li', true)));
-        thumbs.setStrategy(thumbsstrategy.bind(thumbs));
-        thumbs.getCurrent();
         headers.getCurrent();
+        thumbs = Grouper.from(toArray($q('#navigation ul:nth-of-type(1) li', true)));
+        //thumbs.setStrategy(thumbsstrategy.bind(thumbs));
+        //thumbs.getCurrent();
+        //headers inform thumbs, create thumbs on demand
+        //thumbs inform preview
+        //controls inform bigpic
+        //bigpic inform slider
+        //thumbs inform slider
+        
 	};
 	window.addEventListener('load', loader);
 }());
