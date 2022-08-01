@@ -612,6 +612,10 @@ main aside section a {
   border-color: white white gray;
 }
 
+#navigation ul a:hover {
+  border-color: orange;
+}
+
 #navigation a img {
   width: 2em;
   height: 2em;
@@ -621,6 +625,10 @@ main aside section a {
   overflow: hidden;
   margin: 0 0.3em;
   display: inline-block;
+}
+
+#navigation ul li.active a {
+  border-color: red;
 }
 
 .portfolio main > aside {

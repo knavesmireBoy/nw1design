@@ -229,7 +229,8 @@
 		'Safari Afrika': 4
 	}];
 
-	let headers = null;
+	let headers = null,
+        thumbs = null;
     
 	const deferPTL = doPartial(true),
 		ptL = doPartial(),
@@ -343,6 +344,9 @@
 				this.execute(this.grp[i]);
 			}
 		}
+        function thumbsstrategy() {
+				return this.execute(this.grp[0]);
+		}
 
 		function prepareHeadings(ul) {
 			return function(el, i, els) {
@@ -376,12 +380,19 @@
 		headers.setStrategy(strategy.bind(headers));
 		var machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
             src = compose(getAttrs('href'),  $$q('#navigation ul a'))(),
-            machImg = prepare2Append(doImg, prepAttrs([setSrc, setAlt], [src, 'current']));
+            machImg = prepare2Append(doImg, prepAttrs([setSrc, setAlt], [src, 'current'])),
+            strategy = function () {
+                con(this)
+                return this.grp[0];
+            };
         //set preview image to first pic
         compose(curry2(setAttribute('src'))(src), $$q('#slidepreview img'))();
         //display first pic
 		compose(machImg, machDiv)($('display'));
         headers.setFinder(finder(src));
+        thumbs = Grouper.from(toArray($q('#navigation ul:nth-of-type(1) li', true)));
+        thumbs.setStrategy(thumbsstrategy.bind(thumbs));
+        thumbs.getCurrent();
         headers.getCurrent();
 	};
 	window.addEventListener('load', loader);
