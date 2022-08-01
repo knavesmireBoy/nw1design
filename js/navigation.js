@@ -129,8 +129,7 @@ function toArray(coll, cb = truthy) {
 class Grouper {
     constructor(grp, kls = 'active') {
         this.grp = grp;
-        this.kls = kls;
-        this.execute(this.grp[0]);
+        //this.execute(this.grp[0]);
         this.current = null;
     }
     getCurrent () {
@@ -168,6 +167,7 @@ function GG() {
 function X(e){
     if(matchImg(e)){
       var src = getAttribute('src')(e.target);
+        //src.replace('fullsize', 'thumbs').replace('fs', 'tmb'));
       $q('#slidepreview img').setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
     }
 }
