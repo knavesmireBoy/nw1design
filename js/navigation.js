@@ -10,15 +10,19 @@
 		};
 	}
     
+    function doQuerySelector(defer = false){
+        if(defer) {
+            return function(str, flag = false){
+                return $$q(str, flag);
+            };
+        }
+            return function(str, flag = false){
+                return $q(str, flag);
+            };
+    }
+    
     /*
-  function Publisher = () => {
-  let handlers = [];
-      const notify = (...args) => handlers.forEach((handler) => handler(...args)),
-        attach = (handler) => {
-            handlers = [...handlers, handler];
-        };
-      return { notify, attach };
-}
+ 
   
   const JobPost = (title) => ({ title });
 
@@ -38,6 +42,17 @@ publisher.notify(JobPost("Software Engineer"));
 		ptl(o);
 		return o;
 	}
+    
+    function matchIndexCB(i) {
+        return function(el, n) {
+            return n === i;
+        };
+    }
+    
+    function fire(i) {
+        var ul = $q('#navigation ul', true);
+        return compose(toArray, curry2(getter)('children'), getZero, curryL2(toArray)(ul), matchIndexCB)(i)
+    }
 
 	if (typeof Function.prototype.wrap === 'undefined') {
 		Function.prototype.wrap = function(wrapper, ..._vs) {
@@ -47,6 +62,12 @@ publisher.notify(JobPost("Software Engineer"));
 			};
 		};
 	}
+    
+    function finder(str) {
+			return function(cur) {
+				return str.match(/\/(\w+)_/.exec(cur)[1]);
+			};
+		}
 
 	function remove() {
 		var tgt = this.parentNode;
@@ -139,8 +160,23 @@ publisher.notify(JobPost("Software Engineer"));
     
     function getLinks() {
         var get = curry3(getTargetNode)('firstChild')(/^a$/i);
-        return this.grp.map(lis => lis.map(compose(getAttrs('href'), get)));
+        return this.grp.map(lis => compose(getAttrs('href'), get)(lis));
     }
+    
+    	function headerstrategy() {
+			var links = getLinksDeep.call(this),
+				i = links.map(strs => strs.findIndex(this.finder)).findIndex(n => n >= 0);
+            this.index = i;
+			if (this.grp[i]) {
+				this.execute(this.grp[i]);
+			}
+		}
+        function thumbstrategy() {
+         var links = getLinks.call(this),
+            i = links.findIndex(this.finder);
+            this.index = i;
+            return this.execute(this.grp[i]);
+		}
   
     function prepAttrs(keys, vals) {
         return curryL33(zip)('map')(keys)(vals);
@@ -150,9 +186,26 @@ publisher.notify(JobPost("Software Engineer"));
       return compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)();
     }
     
-	class Grouper {
+     class Publisher  {
+         
+         constructor(h = []) {
+           this.handlers = h;
+         }
+         
+         notify(...args) {
+          this.handlers.forEach((handler) => handler(...args));  
+         } 
+          
+         attach (handler) {
+           this.handlers = [...this.handlers, handler];
+        }
+        
+     }
+    
+	class Grouper extends Publisher {
 		constructor(grp = [], kls = 'active') {
-			this.grp = grp;
+			super();
+            this.grp = grp;
 			this.current = null;
 		}
 		getCurrent() {
@@ -181,12 +234,18 @@ publisher.notify(JobPost("Software Engineer"));
 		add(item) {
 			this.grp.push(item);
 		}
+        set (grp) {
+            this.grp = grp;
+        }
 		getByIndex(i) {
 			if (!isNaN(i)) {
 				return this.grp[i];
 			}
 			return this.grp;
 		}
+        getIndex () {
+            return this.index;
+        }
 		static from(grp, kls = 'active') {
 			return new Grouper(grp, kls);
 		}
@@ -267,6 +326,7 @@ publisher.notify(JobPost("Software Engineer"));
 		getter = (o, p) => o[p],
 		curry2 = fun => b => a => fun(a, b),
 		curryL2 = fun => a => b => fun(a, b),
+		curryL22 = fun => a => b => () => fun(a, b),
 		curry3 = fun => c => b => a => fun(a, b, c),
 		curryL3 = fun => a => b => c => fun(a, b, c),
 		curryL33 = fun => a => b => c => () => fun(a, b, c),
@@ -339,6 +399,7 @@ publisher.notify(JobPost("Software Engineer"));
 		},
 		doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
 		getZero = curry2(getter)(0),
+		getZeroPlus = curry2(getter)(11),
 		getKey = compose(getZero, curryL3(invokeMethod)(window.Object)('keys')),
 		getKeys = compose(doTextNow, getKey),
 		getValues = compose(getZero, curryL3(invokeMethod)(window.Object)('values')),
@@ -358,24 +419,7 @@ publisher.notify(JobPost("Software Engineer"));
 		var nums = config.map(getValues),
 			nodes = config.map(getKeys);
 		nodes.map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
-
-		function finder(str) {
-			return function(cur) {
-				return str.match(/\/(\w+)_/.exec(cur)[1]);
-			};
-		}
-
-		function strategy() {
-			var links = getLinksDeep.call(this),
-				i = links.map(strs => strs.findIndex(this.finder)).findIndex(n => n >= 0);
-			if (this.grp[i]) {
-				this.execute(this.grp[i]);
-			}
-		}
-        function thumbsstrategy() {
-				return this.execute(this.grp[0]);
-		}
-
+        
 		function prepareHeadings(ul) {
 			return function(el, i, els) {
 				var n = Object.values(config[i])[0],
@@ -405,27 +449,23 @@ publisher.notify(JobPost("Software Engineer"));
 			};
 		}
 		headers = new Grouper(headings());
-		headers.setStrategy(strategy.bind(headers));
-		var machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
-            src = compose(getAttrs('href'),  $$q('#navigation ul a'))(),
-            machImg = prepare2Append(doImg, prepAttrs([setSrc, setAlt], [src, 'current'])),
-            strategy = function () {
-                return this.grp[0];
-            };
+		headers.setStrategy(headerstrategy.bind(headers));
+		var i,
+            machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
+            src = compose(getAttrs('href'), getZeroPlus, $$q('#navigation ul li a', true))(),
+            machImg = prepare2Append(doImg, prepAttrs([setSrc, setAlt], [src, 'current']));
         //set preview image to first pic
         compose(curry2(setAttribute('src'))(src), $$q('#slidepreview img'))();
         //display first pic
 		compose(machImg, machDiv)($('display'));
         headers.setFinder(finder(src));
         headers.getCurrent();
-        thumbs = Grouper.from(toArray($q('#navigation ul:nth-of-type(1) li', true)));
-        thumbs.setStrategy(thumbsstrategy.bind(thumbs));
+        i = headers.index;
+        
+        thumbs = Grouper.from(fire(i));
+        thumbs.setStrategy(thumbstrategy.bind(thumbs));
+        thumbs.setFinder(finder(src));
         thumbs.getCurrent();
-        //headers inform thumbs, create thumbs on demand
-        //thumbs inform preview
-        //controls inform bigpic
-        //bigpic inform slider
-        //thumbs inform slider
         
 	};
 	window.addEventListener('load', loader);
