@@ -99,6 +99,13 @@ function $q(str, flag = false) {
 	return document[m](str);
 }
 
+function $$q(str, flag = false) {
+    return function () {
+        const m = flag ? 'querySelectorAll' : 'querySelector';
+        return document[m](str);
+};
+}
+
 function test(e) {
 	e.preventDefault();
 	alert(e);
@@ -126,14 +133,20 @@ function toArray(coll, cb = truthy) {
 	return Array.prototype.slice.call(coll).filter(cb);
 }
 
+
+
+
 class Grouper {
-    constructor(grp, kls = 'active') {
+    constructor(grp = [], kls = 'active') {
         this.grp = grp;
-        //this.execute(this.grp[0]);
         this.current = null;
+        this.dog = 'bolt'
     }
-    getCurrent () {
-        return compose(ptL(getter, this.grp), doFindIndex(this.strategy))(this.grp);
+    getCurrent (str) {
+        var get = curry3(getTargetNode),
+            ul = this.grp.map(get('nextSibling')(/ul/i));
+        //return compose(ptL(getter, this.grp), doFindIndex(this.strategy(str)))(this.grp);
+        //return this.grp.map(get('nextSibling')(/ul/i)).map(get('firstChild')(/^a$/i)).map(getAttrs('href'));
     }
     undo (el) {
         if(el === this.current){
@@ -151,17 +164,24 @@ class Grouper {
         this.strategy = s;
         return this;
     }
+    
+     add (item) {
+        this.grp.push(item);
+    }
+    
+    static from (grp, kls = 'active') {
+        return new Grouper(grp, kls);
+    }
+  
 }
 
-function GG() {
-    let grouper = null;
-    return function G(e) {
+function makeHeaders(e) {
         e.preventDefault();
         if (matchLink(e)) {
-            grouper = grouper || new Grouper(toArray(this.getElementsByTagName('a'), (a) => !a.href.match(/jpg/)));
-            grouper.execute(getTarget(e));
+            headers = headers || new Grouper(toArray(this.getElementsByTagName('a'), (a) => !a.href.match(/jpg/)));
+            headers.execute(getTarget(e));
+            console.log(3, headers.getCurrent())
 	}
-};
 }
 
 function X(e){
@@ -193,18 +213,52 @@ const config = [{
 }, {
 	'Safari Afrika': 4
 }];
+
+function getNextElement(node) {
+		if (node && node.nodeType === 1) {
+			return node;
+		}
+		if (node && node.nextSibling) {
+			return getNextElement(node.nextSibling);
+		}
+		return null;
+	}
+
+function getTargetNode(node, reg, dir = 'firstChild') {
+		if (!node) {
+			return null;
+		}
+		node = node.nodeType === 1 ? node : getNextElement(node);
+		var res = node && node.nodeName.match(reg);
+		if (!res) {
+			node = node && getNextElement(node[dir]);
+			return node && getTargetNode(node, reg, dir);
+		}
+		return node;
+	}
+
+function negate(f, last_arg) {
+    return !f(last_arg);
+}
+
+let thumbs = Grouper.from(),
+    headers = null;
+
 const deferPTL = doPartial(true),
 	ptL = doPartial(),
 	con = (v) => console.log(v),
 	compose = (...fns) => fns.reduce((f, g) => (...vs) => f(g(...vs))),
 	getter = (o, p) => o[p],
 	curry2 = fun => b => a => fun(a, b),
+	curryL2 = fun => a => b => fun(a, b),
 	curry3 = fun => c => b => a => fun(a, b, c),
 	curryL3 = fun => a => b => c => fun(a, b, c),
 	curryL33 = fun => a => b => c => () => fun(a, b, c),
 	invoke = (f, v) => f(v),
 	justinvoke = (f) => f(),
-	invokeMethod = (o, m, v) => o[m](v),
+	invokeMethod = (o, m, v) => {
+        return o[m](v);
+    },
 	lazyInvoke2 = (m, p, o, v) => o[m](p, v),
 	invokeMethodBridge = (m, v, o) => {
 		o = getResult(o);
@@ -240,10 +294,14 @@ const deferPTL = doPartial(true),
 	matchLink = compose(curry3(invokeMethod)(/^a$/i)('match'), curry2(getter)('nodeName'), getTarget),
 	matchImg = compose(curry3(invokeMethod)(/^img/i)('match'), curry2(getter)('nodeName'), getTarget),
 	getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
+	getAttrs = curryL3(invokeMethodBridge)('getAttribute'),
+      
+    matchPath = compose(curry3(invokeMethod)(/jpe?g/i)('match'), curryL3(invokeMethodBridge)('getAttribute')('href')),
+
 	getParentAttribute = ptL(invokeMethodBridgeCB(getParent), 'getAttribute'),
 	setAttribute = ptL(lazyInvoke2, 'setAttribute'),
       
-	addClickPreview = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(GG()).wrap(pass),
+	addClickPreview = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(makeHeaders).wrap(pass),
 	addClickHover = curry2(ptL(lazyInvoke2, 'addEventListener', 'mouseover'))(X).wrap(pass),
 	addImgLoad = curry2(ptL(lazyInvoke2, 'addEventListener', 'load'))(Y).wrap(pass),
       
@@ -282,25 +340,40 @@ const deferPTL = doPartial(true),
 	
 	makeDiv = compose(doRender, doDiv),
 	getHref = getAttribute('href'),
-	//git = ptL(invokeCB, 'map', [getParentAttribute('href'), getAttribute('alt')]),
 	setImageAttrs = curryL33(zip)('map')([setAlt])(['currentpic']),
 	setDivAttrs = curryL33(zip)('map')([setId])(['slidepreview']),
     setDiv = compose(append, curry2(invoke)(doDiv), ptL(doIterate, 'forEach'), setDivAttrs)(),
     setImg = compose(append, curry2(invoke)(doImg), ptL(doIterate, 'forEach'), setImageAttrs)();
 
+let GANG = compose(curry2(toArray)(matchPath), $$q('#navigation a', true));
+    
+
 var loader = function() {
     compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doSection()), prepend(contentarea), doAside)();
 	var nums = config.map(getValues),
-		nodes = config.map(getKeys),
-		headings = nodes.map(doRenderNav).map(F($q('#navigation ul')));
+		nodes = config.map(getKeys);
+		nodes.map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
+    
+    function strategy (str) {
+        return function(el) {
+            var reg = /\/(\w+)_/.exec(el.children[0])[1];
+            return str.match(reg);
+        };
+    }
 
-	function F(ul) {
+	function prepareHeadings(ul) {
+        //thumbs = toArray(ul.children);
+        //thumbs = thumbs.map((li)=> toArray(li.children)).map(({0:res}) => res).map( ({href}) => href);
+       // con(thumbs)
+        //con(thumbs.map((o) => {'href'}));
+        //thumbs.setStrategy(strategy);
 		return function(el, i, els) {
 			var n = Object.values(config[i])[0],
 				j = 0,
 				lis = ul.children,
 				ol,
-				neu;
+				neu,
+                grp;
 			while (j < n) {
 				if (!j) {
 					ol = doUL();
@@ -312,15 +385,24 @@ var loader = function() {
 				if (els[i + 1]) {
 					el.parentNode.insertBefore(neu, els[i + 1]);
 				} else {
-					el.parentNode.append(neu);
+                    el.parentNode.append(neu);
 				}
 				j++;
-			} //
-			if (!els[i + 1]) {
-				ul.parentNode.removeChild(ul);
 			}
+            if(!els[i + 1]){
+                ul.parentNode.removeChild(ul);
+            }
+
 		};
+
 	}
+    
+   
+    //var el = GANG()[Math.floor(Math.random() * 100) % 26];
+
+    
+    
+ 
 };
 
 window.addEventListener('load', loader);
