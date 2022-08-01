@@ -10,7 +10,7 @@
 		};
 	}
     
-    
+    /*
   function Publisher = () => {
   let handlers = [];
       const notify = (...args) => handlers.forEach((handler) => handler(...args)),
@@ -32,7 +32,7 @@ const publisher = Publisher();
 publisher.attach(johnDoe.onJobPosted);
 publisher.attach(janeDoe.onJobPosted);
 publisher.notify(JobPost("Software Engineer"));
-
+*/
 
 	function pass(ptl, o) {
 		ptl(o);
@@ -419,8 +419,8 @@ publisher.notify(JobPost("Software Engineer"));
         headers.setFinder(finder(src));
         headers.getCurrent();
         thumbs = Grouper.from(toArray($q('#navigation ul:nth-of-type(1) li', true)));
-        //thumbs.setStrategy(thumbsstrategy.bind(thumbs));
-        //thumbs.getCurrent();
+        thumbs.setStrategy(thumbsstrategy.bind(thumbs));
+        thumbs.getCurrent();
         //headers inform thumbs, create thumbs on demand
         //thumbs inform preview
         //controls inform bigpic
