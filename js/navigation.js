@@ -373,7 +373,6 @@
 			};
 		}
 		headers = new Grouper(headings());
-		headers.setFinder(finder("olio/web/fullsize/zoe4_fs"));
 		headers.setStrategy(strategy.bind(headers));
 		var machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
             src = compose(getAttrs('href'),  $$q('#navigation ul a'))(),
@@ -382,6 +381,8 @@
         compose(curry2(setAttribute('src'))(src), $$q('#slidepreview img'))();
         //display first pic
 		compose(machImg, machDiv)($('display'));
+        headers.setFinder(finder(src));
+        headers.getCurrent();
 	};
 	window.addEventListener('load', loader);
 }());

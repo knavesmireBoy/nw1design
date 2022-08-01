@@ -585,7 +585,7 @@ main aside section a {
 #navigation {
   position: relative;
   text-align: left;
-  font-size: 0.9em;
+  font-size: 0.8em;
   padding: 0;
 }
 
@@ -598,14 +598,14 @@ main aside section a {
 }
 
 #navigation li a {
-  background-color: aliceblue;
+  background-color: #95bec6;
   padding: 0.25em;
   border: solid 1px black;
 }
 
 #navigation > a {
-  background-color: cadetblue;
-  color: darkblue;
+  background-color: #a5c8cf;
+  color: hsl(217deg, 50%, 40%);
   padding: 0.25em 0.6em;
   border: solid 1px #999;
   border-width: 1px 0;

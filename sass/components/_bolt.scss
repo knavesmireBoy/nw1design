@@ -483,7 +483,7 @@ main aside section {
 #navigation {
     position: relative;
     text-align: left;
-    font-size: .9em;
+    font-size: .8em;
     padding: 0;
 }
 #navigation ul {
@@ -495,14 +495,14 @@ main aside section {
 }
 
 #navigation li a {
-    background-color: aliceblue;
+    background-color: $col-bg;
     padding: .25em;
     border: solid 1px black;
 }
 
 #navigation > a {
-    background-color: cadetblue;
-    color: darkblue;
+    background-color: lighten($col-bg, 5%);
+    color: hsl(217, 50%, 40%);
     padding: .25em .6em;
     border: solid 1px #999;
     border-width: 1px 0;
