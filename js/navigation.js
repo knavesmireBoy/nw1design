@@ -133,23 +133,21 @@ function toArray(coll, cb = truthy) {
 	return Array.prototype.slice.call(coll).filter(cb);
 }
 
+function getLinks () {
+        var get = curry3(getTargetNode),
+            ul = this.grp.map(get('nextSibling')(/ul/i)),
+            getA = get('firstChild')(/^a$/i);
+            return ul.map(({children}) => toArray(children)).map(lis => lis.map(compose(getAttrs('href'), getA)));
+    }
+
 
 class Grouper {
     constructor(grp = [], kls = 'active') {
         this.grp = grp;
         this.current = null;
     }
-    getCurrent (str) {
-        var i = -1,
-            get = curry3(getTargetNode),
-            ul = this.grp.map(get('nextSibling')(/ul/i)),
-            getA = get('firstChild')(/^a$/i),
-            match = curryL2(equals)(str),
-            links = ul.map(({children}) => toArray(children)).map(lis => lis.map(compose(getAttrs('href'), getA)));
-        i = links.map( strs => strs.findIndex(this.strategy)).findIndex( n => n >= 0);        
-        if(this.grp[i]){
-          this.execute(this.grp[i]);
-        }
+    getCurrent () {
+        return this.strategy();
     }
     undo (el) {
         if(el === this.current){
@@ -163,6 +161,11 @@ class Grouper {
             this.current = doActive(el);
         }
     }
+    setFinder (f) {
+        this.finder = f;
+        return this;
+    }
+    
     setStrategy (s) {
         this.strategy = s;
         return this;
@@ -355,10 +358,18 @@ var loader = function() {
 		nodes = config.map(getKeys);
 		nodes.map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
     
-    function strategy (str) {
+    function finder (str) {
         return function(cur) {
             return str.match(/\/(\w+)_/.exec(cur)[1]);
         };
+    }
+    
+    function strategy() {
+        var links = getLinks.call(this),
+            i = links.map( strs => strs.findIndex(this.finder)).findIndex( n => n >= 0);
+        if(this.grp[i]){
+          this.execute(this.grp[i]);
+        }
     }
 
 	function prepareHeadings(ul) {
@@ -394,7 +405,8 @@ var loader = function() {
 	}
     
     headers = new Grouper(headings());
-    headers.setStrategy(strategy("images/portfolio/web/fullsize/ukooa4_fs.jpg"));
+    headers.setFinder(finder("olio/web/fullsize/zoe4_fs"));
+    headers.setStrategy(strategy.bind(headers));
     headers.getCurrent();    
  
 };
