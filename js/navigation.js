@@ -138,21 +138,18 @@ class Grouper {
     constructor(grp = [], kls = 'active') {
         this.grp = grp;
         this.current = null;
-        this.dog = 'bolt'
     }
     getCurrent (str) {
-        var get = curry3(getTargetNode),
+        var i = -1,
+            get = curry3(getTargetNode),
             ul = this.grp.map(get('nextSibling')(/ul/i)),
             getA = get('firstChild')(/^a$/i),
             match = curryL2(equals)(str),
-            links = ul.map(({children}) => toArray(children)).map(lis => lis.map(getA));
-        links = links.map( as => as.map( getAttrs('href')));
-        links = links.map( strs => strs.findIndex(match)).findIndex( n => n >= 0);
-        this.execute(this.grp[links]);
-        
-        
-        //return compose(ptL(getter, this.grp), doFindIndex(this.strategy(str)))(this.grp);
-        //return this.grp.map(get('nextSibling')(/ul/i)).map(get('firstChild')(/^a$/i)).map(getAttrs('href'));
+            links = ul.map(({children}) => toArray(children)).map(lis => lis.map(compose(getAttrs('href'), getA)));
+        i = links.map( strs => strs.findIndex(this.strategy)).findIndex( n => n >= 0);        
+        if(this.grp[i]){
+          this.execute(this.grp[i]);
+        }
     }
     undo (el) {
         if(el === this.current){
@@ -184,9 +181,8 @@ class Grouper {
 function makeHeaders(e) {
         e.preventDefault();
         if (matchLink(e)) {
-            headers = headers || new Grouper(toArray(this.getElementsByTagName('a'), (a) => !a.href.match(/jpg/)));
+            //headers = headers || new Grouper(toArray(this.getElementsByTagName('a'), (a) => !a.href.match(/jpg/)));
             headers.execute(getTarget(e));
-            headers.getCurrent("../../images/portfolio/web/fullsize/bp1_fs.jpg");
 	}
 }
 
@@ -349,9 +345,8 @@ const deferPTL = doPartial(true),
 	setImageAttrs = curryL33(zip)('map')([setAlt])(['currentpic']),
 	setDivAttrs = curryL33(zip)('map')([setId])(['slidepreview']),
     setDiv = compose(append, curry2(invoke)(doDiv), ptL(doIterate, 'forEach'), setDivAttrs)(),
-    setImg = compose(append, curry2(invoke)(doImg), ptL(doIterate, 'forEach'), setImageAttrs)();
-
-let GANG = compose(curry2(toArray)(matchPath), $$q('#navigation a', true));
+    setImg = compose(append, curry2(invoke)(doImg), ptL(doIterate, 'forEach'), setImageAttrs)(),
+    headings = compose(curry2(toArray)(  curryL2(negate)(matchPath) ), $$q('#navigation a', true));
     
 
 var loader = function() {
@@ -361,18 +356,13 @@ var loader = function() {
 		nodes.map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
     
     function strategy (str) {
-        return function(el) {
-            var reg = /\/(\w+)_/.exec(el.children[0])[1];
-            return str.match(reg);
+        return function(cur) {
+            return str.match(/\/(\w+)_/.exec(cur)[1]);
         };
     }
 
 	function prepareHeadings(ul) {
-        //thumbs = toArray(ul.children);
-        //thumbs = thumbs.map((li)=> toArray(li.children)).map(({0:res}) => res).map( ({href}) => href);
-       // con(thumbs)
-        //con(thumbs.map((o) => {'href'}));
-        //thumbs.setStrategy(strategy);
+        
 		return function(el, i, els) {
 			var n = Object.values(config[i])[0],
 				j = 0,
@@ -398,16 +388,14 @@ var loader = function() {
             if(!els[i + 1]){
                 ul.parentNode.removeChild(ul);
             }
+            
 
 		};
-
 	}
     
-   
-    //var el = GANG()[Math.floor(Math.random() * 100) % 26];
-
-    
-    
+    headers = new Grouper(headings());
+    headers.setStrategy(strategy("images/portfolio/web/fullsize/ukooa4_fs.jpg"));
+    headers.getCurrent();    
  
 };
 
