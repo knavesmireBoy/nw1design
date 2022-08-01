@@ -655,4 +655,11 @@ main aside section a {
   border: solid 1px #999;
 }
 
+#slideshow {
+  width: 22em;
+  height: 22em;
+  margin: 1em auto;
+  border: solid 1px #999;
+}
+
 /*# sourceMappingURL=main.css.map */

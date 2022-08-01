@@ -166,13 +166,20 @@ class Grouper {
         return this;
     }
     
-    setStrategy (s) {
+    setStrategy (s = () => []) {
         this.strategy = s;
         return this;
     }
     
      add (item) {
         this.grp.push(item);
+    }
+    
+    getByIndex (i) {
+        if(!isNaN(i)){
+            return this.grp[i];
+        }
+        return this.grp;
     }
     
     static from (grp, kls = 'active') {
@@ -189,7 +196,7 @@ function makeHeaders(e) {
 	}
 }
 
-function X(e){
+function hover(e){
     var preview = $q('#slidepreview img');
     
     if(matchImg(e) && e.target !== preview){
@@ -198,7 +205,7 @@ function X(e){
     }
 }
 
-function Y(){
+function imageLoad(){
     //stop slideshow; set display pic; set index;  trigger click    
    // con(this);
 }
@@ -308,8 +315,8 @@ const deferPTL = doPartial(true),
 	setAttribute = ptL(lazyInvoke2, 'setAttribute'),
       
 	addClickPreview = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(makeHeaders).wrap(pass),
-	addClickHover = curry2(ptL(lazyInvoke2, 'addEventListener', 'mouseover'))(X).wrap(pass),
-	addImgLoad = curry2(ptL(lazyInvoke2, 'addEventListener', 'load'))(Y).wrap(pass),
+	addClickHover = curry2(ptL(lazyInvoke2, 'addEventListener', 'mouseover'))(hover).wrap(pass),
+	addImgLoad = curry2(ptL(lazyInvoke2, 'addEventListener', 'load'))(imageLoad).wrap(pass),
       
 	setSrc = curry2(setAttribute('src')),
 	setAlt = curry2(setAttribute('alt')),
@@ -351,10 +358,11 @@ const deferPTL = doPartial(true),
     setDiv = compose(append, curry2(invoke)(doDiv), ptL(doIterate, 'forEach'), setDivAttrs)(),
     setImg = compose(append, curry2(invoke)(doImg), ptL(doIterate, 'forEach'), setImageAttrs)(),
     headings = compose(curry2(toArray)(  curryL2(negate)(matchPath) ), $$q('#navigation a', true));
-    
 
 var loader = function() {
+    
     compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doSection()), prepend(contentarea), doAside)();
+    
 	var nums = config.map(getValues),
 		nodes = config.map(getKeys);
 		nodes.map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
@@ -400,16 +408,17 @@ var loader = function() {
             if(!els[i + 1]){
                 ul.parentNode.removeChild(ul);
             }
-            
 
 		};
 	}
     
     headers = new Grouper(headings());
     headers.setFinder(finder("olio/web/fullsize/zoe4_fs"));
-    headers.setStrategy(strategy.bind(headers));
-    //headers.getCurrent();    
- 
+    headers.setStrategy(strategy.bind(headers)); 
+    var setDivAttrs1 = curryL33(zip)('map')([setId])(['slideshow']),
+    setDiv1 = compose(append, curry2(invoke)(doDiv), ptL(doIterate, 'forEach'), setDivAttrs1)();
+                
+    setDiv1($('display'));
 };
 
 window.addEventListener('load', loader);
