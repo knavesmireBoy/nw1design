@@ -118,6 +118,7 @@
     
     function replacePath(o, src) {
         o = getResult(o);
+        console.log(o, src)
         o.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
     }
 
@@ -386,7 +387,7 @@
             slideshower = ptL(replacePath, $$('slide')),
             displayer = ptL(replacePath, $$('base'));  
             
-            compose(/*doResetOpacity*/machSlide, getParent, machBase, machDiv)($('display'));
+            compose(doResetOpacity, machSlide, getParent, machBase, machDiv)($('display'));
 
 		thumbs = Grouper.from([]);
 		thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
@@ -396,13 +397,25 @@
 		headers.attach(groupFrom.bind(thumbs));
 		broadcaster.notify(src);
         looper.build(getLinks(), incrementer);
-       //looper.attach(displayer);
-       //looper.attach(slideshower);
+       looper.attach(displayer);
+       looper.attach(slideshower);
         looper.attach(broadcaster.notify.bind(broadcaster));
             
         setTimeout(function(){
             looper.forward();
         }, 2222);
+            
+            setTimeout(function(){
+            looper.forward();
+        }, 3333);
+            
+            setTimeout(function(){
+            looper.forward();
+        }, 4444);
+            
+            setTimeout(function(){
+            looper.forward();
+        }, 5555);
 
             
     //slide 100 to 0

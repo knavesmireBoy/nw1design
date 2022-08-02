@@ -67,21 +67,23 @@ nW1.Looper = function() {
 	}
 	class Publisher {
 		constructor(h = []) {
-			this.handlers = h;
+			this.handlers = this.handlers || h;
 		}
 		notify(...args) {
 			this.handlers.forEach((handler) => handler(...args));
 		}
 		attach(handler) {
-			this.handlers = [...this.handlers, handler];
+            //console.log(this.handlers)
+            this.members.push(handler)
+			//this.handlers = [...this.handlers, handler];
 		}
 		static from(h = []) {
 			return new Publisher(h);
 		}
 	}
 	class LoopIterator extends Publisher {
-		constructor(group = [], advancer = () => 1) {
-            super();
+		constructor(handlers = [], group = [], advancer = () => 1) {
+            super(handlers);
 			this.group = group;
 			this.position = 0;
 			this.rev = false;
@@ -169,11 +171,11 @@ nW1.Looper = function() {
 				return this.$subject;
 			},
 			build: function(coll, advancer) {
-				this.setSubject(LoopIterator.from(coll, advancer(coll)));
+				this.setSubject(LoopIterator.from([], coll, advancer(coll)));
 			}
 		},
 		doGet = curry2(getter),
 		getLength = doGet('length'),
 		incrementer = compose(doInc, getLength);
-	return makeProxyIterator(LoopIterator.from([], incrementer), target, ['attach', 'back', 'status', 'find', 'forward', 'get', 'notify', 'play', 'set', 'visit']);
+	return makeProxyIterator(LoopIterator.from([], [], incrementer), target, ['attach', 'back', 'status', 'find', 'forward', 'get', 'notify', 'play', 'set', 'visit']);
 };
