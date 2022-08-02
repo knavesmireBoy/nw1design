@@ -104,12 +104,16 @@
 			};
 		}
 	}
+    
+    function replacePath(o, src) {
+        o = getResult(o);
+        o.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
+    }
 
 	function hover(e) {
 		var preview = $q('#slidepreview img');
 		if (matchImg(e) && e.target !== preview) {
-			var src = getAttribute('src')(e.target);
-			preview.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
+            replacePath(preview, getAttribute('src')(e.target));
 		}
 	}
 
@@ -348,15 +352,14 @@
 		var thumbs,
             machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
 			src = compose(getAttrs('href'), getZeroPlus, $$q('#navigation ul li a', true))(),
-			machImg = prepare2Append(doImg, prepAttrs([setSrc, setAlt], [src, 'current']));
-		//set preview image to first pic
-		compose(curry2(setAttribute('src'))(src), $$q('#slidepreview img'))();
-		//display first pic
+			machImg = prepare2Append(doImg, prepAttrs([setSrc, setAlt], [src, 'current'])),
+            previewer = ptL(replacePath, $$q('#slidepreview img'));
 		compose(machImg, machDiv)($('display'));
 		thumbs = Grouper.from([]);
 		thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 		broadcaster.attach(headers.setFinder.bind(headers));
 		broadcaster.attach(thumbs.setFinder.bind(thumbs));
+		broadcaster.attach(previewer);
 		headers.attach(groupFrom.bind(thumbs));
 		broadcaster.notify(src);
 	};
