@@ -560,8 +560,13 @@ main aside section {
 
 #slideshow {
     margin: 5em;
-    border: solid 1px #999;
-    
+}
+#display img {
+    float: left;
+
+    &:last-child {
+    margin-left: -100%;
+    }
 }
 
 //images/buttons/quote.jpg

@@ -665,7 +665,13 @@ main aside section a {
 
 #slideshow {
   margin: 5em;
-  border: solid 1px #999;
+}
+
+#display img {
+  float: left;
+}
+#display img:last-child {
+  margin-left: -100%;
 }
 
 /*# sourceMappingURL=main.css.map */

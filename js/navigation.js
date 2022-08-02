@@ -68,20 +68,6 @@
 			}
 		}
     
-	class Publisher {
-		constructor(h = []) {
-			this.handlers = h;
-		}
-		notify(...args) {
-			this.handlers.forEach((handler) => handler(...args));
-		}
-		attach(handler) {
-			this.handlers = [...this.handlers, handler];
-		}
-		static from(h = []) {
-			return new Publisher(h);
-		}
-	}
 	class Grouper extends Publisher {
 		constructor(grp = [], kls = 'active') {
 			super();
@@ -168,7 +154,7 @@
 
     let headers = {};
 
-	const $looper = nW1.Looper(),
+	const looper = nW1.Looper(),
           config = [{
 			FOP: 4
 		}, {
@@ -192,6 +178,7 @@
 		con = (v) => console.log(v),
 		compose = (...fns) => fns.reduce((f, g) => (...vs) => f(g(...vs))),
 		getter = (o, p) => o[p],
+		setter = (o, k, v) => o[k] = v,
 		curry2 = fun => b => a => fun(a, b),
 		curryL2 = fun => a => b => fun(a, b),
 		curryL22 = fun => a => b => () => fun(a, b),
@@ -200,7 +187,7 @@
 		curryL33 = fun => a => b => c => () => fun(a, b, c),
 		invoke = (f, v) => f(v),
 		invokeMethod = (o, m, v) => o[m](v),
-		lasyVal = (m, p, o, v) => o[m](p, v),
+		lazyVal = (m, p, o, v) => o[m](p, v),
 		invokeMethodBridge = (m, v, o) => {
 			o = getResult(o);
 			return invokeMethod(o, m, v);
@@ -240,14 +227,15 @@
 		getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
 		getAttrs = curryL3(invokeMethodBridge)('getAttribute'),
 		getParentAttribute = ptL(invokeMethodBridgeCB(getParent), 'getAttribute'),
-		setAttribute = ptL(lasyVal, 'setAttribute'),
+		setAttribute = ptL(lazyVal, 'setAttribute'),
 		matchLink = compose(curry3(invokeMethod)(/^a$/i)('match'), curry2(getter)('nodeName'), getTarget),
 		matchImg = compose(curry3(invokeMethod)(/^img/i)('match'), curry2(getter)('nodeName'), getTarget),
 		matchPath = compose(curry3(invokeMethod)(/jpe?g/i)('match'), curryL3(invokeMethodBridge)('getAttribute')('href')),
           
-          
-		addClickHover = curry2(ptL(lasyVal, 'addEventListener', 'mouseover'))(hover).wrap(pass),
-		addImgLoad = curry2(ptL(lasyVal, 'addEventListener', 'load'))(imageLoad).wrap(pass),
+        reset_opacity = compose(curry3(setter)(300)('opacity'), curry2(getter)('style')),
+		addClickHover = curry2(ptL(lazyVal, 'addEventListener', 'mouseover'))(hover).wrap(pass),
+		addImgLoad = curry2(ptL(lazyVal, 'addEventListener', 'load'))(imageLoad).wrap(pass),
+		doResetOpacity = curry2(ptL(lazyVal, 'addEventListener', 'load'))(reset_opacity).wrap(pass),
 		setSrc = curry2(setAttribute('src')),
 		setAlt = curry2(setAttribute('alt')),
 		setLink = curry2(setAttribute('href')),
@@ -294,7 +282,7 @@
                       headers.execute(getTarget(e));
                   }
               },
-          addClickPreview = curry2(ptL(lasyVal, 'addEventListener', 'click'))(sideBarListener).wrap(pass),
+          addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(sideBarListener).wrap(pass),
           incrementer = compose(doInc, getLength),
           
         loader = function() {
@@ -370,16 +358,23 @@
 				}
 			};
 		}
+            
+            function nut(){
+                
+            }
+
             headers = Grouper.from(headings())
             headers.setSearch(headers_search_strategy.bind(headers));
 		var thumbs,
             machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
             getLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
 			src = compose(getAttrs('href'), getZeroPlus, $$q('#navigation ul li a', true))(),
-			machImg = prepare2Append(doImg, prepAttrs([setSrc, setAlt], [src, 'current'])),
+			machBase = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
+			machSlide = prepare2Append(doResetOpacity, doTest, doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide'])),
             previewer = ptL(replacePath, $$q('#slidepreview img')),
+            displayer = ptL(replacePath, compose(curry3(getTargetNode)('firstChild')(/img/i), $$('display'))),
             slides = Grouper.from(getLinks());
-		compose(machImg, machDiv)($('display'));
+		compose(machSlide, getParent, machBase, machDiv)($('display'));
 		thumbs = Grouper.from([]);
 		thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 		broadcaster.attach(headers.setFinder.bind(headers));
@@ -387,8 +382,17 @@
 		broadcaster.attach(previewer);
 		headers.attach(groupFrom.bind(thumbs));
 		broadcaster.notify(src);
-            $looper.build(getLinks(), incrementer);
-            con($looper.get)
-	};
+        looper.build(getLinks(), incrementer);
+        looper.attach(displayer);
+        looper.attach(broadcaster.notify.bind(broadcaster));
+  
+            
+    //slide 100 to 0
+            //swap slide src to base src
+            //opacity to 100
+          //onload /swap base src to next src
+            //onload inc
+            
+        };
 	window.addEventListener('load', loader);
 }());
