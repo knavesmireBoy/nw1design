@@ -43,16 +43,13 @@ publisher.notify(JobPost("Software Engineer"));
 		return o;
 	}
     
-    function matchIndexCB(i) {
-        return function(el, n) {
-            return n === i;
-        };
-    }
-    
-    function fire(i) {
-        var ul = $q('#navigation ul', true);
-        return compose(toArray, curry2(getter)('children'), getZero, curryL2(toArray)(ul), matchIndexCB)(i)
-    }
+
+   function groupFrom(el) {
+       var getUL = curry3(getTargetNode)('nextSibling')(/ul/i),
+       grp = compose(toArray, curry2(getter)('children'), getUL)(el);
+       this.grp = grp;
+       this.getCurrent();
+   }
 
 	if (typeof Function.prototype.wrap === 'undefined') {
 		Function.prototype.wrap = function(wrapper, ..._vs) {
@@ -64,10 +61,10 @@ publisher.notify(JobPost("Software Engineer"));
 	}
     
     function finder(str) {
-			return function(cur) {
-				return str.match(/\/(\w+)_/.exec(cur)[1]);
-			};
-		}
+        return function(cur) {
+            return str.match(/\/(\w+)_/.exec(cur)[1]);
+        };
+    }
 
 	function remove() {
 		var tgt = this.parentNode;
@@ -163,19 +160,22 @@ publisher.notify(JobPost("Software Engineer"));
         return this.grp.map(lis => compose(getAttrs('href'), get)(lis));
     }
     
-    	function headerstrategy() {
+    	function headers_search_strategy() {
 			var links = getLinksDeep.call(this),
 				i = links.map(strs => strs.findIndex(this.finder)).findIndex(n => n >= 0);
             this.index = i;
 			if (this.grp[i]) {
 				this.execute(this.grp[i]);
+                this.notify(this.grp[i]);
 			}
 		}
-        function thumbstrategy() {
+        function thumbs_search_strategy() {
          var links = getLinks.call(this),
             i = links.findIndex(this.finder);
             this.index = i;
-            return this.execute(this.grp[i]);
+            if (this.grp[i]) {
+            this.execute(this.grp[i]);
+            }
 		}
   
     function prepAttrs(keys, vals) {
@@ -199,6 +199,10 @@ publisher.notify(JobPost("Software Engineer"));
          attach (handler) {
            this.handlers = [...this.handlers, handler];
         }
+         
+         static from (h = []) {
+             return new Publisher(h);
+         }
         
      }
     
@@ -207,6 +211,7 @@ publisher.notify(JobPost("Software Engineer"));
 			super();
             this.grp = grp;
 			this.current = null;
+            this.finder = () => null;
 		}
 		getCurrent() {
 			return this.strategy();
@@ -223,29 +228,30 @@ publisher.notify(JobPost("Software Engineer"));
 				this.current = doActive(el);
 			}
 		}
-		setFinder(f = () => false) {
-			this.finder = f;
-			return this;
+		setFinder(src) {
+			this.finder = finder(src);
+			return this.getCurrent();
 		}
-		setStrategy(s = () => []) {
+		setSearch(s = () => []) {
 			this.strategy = s;
 			return this;
 		}
+         setGroup (grp) {
+            this.grp = grp;
+            return this;
+        }
+        /*
 		add(item) {
 			this.grp.push(item);
 		}
-        set (grp) {
-            this.grp = grp;
-        }
+       
 		getByIndex(i) {
 			if (!isNaN(i)) {
 				return this.grp[i];
 			}
 			return this.grp;
 		}
-        getIndex () {
-            return this.index;
-        }
+        */
 		static from(grp, kls = 'active') {
 			return new Grouper(grp, kls);
 		}
@@ -314,10 +320,11 @@ publisher.notify(JobPost("Software Engineer"));
 		'Orkney Holiday Cottages': 3
 	}, {
 		'Safari Afrika': 4
-	}];
+	}],
+          broadcaster = Publisher.from();
 
-	let headers = null,
-        thumbs = null;
+	let headers = {},
+        thumbs = {};
     
 	const deferPTL = doPartial(true),
 		ptL = doPartial(),
@@ -399,7 +406,7 @@ publisher.notify(JobPost("Software Engineer"));
 		},
 		doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
 		getZero = curry2(getter)(0),
-		getZeroPlus = curry2(getter)(11),
+		getZeroPlus = curry2(getter)(13),
 		getKey = compose(getZero, curryL3(invokeMethod)(window.Object)('keys')),
 		getKeys = compose(doTextNow, getKey),
 		getValues = compose(getZero, curryL3(invokeMethod)(window.Object)('values')),
@@ -448,24 +455,22 @@ publisher.notify(JobPost("Software Engineer"));
 				}
 			};
 		}
-		headers = new Grouper(headings());
-		headers.setStrategy(headerstrategy.bind(headers));
-		var i,
-            machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
+		headers = Grouper.from(headings());
+		headers.setSearch(headers_search_strategy.bind(headers));
+		var machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
             src = compose(getAttrs('href'), getZeroPlus, $$q('#navigation ul li a', true))(),
             machImg = prepare2Append(doImg, prepAttrs([setSrc, setAlt], [src, 'current']));
         //set preview image to first pic
         compose(curry2(setAttribute('src'))(src), $$q('#slidepreview img'))();
         //display first pic
 		compose(machImg, machDiv)($('display'));
-        headers.setFinder(finder(src));
-        headers.getCurrent();
-        i = headers.index;
-        
-        thumbs = Grouper.from(fire(i));
-        thumbs.setStrategy(thumbstrategy.bind(thumbs));
-        thumbs.setFinder(finder(src));
-        thumbs.getCurrent();
+        thumbs = Grouper.from([]);
+        thumbs.setGroup = groupFrom;
+        thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
+        broadcaster.attach(headers.setFinder.bind(headers));
+        broadcaster.attach(thumbs.setFinder.bind(thumbs));
+        headers.attach(thumbs.setGroup.bind(thumbs));
+        broadcaster.notify(src);
         
 	};
 	window.addEventListener('load', loader);
