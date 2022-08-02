@@ -118,7 +118,6 @@
     
     function replacePath(o, src) {
         o = getResult(o);
-        console.log(o, src)
         o.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
     }
 
@@ -393,12 +392,14 @@
 		thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 		broadcaster.attach(headers.setFinder.bind(headers));
 		broadcaster.attach(thumbs.setFinder.bind(thumbs));
-		broadcaster.attach(previewer);
+		///broadcaster.attach(previewer);
 		headers.attach(groupFrom.bind(thumbs));
 		broadcaster.notify(src);
-        looper.build(getLinks(), incrementer);
-       looper.attach(displayer);
-       looper.attach(slideshower);
+            
+            
+        looper.build([], getLinks(), incrementer);
+       //looper.attach(displayer);
+       looper.attach();
         looper.attach(broadcaster.notify.bind(broadcaster));
             
         setTimeout(function(){

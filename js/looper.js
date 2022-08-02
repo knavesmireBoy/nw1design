@@ -65,22 +65,7 @@ nW1.Looper = function() {
 		methods.forEach(mapper);
 		return tgt;
 	}
-	class Publisher {
-		constructor(h = []) {
-			this.handlers = this.handlers || h;
-		}
-		notify(...args) {
-			this.handlers.forEach((handler) => handler(...args));
-		}
-		attach(handler) {
-            //console.log(this.handlers)
-            this.members.push(handler)
-			//this.handlers = [...this.handlers, handler];
-		}
-		static from(h = []) {
-			return new Publisher(h);
-		}
-	}
+	
 	class LoopIterator extends Publisher {
 		constructor(handlers = [], group = [], advancer = () => 1) {
             super(handlers);
@@ -131,8 +116,8 @@ nW1.Looper = function() {
 		visit(cb) {
 			this.group.visit(cb);
 		}
-		static from(coll, advancer) {
-			return new LoopIterator(Group.from(coll), advancer);
+		static from(handlers = [], coll, advancer) {
+			return new LoopIterator(handlers, Group.from(coll), advancer);
 		};
 	}
 	class Group {
@@ -170,8 +155,8 @@ nW1.Looper = function() {
 			getSubject: function() {
 				return this.$subject;
 			},
-			build: function(coll, advancer) {
-				this.setSubject(LoopIterator.from([], coll, advancer(coll)));
+			build: function(handlers = [], coll, advancer) {
+				this.setSubject(LoopIterator.from(handlers, coll, advancer(coll)));
 			}
 		},
 		doGet = curry2(getter),
