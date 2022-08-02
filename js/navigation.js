@@ -118,6 +118,7 @@
     
     function replacePath(o, src) {
         o = getResult(o);
+        console.log(arguments)
         o.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
     }
 
@@ -374,32 +375,42 @@
             
             headers = Grouper.from(headings())
             headers.setSearch(headers_search_strategy.bind(headers));
+            
+            var $$$ = function(str) {
+                return function(){
+                    return document.getElementById(str);
+                };
+            };
 		var thumbs,
             getLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
             src = compose(getAttrs('href'), getZero, $$q('#navigation ul li a', true))(),
             
             machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
 			machBase = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
-			machSlide = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide'])),
+			machSlide = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide']));
             
-            previewer = ptL(replacePath, $$q('#slidepreview img')),
-            slideshower = ptL(replacePath, $$('slide')),
-            displayer = ptL(replacePath, $$('base'));  
             
-            compose(doResetOpacity, machSlide, getParent, machBase, machDiv)($('display'));
+              
+            
+            compose(machSlide, getParent, machBase, machDiv)($('display'));
+            
+            var previewer = ptL(replacePath, $$q('#slidepreview img')),
+            slideshower = curryL2(replacePath)($$('slide')),
+            displayer = curryL2(replacePath)($$('base'));
+            
 
 		thumbs = Grouper.from([]);
 		thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 		broadcaster.attach(headers.setFinder.bind(headers));
 		broadcaster.attach(thumbs.setFinder.bind(thumbs));
-		///broadcaster.attach(previewer);
+		broadcaster.attach(previewer);
 		headers.attach(groupFrom.bind(thumbs));
 		broadcaster.notify(src);
             
-            
         looper.build([], getLinks(), incrementer);
-       //looper.attach(displayer);
-       looper.attach();
+      
+       looper.attach(displayer);
+       looper.attach(slideshower);
         looper.attach(broadcaster.notify.bind(broadcaster));
             
         setTimeout(function(){
