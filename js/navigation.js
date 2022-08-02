@@ -20,29 +20,6 @@
                 return $q(str, flag);
             };
     }
-    
-    /*
- 
-  
-  const JobPost = (title) => ({ title });
-
-const JobSeeker = (name) => ({
-  onJobPosted: (job) => console.log(`Hi ${name}. New job posted: ${job.title}`),
-});
-    
-    const johnDoe = JobSeeker("John Doe");
-const janeDoe = JobSeeker("Jane Doe");
-const publisher = Publisher();
-publisher.attach(johnDoe.onJobPosted);
-publisher.attach(janeDoe.onJobPosted);
-publisher.notify(JobPost("Software Engineer"));
-*/
-
-	function pass(ptl, o) {
-		ptl(o);
-		return o;
-	}
-    
 
    function groupFrom(el) {
        var getUL = curry3(getTargetNode)('nextSibling')(/ul/i),
@@ -60,12 +37,6 @@ publisher.notify(JobPost("Software Engineer"));
 		};
 	}
     
-    function finder(str) {
-        return function(cur) {
-            return str.match(/\/(\w+)_/.exec(cur)[1]);
-        };
-    }
-
 	function remove() {
 		var tgt = this.parentNode;
 		tgt.parentNode.removeChild(tgt);
@@ -221,7 +192,7 @@ publisher.notify(JobPost("Software Engineer"));
 			}
 		}
 		setFinder(src) {
-			this.finder = finder(src);
+			this.finder = Grouper.doFind(src);
 			return this.getCurrent();
 		}
 		setSearch(s = () => []) {
@@ -247,6 +218,11 @@ publisher.notify(JobPost("Software Engineer"));
 		static from(grp, kls = 'active') {
 			return new Grouper(grp, kls);
 		}
+        static doFind(str) {
+            return function(cur) {
+                return str.match(/\/(\w+)_/.exec(cur)[1]);
+            };
+        }
 	}
 
 	function sideBarListener(e) {
@@ -342,6 +318,11 @@ publisher.notify(JobPost("Software Engineer"));
 			o = cb(o);
 			return invokeMethod(o, m, v);
 		},
+          
+        pass = (ptl, o) => {
+            ptl(o);
+            return o;
+        },
 		contentarea = $('content'),
 		lightbox = document.querySelector('.lightbox'),
           
@@ -398,7 +379,7 @@ publisher.notify(JobPost("Software Engineer"));
 		},
 		doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
 		getZero = curry2(getter)(0),
-		getZeroPlus = curry2(getter)(13),
+		getZeroPlus = curry2(getter)(12),
 		getKey = compose(getZero, curryL3(invokeMethod)(window.Object)('keys')),
 		getKeys = compose(doTextNow, getKey),
 		getValues = compose(getZero, curryL3(invokeMethod)(window.Object)('values')),
@@ -406,8 +387,7 @@ publisher.notify(JobPost("Software Engineer"));
 		doRenderNav = compose(prepend($$('navigation')), setHref, getParent, prepend(doLink)),
 		makeDiv = compose(doRender, doDiv),
 		getHref = getAttribute('href'),
-		
-		 prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
+          prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
         prepare2Append = (doEl, doAttrs) => compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)(),
 		setDiv = prepare2Append(doDiv, prepAttrs([setId], ['slidepreview'])),
           setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
