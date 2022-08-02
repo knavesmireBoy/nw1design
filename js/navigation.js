@@ -12,6 +12,22 @@
 		};
 	}
     
+    function equals(a, b) {
+		return a === b;
+	}
+
+	function modulo(n, i) {
+		return i % n;
+	}
+
+	function increment(i) {
+		return i + 1;
+	}
+    
+    function doInc(n) {
+		return compose(ptL(modulo, n), increment);
+	}
+    
     	/* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
 	function doPartial(flag) {
 		return function p(f, ...vs) {
@@ -35,6 +51,11 @@
 			funs[m]((f) => f(o));
 			return o;
 		};
+	}
+    
+    function doIterateCB(m, coll, cb) {
+			o = getResult(o);
+			return coll[m](cb);
 	}
 
 	function zip(m, funs, vals) {
@@ -147,7 +168,8 @@
 
     let headers = {};
 
-	const config = [{
+	const $looper = nW1.Looper(),
+          config = [{
 			FOP: 4
 		}, {
 			AFEN: 3
@@ -177,10 +199,8 @@
 		curryL3 = fun => a => b => c => fun(a, b, c),
 		curryL33 = fun => a => b => c => () => fun(a, b, c),
 		invoke = (f, v) => f(v),
-		invokeMethod = (o, m, v) => {
-			return o[m](v);
-		},
-		lazyInvoke2 = (m, p, o, v) => o[m](p, v),
+		invokeMethod = (o, m, v) => o[m](v),
+		lasyVal = (m, p, o, v) => o[m](p, v),
 		invokeMethodBridge = (m, v, o) => {
 			o = getResult(o);
 			return invokeMethod(o, m, v);
@@ -201,6 +221,7 @@
 			return document[m](str);
 		},
 		$$q = (str, flag = false) => () => $q(str, flag),
+
 		contentarea = $('content'),
 		lightbox = document.querySelector('.lightbox'),
 		getTarget = curry2(getter)('target'),
@@ -219,14 +240,14 @@
 		getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
 		getAttrs = curryL3(invokeMethodBridge)('getAttribute'),
 		getParentAttribute = ptL(invokeMethodBridgeCB(getParent), 'getAttribute'),
-		setAttribute = ptL(lazyInvoke2, 'setAttribute'),
+		setAttribute = ptL(lasyVal, 'setAttribute'),
 		matchLink = compose(curry3(invokeMethod)(/^a$/i)('match'), curry2(getter)('nodeName'), getTarget),
 		matchImg = compose(curry3(invokeMethod)(/^img/i)('match'), curry2(getter)('nodeName'), getTarget),
 		matchPath = compose(curry3(invokeMethod)(/jpe?g/i)('match'), curryL3(invokeMethodBridge)('getAttribute')('href')),
           
           
-		addClickHover = curry2(ptL(lazyInvoke2, 'addEventListener', 'mouseover'))(hover).wrap(pass),
-		addImgLoad = curry2(ptL(lazyInvoke2, 'addEventListener', 'load'))(imageLoad).wrap(pass),
+		addClickHover = curry2(ptL(lasyVal, 'addEventListener', 'mouseover'))(hover).wrap(pass),
+		addImgLoad = curry2(ptL(lasyVal, 'addEventListener', 'load'))(imageLoad).wrap(pass),
 		setSrc = curry2(setAttribute('src')),
 		setAlt = curry2(setAttribute('alt')),
 		setLink = curry2(setAttribute('href')),
@@ -251,6 +272,7 @@
 			console.log(x);
 			return x;
 		},
+          getLength = curry2(getter)('length'),
 		doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
 		getZero = curry2(getter)(0),
 		getZeroPlus = curry2(getter)(10),
@@ -272,7 +294,8 @@
                       headers.execute(getTarget(e));
                   }
               },
-          addClickPreview = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(sideBarListener).wrap(pass),
+          addClickPreview = curry2(ptL(lasyVal, 'addEventListener', 'click'))(sideBarListener).wrap(pass),
+          incrementer = compose(doInc, getLength),
           
         loader = function() {
               
@@ -351,9 +374,11 @@
             headers.setSearch(headers_search_strategy.bind(headers));
 		var thumbs,
             machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
+            getLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
 			src = compose(getAttrs('href'), getZeroPlus, $$q('#navigation ul li a', true))(),
 			machImg = prepare2Append(doImg, prepAttrs([setSrc, setAlt], [src, 'current'])),
-            previewer = ptL(replacePath, $$q('#slidepreview img'));
+            previewer = ptL(replacePath, $$q('#slidepreview img')),
+            slides = Grouper.from(getLinks());
 		compose(machImg, machDiv)($('display'));
 		thumbs = Grouper.from([]);
 		thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
@@ -362,6 +387,8 @@
 		broadcaster.attach(previewer);
 		headers.attach(groupFrom.bind(thumbs));
 		broadcaster.notify(src);
+            $looper.build(getLinks(), incrementer);
+            con($looper.get)
 	};
 	window.addEventListener('load', loader);
 }());
