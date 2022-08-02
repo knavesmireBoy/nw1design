@@ -10,23 +10,9 @@
 		};
 	}
     
-    function doQuerySelector(defer = false){
-        if(defer) {
-            return function(str, flag = false){
-                return $$q(str, flag);
-            };
-        }
-            return function(str, flag = false){
-                return $q(str, flag);
-            };
-    }
-
-   function groupFrom(el) {
-       var getUL = curry3(getTargetNode)('nextSibling')(/ul/i),
-       grp = compose(toArray, curry2(getter)('children'), getUL)(el);
-       this.grp = grp;
-       this.getCurrent();
-   }
+  	function toArray(coll, cb = () => true) {
+		return Array.prototype.slice.call(coll).filter(cb);
+	}
 
 	if (typeof Function.prototype.wrap === 'undefined') {
 		Function.prototype.wrap = function(wrapper, ..._vs) {
@@ -37,11 +23,6 @@
 		};
 	}
     
-	function remove() {
-		var tgt = this.parentNode;
-		tgt.parentNode.removeChild(tgt);
-	}
-
 	function getResult(o) {
 		if (typeof o === 'function') {
 			return o();
@@ -72,82 +53,6 @@
 			}
 		}
 	}
-
-	function $(str) {
-		return document.getElementById(str);
-	}
-
-	function $$(str) {
-		return function() {
-			return document.getElementById(str);
-		};
-	}
-
-	function $q(str, flag = false) {
-		const m = flag ? 'querySelectorAll' : 'querySelector';
-		return document[m](str);
-	}
-
-	function $$q(str, flag = false) {
-		return function() {
-			const m = flag ? 'querySelectorAll' : 'querySelector';
-			return document[m](str);
-		};
-	}
-
-	function equals(a, b) {
-		return a === b;
-	}
-
-	function gtEq(a, b) {
-		return a >= b;
-	}
-
-	function always(arg) {
-		return function() {
-			return arg;
-		};
-	}
-
-	function truthy() {
-		return true;
-	}
-
-	function toArray(coll, cb = truthy) {
-		return Array.prototype.slice.call(coll).filter(cb);
-	}
-
-	function getLinksDeep() {
-		var get = curry3(getTargetNode),
-			ul = this.grp.map(get('nextSibling')(/ul/i)),
-			getA = get('firstChild')(/^a$/i);
-		return ul.map(({
-			children
-		}) => toArray(children)).map(lis => lis.map(compose(getAttrs('href'), getA)));
-	}
-    
-    function getLinks() {
-        var get = curry3(getTargetNode)('firstChild')(/^a$/i);
-        return this.grp.map(lis => compose(getAttrs('href'), get)(lis));
-    }
-    
-    	function headers_search_strategy() {
-			var links = getLinksDeep.call(this),
-				i = links.map(strs => strs.findIndex(this.finder)).findIndex(n => n >= 0);
-            this.index = i;
-			if (this.grp[i]) {
-				this.execute(this.grp[i]);
-                this.notify(this.grp[i]);
-			}
-		}
-        function thumbs_search_strategy() {
-         var links = getLinks.call(this),
-            i = links.findIndex(this.finder);
-            this.index = i;
-            if (this.grp[i]) {
-            this.execute(this.grp[i]);
-            }
-		}
     
      class Publisher  {
          
@@ -203,18 +108,7 @@
             this.grp = grp;
             return this;
         }
-        /*
-		add(item) {
-			this.grp.push(item);
-		}
-       
-		getByIndex(i) {
-			if (!isNaN(i)) {
-				return this.grp[i];
-			}
-			return this.grp;
-		}
-        */
+        
 		static from(grp, kls = 'active') {
 			return new Grouper(grp, kls);
 		}
@@ -268,10 +162,6 @@
 		return node;
 	}
 
-	function negate(f, last_arg) {
-		return !f(last_arg);
-	}
-    
 	const config = [{
 		FOP: 4
 	}, {
@@ -318,14 +208,20 @@
 			o = cb(o);
 			return invokeMethod(o, m, v);
 		},
-          
+        negate = (f, last_arg) => !f(last_arg),          
         pass = (ptl, o) => {
             ptl(o);
             return o;
         },
-		contentarea = $('content'),
-		lightbox = document.querySelector('.lightbox'),
-          
+          $ = (str) => document.getElementById(str),
+          $$ = (str) => () => $(str),
+          $q = (str, flag = false) => {
+              const m = flag ? 'querySelectorAll' : 'querySelector';
+              return document[m](str);
+          },
+          $$q = (str, flag = false) => () => $q(str, flag),
+          contentarea = $('content'),
+          lightbox = document.querySelector('.lightbox'),
 		getTarget = curry2(getter)('target'),
 		getParent = curry2(getter)('parentNode'),
 		getText = curry2(getter)('innerHTML'),
@@ -379,7 +275,7 @@
 		},
 		doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
 		getZero = curry2(getter)(0),
-		getZeroPlus = curry2(getter)(12),
+		getZeroPlus = curry2(getter)(5),
 		getKey = compose(getZero, curryL3(invokeMethod)(window.Object)('keys')),
 		getKeys = compose(doTextNow, getKey),
 		getValues = compose(getZero, curryL3(invokeMethod)(window.Object)('values')),
@@ -394,6 +290,48 @@
 		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true));
     
 	var loader = function() {
+        
+        	function getLinksDeep() {
+		var get = curry3(getTargetNode),
+			ul = this.grp.map(get('nextSibling')(/ul/i)),
+			getA = get('firstChild')(/^a$/i);
+		return ul.map(({
+			children
+		}) => toArray(children)).map(lis => lis.map(compose(getAttrs('href'), getA)));
+	}
+    
+    function getLinks() {
+        var get = curry3(getTargetNode)('firstChild')(/^a$/i);
+        return this.grp.map(lis => compose(getAttrs('href'), get)(lis));
+    }
+    
+    	function headers_search_strategy() {
+			var links = getLinksDeep.call(this),
+				i = links.map(strs => strs.findIndex(this.finder)).findIndex(n => n >= 0);
+            this.index = i;
+			if (this.grp[i]) {
+				this.execute(this.grp[i]);
+                this.notify(this.grp[i]);
+			}
+		}
+        function thumbs_search_strategy() {
+         var links = getLinks.call(this),
+            i = links.findIndex(this.finder);
+            this.index = i;
+            if (this.grp[i]) {
+            this.execute(this.grp[i]);
+            }
+		}
+    
+    function groupFrom(el) {
+       var getUL = curry3(getTargetNode)('nextSibling')(/ul/i),
+       grp = compose(toArray, curry2(getter)('children'), getUL)(el);
+       this.grp = grp;
+       this.getCurrent();
+   }
+    
+        
+        
 		compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doSection()), prepend(contentarea), doAside)();
 		var nums = config.map(getValues),
 			nodes = config.map(getKeys);
