@@ -249,7 +249,7 @@
 		},
 		doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
 		getZero = curry2(getter)(0),
-		getZeroPlus = curry2(getter)(0),
+		getZeroPlus = curry2(getter)(10),
 		getKey = compose(getZero, curryL3(invokeMethod)(window.Object)('keys')),
 		getKeys = compose(doTextNow, getKey),
 		getValues = compose(getZero, curryL3(invokeMethod)(window.Object)('values')),
@@ -344,7 +344,7 @@
 			};
 		}
             headers = Grouper.from(headings())
-		headers.setSearch(headers_search_strategy.bind(headers));
+            headers.setSearch(headers_search_strategy.bind(headers));
 		var thumbs,
             machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
 			src = compose(getAttrs('href'), getZeroPlus, $$q('#navigation ul li a', true))(),
@@ -354,11 +354,10 @@
 		//display first pic
 		compose(machImg, machDiv)($('display'));
 		thumbs = Grouper.from([]);
-		thumbs.setGroup = groupFrom;
 		thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 		broadcaster.attach(headers.setFinder.bind(headers));
 		broadcaster.attach(thumbs.setFinder.bind(thumbs));
-		headers.attach(thumbs.setGroup.bind(thumbs));
+		headers.attach(groupFrom.bind(thumbs));
 		broadcaster.notify(src);
 	};
 	window.addEventListener('load', loader);
