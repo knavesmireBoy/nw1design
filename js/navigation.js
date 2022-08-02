@@ -177,14 +177,6 @@ publisher.notify(JobPost("Software Engineer"));
             this.execute(this.grp[i]);
             }
 		}
-  
-    function prepAttrs(keys, vals) {
-        return curryL33(zip)('map')(keys)(vals);
-    }
-    
-    function prepare2Append(doEl, doAttrs) {
-      return compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)();
-    }
     
      class Publisher  {
          
@@ -415,10 +407,10 @@ publisher.notify(JobPost("Software Engineer"));
 		makeDiv = compose(doRender, doDiv),
 		getHref = getAttribute('href'),
 		
-		setDivAttrs = curryL33(zip)('map')([setId])(['slidepreview']),
-		setDiv = compose(append, curry2(invoke)(doDiv), ptL(doIterate, 'forEach'), setDivAttrs)(),
-        setImageAttrs = curryL33(zip)('map')([setAlt])(['currentpic']),
-		setImg = compose(append, curry2(invoke)(doImg), ptL(doIterate, 'forEach'), setImageAttrs)(),
+		 prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
+        prepare2Append = (doEl, doAttrs) => compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)(),
+		setDiv = prepare2Append(doDiv, prepAttrs([setId], ['slidepreview'])),
+          setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
 		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true));
     
 	var loader = function() {
