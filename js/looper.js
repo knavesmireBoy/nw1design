@@ -16,6 +16,7 @@ nW1.Looper = function() {
 		};
 	}
 	const curry2 = fun => b => a => fun(a, b),
+          curry22 = fun => b => a => () => fun(a, b),
 		getter = (o, p) => o[p],
 		compose = (...fns) => fns.reduce((f, g) => (...vs) => f(g(...vs))),
 		deferPTL = doPartial(true),
@@ -67,7 +68,7 @@ nW1.Looper = function() {
 	}
 	
 	class LoopIterator extends Publisher {
-		constructor(handlers = [], group = [], advancer = () => 1) {
+		constructor(group = [], advancer = () => 1, handlers = []) {
             super(handlers);
 			this.group = group;
 			this.position = 0;
@@ -91,7 +92,7 @@ nW1.Looper = function() {
 				return this.back(true);
 			}
 			this.position = this.advance(this.position);
-            this.notify(this.get(), 777);
+            this.notify(this.get());
 			return this.status();
 		}
 		get(m = 'value') {
@@ -116,8 +117,8 @@ nW1.Looper = function() {
 		visit(cb) {
 			this.group.visit(cb);
 		}
-		static from(handlers = [], coll, advancer) {
-			return new LoopIterator(handlers, Group.from(coll), advancer);
+		static from(coll, advancer, handlers = []) {
+			return new LoopIterator(Group.from(coll), advancer, handlers);
 		};
 	}
 	class Group {
@@ -155,12 +156,12 @@ nW1.Looper = function() {
 			getSubject: function() {
 				return this.$subject;
 			},
-			build: function(handlers = [], coll, advancer) {
-				this.setSubject(LoopIterator.from(handlers, coll, advancer(coll)));
+			build: function(coll, advancer, handlers = []) {
+				this.setSubject(LoopIterator.from(coll, advancer(coll), handlers));
 			}
 		},
-		doGet = curry2(getter),
+		doGet = curry22(getter),
 		getLength = doGet('length'),
 		incrementer = compose(doInc, getLength);
-	return makeProxyIterator(LoopIterator.from([], [], incrementer), target, ['attach', 'back', 'status', 'find', 'forward', 'get', 'notify', 'play', 'set', 'visit']);
+	return makeProxyIterator(LoopIterator.from([], incrementer, []), target, ['attach', 'back', 'status', 'find', 'forward', 'get', 'notify', 'play', 'set', 'visit']);
 };

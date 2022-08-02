@@ -1,5 +1,6 @@
 (function() {
 	"use strict";
+
 	function toArray(coll, cb = () => true) {
 		return Array.prototype.slice.call(coll).filter(cb);
 	}
@@ -11,12 +12,12 @@
 			};
 		};
 	}
-    
-    function nut(){
-              $('slide').src = this.src;
-            }
-    
-    function equals(a, b) {
+
+	function nut() {
+		$('slide').src = this.src;
+	}
+
+	function equals(a, b) {
 		return a === b;
 	}
 
@@ -27,12 +28,11 @@
 	function increment(i) {
 		return i + 1;
 	}
-    
-    function doInc(n) {
+
+	function doInc(n) {
 		return compose(ptL(modulo, n), increment);
 	}
-    
-    	/* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
+	/* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
 	function doPartial(flag) {
 		return function p(f, ...vs) {
 			if (f.length === vs.length) {
@@ -56,10 +56,10 @@
 			return o;
 		};
 	}
-    
-    function doIterateCB(m, coll, cb) {
-			o = getResult(o);
-			return coll[m](cb);
+
+	function doIterateCB(m, coll, cb) {
+		o = getResult(o);
+		return coll[m](cb);
 	}
 
 	function zip(m, funs, vals) {
@@ -67,11 +67,10 @@
 	}
 
 	function doWhen(pred, action, v) {
-			if (pred(v)) {
-				return action(v);
-			}
+		if (pred(v)) {
+			return action(v);
 		}
-    
+	}
 	class Grouper extends Publisher {
 		constructor(grp = [], kls = 'active') {
 			super();
@@ -115,17 +114,16 @@
 			};
 		}
 	}
-    
-    function replacePath(o, src) {
-        o = getResult(o);
-        console.log(arguments)
-        o.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
-    }
+
+	function replacePath(o, src) {
+		o = getResult(o);
+		o.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
+	}
 
 	function hover(e) {
 		var preview = $q('#slidepreview img');
 		if (matchImg(e) && e.target !== preview) {
-            replacePath(preview, getAttribute('src')(e.target));
+			replacePath(preview, getAttribute('src')(e.target));
 		}
 	}
 
@@ -156,11 +154,9 @@
 		}
 		return node;
 	}
-
-    let headers = {};
-
+	let headers = {};
 	const looper = nW1.Looper(),
-          config = [{
+		config = [{
 			FOP: 4
 		}, {
 			AFEN: 3
@@ -178,17 +174,17 @@
 			'Safari Afrika': 4
 		}],
 		broadcaster = Publisher.from(),
-          deferPTL = doPartial(true),
+		deferPTL = doPartial(true),
 		ptL = doPartial(),
 		con = (v) => console.log(v),
 		compose = (...fns) => fns.reduce((f, g) => (...vs) => f(g(...vs))),
 		getter = (o, p) => {
-            o = getResult(o);
-            return o[p];
-        },
+			o = getResult(o);
+			return o[p];
+		},
 		setter = (o, k, v) => o[k] = v,
-        curry2 = fun => b => a => fun(a, b),
-        curry22 = fun => b => a => () => fun(a, b),
+		curry2 = fun => b => a => fun(a, b),
+		curry22 = fun => b => a => () => fun(a, b),
 		curryL2 = fun => a => b => fun(a, b),
 		curryL22 = fun => a => b => () => fun(a, b),
 		curry3 = fun => c => b => a => fun(a, b, c),
@@ -217,7 +213,6 @@
 			return document[m](str);
 		},
 		$$q = (str, flag = false) => () => $q(str, flag),
-
 		contentarea = $('content'),
 		lightbox = document.querySelector('.lightbox'),
 		getTarget = curry2(getter)('target'),
@@ -240,14 +235,12 @@
 		matchLink = compose(curry3(invokeMethod)(/^a$/i)('match'), curry2(getter)('nodeName'), getTarget),
 		matchImg = compose(curry3(invokeMethod)(/^img/i)('match'), curry2(getter)('nodeName'), getTarget),
 		matchPath = compose(curry3(invokeMethod)(/jpe?g/i)('match'), curryL3(invokeMethodBridge)('getAttribute')('href')),
-          
 		addClickHover = curry2(ptL(lazyVal, 'addEventListener', 'mouseover'))(hover).wrap(pass),
-        onLoad = curry2(ptL(lazyVal, 'addEventListener', 'load')),
+		onLoad = curry2(ptL(lazyVal, 'addEventListener', 'load')),
 		addImgLoad = onLoad(imageLoad).wrap(pass),
-        reset_opacity = compose(curry3(setter)(3)('opacity'), curry22(getter)('style')($$('slide'))),
+		reset_opacity = compose(curry3(setter)(3)('opacity'), curry22(getter)('style')($$('slide'))),
 		doNut = onLoad(nut).wrap(pass),
 		doResetOpacity = onLoad(reset_opacity).wrap(pass),
-          
 		setSrc = curry2(setAttribute('src')),
 		setAlt = curry2(setAttribute('alt')),
 		setLink = curry2(setAttribute('href')),
@@ -272,7 +265,7 @@
 			console.log(x);
 			return x;
 		},
-          getLength = curry2(getter)('length'),
+		getLength = curry2(getter)('length'),
 		doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
 		getZero = curry2(getter)(0),
 		getZeroPlus = curry2(getter)(10),
@@ -288,154 +281,134 @@
 		setDiv = prepare2Append(doDiv, prepAttrs([setId], ['slidepreview'])),
 		setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
 		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
-          sideBarListener = (e) => {
-                  e.preventDefault();
-                  if (matchLink(e)) {
-                      headers.execute(getTarget(e), true);
-                  }
-              },
-          addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(sideBarListener).wrap(pass),
-          incrementer = compose(doInc, getLength),
-          
-          
-        loader = function() {
-              
-		function getLinksDeep() {
-			var get = curry3(getTargetNode),
-				ul = this.grp.map(get('nextSibling')(/ul/i)),
-				getA = get('firstChild')(/^a$/i);
-			return ul.map(({
-				children
-			}) => toArray(children)).map(lis => lis.map(compose(getAttrs('href'), getA)));
-		}
-
-		function getLinks() {
-			var get = curry3(getTargetNode)('firstChild')(/^a$/i);
-			return this.grp.map(lis => compose(getAttrs('href'), get)(lis));
-		}
-
-		function headers_search_strategy() {
-			var links = getLinksDeep.call(this),
-				i = links.map(strs => strs.findIndex(this.finder)).findIndex(n => n >= 0);
-			this.index = i;
-			if (this.grp[i]) {
-				this.execute(this.grp[i]);
-				this.notify(this.grp[i]);
+		sideBarListener = (e) => {
+			e.preventDefault();
+			if (matchLink(e)) {
+				headers.execute(getTarget(e), true);
 			}
-		}
-
-		function thumbs_search_strategy() {
-			var links = getLinks.call(this),
-				i = links.findIndex(this.finder);
-			this.index = i;
-			if (this.grp[i]) {
-				this.execute(this.grp[i]);
+		},
+		addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(sideBarListener).wrap(pass),
+		incrementer = compose(doInc, getLength),
+		loader = function() {
+			function getLinksDeep() {
+				var get = curry3(getTargetNode),
+					ul = this.grp.map(get('nextSibling')(/ul/i)),
+					getA = get('firstChild')(/^a$/i);
+				return ul.map(({
+					children
+				}) => toArray(children)).map(lis => lis.map(compose(getAttrs('href'), getA)));
 			}
-		}
 
-		function groupFrom(el) {
-			var getUL = curry3(getTargetNode)('nextSibling')(/ul/i),
-				grp = compose(toArray, curry2(getter)('children'), getUL)(el);
-			this.grp = grp;
-			this.getCurrent();
-		}
-		compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doSection()), prepend(contentarea), doAside)();
-		
-		config.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
+			function getLinks() {
+				var get = curry3(getTargetNode)('firstChild')(/^a$/i);
+				return this.grp.map(lis => compose(getAttrs('href'), get)(lis));
+			}
 
-		function prepareHeadings(ul) {
-			return function(el, i, els) {
-				var n = Object.values(config[i])[0],
-					j = 0,
-					lis = ul.children,
-					ol,
-					neu,
-					grp;
-				while (j < n) {
-					if (!j) {
-						ol = doUL();
-					}
-					if (j === n) {
-						j = -1;
-					}
-					neu = append(lis[0], ol).parentNode;
-					if (els[i + 1]) {
-						el.parentNode.insertBefore(neu, els[i + 1]);
-					} else {
-						el.parentNode.append(neu);
-					}
-					j++;
+			function headers_search_strategy() {
+				var links = getLinksDeep.call(this),
+					i = links.map(strs => strs.findIndex(this.finder)).findIndex(n => n >= 0);
+				this.index = i;
+				if (this.grp[i]) {
+					this.execute(this.grp[i]);
+					this.notify(this.grp[i]);
 				}
-				if (!els[i + 1]) {
-					ul.parentNode.removeChild(ul);
+			}
+
+			function thumbs_search_strategy() {
+				var links = getLinks.call(this),
+					i = links.findIndex(this.finder);
+				this.index = i;
+				if (this.grp[i]) {
+					this.execute(this.grp[i]);
 				}
+			}
+
+			function groupFrom(el) {
+				var getUL = curry3(getTargetNode)('nextSibling')(/ul/i),
+					grp = compose(toArray, curry2(getter)('children'), getUL)(el);
+				this.grp = grp;
+				this.getCurrent();
+			}
+			compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doSection()), prepend(contentarea), doAside)();
+			config.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
+
+			function prepareHeadings(ul) {
+				return function(el, i, els) {
+					var n = Object.values(config[i])[0],
+						j = 0,
+						lis = ul.children,
+						ol,
+						neu,
+						grp;
+					while (j < n) {
+						if (!j) {
+							ol = doUL();
+						}
+						if (j === n) {
+							j = -1;
+						}
+						neu = append(lis[0], ol).parentNode;
+						if (els[i + 1]) {
+							el.parentNode.insertBefore(neu, els[i + 1]);
+						} else {
+							el.parentNode.append(neu);
+						}
+						j++;
+					}
+					if (!els[i + 1]) {
+						ul.parentNode.removeChild(ul);
+					}
+				};
+			}
+			//post creation of sidebar
+			headers = Grouper.from(headings())
+			headers.setSearch(headers_search_strategy.bind(headers));
+			var $$$ = function(str) {
+				return function() {
+					return document.getElementById(str);
+				};
 			};
-		}            
-            //post creation of sidebar
-            
-            headers = Grouper.from(headings())
-            headers.setSearch(headers_search_strategy.bind(headers));
-            
-            var $$$ = function(str) {
-                return function(){
-                    return document.getElementById(str);
-                };
-            };
-		var thumbs,
-            getLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
-            src = compose(getAttrs('href'), getZero, $$q('#navigation ul li a', true))(),
-            
-            machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
-			machBase = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
-			machSlide = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide']));
-            
-            
-              
-            
-            compose(machSlide, getParent, machBase, machDiv)($('display'));
-            
-            var previewer = ptL(replacePath, $$q('#slidepreview img')),
-            slideshower = curryL2(replacePath)($$('slide')),
-            displayer = curryL2(replacePath)($$('base'));
-            
-
-		thumbs = Grouper.from([]);
-		thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
-		broadcaster.attach(headers.setFinder.bind(headers));
-		broadcaster.attach(thumbs.setFinder.bind(thumbs));
-		broadcaster.attach(previewer);
-		headers.attach(groupFrom.bind(thumbs));
-		broadcaster.notify(src);
-            
-        looper.build([], getLinks(), incrementer);
-      
-       looper.attach(displayer);
-       looper.attach(slideshower);
-        looper.attach(broadcaster.notify.bind(broadcaster));
-            
-        setTimeout(function(){
-            looper.forward();
-        }, 2222);
-            
-            setTimeout(function(){
-            looper.forward();
-        }, 3333);
-            
-            setTimeout(function(){
-            looper.forward();
-        }, 4444);
-            
-            setTimeout(function(){
-            looper.forward();
-        }, 5555);
-
-            
-    //slide 100 to 0
-            //swap slide src to base src
-            //opacity to 100
-          //onload /swap base src to next src
-            //onload inc
-            
-        };
+			var thumbs,
+				getLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
+				src = compose(getAttrs('href'), getZero, $$q('#navigation ul li a', true))(),
+				machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
+				machBase = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
+				machSlide = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide'])),
+				previewer = ptL(replacePath, $$q('#slidepreview img')),
+				slideshower = curryL2(replacePath)($$('slide')),
+				displayer = curryL2(replacePath)($$('base'));
+			compose(machSlide, getParent, machBase, machDiv)($('display'));
+			thumbs = Grouper.from([]);
+			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
+			broadcaster.attach(headers.setFinder.bind(headers));
+			broadcaster.attach(thumbs.setFinder.bind(thumbs));
+			broadcaster.attach(previewer);
+			headers.attach(groupFrom.bind(thumbs));
+			broadcaster.notify(src);
+			looper.build(getLinks(), incrementer, []);
+			looper.attach(displayer);
+			looper.attach(slideshower);
+			looper.attach(broadcaster.notify.bind(broadcaster));
+			setTimeout(function() {
+				looper.forward();
+			}, 2222);
+			setTimeout(function() {
+				looper.forward();
+			}, 3333);
+			setTimeout(function() {
+				looper.forward();
+			}, 4444);
+			setTimeout(function() {
+				looper.forward();
+			}, 5555);
+			setTimeout(function() {
+				looper.forward();
+			}, 6666);
+			//slide 100 to 0
+			//swap slide src to base src
+			//opacity to 100
+			//onload /swap base src to next src
+			//onload inc
+		};
 	window.addEventListener('load', loader);
 }());
