@@ -1,15 +1,5 @@
 (function() {
 	"use strict";
-	/* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
-	function doPartial(flag) {
-		return function p(f, ...vs) {
-			if (f.length === vs.length) {
-				return flag ? () => f(...vs) : f(...vs);
-			}
-			return (...rest) => p(f, ...vs, ...rest);
-		};
-	}
-
 	function toArray(coll, cb = () => true) {
 		return Array.prototype.slice.call(coll).filter(cb);
 	}
@@ -19,6 +9,16 @@
 			return function(...vs) {
 				return wrapper.apply(this, [_method.bind(this), ..._vs, ...vs]);
 			};
+		};
+	}
+    
+    	/* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
+	function doPartial(flag) {
+		return function p(f, ...vs) {
+			if (f.length === vs.length) {
+				return flag ? () => f(...vs) : f(...vs);
+			}
+			return (...rest) => p(f, ...vs, ...rest);
 		};
 	}
 
@@ -42,16 +42,11 @@
 	}
 
 	function doWhen(pred, action, v) {
-		try {
 			if (pred(v)) {
 				return action(v);
 			}
-		} catch (e) {
-			if (pred) {
-				return action(v);
-			}
 		}
-	}
+    
 	class Publisher {
 		constructor(h = []) {
 			this.handlers = h;
@@ -110,13 +105,6 @@
 		}
 	}
 
-	function sideBarListener(e) {
-		e.preventDefault();
-		if (matchLink(e)) {
-			headers.execute(getTarget(e));
-		}
-	}
-
 	function hover(e) {
 		var preview = $q('#slidepreview img');
 		if (matchImg(e) && e.target !== preview) {
@@ -152,6 +140,9 @@
 		}
 		return node;
 	}
+
+    let headers = {};
+
 	const config = [{
 			FOP: 4
 		}, {
@@ -169,10 +160,8 @@
 		}, {
 			'Safari Afrika': 4
 		}],
-		broadcaster = Publisher.from();
-	let headers = {},
-		thumbs = {};
-	const deferPTL = doPartial(true),
+		broadcaster = Publisher.from(),
+          deferPTL = doPartial(true),
 		ptL = doPartial(),
 		con = (v) => console.log(v),
 		compose = (...fns) => fns.reduce((f, g) => (...vs) => f(g(...vs))),
@@ -230,7 +219,8 @@
 		matchLink = compose(curry3(invokeMethod)(/^a$/i)('match'), curry2(getter)('nodeName'), getTarget),
 		matchImg = compose(curry3(invokeMethod)(/^img/i)('match'), curry2(getter)('nodeName'), getTarget),
 		matchPath = compose(curry3(invokeMethod)(/jpe?g/i)('match'), curryL3(invokeMethodBridge)('getAttribute')('href')),
-		addClickPreview = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(sideBarListener).wrap(pass),
+          
+          
 		addClickHover = curry2(ptL(lazyInvoke2, 'addEventListener', 'mouseover'))(hover).wrap(pass),
 		addImgLoad = curry2(ptL(lazyInvoke2, 'addEventListener', 'load'))(imageLoad).wrap(pass),
 		setSrc = curry2(setAttribute('src')),
@@ -259,7 +249,7 @@
 		},
 		doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
 		getZero = curry2(getter)(0),
-		getZeroPlus = curry2(getter)(5),
+		getZeroPlus = curry2(getter)(0),
 		getKey = compose(getZero, curryL3(invokeMethod)(window.Object)('keys')),
 		getKeys = compose(doTextNow, getKey),
 		getValues = compose(getZero, curryL3(invokeMethod)(window.Object)('values')),
@@ -271,8 +261,17 @@
 		prepare2Append = (doEl, doAttrs) => compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)(),
 		setDiv = prepare2Append(doDiv, prepAttrs([setId], ['slidepreview'])),
 		setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
-		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true));
-	var loader = function() {
+		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
+          sideBarListener = (e) => {
+                  e.preventDefault();
+                  if (matchLink(e)) {
+                      headers.execute(getTarget(e));
+                  }
+              },
+          addClickPreview = curry2(ptL(lazyInvoke2, 'addEventListener', 'click'))(sideBarListener).wrap(pass),
+          
+        loader = function() {
+              
 		function getLinksDeep() {
 			var get = curry3(getTargetNode),
 				ul = this.grp.map(get('nextSibling')(/ul/i)),
@@ -313,9 +312,8 @@
 			this.getCurrent();
 		}
 		compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doSection()), prepend(contentarea), doAside)();
-		var nums = config.map(getValues),
-			nodes = config.map(getKeys);
-		nodes.map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
+		
+		config.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
 
 		function prepareHeadings(ul) {
 			return function(el, i, els) {
@@ -345,9 +343,10 @@
 				}
 			};
 		}
-		headers = Grouper.from(headings());
+            headers = Grouper.from(headings())
 		headers.setSearch(headers_search_strategy.bind(headers));
-		var machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
+		var thumbs,
+            machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
 			src = compose(getAttrs('href'), getZeroPlus, $$q('#navigation ul li a', true))(),
 			machImg = prepare2Append(doImg, prepAttrs([setSrc, setAlt], [src, 'current']));
 		//set preview image to first pic
