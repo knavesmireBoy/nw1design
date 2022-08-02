@@ -669,9 +669,13 @@ main aside section a {
 
 #display img {
   float: left;
+  border: solid 1px red;
 }
-#display img:last-child {
-  margin-left: -100%;
+
+img#slide {
+  margin-left: -120%;
+  float: left;
+  border: solid 1px blue;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -104,6 +104,7 @@ nW1.Looper = function() {
 				return this.back(true);
 			}
 			this.position = this.advance(this.position);
+            this.notify(this.get(), 777);
 			return this.status();
 		}
 		get(m = 'value') {

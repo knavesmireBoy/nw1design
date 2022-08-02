@@ -12,6 +12,10 @@
 		};
 	}
     
+    function nut(){
+              $('slide').src = this.src;
+            }
+    
     function equals(a, b) {
 		return a === b;
 	}
@@ -78,14 +82,14 @@
 		getCurrent() {
 			return this.strategy();
 		}
-		undo(el) {
-			if (el === this.current) {
+		undo(el, click) {
+			if ((el === this.current) && click) {
 				this.current = null;
 				return undoActive(el);
 			}
 		}
-		execute(el) {
-			if (!this.undo(el)) {
+		execute(el, click) {
+			if (!this.undo(el, click)) {
 				undoActiveCB(this.grp);
 				this.current = doActive(el);
 			}
@@ -240,7 +244,8 @@
         onLoad = curry2(ptL(lazyVal, 'addEventListener', 'load')),
 		addImgLoad = onLoad(imageLoad).wrap(pass),
         reset_opacity = compose(curry3(setter)(3)('opacity'), curry22(getter)('style')($$('slide'))),
-		doResetOpacity = onLoad(reset_opacity),
+		doNut = onLoad(nut).wrap(pass),
+		doResetOpacity = onLoad(reset_opacity).wrap(pass),
           
 		setSrc = curry2(setAttribute('src')),
 		setAlt = curry2(setAttribute('alt')),
@@ -285,7 +290,7 @@
           sideBarListener = (e) => {
                   e.preventDefault();
                   if (matchLink(e)) {
-                      headers.execute(getTarget(e));
+                      headers.execute(getTarget(e), true);
                   }
               },
           addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(sideBarListener).wrap(pass),
@@ -364,24 +369,24 @@
 					ul.parentNode.removeChild(ul);
 				}
 			};
-		}
-            
+		}            
             //post creation of sidebar
             
             headers = Grouper.from(headings())
             headers.setSearch(headers_search_strategy.bind(headers));
 		var thumbs,
             getLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
-            src = compose(getAttrs('href'), getZeroPlus, $$q('#navigation ul li a', true))(),
+            src = compose(getAttrs('href'), getZero, $$q('#navigation ul li a', true))(),
             
             machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
 			machBase = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
 			machSlide = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide'])),
             
             previewer = ptL(replacePath, $$q('#slidepreview img')),
-            displayer = ptL(replacePath, compose(curry3(getTargetNode)('firstChild')(/img/i), $$('display')));  
+            slideshower = ptL(replacePath, $$('slide')),
+            displayer = ptL(replacePath, $$('base'));  
             
-            compose(doResetOpacity, machSlide, getParent, machBase, machDiv)($('display'));
+            compose(/*doResetOpacity*/machSlide, getParent, machBase, machDiv)($('display'));
 
 		thumbs = Grouper.from([]);
 		thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
@@ -390,11 +395,14 @@
 		broadcaster.attach(previewer);
 		headers.attach(groupFrom.bind(thumbs));
 		broadcaster.notify(src);
-            /*
         looper.build(getLinks(), incrementer);
-        looper.attach(displayer);
+       //looper.attach(displayer);
+       //looper.attach(slideshower);
         looper.attach(broadcaster.notify.bind(broadcaster));
-        */
+            
+        setTimeout(function(){
+            looper.forward();
+        }, 2222);
 
             
     //slide 100 to 0

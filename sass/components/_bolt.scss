@@ -563,10 +563,13 @@ main aside section {
 }
 #display img {
     float: left;
-
-    &:last-child {
-    margin-left: -100%;
-    }
+    border: solid 1px red;
+}
+img#slide {
+    margin-left: -120%;
+    float: left;
+    border: solid 1px blue;
+    //display: none;
 }
 
 //images/buttons/quote.jpg
