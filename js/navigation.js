@@ -72,8 +72,8 @@
 		}
 	}
 	class Grouper extends Publisher {
-		constructor(grp = [], kls = 'active') {
-			super();
+		constructor(grp = [], kls = 'active', h = []) {
+			super(h);
 			this.grp = grp;
 			this.current = null;
 			this.finder = () => null;
@@ -283,6 +283,8 @@
 		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
 		sideBarListener = (e) => {
 			e.preventDefault();
+            //remove all active classes. will need to stop slideshow
+            toArray($q('.active', true)).forEach((el) => el.classList.remove('active'));
 			if (matchLink(e)) {
 				headers.execute(getTarget(e), true);
 			}
@@ -322,13 +324,14 @@
 					this.execute(this.grp[i]);
 				}
 			}
-
+            /*
 			function groupFrom(el) {
 				var getUL = curry3(getTargetNode)('nextSibling')(/ul/i),
 					grp = compose(toArray, curry2(getter)('children'), getUL)(el);
 				this.grp = grp;
 				this.getCurrent();
 			}
+            */
 			compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doSection()), prepend(contentarea), doAside)();
 			config.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
 
@@ -368,22 +371,23 @@
 					return document.getElementById(str);
 				};
 			};
-			var thumbs,
-				getLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
+			var getLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
 				src = compose(getAttrs('href'), getZero, $$q('#navigation ul li a', true))(),
 				machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
 				machBase = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
 				machSlide = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide'])),
 				previewer = ptL(replacePath, $$q('#slidepreview img')),
 				slideshower = curryL2(replacePath)($$('slide')),
-				displayer = curryL2(replacePath)($$('base'));
+				displayer = curryL2(replacePath)($$('base')),
+                thumbs = Grouper.from($q('#navigation ul li', true));
+				
 			compose(machSlide, getParent, machBase, machDiv)($('display'));
-			thumbs = Grouper.from([]);
+            
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 			broadcaster.attach(headers.setFinder.bind(headers));
 			broadcaster.attach(thumbs.setFinder.bind(thumbs));
+            
 			broadcaster.attach(previewer);
-			headers.attach(groupFrom.bind(thumbs));
 			broadcaster.notify(src);
 			looper.build(getLinks(), incrementer, []);
 			looper.attach(displayer);
