@@ -16,6 +16,10 @@
 	function nut() {
 		$('slide').src = this.src;
 	}
+    
+    function identity(arg){
+        return arg;
+    }
 
 	function equals(a, b) {
 		return a === b;
@@ -226,8 +230,10 @@
 		doMakeNow = ptL(invokeMethod, document, 'createElement'),
 		doText = deferPTL(invokeMethod, document, 'createTextNode'),
 		doTextNow = ptL(invokeMethod, document, 'createTextNode'),
+		doTextCB = curryL3(invokeMethod)(document)('createTextNode'),
 		prepend = curry2(ptL(invokeMethodBridgeCB(getResult), 'appendChild')),
 		append = ptL(invokeMethodBridgeCB(getResult), 'appendChild'),
+		appendCB = curryL3(invokeMethodBridgeCB(getResult))('appendChild'),
 		getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
 		getAttrs = curryL3(invokeMethodBridge)('getAttribute'),
 		getParentAttribute = ptL(invokeMethodBridgeCB(getParent), 'getAttribute'),
@@ -255,7 +261,10 @@
 		doEach = curryL3(invokeMethodBridgeCB(getResult))('forEach'),
 		doFindIndex = curryL3(invokeMethodBridgeCB(getResult))('findIndex'),
 		undoActiveCB = doEach(undoActive),
+        doElement = compose(doMake, identity),
+        doElementNow = compose(getResult, doElement),
 		doDiv = doMake('div'),
+		doButton = doMake('button'),
 		doAside = doMake('aside'),
 		doSection = doMake('section'),
 		doLink = doMake('a'),
@@ -380,8 +389,14 @@
 				previewer = ptL(replacePath, $$q('#slidepreview img')),
 				slideshower = curryL2(replacePath)($$('slide')),
 				displayer = curryL2(replacePath)($$('base')),
-                thumbs = Grouper.from($q('#navigation ul li', true));
-				
+                thumbs = Grouper.from($q('#navigation ul li', true)),
+                buttons = ['begin', 'back', 'play', 'forward', 'end'];
+            
+            /*buttons = buttons.map(doTextCB);
+            buttons = append(buttons[0]);
+            con(compose(getParent, buttons, doElement)('button'))
+            */
+                        				
 			compose(machSlide, getParent, machBase, getParent, machControls, machDiv)($('display'));
             
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
