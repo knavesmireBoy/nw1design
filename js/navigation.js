@@ -16,10 +16,10 @@
 	function nut() {
 		$('slide').src = this.src;
 	}
-    
-    function identity(arg){
-        return arg;
-    }
+
+	function identity(arg) {
+		return arg;
+	}
 
 	function equals(a, b) {
 		return a === b;
@@ -55,13 +55,13 @@
 
 	function doIterate(m, funs) {
 		return function(o) {
-            if(funs){
-			o = getResult(o);
-			funs[m]((f) => f(o));
+			if (funs) {
+				o = getResult(o);
+				funs[m]((f) => f(o));
+				return o;
+			}
 			return o;
-		}
-            return o;
-        };
+		};
 	}
 
 	function doIterateCB(m, coll, cb) {
@@ -264,8 +264,8 @@
 		doEach = curryL3(invokeMethodBridgeCB(getResult))('forEach'),
 		doFindIndex = curryL3(invokeMethodBridgeCB(getResult))('findIndex'),
 		undoActiveCB = doEach(undoActive),
-        doElement = compose(doMake, identity),
-        doElementNow = compose(getResult, doElement),
+		doElement = compose(doMake, identity),
+		doElementNow = compose(getResult, doElement),
 		doDiv = doMake('div'),
 		doButton = doMake('button'),
 		doAside = doMake('aside'),
@@ -295,8 +295,8 @@
 		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
 		sideBarListener = (e) => {
 			e.preventDefault();
-            //remove all active classes. will need to stop slideshow
-            toArray($q('.active', true)).forEach((el) => el.classList.remove('active'));
+			//remove all active classes. will need to stop slideshow
+			toArray($q('.active', true)).forEach((el) => el.classList.remove('active'));
 			if (matchLink(e)) {
 				headers.execute(getTarget(e), true);
 			}
@@ -336,14 +336,89 @@
 					this.execute(this.grp[i]);
 				}
 			}
-            /*
-			function groupFrom(el) {
-				var getUL = curry3(getTargetNode)('nextSibling')(/ul/i),
-					grp = compose(toArray, curry2(getter)('children'), getUL)(el);
-				this.grp = grp;
-				this.getCurrent();
-			}
-            */
+            
+            let $recur = (function () {
+                
+                function doRecur() {
+					player.inc();
+					$recur.t = window.requestAnimationFrame($recur.execute.bind($recur));
+				}
+
+				function doOpacity(flag) {
+					var slide = $('slide'),
+						key,
+						val;
+					if (slide) {
+						val = flag ? 1 : ($recur.i / 100);
+						slide.style.opacity = val;
+					}
+				}
+
+				function doSlide() {
+					var s = $('slide'),
+						b = $('base');
+					s.src = b.src;
+					s.onload = function() {
+                       b.src = looper.forward().value;
+					}
+					b.onload = function() {
+                        doRecur();
+					}
+				}
+                
+                
+            let player = (function() {
+                    
+				
+				return {
+					validate: function() {
+						//utils.report($recur.i);
+						return $recur.i <= -1;
+					},
+					inc: function() {
+						$recur.i -= 1;
+					},
+					reset: function() {
+						$recur.i = 150;
+						doSlide();
+						doOpacity();
+						//doBase();
+						//$controlbar.execute();
+					}
+				};
+			}());
+                
+                
+                
+				return {
+					execute: function() {
+						if (player.validate()) {
+							player.reset();
+						} else {
+							doOpacity();
+							doRecur();
+						}
+					},
+					undo: function(flag) {
+						doOpacity(flag);
+						window.cancelAnimationFrame($recur.t);
+						//$controlbar.set(do_static_factory());
+						$recur.t = flag; //either set to undefined(forward/back/exit) or null(pause)
+						if (!isNaN(flag)) { //is null
+							//doMakePause(); //checks path to pause pic
+						}
+					}
+				};
+                
+                
+                
+                
+			}());
+            
+			
+			
+            $recur.i = 150;
+            
 			compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doSection()), prepend(contentarea), doAside)();
 			config.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
 
@@ -393,39 +468,20 @@
 				previewer = ptL(replacePath, $$q('#slidepreview img')),
 				slideshower = curryL2(replacePath)($$('slide')),
 				displayer = curryL2(replacePath)($$('base')),
-                thumbs = Grouper.from($q('#navigation ul li', true)),
-                addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(looper.forward.bind(looper)).wrap(pass),
-                buttons = ['begin', 'back', 'play', 'forward', 'end'];
-            
-			compose( prepend($$('controls')), addPlayClick, getParent, curry2(invoke)(doMakeNow('button')), append, doText('play'), machSlide, getParent, machBase, getParent, machControls, machDiv)($('display'));
-            
+				thumbs = Grouper.from($q('#navigation ul li', true)),
+				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))($recur.execute.bind($recur)).wrap(pass),
+				buttons = ['begin', 'back', 'play', 'forward', 'end'];
+			compose(prepend($$('controls')), addPlayClick, getParent, curry2(invoke)(doMakeNow('button')), append, doText('play'), machSlide, getParent, machBase, getParent, machControls, machDiv)($('display'));
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 			broadcaster.attach(headers.setFinder.bind(headers));
 			broadcaster.attach(thumbs.setFinder.bind(thumbs));
-            
 			broadcaster.attach(previewer);
 			broadcaster.notify(src);
 			looper.build(getLinks(), incrementer, []);
 			looper.attach(displayer);
 			looper.attach(slideshower);
 			looper.attach(broadcaster.notify.bind(broadcaster));
-            /*
-			setTimeout(function() {
-				looper.forward();
-			}, 2222);
-			setTimeout(function() {
-				looper.forward();
-			}, 3333);
-			setTimeout(function() {
-				looper.forward();
-			}, 4444);
-			setTimeout(function() {
-				looper.forward();
-			}, 5555);
-			setTimeout(function() {
-				looper.forward();
-			}, 6666);
-            */
+		
 			//slide 100 to 0
 			//swap slide src to base src
 			//opacity to 100
