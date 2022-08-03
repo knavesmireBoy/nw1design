@@ -198,7 +198,10 @@
 		curryL3 = fun => a => b => c => fun(a, b, c),
 		curryL33 = fun => a => b => c => () => fun(a, b, c),
 		invoke = (f, v) => f(v),
-		invokeMethod = (o, m, v) => o[m](v),
+		invokeMethod = (o, m, v) => {
+           // console.log(o,m,v)
+           return o[m](v);
+        },
 		lazyVal = (m, p, o, v) => o[m](p, v),
 		invokeMethodBridge = (m, v, o) => {
 			o = getResult(o);
@@ -462,8 +465,13 @@
 				displayer = curryL2(replacePath)($$('base')),
 				thumbs = Grouper.from($q('#navigation ul li', true)),
 				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))($recur.execute.bind($recur)).wrap(pass),
-				buttons = ['begin', 'back', 'play', 'forward', 'end'];
-			compose(prepend($$('controls')), addPlayClick, getParent, curry2(invoke)(doMakeNow('button')), append, doText('play'), machSlide, getParent, machBase, getParent, machControls, machDiv)($('display'));
+                andButtons = compose(prepend($$('controls')), getParent, curry2(invoke)(doMakeNow('button')), append);
+                                     //, 
+            //['begin', 'back', 'play', 'forward', 'end'].map(doTextCB).map(andButtons)
+            
+            compose(andButtons, doText('play'), machSlide, getParent, machBase, getParent, addPlayClick,  machControls, machDiv)($('display'));
+            //['begin', 'back', 'play', 'forward', 'end'].map(doText).map(andButtons);
+            
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 			broadcaster.attach(headers.setFinder.bind(headers));
 			broadcaster.attach(thumbs.setFinder.bind(thumbs));
