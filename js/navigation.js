@@ -337,7 +337,7 @@
 				}
 			}
             
-            let $recur = (function () {
+            let $recur = (function (count, dur) {
                 
                 function doRecur() {
 					player.inc();
@@ -349,7 +349,7 @@
 						key,
 						val;
 					if (slide) {
-						val = flag ? 1 : ($recur.i / 100);
+						val = flag ? 1 : ($recur.i / dur);
 						slide.style.opacity = val;
 					}
 				}
@@ -359,38 +359,32 @@
 						b = $('base');
 					s.src = b.src;
 					s.onload = function() {
-                       b.src = looper.forward().value;
-					}
+                        doOpacity();
+                        b.src = looper.forward().value;
+                    }
 					b.onload = function() {
                         doRecur();
 					}
 				}
-                
                 
             let player = (function() {
                     
 				
 				return {
 					validate: function() {
-						//utils.report($recur.i);
 						return $recur.i <= -1;
 					},
 					inc: function() {
 						$recur.i -= 1;
 					},
 					reset: function() {
-						$recur.i = 150;
+						$recur.i = count;
 						doSlide();
-						doOpacity();
-						//doBase();
-						//$controlbar.execute();
 					}
 				};
 			}());
                 
-                
-                
-				return {
+                return {
 					execute: function() {
 						if (player.validate()) {
 							player.reset();
@@ -413,11 +407,11 @@
                 
                 
                 
-			}());
+			}(150, 100));
             
 			
 			
-            $recur.i = 150;
+            $recur.i = 1;
             
 			compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doSection()), prepend(contentarea), doAside)();
 			config.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));

@@ -673,7 +673,7 @@ main aside section a {
 }
 
 img#slide {
-  margin-left: -120%;
+  margin-left: -100%;
   float: left;
   border: solid 1px blue;
 }
