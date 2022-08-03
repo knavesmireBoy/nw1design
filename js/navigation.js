@@ -473,14 +473,12 @@
                 var andButtonsCB2 = compose(getParent, curry2(invoke)(doMakeNow('button')), appendCB);
             
             compose(andButtons, doTextCB('play'), machSlide, getParent, machBase, getParent, addPlayClick,  machControls, machDiv)($('display'));
-                             
-            var t = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow);
-            var b = compose(prepend, doMake)('button');
-            var c = compose(getParent, b);
-            var d = t.map(c);
-            var e = d.map(appendCB);
-            var i = curry2(invoke)($('controls'));
-            e.map(i)
+            var insert = curry2(invoke)($('controls'));                
+            var text = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow);
+            var buttons = compose(getParent, compose(prepend, doMake)('button'));
+            text.map(buttons).map(appendCB).map(insert);
+            
+
             
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 			broadcaster.attach(headers.setFinder.bind(headers));
