@@ -374,6 +374,7 @@
 			var getLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
 				src = compose(getAttrs('href'), getZero, $$q('#navigation ul li a', true))(),
 				machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
+				machControls = prepare2Append(doDiv, prepAttrs([setId], ['controls'])),
 				machBase = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
 				machSlide = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide'])),
 				previewer = ptL(replacePath, $$q('#slidepreview img')),
@@ -381,7 +382,7 @@
 				displayer = curryL2(replacePath)($$('base')),
                 thumbs = Grouper.from($q('#navigation ul li', true));
 				
-			compose(machSlide, getParent, machBase, machDiv)($('display'));
+			compose(machSlide, getParent, machBase, getParent, machControls, machDiv)($('display'));
             
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 			broadcaster.attach(headers.setFinder.bind(headers));
