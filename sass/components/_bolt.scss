@@ -569,7 +569,9 @@ img#slide {
     margin-left: -100%;
     float: left;
     border: solid 1px blue;
-    //display: none;
+    visibility: hidden;
 }
-
+.inplay img#slide {
+    visibility: visible;
+}
 //images/buttons/quote.jpg

@@ -676,6 +676,11 @@ img#slide {
   margin-left: -100%;
   float: left;
   border: solid 1px blue;
+  visibility: hidden;
+}
+
+.inplay img#slide {
+  visibility: visible;
 }
 
 /*# sourceMappingURL=main.css.map */

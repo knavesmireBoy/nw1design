@@ -348,6 +348,7 @@
 					var slide = $('slide'),
 						key,
 						val;
+                    
 					if (slide) {
 						val = flag ? 1 : ($recur.i / dur);
 						slide.style.opacity = val;
@@ -362,8 +363,10 @@
 					var s = $('slide'),
 						b = $('base');
 					doPic(s, b.src);
+                    
 					s.onload = function() {
                         doOpacity();
+                        this.parentNode.classList.add('inplay') 
                         doPic(b, looper.forward().value);
                     }
 					b.onload = function() {
@@ -407,7 +410,7 @@
 						}
 					}
 				};
-			}(150, 100));
+			}(300, 100));
             
             $recur.i = 50;
             
@@ -471,8 +474,12 @@
 			broadcaster.notify(src);
 			looper.build(getLinks(), incrementer, []);
 			looper.attach(displayer);
-			looper.attach(slideshower);
+			//looper.attach(slideshower);
 			looper.attach(broadcaster.notify.bind(broadcaster));
+            
+            setTimeout(function(){
+                looper.forward();
+            }, 2222)
 		
 			//slide 100 to 0
 			//swap slide src to base src
