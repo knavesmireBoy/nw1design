@@ -478,8 +478,19 @@
                  
           var t = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow);
           var b = compose(prepend, doMake)('button');
+            var c = compose(getParent, b);
             
-            con(compose(getParent, b)(t[2]))
+            var d = t.map(c);
+            
+            
+           
+            var e = d.map(appendCB);
+            
+            var i = curry2(invoke)($('controls'));
+            
+            e.map(i)
+            
+           //document.body.appendChild(d[4])
             
            /* function nuts(arr, anc){ return arr.map((el)=> anc(el)) }
         
