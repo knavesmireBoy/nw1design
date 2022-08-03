@@ -353,14 +353,18 @@
 						slide.style.opacity = val;
 					}
 				}
+                
+                function doPic(pic, src){
+                    pic.src = src;
+                }
 
 				function doSlide() {
 					var s = $('slide'),
 						b = $('base');
-					s.src = b.src;
+					doPic(s, b.src);
 					s.onload = function() {
                         doOpacity();
-                        b.src = looper.forward().value;
+                        doPic(b, looper.forward().value);
                     }
 					b.onload = function() {
                         doRecur();
@@ -403,15 +407,9 @@
 						}
 					}
 				};
-                
-                
-                
-                
 			}(150, 100));
             
-			
-			
-            $recur.i = 1;
+            $recur.i = 50;
             
 			compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doSection()), prepend(contentarea), doAside)();
 			config.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
