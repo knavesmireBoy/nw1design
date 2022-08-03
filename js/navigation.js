@@ -468,17 +468,11 @@
 				displayer = curryL2(replacePath)($$('base')),
 				thumbs = Grouper.from($q('#navigation ul li', true)),
 				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))($recur.execute.bind($recur)).wrap(pass),
-                andButtons = compose(prepend($$('controls')), getParent, curry2(invoke)(doMakeNow('button')), append),
-                andButtonsCB1 = compose(getParent, curry2(invoke)(doMakeNow('button')), appendCB);
-                var andButtonsCB2 = compose(getParent, curry2(invoke)(doMakeNow('button')), appendCB);
+                text = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
+                buttons = compose(getParent, compose(prepend, doMake)('button'))
             
-            compose(andButtons, doTextCB('play'), machSlide, getParent, machBase, getParent, addPlayClick,  machControls, machDiv)($('display'));
-            var insert = curry2(invoke)($('controls'));                
-            var text = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow);
-            var buttons = compose(getParent, compose(prepend, doMake)('button'));
-            text.map(buttons).map(appendCB).map(insert);
-            
-
+            compose(machSlide, getParent, machBase, getParent, addPlayClick,  machControls, machDiv)($('display'));
+            text.map(buttons).map(appendCB).map(curry2(invoke)($('controls')));
             
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 			broadcaster.attach(headers.setFinder.bind(headers));
