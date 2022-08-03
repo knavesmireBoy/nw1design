@@ -394,14 +394,10 @@
 				slideshower = curryL2(replacePath)($$('slide')),
 				displayer = curryL2(replacePath)($$('base')),
                 thumbs = Grouper.from($q('#navigation ul li', true)),
+                addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(looper.forward.bind(looper)).wrap(pass),
                 buttons = ['begin', 'back', 'play', 'forward', 'end'];
             
-            /*buttons = buttons.map(doTextCB);
-            buttons = append(buttons[0]);
-            con(compose(getParent, buttons, doElement)('button'))
-            */
-                        				
-			compose(prepend($$('controls')), doMake('button'), machSlide, getParent, machBase, getParent, machControls, machDiv)($('display'));
+			compose( prepend($$('controls')), addPlayClick, getParent, curry2(invoke)(doMakeNow('button')), append, doText('play'), machSlide, getParent, machBase, getParent, machControls, machDiv)($('display'));
             
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 			broadcaster.attach(headers.setFinder.bind(headers));
@@ -413,6 +409,7 @@
 			looper.attach(displayer);
 			looper.attach(slideshower);
 			looper.attach(broadcaster.notify.bind(broadcaster));
+            /*
 			setTimeout(function() {
 				looper.forward();
 			}, 2222);
@@ -428,6 +425,7 @@
 			setTimeout(function() {
 				looper.forward();
 			}, 6666);
+            */
 			//slide 100 to 0
 			//swap slide src to base src
 			//opacity to 100
