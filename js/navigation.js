@@ -55,10 +55,13 @@
 
 	function doIterate(m, funs) {
 		return function(o) {
+            if(funs){
 			o = getResult(o);
 			funs[m]((f) => f(o));
 			return o;
-		};
+		}
+            return o;
+        };
 	}
 
 	function doIterateCB(m, coll, cb) {
@@ -386,6 +389,7 @@
 				machControls = prepare2Append(doDiv, prepAttrs([setId], ['controls'])),
 				machBase = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
 				machSlide = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide'])),
+				//beButton = prepare2Append(doMake('button')),
 				previewer = ptL(replacePath, $$q('#slidepreview img')),
 				slideshower = curryL2(replacePath)($$('slide')),
 				displayer = curryL2(replacePath)($$('base')),
@@ -397,7 +401,7 @@
             con(compose(getParent, buttons, doElement)('button'))
             */
                         				
-			compose(machSlide, getParent, machBase, getParent, machControls, machDiv)($('display'));
+			compose(prepend($$('controls')), doMake('button'), machSlide, getParent, machBase, getParent, machControls, machDiv)($('display'));
             
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 			broadcaster.attach(headers.setFinder.bind(headers));
