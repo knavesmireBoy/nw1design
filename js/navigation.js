@@ -38,11 +38,11 @@
 	}
 	/* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
 	function doPartial(flag) {
-		return function p(f, ...vs) {
-			if (f.length === vs.length) {
-				return flag ? () => f(...vs) : f(...vs);
+		return function p(f, ...args) {
+			if (f.length === args.length) {
+				return flag ? () => f(...args) : f(...args);
 			}
-			return (...rest) => p(f, ...vs, ...rest);
+			return (...rest) => p(f, ...args, ...rest);
 		};
 	}
 
@@ -233,11 +233,14 @@
 		getTextFromTarget = compose(getText, getTarget),
 		getNodeNameTarget = compose(getText, getTarget),
 		doMake = deferPTL(invokeMethod, document, 'createElement'),
+		doMakeCB = curryL3(invokeMethod)(document)('createElement'),
 		doMakeNow = ptL(invokeMethod, document, 'createElement'),
 		doText = deferPTL(invokeMethod, document, 'createTextNode'),
 		doTextNow = ptL(invokeMethod, document, 'createTextNode'),
-		doTextCB = curryL3(invokeMethod)(document)('createTextNode'),
+		doTextCB = curryL33(invokeMethod)(document)('createTextNode'),
+		doTextCBNow = curryL3(invokeMethod)(document)('createTextNode'),
 		prepend = curry2(ptL(invokeMethodBridgeCB(getResult), 'appendChild')),
+		prependCB = curry2(curryL3(invokeMethodBridgeCB(getResult))('appendChild')),
 		append = ptL(invokeMethodBridgeCB(getResult), 'appendChild'),
 		appendCB = curryL3(invokeMethodBridgeCB(getResult))('appendChild'),
 		getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
@@ -465,12 +468,32 @@
 				displayer = curryL2(replacePath)($$('base')),
 				thumbs = Grouper.from($q('#navigation ul li', true)),
 				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))($recur.execute.bind($recur)).wrap(pass),
-                andButtons = compose(prepend($$('controls')), getParent, curry2(invoke)(doMakeNow('button')), append);
-                                     //, 
-            //['begin', 'back', 'play', 'forward', 'end'].map(doTextCB).map(andButtons)
+                andButtons = compose(prepend($$('controls')), getParent, curry2(invoke)(doMakeNow('button')), append),
+                andButtonsCB1 = compose(getParent, curry2(invoke)(doMakeNow('button')), appendCB);
+                var andButtonsCB2 = compose(getParent, curry2(invoke)(doMakeNow('button')), appendCB);
             
-            compose(andButtons, doText('play'), machSlide, getParent, machBase, getParent, addPlayClick,  machControls, machDiv)($('display'));
-            //['begin', 'back', 'play', 'forward', 'end'].map(doText).map(andButtons);
+            compose(andButtons, doTextCB('play'), machSlide, getParent, machBase, getParent, addPlayClick,  machControls, machDiv)($('display'));
+            
+            
+                 
+          var t = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow);
+          var b = compose(prepend, doMake)('button');
+            
+            con(compose(getParent, b)(t[2]))
+            
+           /* function nuts(arr, anc){ return arr.map((el)=> anc(el)) }
+        
+            
+            con(b[0]($('controls')))
+            */
+            
+            
+            
+            //document.body.append(b.append(t[1]))
+           
+           //var res1 = nuts(t, b);
+     //    nuts(res1, append($('controls')))
+       
             
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
 			broadcaster.attach(headers.setFinder.bind(headers));
