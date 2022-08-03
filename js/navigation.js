@@ -374,9 +374,7 @@
 					}
 				}
                 
-            let player = (function() {
-                    
-				
+            let player = (function() {				
 				return {
 					validate: function() {
 						return $recur.i <= -1;
@@ -390,7 +388,6 @@
 					}
 				};
 			}());
-                
                 return {
 					execute: function() {
 						if (player.validate()) {
