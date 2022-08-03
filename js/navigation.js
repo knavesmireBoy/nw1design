@@ -476,11 +476,11 @@
 			looper.attach(displayer);
 			//looper.attach(slideshower);
 			looper.attach(broadcaster.notify.bind(broadcaster));
-            
+            /*
             setTimeout(function(){
                 looper.forward();
             }, 2222)
-		
+		*/
 			//slide 100 to 0
 			//swap slide src to base src
 			//opacity to 100
