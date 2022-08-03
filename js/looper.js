@@ -92,7 +92,15 @@ nW1.Looper = function() {
 				return this.back(true);
 			}
 			this.position = this.advance(this.position);
-            this.notify(this.get());
+            /*
+            when slidehow is playing the sidebar column will be receiving the src of the base pic
+            which won't correspond to the current visible (slide) pic in the main display area
+            this is the fix...
+            needs to be overwitten, or wrapped
+            */
+            var member = document.querySelector('.inplay') ? this.group.members[this.position-1] : this.get();
+            this.notify(member);
+            
 			return this.status();
 		}
 		get(m = 'value') {
