@@ -683,4 +683,12 @@ img#slide {
   visibility: visible;
 }
 
+.swap img#base {
+  display: none;
+}
+
+.swap img#slide {
+  margin-left: 0%;
+}
+
 /*# sourceMappingURL=main.css.map */

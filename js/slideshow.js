@@ -1,10 +1,25 @@
 /*jslint nomen: true */
 /*global window: false */
-/*global nW1: false */
-if (!window.nW1) {
-	window.nW1 = {};
-}
-const $recur = (function(count, dur) {
+/*global document: false */
+/*global looper: false */
+/*global $: false */
+/*global $$q: false */
+var $recur = (function(count, dur, player) {
+    function test() {
+		return [$('base'), $('slide')].map(function(img) {
+			return img.height;
+		});
+	}
+
+	function doSwap() {
+		var coll = test(),
+			bool = coll[0] === coll[1],
+			body = document.body.classList,
+			m = bool ? 'remove' : 'add';
+		body[m]('swap');
+		return !bool;
+	}
+
 	function doRecur() {
 		player.inc();
 		$recur.t = window.requestAnimationFrame($recur.execute.bind($recur));
@@ -12,7 +27,6 @@ const $recur = (function(count, dur) {
 
 	function doOpacity(flag) {
 		var slide = $('slide'),
-			key,
 			val;
 		if (slide) {
 			val = flag ? 1 : ($recur.i / dur);
@@ -34,23 +48,65 @@ const $recur = (function(count, dur) {
 			doPic(b, looper.forward().value);
 		}
 		b.onload = function() {
-			doRecur();
+			//doRecur();
 		}
 	}
-	let player = (function() {
-		return {
-			validate: function() {
-				return $recur.i <= -1;
+	var playmaker = (function() {
+		var setPlayer = function(arg) {
+				player = playmaker(arg);
+				$recur.execute();
 			},
-			inc: function() {
-				$recur.i -= 1;
+            doPlay = compose(curry2(getter)('value'), looper.forward.bind(looper)),
+			//doBase = ptL(invoke, loadImageBridge, doPlay, 'base', setPlayer, doSwap),
+			doBase = function(){
+                setPlayer(doSwap());
+               // $('base').src = doPlay();
+            },
+			swapping = $$q('.swap'),
+			fadeOut = {
+				validate: function() {
+					return $recur.i <= -15.5;
+				},
+				inc: function() {
+					$recur.i -= 1;
+				},
+				reset: function() {
+					doSlide();
+					setPlayer(swapping());
+				}
 			},
-			reset: function() {
-				$recur.i = count;
-				doSlide();
-			}
+			fadeIn = {
+				validate: function() {
+					return $recur.i >= 134.5;
+				},
+				inc: function() {
+					$recur.i += 1;
+				},
+				reset: function() {
+					doBase();
+				}
+			},
+			fade = {
+				validate: function() {
+					return $recur.i <= -1;
+				},
+				inc: function() {
+					$recur.i -= 1;
+				},
+				reset: function() {
+					$recur.i = count;
+                    doSwap();
+					doSlide();
+                    doBase();
+				}
+			},
+            actions = [fadeIn, fadeOut];
+		return function(flag) {
+			return flag ? actions.reverse()[0] : fade;
+			//return fade;
 		};
 	}());
+	player = playmaker();
 	return {
 		execute: function() {
 			if (player.validate()) {
@@ -70,5 +126,5 @@ const $recur = (function(count, dur) {
 			}
 		}
 	};
-}(300, 100));
+}(100, 100, {}));
 $recur.i = 50;
