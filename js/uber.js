@@ -5,6 +5,42 @@ if (!window.nW1) {
 	window.nW1 = {};
 }
 
+function random (n = 10) {
+    return Math.floor(Math.random() * n);
+}
+
+	function doPartial(flag) {
+		return function p(f, ...args) {
+			if (f.length === args.length) {
+				return flag ? () => f(...args) : f(...args);
+			}
+			return (...rest) => p(f, ...args, ...rest);
+		};
+	}
+
+const thunk = (f, ...args) => f(...args);
+
+	//note a function that ignores any state of champ or contender will return the first element if true and last if false
+	function best(fun, coll, arg) {
+		fun = arg ? curryL2(fun)(arg) : fun;
+		return toArray(coll).reduce((champ, contender) => fun(champ, contender) ? champ : contender);
+	}
+
+function doAlternate() {
+		function alternate(i, n) {
+			return function () {
+				i = (i += 1) % n;
+				return i;
+			};
+		}
+		return function (actions, ...args) {
+			var f = curryL2(thunk)(alternate(0, 2));
+			return function () {
+				return best(f, [curryL2(actions[0])(...args), curryL2(actions[1])(...args)])();
+			};
+		};
+	}
+
 function toArray(coll, cb = () => true) {
 		return Array.prototype.slice.call(coll).filter(cb);
 	}
@@ -37,14 +73,7 @@ function toArray(coll, cb = () => true) {
 		return compose(ptL(modulo, n), increment);
 	}
 	/* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
-	function doPartial(flag) {
-		return function p(f, ...args) {
-			if (f.length === args.length) {
-				return flag ? () => f(...args) : f(...args);
-			}
-			return (...rest) => p(f, ...args, ...rest);
-		};
-	}
+
 
 	function getResult(o) {
 		if (typeof o === 'function') {

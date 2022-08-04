@@ -13,3 +13,16 @@ class Publisher {
 			return new Publisher(h);
 		}
 	}
+
+class State {
+    constructor($command) {
+			this.command = $command
+		}
+    execute () {
+        this.command.execute();
+        
+    }
+    undo () {
+        this.command.undo();
+    }
+}

@@ -31,6 +31,20 @@
 		}
 	}
 
+function route(e) {
+    const clear = $recur.undo.bind($recur),
+          pause = $recur.undo.bind($recur, null),
+          play = $recur.execute.bind($recur),
+          alt = doAlternate()([play, pause]);
+    
+    if(compose(curry3(invokeMethod)(/play/i)('match'), getText, getTarget)(e)){
+       $recur.execute();
+       }
+    else {
+        $recur.undo();
+    }
+}
+
 	function prepareHeadings(ul) {
 		return function(el, i, els) {
 			var n = Object.values(config[i])[0],
@@ -85,7 +99,6 @@ let headers = {};
 			//post creation of sidebar
             headers = Grouper.from(headings());
 			const getMyLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
-				//$recur = $recurFactory(300, 100),
 				src = compose(getAttrs('href'), getZero, $$q('#navigation ul li a', true))(),
 				machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
 				machControls = prepare2Append(doDiv, prepAttrs([setId], ['controls'])),
@@ -95,9 +108,10 @@ let headers = {};
 				slideshower = curryL2(replacePath)($$('slide')),
 				displayer = curryL2(replacePath)($$('base')),
 				thumbs = Grouper.from($q('#navigation ul li', true)),
-				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))($recur.execute.bind($recur)).wrap(pass),
+				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(route).wrap(pass),
 				text = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
 				buttons = compose(getParent, compose(prepend, doMake)('button'));
+            
 			compose(machSlide, getParent, machBase, getParent, addPlayClick, machControls, machDiv)($('display'));
 			text.map(buttons).map(appendCB).map(curry2(invoke)($('controls')));
 			headers.setSearch(headers_search_strategy.bind(headers));
