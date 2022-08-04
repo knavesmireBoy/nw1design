@@ -84,7 +84,7 @@
 			//post creation of sidebar
 			const headers = Grouper.from(headings()),
 				getMyLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
-				$recur = $recurFactory(300, 100),
+				//$recur = $recurFactory(300, 100),
 				src = compose(getAttrs('href'), getZero, $$q('#navigation ul li a', true))(),
 				machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
 				machControls = prepare2Append(doDiv, prepAttrs([setId], ['controls'])),
@@ -97,7 +97,7 @@
 				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))($recur.execute.bind($recur)).wrap(pass),
 				text = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
 				buttons = compose(getParent, compose(prepend, doMake)('button'));
-			compose(machSlide, getParent, machBase, getParent, /*addPlayClick,*/ machControls, machDiv)($('display'));
+			compose(machSlide, getParent, machBase, getParent, addPlayClick, machControls, machDiv)($('display'));
 			text.map(buttons).map(appendCB).map(curry2(invoke)($('controls')));
 			headers.setSearch(headers_search_strategy.bind(headers));
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
