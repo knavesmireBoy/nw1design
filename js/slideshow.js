@@ -16,6 +16,7 @@ var $recur = (function(count, dur, player) {
 			bool = coll[0] === coll[1],
 			body = document.body.classList,
 			m = bool ? 'remove' : 'add';
+        con(m)
 		body[m]('swap');
 		return !bool;
 	}
@@ -47,9 +48,6 @@ var $recur = (function(count, dur, player) {
 			this.parentNode.classList.add('inplay')
 			doPic(b, looper.forward().value);
 		}
-		b.onload = function() {
-			//doRecur();
-		}
 	}
 	var playmaker = (function() {
 		var setPlayer = function(arg) {
@@ -59,8 +57,8 @@ var $recur = (function(count, dur, player) {
             doPlay = compose(curry2(getter)('value'), looper.forward.bind(looper)),
 			//doBase = ptL(invoke, loadImageBridge, doPlay, 'base', setPlayer, doSwap),
 			doBase = function(){
-                setPlayer(doSwap());
-               // $('base').src = doPlay();
+             // setPlayer(doSwap());
+              $('base').src = doPlay();
             },
 			swapping = $$q('.swap'),
 			fadeOut = {
@@ -71,8 +69,8 @@ var $recur = (function(count, dur, player) {
 					$recur.i -= 1;
 				},
 				reset: function() {
-					doSlide();
-					setPlayer(swapping());
+                    doSlide();
+					//setPlayer(swapping());
 				}
 			},
 			fadeIn = {
@@ -83,6 +81,7 @@ var $recur = (function(count, dur, player) {
 					$recur.i += 1;
 				},
 				reset: function() {
+                    setPlayer();
 					doBase();
 				}
 			},
@@ -95,9 +94,9 @@ var $recur = (function(count, dur, player) {
 				},
 				reset: function() {
 					$recur.i = count;
-                    doSwap();
 					doSlide();
-                    doBase();
+                    setPlayer();
+                    
 				}
 			},
             actions = [fadeIn, fadeOut];
