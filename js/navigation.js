@@ -36,14 +36,16 @@ const factory = function(){
     return alt([$recur.execute.bind($recur), $recur.undo.bind($recur, null)]);
 }
 var alt = null;
+
 function route(e) {
     alt = alt || factory();
-    if(compose(curry3(invokeMethod)(/play/i)('match'), getText, getTarget)(e)){
+    var t = compose(curry3(invokeMethod)(/play/i)('match'), getText, getTarget)(e);
+    if(t){
         alt();
        }
     else {
         alt = factory();
-        $recur.undo();
+        $recur.undo(undefined);
     }
 }
 
