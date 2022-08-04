@@ -121,5 +121,5 @@ var $recur = (function(count, dur, player) {
 			}
 		}
 	};
-}(155, 50, {}));
+}(300, 10, {}));
 $recur.i = 50;

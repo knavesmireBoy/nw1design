@@ -563,28 +563,14 @@ main aside section {
 }
 #display img {
     float: left;
-    border: solid 1px red;
 }
 img#slide {
     margin-left: -100%;
     float: left;
-    border: solid 1px blue;
     visibility: hidden;
 }
 .inplay img#slide {
     visibility: visible;
-}
-/*
-.swap img#base {
-	display: none;
-}
-.swap img#slide {
-	margin-left: 0%;
-}
-*/
-body.swap {
-    background-color: indianred;
-    background-image: none;
 }
 
 body.swap img#base {
