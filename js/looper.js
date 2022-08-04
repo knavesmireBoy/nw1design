@@ -98,7 +98,9 @@ nW1.Looper = function() {
             this is the fix...
             needs to be overwitten, or wrapped
             */
-            var member = document.querySelector('.inplay') ? this.group.members[this.position-1] : this.get();
+           var i = this.position-1,
+               j = (i === -1) ? 0 : i,
+               member = document.querySelector('.inplay') ? this.group.members[j] : this.get();
             this.notify(member);
             
 			return this.status();

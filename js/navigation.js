@@ -59,6 +59,7 @@
 			}
 		};
 	}
+let headers = {};
 	const prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
 		prepare2Append = (doEl, doAttrs) => compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)(),
 		doDiv = doMake('div'),
@@ -82,8 +83,8 @@
 			compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();
 			config.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
 			//post creation of sidebar
-			const headers = Grouper.from(headings()),
-				getMyLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
+            headers = Grouper.from(headings());
+			const getMyLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
 				//$recur = $recurFactory(300, 100),
 				src = compose(getAttrs('href'), getZero, $$q('#navigation ul li a', true))(),
 				machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),

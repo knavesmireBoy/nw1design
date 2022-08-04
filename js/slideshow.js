@@ -3,6 +3,7 @@
 /*global document: false */
 /*global looper: false */
 /*global $: false */
+/*global $$: false */
 /*global $$q: false */
 var $recur = (function(count, dur, player) {
     function test() {
@@ -44,13 +45,16 @@ var $recur = (function(count, dur, player) {
 		pic.src = src;
 	}
 
-	function doSlide() {
+	function doSlide(flag) {
 		var s = $('slide'),
 			b = $('base');
 		doPic(s, b.src);
 		s.onload = function() {
 			doOpacity();
 			this.parentNode.classList.add('inplay');
+            if(flag) {
+                doPic(b, looper.forward().value);
+            }
 		}
         b.onload = function(){
           setPlayer(doSwap());
@@ -66,8 +70,8 @@ var $recur = (function(count, dur, player) {
 					$recur.i -= 1;
 				},
 				reset: function() {
-                  doSlide();
-                setPlayer(swapping());
+                    doSlide();
+                    setPlayer(swapping());
 				}
 			},
 			fadeIn = {
@@ -78,7 +82,6 @@ var $recur = (function(count, dur, player) {
 					$recur.i += 1;
 				},
 				reset: function() {
-                    //doBase();
                     doPic($('base'), looper.forward().value);
 				}
 			},
@@ -91,14 +94,12 @@ var $recur = (function(count, dur, player) {
 				},
 				reset: function() {
 					$recur.i = count;
-					doSlide();
-					doPic($('base'), looper.forward().value);
+					doSlide(true);
 				}
 			},
             actions = [fadeIn, fadeOut];
 		return function(flag) {
 			return flag ? actions.reverse()[0] : fade;
-			//return fade;
 		};
 	}());
 	player = playmaker();
@@ -121,5 +122,5 @@ var $recur = (function(count, dur, player) {
 			}
 		}
 	};
-}(300, 10, {}));
+}(99, 20, {}));
 $recur.i = 50;
