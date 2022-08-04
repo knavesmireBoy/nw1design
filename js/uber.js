@@ -17,10 +17,6 @@ function toArray(coll, cb = () => true) {
 		};
 	}
 
-	function nut() {
-		$('slide').src = this.src;
-	}
-
 	function identity(arg) {
 		return arg;
 	}
@@ -256,7 +252,6 @@ const looper = nW1.Looper(),
 		onLoad = curry2(ptL(lazyVal, 'addEventListener', 'load')),
 		addImgLoad = onLoad(imageLoad).wrap(pass),
 		reset_opacity = compose(curry3(setter)(3)('opacity'), curry22(getter)('style')($$('slide'))),
-		doNut = onLoad(nut).wrap(pass),
 		doResetOpacity = onLoad(reset_opacity).wrap(pass),
 		setSrc = curry2(setAttribute('src')),
 		setAlt = curry2(setAttribute('alt')),
@@ -273,4 +268,12 @@ const looper = nW1.Looper(),
 		doFindIndex = curryL3(invokeMethodBridgeCB(getResult))('findIndex'),
 		undoActiveCB = doEach(undoActive),
 		doElement = compose(doMake, identity),
-		doElementNow = compose(getResult, doElement);
+		doElementNow = compose(getResult, doElement),
+      getZero = curry2(getter)(0),
+		getZeroPlus = curry2(getter)(10),
+            getLength = curry2(getter)('length'),
+		getKey = compose(getZero, curryL3(invokeMethod)(window.Object)('keys')),
+		getKeys = compose(doTextNow, getKey),
+		getValues = compose(getZero, curryL3(invokeMethod)(window.Object)('values')),
+		doRender = prepend(document.body),
+    incrementer = compose(doInc, getLength);
