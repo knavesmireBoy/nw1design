@@ -36,7 +36,7 @@ var $recur = (function(count, dur, player) {
 		var slide = $('slide'),
 			val;
 		if (slide) {
-			val = flag ? 1 : ($recur.i / dur);
+			val = flag || ($recur.i / dur);
 			slide.style.opacity = val;
 		}
 	}
@@ -113,7 +113,8 @@ var $recur = (function(count, dur, player) {
 			}
 		},
 		undo: function(flag) {
-			doOpacity(flag);
+            var o = !isNaN(flag) ? .5 : 1;
+			doOpacity(o);
 			window.cancelAnimationFrame($recur.t);
 			//$controlbar.set(do_static_factory());
 			$recur.t = flag; //either set to undefined(forward/back/exit) or null(pause)

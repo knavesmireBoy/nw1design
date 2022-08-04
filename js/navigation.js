@@ -31,16 +31,18 @@
 		}
 	}
 
+const factory = function(){
+    var alt = doAlternate();
+    return alt([$recur.execute.bind($recur), $recur.undo.bind($recur, null)]);
+}
+var alt = null;
 function route(e) {
-    const clear = $recur.undo.bind($recur),
-          pause = $recur.undo.bind($recur, null),
-          play = $recur.execute.bind($recur),
-          alt = doAlternate()([play, pause]);
-    
+    alt = alt || factory();
     if(compose(curry3(invokeMethod)(/play/i)('match'), getText, getTarget)(e)){
-       $recur.execute();
+        alt();
        }
     else {
+        alt = factory();
         $recur.undo();
     }
 }

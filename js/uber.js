@@ -18,28 +18,36 @@ function random (n = 10) {
 		};
 	}
 
+function doPartialCB(flag) {
+		return function p(f, ...args) {
+			if (f.length === args.length) {
+				return flag ? () => f(...args) : f(...args);
+			}
+			return (...rest) => p(f, ...args, ...rest);
+		};
+	}
+
 const thunk = (f, ...args) => f(...args);
 
 	//note a function that ignores any state of champ or contender will return the first element if true and last if false
 	function best(fun, coll, arg) {
-		fun = arg ? curryL2(fun)(arg) : fun;
+		//fun = arg ? doPartialCB()(fun, arg) : fun;
 		return toArray(coll).reduce((champ, contender) => fun(champ, contender) ? champ : contender);
 	}
-
-function doAlternate() {
-		function alternate(i, n) {
+function alternate(i, n) {
 			return function () {
 				i = (i += 1) % n;
 				return i;
 			};
-		}
-		return function (actions, ...args) {
-			var f = curryL2(thunk)(alternate(0, 2));
-			return function () {
-				return best(f, [curryL2(actions[0])(...args), curryL2(actions[1])(...args)])();
+}
+function doAlternate() {
+    var  f = alternate(0, 2);
+    return function (actions, ...args) {               
+        return function () {
+            return best(f, [actions[0], actions[1]])();
 			};
 		};
-	}
+}
 
 function toArray(coll, cb = () => true) {
 		return Array.prototype.slice.call(coll).filter(cb);
