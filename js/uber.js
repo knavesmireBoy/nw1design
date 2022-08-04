@@ -276,4 +276,8 @@ const looper = nW1.Looper(),
 		getKeys = compose(doTextNow, getKey),
 		getValues = compose(getZero, curryL3(invokeMethod)(window.Object)('values')),
 		doRender = prepend(document.body),
-    incrementer = compose(doInc, getLength);
+    incrementer = compose(doInc, getLength),
+      doTest = function(x) {
+			console.log(x);
+			return x;
+		};
