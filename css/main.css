@@ -683,12 +683,21 @@ img#slide {
   visibility: visible;
 }
 
+/*
 .swap img#base {
-  display: none;
+	display: none;
+}
+.swap img#slide {
+	margin-left: 0%;
+}
+*/
+body.swap {
+  background-color: goldenrod;
+  background-image: none;
 }
 
-.swap img#slide {
-  margin-left: 0%;
+body.swap img#base {
+  visibility: hidden;
 }
 
 /*# sourceMappingURL=main.css.map */

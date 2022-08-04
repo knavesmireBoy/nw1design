@@ -6,8 +6,8 @@
 /*global $$q: false */
 var $recur = (function(count, dur, player) {
     function test() {
-		return [$('base'), $('slide')].map(function(img) {
-			return img.height;
+		return [$$('base'), $$('slide')].map(function(f) {
+			return f().height;
 		});
 	}
 
@@ -16,10 +16,15 @@ var $recur = (function(count, dur, player) {
 			bool = coll[0] === coll[1],
 			body = document.body.classList,
 			m = bool ? 'remove' : 'add';
-        con(m)
 		body[m]('swap');
 		return !bool;
 	}
+    
+     function setPlayer(arg) {
+         player = playmaker(arg);
+         $recur.execute();
+			}
+            
 
 	function doRecur() {
 		player.inc();
@@ -48,17 +53,17 @@ var $recur = (function(count, dur, player) {
 			this.parentNode.classList.add('inplay')
 			doPic(b, looper.forward().value);
 		}
+        b.onload = function(){
+           console.log(this.src, s.src);
+            setPlayer(doSwap());
+        }
 	}
 	var playmaker = (function() {
-		var setPlayer = function(arg) {
-				player = playmaker(arg);
-				$recur.execute();
-			},
-            doPlay = compose(curry2(getter)('value'), looper.forward.bind(looper)),
+		var doPlay = compose(curry2(getter)('value'), looper.forward.bind(looper)),
 			//doBase = ptL(invoke, loadImageBridge, doPlay, 'base', setPlayer, doSwap),
 			doBase = function(){
              // setPlayer(doSwap());
-              $('base').src = doPlay();
+             $('base').src = doPlay();
             },
 			swapping = $$q('.swap'),
 			fadeOut = {
@@ -69,8 +74,9 @@ var $recur = (function(count, dur, player) {
 					$recur.i -= 1;
 				},
 				reset: function() {
-                    doSlide();
+                   //doBase();
 					//setPlayer(swapping());
+                    doSlide();
 				}
 			},
 			fadeIn = {
@@ -81,8 +87,9 @@ var $recur = (function(count, dur, player) {
 					$recur.i += 1;
 				},
 				reset: function() {
-                    setPlayer();
-					doBase();
+                   // con('hello')
+                   // setPlayer(doSwap());
+                   doSlide();
 				}
 			},
 			fade = {
@@ -94,9 +101,7 @@ var $recur = (function(count, dur, player) {
 				},
 				reset: function() {
 					$recur.i = count;
-					doSlide();
-                    setPlayer();
-                    
+                    doSlide();   
 				}
 			},
             actions = [fadeIn, fadeOut];
@@ -125,5 +130,5 @@ var $recur = (function(count, dur, player) {
 			}
 		}
 	};
-}(100, 100, {}));
+}(155, 50, {}));
 $recur.i = 50;
