@@ -27,6 +27,14 @@ function doPartialCB(flag) {
 		};
 	}
 
+/*
+https://gist.github.com/JamieMason/1228339132986291693726d11bd8dd1f
+const pApply = (fn, ...cache) => (...args) => {
+  const all = cache.concat(args);
+  return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);
+};
+*/
+
 const thunk = (f, ...args) => f(...args);
 
 	//note a function that ignores any state of champ or contender will return the first element if true and last if false
