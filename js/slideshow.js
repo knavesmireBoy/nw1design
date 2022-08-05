@@ -115,6 +115,9 @@ var $recur = (function(count, dur, player) {
 		undo: function(flag) {
             var o = !isNaN(flag) ? .5 : 1;
 			doOpacity(o);
+            if(1){
+                //cleanup
+            }
 			window.cancelAnimationFrame($recur.t);
 			//$controlbar.set(do_static_factory());
 			$recur.t = flag; //either set to undefined(forward/back/exit) or null(pause)
@@ -123,5 +126,5 @@ var $recur = (function(count, dur, player) {
 			}
 		}
 	};
-}(99, 20, {}));
+}(300, 100, {}));
 $recur.i = 50;
