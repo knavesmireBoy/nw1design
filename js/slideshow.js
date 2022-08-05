@@ -5,6 +5,19 @@
 /*global $: false */
 /*global $$: false */
 /*global $$q: false */
+
+function objectPlus(o, stuff) {
+    var n;
+    function F() {}
+    F.prototype = o;
+    n = new F();
+    n.uber = o;
+    for (var i in stuff) {
+        n[i] = stuff[i];
+    }
+    return n;
+}
+
 const getTgt = (str) => $$(str),
 	doOn = function(o, f) {
 		o = getResult(o);
@@ -14,19 +27,52 @@ const getTgt = (str) => $$(str),
 	testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getResult(item)).map(getprop),
 	setPic = (tgt, val) => tgt.src = val,
 	doPic = ptL(setterBridge, 'src'),
-	display_inplay = ptL(invokeMethod, document.body.classList, 'add'),
 	display_swap = curry2(ptL(invokeMethod, document.body.classList))('swap'),
+      display_inplay = ptL(invokeMethod, document.body.classList, 'add'),
     doOpacity = function(o) {
                 $('slide').style.opacity = o || (this.i / this.wait); //paint
             },
-	playMaker = function($recur) {
-        
-        function doSwap() {
+      doSwap = function () {
 			var bool = testProp('base', 'slide', getHeight).reduce(equals);
 			display_swap(bool ? 'remove' : 'add'); //paint
 			return !bool;
-		}
-
+		},
+      
+      painter = function(slide, base, container){
+          
+          return {
+              handlers: [],
+              doOpacity: function(o) {
+                  var el = getResult(slide);
+                  console.log(el, o)
+                  el.style.opacity = o;
+              },
+            doSlide: function(flag) {
+                var s = getResult(slide),
+                    b = getResult(base),
+                that = this;
+                s.setAttribute('src', b.getAttribute(src));
+                s.onload = function() {
+                    doOpacity.call(that);
+                    display_inplay('inplay');
+                    if (flag) {
+                        b.setAttribute('src', looper.forward().value)
+                    }
+                }
+                //b.onload = compose($recur.setPlayer.bind($recur), doSwap);
+                b.onload = ptL(that.notify, doWrap());
+            },
+              attach: function(h) {
+              this.handlers.push(h);
+            },
+            notify: function(...arg){
+                this.handlers.forEach((f) => f(...arg));
+            },
+      };
+      },
+      
+	playMaker = function($recur) {
+        
 
 		function doSlide(flag) {
 			var s = $('slide'),
@@ -93,19 +139,20 @@ const getTgt = (str) => $$(str),
 				this.wait = wait;
 				this.i = i;
 				this.t = null;
+                this.handlers = [];
                 return this;
 			},
 			execute: function() {
 				if (this.player.validate()) {
 					this.player.reset();
 				} else {
-					this.doOpacity();
+                    this.notify(this.i / this.wait);
 					this.recur();
 				}
 			},
 			undo: function(flag) {
 				var o = !isNaN(flag) ? .5 : 1;
-				this.doOpacity(o);
+				this.notify(o);
 				if (1) {
 					//cleanup
 				}
@@ -124,7 +171,15 @@ const getTgt = (str) => $$(str),
 				this.player.inc();
 				this.t = window.requestAnimationFrame(this.execute.bind(this));
 			},
-            doOpacity: doOpacity
+            attach: function(h) {
+              this.handlers.push(h);
+            },
+            notify: function(...arg){
+                this.handlers.forEach((f) => f(...arg));
+            }
 		};
 	},
-      $recur = recurMaker(300, 100, 50).init();
+      $recur = recurMaker(300, 100, 50).init(),
+      $painter = painter(getTgt('slide'), getTgt('base'), document.body);
+$recur.attach($painter.doOpacity);
+$painter.attach($recur.setPlayer);
