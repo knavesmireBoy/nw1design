@@ -44,7 +44,6 @@ const getTgt = (str) => $$(str),
               handlers: [],
               doOpacity: function(o) {
                   var el = getResult(slide);
-                  console.log(el, o)
                   el.style.opacity = o;
               },
             doSlide: function(flag) {
