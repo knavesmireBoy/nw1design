@@ -63,7 +63,7 @@ const getTgt = (str) => $$(str),
 					$recur.i += 1;
 				},
 				reset: function() {
-					doPic($('base'), looper.forward().value).call($recur);
+					doPic($('base'), looper.forward().value);
 				}
 			},
 			fade = {
