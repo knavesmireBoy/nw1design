@@ -78,6 +78,7 @@ function route(e) {
 		};
 	}
 let headers = {};
+    
 	const prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
 		prepare2Append = (doEl, doAttrs) => compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)(),
 		doDiv = doMake('div'),
