@@ -5,6 +5,8 @@ if (!window.nW1) {
 	window.nW1 = {};
 }
 
+function noOp(){}
+
 function random (n = 10) {
     return Math.floor(Math.random() * n);
 }
@@ -226,8 +228,21 @@ const looper = nW1.Looper(),
 			'Safari Afrika': 4
 		}],
 		broadcaster = Publisher.from(),
+      pApply = (fn, ...cache) => (...args) => {
+          const all = cache.concat(args);
+          return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);
+      },
 		deferPTL = doPartial(true),
 		ptL = doPartial(),
+      passy = (ptl, o) => {
+          con(ptl, o)
+			ptl(getResult(o));
+			return o;
+		},
+      pass = (ptl, o) => {
+			ptl(getResult(o));
+			return o;
+		},
 		con = (v) => console.log(v),
 		compose = (...fns) => fns.reduce((f, g) => (...vs) => f(g(...vs))),
 		getter = (o, p) => {
@@ -235,6 +250,13 @@ const looper = nW1.Looper(),
 			return o[p];
 		},
 		setter = (o, k, v) => o[k] = v,
+		setterBridge = (k, o, v) => {
+            console.log(o,k,v)
+            o = getResult(o);
+            o[k] = v;
+            return o;
+        },
+		curry = fun  => a => fun(a),
 		curry2 = fun => b => a => fun(a, b),
 		curry22 = fun => b => a => () => fun(a, b),
 		curryL2 = fun => a => b => fun(a, b),
@@ -243,10 +265,7 @@ const looper = nW1.Looper(),
 		curryL3 = fun => a => b => c => fun(a, b, c),
 		curryL33 = fun => a => b => c => () => fun(a, b, c),
 		invoke = (f, v) => f(v),
-		invokeMethod = (o, m, v) => {
-           // console.log(o,m,v)
-           return o[m](v);
-        },
+      invokeMethod = (o, m, v) => o[m](v),
 		lazyVal = (m, p, o, v) => o[m](p, v),
 		invokeMethodBridge = (m, v, o) => {
 			o = getResult(o);
@@ -257,10 +276,7 @@ const looper = nW1.Looper(),
 			return invokeMethod(o, m, v);
 		},
 		negate = (f, last_arg) => !f(last_arg),
-		pass = (ptl, o) => {
-			ptl(getResult(o));
-			return o;
-		},
+		
 		$ = (str) => document.getElementById(str),
 		$$ = (str) => () => $(str),
 		$q = (str, flag = false) => {

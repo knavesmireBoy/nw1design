@@ -5,19 +5,26 @@
 /*global $: false */
 /*global $$: false */
 /*global $$q: false */
-var $recur = (function(count, dur, player) {
-    function test() {
-		return [$$('base'), $$('slide')].map(function(f) {
-			return f().height;
-		});
-	}
 
+var swapping = $$q('.swap'),
+      getTgt = (str) => $$(str),
+        doOn = function(o, f) {
+            o = getResult(o);
+            return o ? f(o) : noOp;
+        },
+      getHeight = curry2(getter)('height'),
+      testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getResult(item)).map(getprop),
+      setPic = (tgt, val) => tgt.src = val,
+      doPic = ptL(setterBridge, 'src'),
+        display_inplay = ptL(invokeMethod, document.body.classList, 'add'),
+        display_swap = curry2(ptL(invokeMethod, document.body.classList))('swap');
+
+
+var $recur = (function(count, dur, player) {
+    
 	function doSwap() {
-		var coll = test(),
-			bool = coll[0] === coll[1],
-			body = document.body.classList,
-			m = bool ? 'remove' : 'add';
-		body[m]('swap');
+        var bool = testProp('base', 'slide', getHeight).reduce(equals);
+        display_swap(bool ? 'remove' : 'add');//paint
 		return !bool;
 	}
     
@@ -32,17 +39,8 @@ var $recur = (function(count, dur, player) {
 		$recur.t = window.requestAnimationFrame($recur.execute.bind($recur));
 	}
 
-	function doOpacity(flag) {
-		var slide = $('slide'),
-			val;
-		if (slide) {
-			val = flag || ($recur.i / dur);
-			slide.style.opacity = val;
-		}
-	}
-
-	function doPic(pic, src) {
-		pic.src = src;
+	function doOpacity(o) {  
+        $('slide').style.opacity = o || ($recur.i / dur);//paint
 	}
 
 	function doSlide(flag) {
@@ -50,16 +48,14 @@ var $recur = (function(count, dur, player) {
 			b = $('base');
 		doPic(s, b.src);
 		s.onload = function() {
-			doOpacity();
-			this.parentNode.classList.add('inplay');
+            doOpacity();
+            display_inplay('inplay');
             if(flag) {
-                doPic(b, looper.forward().value);
+                doPic(b, looper.forward().value);//broadcast
             }
 		}
-        b.onload = function(){
-          setPlayer(doSwap());
-        }
-	}
+        b.onload = compose(setPlayer, doSwap);
+    }
 	var playmaker = (function() {
 		var swapping = $$q('.swap'),
 			fadeOut = {
