@@ -16,51 +16,12 @@ const getTgt = (str) => $$(str),
 	doPic = ptL(setterBridge, 'src'),
 	display_inplay = ptL(invokeMethod, document.body.classList, 'add'),
 	display_swap = curry2(ptL(invokeMethod, document.body.classList))('swap'),
-	playMaker = (function() {
-		var swapping = $$q('.swap'),
-			fadeOut = {
-				validate: function() {
-					return $recur.i <= -15.5;
-				},
-				inc: function() {
-					$recur.i -= 1;
-				},
-				reset: function() {
-					doSlide();
-					setPlayer(swapping());
-				}
-			},
-			fadeIn = {
-				validate: function() {
-					return $recur.i >= 134.5;
-				},
-				inc: function() {
-					$recur.i += 1;
-				},
-				reset: function() {
-					doPic($('base'), looper.forward().value);
-				}
-			},
-			fade = {
-				validate: function() {
-					return $recur.i <= -1;
-				},
-				inc: function() {
-					$recur.i -= 1;
-				},
-				reset: function() {
-					$recur.i = this.dur;
-					doSlide(true);
-				}
-			},
-			actions = [fadeIn, fadeOut];
-		return function(flag) {
-			return flag ? actions.reverse()[0] : fade;
-		};
-	}()),
-	recurMaker = function(duration = 100, wait = 50, i = 50, player) {
+    doOpacity = function(o) {
+                $('slide').style.opacity = o || (this.i / this.wait); //paint
+            },
+	playMaker = function($recur) {
         
-		function doSwap() {
+        function doSwap() {
 			var bool = testProp('base', 'slide', getHeight).reduce(equals);
 			display_swap(bool ? 'remove' : 'add'); //paint
 			return !bool;
@@ -72,17 +33,62 @@ const getTgt = (str) => $$(str),
 				b = $('base');
 			doPic(s, b.src);
 			s.onload = function() {
-				doOpacity();
+				doOpacity.call($recur);
 				display_inplay('inplay');
 				if (flag) {
 					doPic(b, looper.forward().value); //broadcast
 				}
 			}
-			b.onload = compose(setPlayer, doSwap);
+			b.onload = compose($recur.setPlayer.bind($recur), doSwap);
 		}
+        
+		var swapping = $$q('.swap'),
+			fadeOut = {
+				validate: function() {
+					return $recur.i <= -15.5;
+				},
+				inc: function() {
+					$recur.i -= 1;
+				},
+				reset: function() {
+					doSlide();
+					$recur.setPlayer(swapping());
+				}
+			},
+			fadeIn = {
+				validate: function() {
+					return $recur.i >= 134.5;
+				},
+				inc: function() {
+					$recur.i += 1;
+				},
+				reset: function() {
+					doPic($('base'), looper.forward().value).call($recur);
+				}
+			},
+			fade = {
+				validate: function() {
+					return $recur.i <= -1;
+				},
+				inc: function() {
+					$recur.i -= 1;
+				},
+				reset: function() {
+					$recur.i = $recur.dur;
+					doSlide(true);
+				}
+			},
+			actions = [fadeIn, fadeOut];
+		return function(flag) {
+			return flag ? actions.reverse()[0] : fade;
+		};
+	},
+	recurMaker = function(duration = 100, wait = 50, i = 50) {
+        
 		return {
 			init: function() {
-				this.player = player;
+				this.play = playMaker(this);
+                this.player = this.play();
 				this.dur = duration;
 				this.wait = wait;
 				this.i = i;
@@ -91,7 +97,7 @@ const getTgt = (str) => $$(str),
 			},
 			execute: function() {
 				if (this.player.validate()) {
-					player.reset();
+					this.player.reset();
 				} else {
 					this.doOpacity();
 					this.recur();
@@ -111,16 +117,14 @@ const getTgt = (str) => $$(str),
 				}
 			},
 			setPlayer: function(arg) {
-				this.player = Playmaker(arg);
+				this.player = this.play(arg);
 				this.execute();
 			},
 			recur: function () {
 				this.player.inc();
 				this.t = window.requestAnimationFrame(this.execute.bind(this));
 			},
-            doOpacity: function(o) {
-                $('slide').style.opacity = o || (this.i / this.dur); //paint
-            }
+            doOpacity: doOpacity
 		};
 	},
-      $recur = recurMaker(300, 100, 50, playMaker()).init();
+      $recur = recurMaker(300, 100, 50).init();
