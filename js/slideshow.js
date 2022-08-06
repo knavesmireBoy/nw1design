@@ -17,6 +17,7 @@ function tri(i, j){
 
 
 const getTgt = (str) => $$(str),
+	is_inplay = $$q('.inplay'),
 	getHeight = curry2(getter)('height'),
 	testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getResult(item)).map(getprop),
 	doPic = ptL(setterBridge, 'src'),
@@ -64,8 +65,14 @@ const getTgt = (str) => $$(str),
 					doPic(b, looper.forward().value); //broadcast
 				}
 			}
-			b.onload = function () {
-                return compose($recur.setPlayer.bind($recur), doSwap)();
+			b.onload = function (e) {
+                if(is_inplay()){
+                   return compose($recur.setPlayer.bind($recur), doSwap)();
+                }
+                else {
+                    con(e.target)
+                  // b.src = e.target.src;
+                }
             };
 		}
 		var fadeOut = {
@@ -130,16 +137,16 @@ const getTgt = (str) => $$(str),
 				}
 			},
 			undo: function(flag) {
+				var o = !isNaN(flag) ? .5 : 1;
+                this.notify(o);
                 window.cancelAnimationFrame(this.t);
-                this.t = flag; //either set to undefined(forward/back/exit) or null(pause)
-				var m,
-                    o = !isNaN(flag) ? .5 : 1;
-				this.notify(o);
-				if (o === 1) {
-                query_inplay('remove');
-                display_pause('remove');
-                }
+               this.t = flag; //either set to undefined(forward/back/exit) or null(pause)
 				
+				if (o === 1) {
+               query_inplay('remove');
+               display_pause('remove');
+                display_swap('remove');
+                }
 			},
 			setPlayer: function(arg) {
 				this.player = this.nextplayer(arg);

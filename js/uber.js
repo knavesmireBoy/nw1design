@@ -272,12 +272,17 @@ const looper = nW1.Looper(),
           return o[s][v](m)
       },
       invokeMethodT = (o, m, v) => {
-          
           return o[m](v);
       },
 		lazyVal = (m, p, o, v) => o[m](p, v),
 		invokeMethodBridge = (m, v, o) => {
 			o = getResult(o);
+			return invokeMethod(o, m, v);
+		},
+      invokeMethodBridgeT = (m, o, v) => {
+          
+			o = getResult(o);
+          console.log(m,v,o)
 			return invokeMethod(o, m, v);
 		},
 		invokeMethodBridgeCB = (cb) => (m, v, o) => {

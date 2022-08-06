@@ -108,9 +108,14 @@ nW1.Looper = function() {
 			return this.status()[m];
 		}
 		set(pos) {
-			if (!isNaN(parseFloat(pos)) && pos >= 0) {
+			if (!isNaN(parseFloat(pos)) && pos >= 0 && this.group.members[pos]) {
 				this.position = pos;
 			}
+            else {
+                this.position = pos ? this.group.members.length-2 : 0;
+                this.forward();
+                return this.status();
+            }
 			return {
 				value: this.group.members[this.position],
 				index: this.position

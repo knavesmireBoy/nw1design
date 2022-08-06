@@ -36,17 +36,33 @@ const factory = function(){
         display_pause = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause');
     return f([compose(display_pause, always('remove'), $recur.execute.bind($recur)), compose(display_pause, always('add'), $recur.undo.bind($recur, null))]);
 }
-let alt = null;
+let alt = null,
+    routes = [/^begin$/, /^back$/, /^play$/, /^forward$/, /^end$/];
 
 function route(e) {
     alt = alt || factory();
-    var t = compose(curry3(invokeMethod)(/play/i)('match'), getText, getTarget)(e);
+    var loop = deferPTL(invokeMethod, looper),
+        set = loop('set'),
+        end = set(true),
+        start = set(false),
+        f = loop('forward')(null),
+        b = loop('back')(null),
+        routines = [start, b, alt, f, end],
+        play = curry3(invokeMethod)(/play/i)('match'),
+        t = compose(play, getText, getTarget)(e),
+        found = compose(getText, getTarget)(e),
+        which = curry2(ptL(invokeMethodBridge, 'match'))(found),
+        i = routes.findIndex(which);
+    
     if(t){
         alt();
        }
     else {
-        alt = factory();
+        alt = null;
         $recur.undo();
+        if(routines[i]){
+            routines[i]();
+        }
     }
 }
 
