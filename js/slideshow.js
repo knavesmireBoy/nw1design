@@ -9,7 +9,6 @@
 const getTgt = (str) => $$(str),
 	getHeight = curry2(getter)('height'),
 	testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getResult(item)).map(getprop),
-	setPic = (tgt, val) => tgt.src = val,
 	doPic = ptL(setterBridge, 'src'),
 	display_swap = curry2(ptL(invokeMethod, document.body.classList))('swap'),
 	display_inplay = ptL(invokeMethod, document.body.classList, 'add'),
@@ -51,8 +50,7 @@ const getTgt = (str) => $$(str),
 			}
 			b.onload = compose($recur.setPlayer.bind($recur), doSwap);
 		}
-		var swapping = $$q('.swap'),
-			fadeOut = {
+		var fadeOut = {
 				validate: function() {
 					return $recur.i <= -.1;
 				},
@@ -61,7 +59,8 @@ const getTgt = (str) => $$(str),
 				},
 				reset: function() {
 					updateImages();
-					$recur.setPlayer(swapping());
+                    //ensure fadeIn will follow
+					$recur.setPlayer(true);
 				}
 			},
 			fadeIn = {
@@ -95,8 +94,8 @@ const getTgt = (str) => $$(str),
 	recurMaker = function(duration = 100, wait = 50, i = 50) {
 		return {
 			init: function() {
-				this.play = playMaker(this);
-				this.player = this.play();
+				this.nextplayer = playMaker(this);
+				this.player = this.nextplayer();
 				this.dur = duration;
 				this.wait = wait;
 				this.i = i;
@@ -126,7 +125,7 @@ const getTgt = (str) => $$(str),
 				}
 			},
 			setPlayer: function(arg) {
-				this.player = this.play(arg);
+				this.player = this.nextplayer(arg);
 				this.execute();
 			},
 			recur: function() {

@@ -102,7 +102,6 @@ nW1.Looper = function() {
                j = (i === -1) ? 0 : i,
                member = document.querySelector('.inplay') ? this.group.members[j] : this.get();
             this.notify(member);
-            
 			return this.status();
 		}
 		get(m = 'value') {
