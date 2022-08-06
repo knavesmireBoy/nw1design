@@ -6,74 +6,39 @@
 /*global $$: false */
 /*global $$q: false */
 
-function objectPlus(o, stuff) {
-    var n;
-    function F() {}
-    F.prototype = o;
-    n = new F();
-    n.uber = o;
-    for (var i in stuff) {
-        n[i] = stuff[i];
-    }
-    return n;
-}
-
 const getTgt = (str) => $$(str),
-	doOn = function(o, f) {
-		o = getResult(o);
-		return o ? f(o) : noOp;
-	},
 	getHeight = curry2(getter)('height'),
 	testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getResult(item)).map(getprop),
 	setPic = (tgt, val) => tgt.src = val,
 	doPic = ptL(setterBridge, 'src'),
 	display_swap = curry2(ptL(invokeMethod, document.body.classList))('swap'),
-      display_inplay = ptL(invokeMethod, document.body.classList, 'add'),
-    doOpacity = function(o) {
-                $('slide').style.opacity = o || (this.i / this.wait); //paint
-            },
-      doSwap = function () {
-			var bool = testProp('base', 'slide', getHeight).reduce(equals);
-			display_swap(bool ? 'remove' : 'add'); //paint
-			return !bool;
-		},
-      
-      painter = function(slide, base, container){
-          
-          return {
-              handlers: [],
-              doOpacity: function(o) {
-                  var el = getResult(slide);
-                  el.style.opacity = o;
-              },
-            doSlide: function(flag) {
-                var s = getResult(slide),
-                    b = getResult(base),
-                that = this;
-                s.setAttribute('src', b.getAttribute(src));
-                s.onload = function() {
-                    doOpacity.call(that);
-                    display_inplay('inplay');
-                    if (flag) {
-                        b.setAttribute('src', looper.forward().value)
-                    }
-                }
-                //b.onload = compose($recur.setPlayer.bind($recur), doSwap);
-                b.onload = ptL(that.notify, doWrap());
-            },
-              attach: function(h) {
-              this.handlers.push(h);
-            },
-            notify: function(...arg){
-                this.handlers.forEach((f) => f(...arg));
-            },
-      };
-      },
-      
+	display_inplay = ptL(invokeMethod, document.body.classList, 'add'),
+	doOpacity = function(o) {
+		$('slide').style.opacity = o || (this.i / this.wait); //paint
+	},
+	doSwap = function() {
+		var bool = testProp('base', 'slide', getHeight).reduce(equals);
+		display_swap(bool ? 'remove' : 'add'); //paint
+		return !bool;
+	},
+	painter = function(slide, base, container) {
+		return {
+			handlers: [],
+			doOpacity: function(o) {
+				var el = getResult(slide);
+				el.style.opacity = o;
+			},
+			attach: function(h) {
+				this.handlers.push(h);
+			},
+			notify: function(...arg) {
+				this.handlers.forEach((f) => f(...arg));
+			},
+		};
+	},
 	playMaker = function($recur) {
         
-
-		function doSlide(flag) {
+		function updateImages(flag) {
 			var s = $('slide'),
 				b = $('base');
 			doPic(s, b.src);
@@ -86,7 +51,6 @@ const getTgt = (str) => $$(str),
 			}
 			b.onload = compose($recur.setPlayer.bind($recur), doSwap);
 		}
-        
 		var swapping = $$q('.swap'),
 			fadeOut = {
 				validate: function() {
@@ -96,7 +60,7 @@ const getTgt = (str) => $$(str),
 					$recur.i -= 1;
 				},
 				reset: function() {
-					doSlide();
+					updateImages();
 					$recur.setPlayer(swapping());
 				}
 			},
@@ -120,7 +84,7 @@ const getTgt = (str) => $$(str),
 				},
 				reset: function() {
 					$recur.i = $recur.dur;
-					doSlide(true);
+					updateImages(true);
 				}
 			},
 			actions = [fadeIn, fadeOut];
@@ -129,23 +93,22 @@ const getTgt = (str) => $$(str),
 		};
 	},
 	recurMaker = function(duration = 100, wait = 50, i = 50) {
-        
 		return {
 			init: function() {
 				this.play = playMaker(this);
-                this.player = this.play();
+				this.player = this.play();
 				this.dur = duration;
 				this.wait = wait;
 				this.i = i;
 				this.t = null;
-                this.handlers = [];
-                return this;
+				this.handlers = [];
+				return this;
 			},
 			execute: function() {
 				if (this.player.validate()) {
 					this.player.reset();
 				} else {
-                    this.notify(this.i / this.wait);
+					this.notify(this.i / this.wait);
 					this.recur();
 				}
 			},
@@ -166,19 +129,19 @@ const getTgt = (str) => $$(str),
 				this.player = this.play(arg);
 				this.execute();
 			},
-			recur: function () {
+			recur: function() {
 				this.player.inc();
 				this.t = window.requestAnimationFrame(this.execute.bind(this));
 			},
-            attach: function(h) {
-              this.handlers.push(h);
-            },
-            notify: function(...arg){
-                this.handlers.forEach((f) => f(...arg));
-            }
+			attach: function(h) {
+				this.handlers.push(h);
+			},
+			notify: function(...arg) {
+				this.handlers.forEach((f) => f(...arg));
+			}
 		};
 	},
-      $recur = recurMaker(300, 100, 50).init(),
-      $painter = painter(getTgt('slide'), getTgt('base'), document.body);
+	$recur = recurMaker(300, 100, 50).init(),
+	$painter = painter(getTgt('slide'), getTgt('base'), document.body);
 $recur.attach($painter.doOpacity);
 $painter.attach($recur.setPlayer);
