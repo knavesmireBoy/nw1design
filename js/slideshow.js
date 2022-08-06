@@ -44,11 +44,14 @@ const getTgt = (str) => $$(str),
 			s.onload = function() {
 				doOpacity.call($recur);
 				display_inplay('inplay');
+                con(flag)
 				if (flag) {
 					doPic(b, looper.forward().value); //broadcast
 				}
 			}
-			b.onload = compose($recur.setPlayer.bind($recur), doSwap);
+			b.onload = function () {
+                return compose($recur.setPlayer.bind($recur), doSwap)();
+            };
 		}
 		var fadeOut = {
 				validate: function() {
