@@ -90,7 +90,7 @@ const getTgt = (str) => $$(str),
 		var swapping = $$q('.swap'),
 			fadeOut = {
 				validate: function() {
-					return $recur.i <= -15.5;
+					return $recur.i <= -.1;
 				},
 				inc: function() {
 					$recur.i -= 1;
@@ -102,7 +102,7 @@ const getTgt = (str) => $$(str),
 			},
 			fadeIn = {
 				validate: function() {
-					return $recur.i >= 134.5;
+					return $recur.i >= 222;
 				},
 				inc: function() {
 					$recur.i += 1;
