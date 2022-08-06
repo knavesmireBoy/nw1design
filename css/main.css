@@ -669,6 +669,9 @@ main aside section a {
 #slideshow.pause {
   background-color: black;
 }
+#slideshow.pause button:nth-child(3) {
+  background-color: gainsboro;
+}
 
 #display img {
   float: left;

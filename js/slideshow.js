@@ -20,8 +20,7 @@ const getTgt = (str) => $$(str),
 	getHeight = curry2(getter)('height'),
 	testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getResult(item)).map(getprop),
 	doPic = ptL(setterBridge, 'src'),
-	//display_pause = curry2(ptL(invokeMethodV, $$('slideshow'), 'classList'))('pause'),
-	display_pause2 = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause'),
+	display_pause = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause'),
 	display_swap = curry2(ptL(invokeMethod, document.body.classList))('swap'),
 	query_inplay = curry2(ptL(invokeMethod, document.body.classList))('inplay'),
 	display_inplay = ptL(invokeMethod, document.body.classList, 'add'),
@@ -41,6 +40,9 @@ const getTgt = (str) => $$(str),
 				var el = getResult(slide);
 				el.style.opacity = o;
 			},
+            cleanup: function() {
+               // [query_inplay, display_pause].forEach(always('remove'));
+            },
 			attach: function(h) {
 				this.handlers.push(h);
 			},
@@ -133,10 +135,9 @@ const getTgt = (str) => $$(str),
 				var m,
                     o = !isNaN(flag) ? .5 : 1;
 				this.notify(o);
-                display_pause2('add');
 				if (o === 1) {
                 query_inplay('remove');
-                display_pause2('remove');
+                display_pause('remove');
                 }
 				
 			},
@@ -159,4 +160,5 @@ const getTgt = (str) => $$(str),
 	$recur = recurMaker(400, 25).init(),
 	$painter = painter(getTgt('slide'), getTgt('base'), document.body);
 $recur.attach($painter.doOpacity);
+$recur.attach($painter.cleanup);
 $painter.attach($recur.setPlayer);

@@ -561,7 +561,10 @@ main aside section {
 #slideshow {
     margin: 5em;
     &.pause {
-      background-color: black;  
+      background-color: black; 
+        button:nth-child(3) {
+          background-color: gainsboro;   
+        }
     }
 }
 

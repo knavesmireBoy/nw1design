@@ -32,8 +32,9 @@
 	}
 
 const factory = function(){
-    var f = doAlternate();
-    return f([$recur.execute.bind($recur), $recur.undo.bind($recur, null)]);
+    var f = doAlternate(),
+        display_pause = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause');
+    return f([compose(display_pause, always('remove'), $recur.execute.bind($recur)), compose(display_pause, always('add'), $recur.undo.bind($recur, null))]);
 }
 let alt = null;
 
