@@ -32,10 +32,10 @@
 	}
 
 const factory = function(){
-    var alt = doAlternate();
-    return alt([$recur.execute.bind($recur), $recur.undo.bind($recur, null)]);
+    var f = doAlternate();
+    return f([$recur.execute.bind($recur), $recur.undo.bind($recur, null)]);
 }
-var alt = null;
+let alt = null;
 
 function route(e) {
     alt = alt || factory();
@@ -45,7 +45,7 @@ function route(e) {
        }
     else {
         alt = factory();
-        $recur.undo(undefined);
+        $recur.undo();
     }
 }
 

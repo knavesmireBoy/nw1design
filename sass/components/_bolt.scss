@@ -560,7 +560,11 @@ main aside section {
 
 #slideshow {
     margin: 5em;
+    &.pause {
+      background-color: black;  
+    }
 }
+
 #display img {
     float: left;
 }

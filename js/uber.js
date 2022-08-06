@@ -7,6 +7,7 @@ if (!window.nW1) {
 
 function noOp(){}
 
+
 function random (n = 10) {
     return Math.floor(Math.random() * n);
 }
@@ -255,6 +256,7 @@ const looper = nW1.Looper(),
             o[k] = v;
             return o;
         },
+      always = (arg) => () => arg,
 		curry = fun  => a => fun(a),
 		curry2 = fun => b => a => fun(a, b),
 		curry22 = fun => b => a => () => fun(a, b),
@@ -265,6 +267,14 @@ const looper = nW1.Looper(),
 		curryL33 = fun => a => b => c => () => fun(a, b, c),
 		invoke = (f, v) => f(v),
       invokeMethod = (o, m, v) => o[m](v),
+      invokeMethodV = (o, s, m, v) => {
+          o = getResult(o);
+          return o[s][v](m)
+      },
+      invokeMethodT = (o, m, v) => {
+          
+          return o[m](v);
+      },
 		lazyVal = (m, p, o, v) => o[m](p, v),
 		invokeMethodBridge = (m, v, o) => {
 			o = getResult(o);

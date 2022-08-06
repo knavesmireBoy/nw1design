@@ -6,17 +6,31 @@
 /*global $$: false */
 /*global $$q: false */
 
+
+function tri(i, j){
+    if(i){
+        return j;
+    }
+    return j / 2;
+    return tri(i++, j);
+}
+
+
 const getTgt = (str) => $$(str),
 	getHeight = curry2(getter)('height'),
 	testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getResult(item)).map(getprop),
 	doPic = ptL(setterBridge, 'src'),
+	//display_pause = curry2(ptL(invokeMethodV, $$('slideshow'), 'classList'))('pause'),
+	display_pause2 = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause'),
 	display_swap = curry2(ptL(invokeMethod, document.body.classList))('swap'),
+	query_inplay = curry2(ptL(invokeMethod, document.body.classList))('inplay'),
 	display_inplay = ptL(invokeMethod, document.body.classList, 'add'),
+      reducer = curry3(invokeMethod)(equals)('reduce'),
 	doOpacity = function(o) {
 		$('slide').style.opacity = o || (this.i / this.wait); //paint
 	},
 	doSwap = function() {
-		var bool = testProp('base', 'slide', getHeight).reduce(equals);
+		var bool = compose(reducer)(testProp('base', 'slide', getHeight));
 		display_swap(bool ? 'remove' : 'add'); //paint
 		return !bool;
 	},
@@ -44,7 +58,6 @@ const getTgt = (str) => $$(str),
 			s.onload = function() {
 				doOpacity.call($recur);
 				display_inplay('inplay');
-                con(flag)
 				if (flag) {
 					doPic(b, looper.forward().value); //broadcast
 				}
@@ -85,7 +98,7 @@ const getTgt = (str) => $$(str),
 					$recur.i -= 1;
 				},
 				reset: function() {
-					$recur.i = $recur.dur;
+					$recur.i = tri(0, $recur.dur);
 					updateImages(true);
 				}
 			},
@@ -94,7 +107,7 @@ const getTgt = (str) => $$(str),
 			return flag ? actions.reverse()[0] : fade;
 		};
 	},
-	recurMaker = function(duration = 100, wait = 50, i = 50) {
+	recurMaker = function(duration = 100, wait = 50, i = 1) {
 		return {
 			init: function() {
 				this.nextplayer = playMaker(this);
@@ -115,17 +128,17 @@ const getTgt = (str) => $$(str),
 				}
 			},
 			undo: function(flag) {
-				var o = !isNaN(flag) ? .5 : 1;
+                window.cancelAnimationFrame(this.t);
+                this.t = flag; //either set to undefined(forward/back/exit) or null(pause)
+				var m,
+                    o = !isNaN(flag) ? .5 : 1;
 				this.notify(o);
-				if (1) {
-					//cleanup
-				}
-				window.cancelAnimationFrame(this.t);
-				//$controlbar.set(do_static_factory());
-				this.t = flag; //either set to undefined(forward/back/exit) or null(pause)
-				if (!isNaN(flag)) { //is null
-					//doMakePause(); //checks path to pause pic
-				}
+                display_pause2('add');
+				if (o === 1) {
+                query_inplay('remove');
+                display_pause2('remove');
+                }
+				
 			},
 			setPlayer: function(arg) {
 				this.player = this.nextplayer(arg);
@@ -143,7 +156,7 @@ const getTgt = (str) => $$(str),
 			}
 		};
 	},
-	$recur = recurMaker(300, 100, 50).init(),
+	$recur = recurMaker(400, 25).init(),
 	$painter = painter(getTgt('slide'), getTgt('base'), document.body);
 $recur.attach($painter.doOpacity);
 $painter.attach($recur.setPlayer);

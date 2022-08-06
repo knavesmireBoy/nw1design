@@ -666,6 +666,9 @@ main aside section a {
 #slideshow {
   margin: 5em;
 }
+#slideshow.pause {
+  background-color: black;
+}
 
 #display img {
   float: left;
