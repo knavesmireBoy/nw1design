@@ -96,7 +96,8 @@ function route(e) {
 	}
 let headers = {};
     
-	const prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
+	const broadcaster = Publisher.from(),
+          prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
 		prepare2Append = (doEl, doAttrs) => compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)(),
 		doDiv = doMake('div'),
 		doImg = doMake('img'),
@@ -107,11 +108,16 @@ let headers = {};
 		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
 		sideBarListener = (e) => {
 			e.preventDefault();
+            var img = getImgPath(e);
 			//remove all active classes. will need to stop slideshow
-			toArray($q('.active', true)).forEach((el) => el.classList.remove('active'));
 			if (matchLink(e)) {
+                toArray($q('.active', true)).forEach((el) => el.classList.remove('active'));
 				headers.execute(getTarget(e), true);
 			}
+            if(img){
+                looper.find(img);
+            }
+          
 		},
 		addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(sideBarListener).wrap(pass),
 		loader = function() {
@@ -138,10 +144,12 @@ let headers = {};
 			text.map(buttons).map(appendCB).map(curry2(invoke)($('controls')));
 			headers.setSearch(headers_search_strategy.bind(headers));
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
+            
 			broadcaster.attach(headers.setFinder.bind(headers));
 			broadcaster.attach(thumbs.setFinder.bind(thumbs));
 			broadcaster.attach(previewer);
 			broadcaster.notify(src);
+            
 			looper.build(getMyLinks(), incrementer, []);
 			looper.attach(displayer);
 			//looper.attach(slideshower);//hide...

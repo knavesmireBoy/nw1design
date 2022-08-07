@@ -102,7 +102,12 @@ nW1.Looper = function() {
 			return this.status();
 		}
         find(tgt) {
-			return this.set(this.group.members.findIndex(ptL(equals, tgt)));
+            con(tgt)
+            var str = invokeMethod(/\/(\w+)_/, 'exec', tgt)[1],
+            cb = curry3(invokeMethod)(str)('match');
+            //curryL2(equals)(tgt))
+			this.set(this.group.members.findIndex(cb));
+            this.notify(this.get());
 		}
 		get(m = 'value') {
 			return this.status()[m];

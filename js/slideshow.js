@@ -69,10 +69,7 @@ const getTgt = (str) => $$(str),
                 if(is_inplay()){
                    return compose($recur.setPlayer.bind($recur), doSwap)();
                 }
-                else {
-                    con(e.target)
-                  // b.src = e.target.src;
-                }
+                
             };
 		}
 		var fadeOut = {

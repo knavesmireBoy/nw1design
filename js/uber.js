@@ -228,7 +228,6 @@ const looper = nW1.Looper(),
 		}, {
 			'Safari Afrika': 4
 		}],
-		broadcaster = Publisher.from(),
       pApply = (fn, ...cache) => (...args) => {
           const all = cache.concat(args);
           return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);
@@ -323,6 +322,7 @@ const looper = nW1.Looper(),
 		matchLink = compose(curry3(invokeMethod)(/^a$/i)('match'), curry2(getter)('nodeName'), getTarget),
 		matchImg = compose(curry3(invokeMethod)(/^img/i)('match'), curry2(getter)('nodeName'), getTarget),
 		matchPath = compose(curry3(invokeMethod)(/jpe?g/i)('match'), curryL3(invokeMethodBridge)('getAttribute')('href')),
+		getImgPath = compose(curryL3(invokeMethodBridge)('getAttribute')('src'), getTarget),
 		addClickHover = curry2(ptL(lazyVal, 'addEventListener', 'mouseover'))(hover).wrap(pass),
 		onLoad = curry2(ptL(lazyVal, 'addEventListener', 'load')),
 		addImgLoad = onLoad(imageLoad).wrap(pass),
