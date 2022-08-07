@@ -111,6 +111,7 @@ nW1.Looper = function() {
 			return this.status()[m];
 		}
 		set(pos, flag) {
+            //override ideally if an integer is being sent by an input slider it won't be zero indexed
            pos = flag ? pos-1 : pos;
             //receives an integer or ...
 			if (!isNaN(parseFloat(pos)) && pos >= 0 && this.group.members[pos]) {
@@ -118,9 +119,7 @@ nW1.Looper = function() {
 			}
             //...boolean
             else {
-                this.position = pos ? this.group.members.length-2 : 0;
-                this.forward();
-                return this.status();
+                this.position = pos ? this.group.members.length-1 : 0;
             }
             this.notify(this.get());
 			return {
