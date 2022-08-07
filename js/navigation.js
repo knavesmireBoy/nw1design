@@ -31,16 +31,29 @@
 		}
 	}
 
-const factory = function(){
-    var func = doAlternate(),
-        display_pause = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause');
-    return func([compose(display_pause, always('remove'), $recur.execute.bind($recur, true)), compose(display_pause, always('add'), $recur.undo.bind($recur, null))]);
-}
-
 let headers = {};
 
-function router() {
-    var alt = null,
+let sliderFactory = function(element) {
+ function Slider(el) {
+        this.el = el;
+        this.handlers = [];
+        var that = this;
+        this.el.oninput = function() {
+            that.notify(this.value);
+        }
+    };
+    Slider.prototype = new Publisher();
+    Slider.prototype.constructor = Slider;
+    return new Slider(element);
+}
+
+function router($slider) {
+    let player = null;
+    const playMaker = function(){
+        var func = doAlternate(),
+            display_pause = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause');
+        return func([compose(display_pause, always('remove'), $slider.execute.bind($slider, true)), compose(display_pause, always('add'), $slider.undo.bind($slider, null))]);
+    },
         loop = deferPTL(invokeMethod, looper),
         set = loop('set'),
         routines = [set(false), loop('back')(null), loop('forward')(null), set(true)],
@@ -50,11 +63,11 @@ function router() {
         var found = compose(getText, getTarget)(e),
             which = curry2(ptL(invokeMethodBridge, 'match'))(found),
             i = [/^begin$/, /^back$/, /^forward$/, /^end$/].findIndex(which);
-        alt = alt || factory();
- if(found === 'play'){ alt(); }
+       player = player || playMaker();
+ if(found === 'play'){ player(); }
     else {
-        alt = null;
-        $recur.undo();
+        player = null;
+        $slider.undo();
         if(routines[i]){ routines[i](); }
     }
     },
@@ -73,7 +86,7 @@ function router() {
             }
             if(visit){
                 alt = null;
-                $recur.undo() 
+                $slider.undo() 
             }
 		}
 };
@@ -109,7 +122,11 @@ function router() {
 	}
     
 	const broadcaster = Publisher.from(),
-          routes = router(),
+          $recur = recurMaker(300, 99).init(),
+          routes = router($recur),
+          output = $("demo"),
+          slider = $("myrange"),
+          $slider = sliderFactory(slider),
           prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
 		prepare2Append = (doEl, doAttrs) => compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)(),
 		doDiv = doMake('div'),
@@ -119,6 +136,7 @@ function router() {
 		setDiv = prepare2Append(doDiv, prepAttrs([setId], ['slidepreview'])),
 		setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
 		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
+        doSliderOutput = ptL(setter, output, 'innerHTML'),
 		addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.sidebar).wrap(pass),
 		loader = function() {
 			//create sidebar
@@ -153,5 +171,22 @@ function router() {
 			looper.build(getMyLinks(), incrementer, []);
 			looper.attach(displayer);
 			looper.attach(broadcaster.notify.bind(broadcaster));
+            $painter = painter(getTgt('slide'), getTgt('base'), document.body);
+            $recur.attach($painter.doOpacity);
+           // $recur.attach($painter.cleanup);
+            $painter.attach($recur.setPlayer);
+            $slider.attach(doSliderOutput);
+            
 		};
 	window.addEventListener('load', loader);
+
+/*
+FOP : 17/12/14
+BENSON
+AFEN : 01/08/15
+DIS HOUSE 30/04/16
+BP 11/06/12
+UKOOA 15/10/13   23/12/15
+ORKNEY 26/04/10 08/10/20
+SAFARI 31/10/04 - 26/02/04  -22/03/04
+*/

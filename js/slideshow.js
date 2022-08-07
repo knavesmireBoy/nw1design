@@ -167,10 +167,4 @@ const getTgt = (str) => $$(str),
 				this.handlers.forEach((f) => f(...arg));
 			}
 		};
-	},
-	//$recur = recurMaker(400, 25).init(),
-	$recur = recurMaker(300, 99).init(),
-	$painter = painter(getTgt('slide'), getTgt('base'), document.body);
-$recur.attach($painter.doOpacity);
-$recur.attach($painter.cleanup);
-$painter.attach($recur.setPlayer);
+	};
