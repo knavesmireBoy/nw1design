@@ -102,10 +102,8 @@ nW1.Looper = function() {
 			return this.status();
 		}
         find(tgt) {
-            con(tgt)
-            var str = invokeMethod(/\/(\w+)_/, 'exec', tgt)[1],
-            cb = curry3(invokeMethod)(str)('match');
-            //curryL2(equals)(tgt))
+           // return this.set(_.findIndex(this.group.members, _.partial(equals, tgt)));
+            var cb = compose(curryL3(invokeMethodBridge)('match'), curry2(getter)(1), ptL(invokeMethod, /\/(\w+)_/, 'exec'))(tgt);
 			this.set(this.group.members.findIndex(cb));
             this.notify(this.get());
 		}
