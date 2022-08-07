@@ -32,9 +32,9 @@
 	}
 
 const factory = function(){
-    var f = doAlternate(),
+    var func = doAlternate(),
         display_pause = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause');
-    return f([compose(display_pause, always('remove'), $recur.execute.bind($recur)), compose(display_pause, always('add'), $recur.undo.bind($recur, null))]);
+    return func([compose(display_pause, always('remove'), $recur.execute.bind($recur, true)), compose(display_pause, always('add'), $recur.undo.bind($recur, null))]);
 }
 let alt = null,
     routes = [/^begin$/, /^back$/, /^play$/, /^forward$/, /^end$/];

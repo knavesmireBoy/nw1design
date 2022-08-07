@@ -84,9 +84,6 @@ nW1.Looper = function() {
 			}
 			return this.forward(this.rev);
 		}
-		find(tgt) {
-			return this.set(this.group.members.findIndex(ptL(equals, tgt)));
-		}
 		forward(flag) {
 			if (!flag && this.rev) {
 				return this.back(true);
@@ -104,13 +101,18 @@ nW1.Looper = function() {
             this.notify(member);
 			return this.status();
 		}
+        find(tgt) {
+			return this.set(this.group.members.findIndex(ptL(equals, tgt)));
+		}
 		get(m = 'value') {
 			return this.status()[m];
 		}
 		set(pos) {
+            //receives an integer or ...
 			if (!isNaN(parseFloat(pos)) && pos >= 0 && this.group.members[pos]) {
 				this.position = pos;
 			}
+            //...boolean
             else {
                 this.position = pos ? this.group.members.length-2 : 0;
                 this.forward();
