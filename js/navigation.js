@@ -39,13 +39,14 @@ const factory = function(){
 
 let headers = {};
 
-function route() {
+function router() {
     var alt = null,
         loop = deferPTL(invokeMethod, looper),
         set = loop('set'),
         routines = [set(false), loop('back')(null), loop('forward')(null), set(true)],
         play = curry3(invokeMethod)(/play/i)('match');
-    return function(e) {
+    return {
+    menu: function(e) {
         var found = compose(getText, getTarget)(e),
             which = curry2(ptL(invokeMethodBridge, 'match'))(found),
             i = [/^begin$/, /^back$/, /^forward$/, /^end$/].findIndex(which);
@@ -56,7 +57,26 @@ function route() {
         $recur.undo();
         if(routines[i]){ routines[i](); }
     }
-    };   
+    },
+        sidebar: function (e)  {
+			e.preventDefault();
+            var img = getImgPath(e),
+                visit = false;
+			if (matchLink(e)) {
+                toArray($q('.active', true)).forEach((el) => el.classList.remove('active'));
+				headers.execute(getTarget(e), true);
+                visit = true;
+			}
+            if(img){
+                visit = true;
+                looper.find(img);;
+            }
+            if(visit){
+                alt = null;
+                $recur.undo() 
+            }
+		}
+};
 }
 
 	function prepareHeadings(ul) {
@@ -89,6 +109,7 @@ function route() {
 	}
     
 	const broadcaster = Publisher.from(),
+          routes = router(),
           prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
 		prepare2Append = (doEl, doAttrs) => compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)(),
 		doDiv = doMake('div'),
@@ -98,21 +119,7 @@ function route() {
 		setDiv = prepare2Append(doDiv, prepAttrs([setId], ['slidepreview'])),
 		setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
 		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
-		sideBarListener = (e) => {
-			e.preventDefault();
-            var img = getImgPath(e);
-			//remove all active classes. will need to stop slideshow
-			if (matchLink(e)) {
-                toArray($q('.active', true)).forEach((el) => el.classList.remove('active'));
-				headers.execute(getTarget(e), true);
-			}
-            if(img){
-                looper.find(img);
-                $recur.stop();
-            }
-          
-		},
-		addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(sideBarListener).wrap(pass),
+		addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.sidebar).wrap(pass),
 		loader = function() {
 			//create sidebar
 			compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();
@@ -129,7 +136,7 @@ function route() {
 				slideshower = curryL2(replacePath)($$('slide')),
 				displayer = curryL2(replacePath)($$('base')),
 				thumbs = Grouper.from($q('#navigation ul li', true)),
-				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(route()).wrap(pass),
+				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.menu).wrap(pass),
 				text = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
 				buttons = compose(getParent, compose(prepend, doMake)('button'));
             
