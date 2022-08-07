@@ -250,6 +250,10 @@ const looper = nW1.Looper(),
 			return o[p];
 		},
 		setter = (o, k, v) => o[k] = v,
+		setterT = (o, k, v) => {
+            console.log(v)
+            o[k] = v;
+        },
 		setterBridge = (k, o, v) => {
             o = getResult(o);
             o[k] = v;

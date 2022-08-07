@@ -136,6 +136,7 @@ function router($slider) {
 		setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
 		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
         doSliderOutput = ptL(setter, $("demo"), 'innerHTML'),
+        doSliderInput = ptL(setterT, slider, 'value'),
         doMax = ptL(setter, $("max"), 'innerHTML'),
 		addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.sidebar).wrap(pass),
 		loader = function() {
@@ -157,7 +158,13 @@ function router($slider) {
 				thumbs = Grouper.from($q('#navigation ul li', true)),
 				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.menu).wrap(pass),
 				text = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
-				buttons = compose(getParent, compose(prepend, doMake)('button'));
+				buttons = compose(getParent, compose(prepend, doMake)('button')),
+                indexer = function(path){
+                    var mapped = toArray(getExtent()).map(curryL3(invokeMethodBridge)('getAttribute')('href')),
+                        i = mapped.findIndex(curry2(equals)(path));
+                    doSliderInput(i+1);
+                    doSliderOutput(i+1);
+                };
             
 			compose(machSlide, getParent, machBase, getParent, addPlayClick, machControls, machDiv)($('display'));
 			text.map(buttons).map(appendCB).map(curry2(invoke)($('controls')));
@@ -172,6 +179,8 @@ function router($slider) {
 			looper.build(getMyLinks(), incrementer, []);
 			looper.attach(displayer);
 			looper.attach(broadcaster.notify.bind(broadcaster));
+			looper.attach(indexer);
+            
             $painter = painter(getTgt('slide'), getTgt('base'), document.body);
             $recur.attach($painter.doOpacity);
            // $recur.attach($painter.cleanup);
@@ -179,7 +188,6 @@ function router($slider) {
             $slider.attach(doSliderOutput);
             $slider.attach(looper.set.bind(looper));
             doMax(getExtent().length);
-            //doMax()
             
 		};
 	window.addEventListener('load', loader);
