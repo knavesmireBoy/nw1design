@@ -136,7 +136,7 @@ function router($slider) {
 		setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
 		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
         doSliderOutput = ptL(setter, $("demo"), 'innerHTML'),
-        doSliderInput = ptL(setterT, slider, 'value'),
+        doSliderInput = ptL(setter, slider, 'value'),
         doMax = ptL(setter, $("max"), 'innerHTML'),
 		addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.sidebar).wrap(pass),
 		loader = function() {
@@ -159,9 +159,9 @@ function router($slider) {
 				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.menu).wrap(pass),
 				text = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
 				buttons = compose(getParent, compose(prepend, doMake)('button')),
-                indexer = function(path){
-                    var mapped = toArray(getExtent()).map(curryL3(invokeMethodBridge)('getAttribute')('href')),
-                        i = mapped.findIndex(curry2(equals)(path));
+                sliderBridge = function(path){
+                    var i = looper.get('members').findIndex(curry2(equals)(path));
+                    //looper members zero indexed...
                     doSliderInput(i+1);
                     doSliderOutput(i+1);
                 };
@@ -179,7 +179,7 @@ function router($slider) {
 			looper.build(getMyLinks(), incrementer, []);
 			looper.attach(displayer);
 			looper.attach(broadcaster.notify.bind(broadcaster));
-			looper.attach(indexer);
+			looper.attach(sliderBridge);
             
             $painter = painter(getTgt('slide'), getTgt('base'), document.body);
             $recur.attach($painter.doOpacity);

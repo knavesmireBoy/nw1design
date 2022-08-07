@@ -349,19 +349,11 @@ main aside section a {
   border: solid 1px #999;
 }
 
-#home nav > ul > li:nth-child(1) > a {
+#home #about #webdesign #graphicdesign nav > ul > li:nth-child(1) > a {
   color: #c33;
 }
 
-#about nav > ul > li:nth-child(2) > a {
-  color: #c33;
-}
-
-#webdesign nav > ul > li:nth-child(3) > a {
-  color: #c33;
-}
-
-#graphicdesign nav > ul > li:nth-child(4) > a {
+#portfolio nav > ul > li:nth-child(2) > a {
   color: #c33;
 }
 

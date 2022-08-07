@@ -250,10 +250,6 @@ const looper = nW1.Looper(),
 			return o[p];
 		},
 		setter = (o, k, v) => o[k] = v,
-		setterT = (o, k, v) => {
-            console.log(v)
-            o[k] = v;
-        },
 		setterBridge = (k, o, v) => {
             o = getResult(o);
             o[k] = v;
@@ -283,9 +279,7 @@ const looper = nW1.Looper(),
 			return invokeMethod(o, m, v);
 		},
       invokeMethodBridgeT = (m, o, v) => {
-          
-			o = getResult(o);
-          console.log(m,v,o)
+          o = getResult(o);
 			return invokeMethod(o, m, v);
 		},
 		invokeMethodBridgeCB = (cb) => (m, v, o) => {
