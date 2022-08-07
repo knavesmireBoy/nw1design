@@ -137,14 +137,21 @@ const getTgt = (str) => $$(str),
 				var o = !isNaN(flag) ? .5 : 1;
                 this.notify(o);
                 window.cancelAnimationFrame(this.t);
-               this.t = flag; //either set to undefined(forward/back/exit) or null(pause)
-				
+                this.t = flag; //either set to undefined(forward/back/exit) or null(pause)
 				if (o === 1) {
                query_inplay('remove');
                display_pause('remove');
                 display_swap('remove');
                 }
 			},
+            stop: function(a) {
+                con(a)
+                con(this.i)
+                con(this.t)
+                if(is_inplay()) {
+                    this.undo();
+                }
+            },
 			setPlayer: function(arg) {
 				this.player = this.nextplayer(arg);
 				this.execute();

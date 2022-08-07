@@ -43,11 +43,7 @@ function route(e) {
     alt = alt || factory();
     var loop = deferPTL(invokeMethod, looper),
         set = loop('set'),
-        end = set(true),
-        start = set(false),
-        f = loop('forward')(null),
-        b = loop('back')(null),
-        routines = [start, b, alt, f, end],
+        routines = [set(false), loop('back')(null), alt, loop('forward')(null), set(true)],
         play = curry3(invokeMethod)(/play/i)('match'),
         t = compose(play, getText, getTarget)(e),
         found = compose(getText, getTarget)(e),
@@ -116,6 +112,7 @@ let headers = {};
 			}
             if(img){
                 looper.find(img);
+                $recur.stop();
             }
           
 		},
@@ -152,12 +149,6 @@ let headers = {};
             
 			looper.build(getMyLinks(), incrementer, []);
 			looper.attach(displayer);
-			//looper.attach(slideshower);//hide...
 			looper.attach(broadcaster.notify.bind(broadcaster));
-			/*
-            setTimeout(function(){
-                looper.forward();
-            }, 2222)
-		*/
 		};
 	window.addEventListener('load', loader);
