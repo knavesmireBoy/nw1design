@@ -36,30 +36,27 @@ const factory = function(){
         display_pause = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause');
     return func([compose(display_pause, always('remove'), $recur.execute.bind($recur, true)), compose(display_pause, always('add'), $recur.undo.bind($recur, null))]);
 }
-let alt = null,
-    routes = [/^begin$/, /^back$/, /^play$/, /^forward$/, /^end$/];
 
-function route(e) {
-    alt = alt || factory();
-    var loop = deferPTL(invokeMethod, looper),
+let headers = {};
+
+function route() {
+    var alt = null,
+        loop = deferPTL(invokeMethod, looper),
         set = loop('set'),
-        routines = [set(false), loop('back')(null), alt, loop('forward')(null), set(true)],
-        play = curry3(invokeMethod)(/play/i)('match'),
-        t = compose(play, getText, getTarget)(e),
-        found = compose(getText, getTarget)(e),
-        which = curry2(ptL(invokeMethodBridge, 'match'))(found),
-        i = routes.findIndex(which);
-    
-    if(t){
-        alt();
-       }
+        routines = [set(false), loop('back')(null), loop('forward')(null), set(true)],
+        play = curry3(invokeMethod)(/play/i)('match');
+    return function(e) {
+        var found = compose(getText, getTarget)(e),
+            which = curry2(ptL(invokeMethodBridge, 'match'))(found),
+            i = [/^begin$/, /^back$/, /^forward$/, /^end$/].findIndex(which);
+        alt = alt || factory();
+ if(found === 'play'){ alt(); }
     else {
         alt = null;
         $recur.undo();
-        if(routines[i]){
-            routines[i]();
-        }
+        if(routines[i]){ routines[i](); }
     }
+    };   
 }
 
 	function prepareHeadings(ul) {
@@ -90,7 +87,6 @@ function route(e) {
 			}
 		};
 	}
-let headers = {};
     
 	const broadcaster = Publisher.from(),
           prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
@@ -133,7 +129,7 @@ let headers = {};
 				slideshower = curryL2(replacePath)($$('slide')),
 				displayer = curryL2(replacePath)($$('base')),
 				thumbs = Grouper.from($q('#navigation ul li', true)),
-				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(route).wrap(pass),
+				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(route()).wrap(pass),
 				text = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
 				buttons = compose(getParent, compose(prepend, doMake)('button'));
             
