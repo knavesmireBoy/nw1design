@@ -39,8 +39,8 @@ let sliderFactory = function(element) {
         this.handlers = [];
         var that = this;
         this.el.oninput = function() {
-            that.notify(this.value);
-        }
+            that.notify(this.value, true);
+        };
     };
     Slider.prototype = new Publisher();
     Slider.prototype.constructor = Slider;
@@ -124,7 +124,6 @@ function router($slider) {
 	const broadcaster = Publisher.from(),
           $recur = recurMaker(300, 99).init(),
           routes = router($recur),
-          output = $("demo"),
           slider = $("myrange"),
           $slider = sliderFactory(slider),
           prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
@@ -136,7 +135,8 @@ function router($slider) {
 		setDiv = prepare2Append(doDiv, prepAttrs([setId], ['slidepreview'])),
 		setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
 		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
-        doSliderOutput = ptL(setter, output, 'innerHTML'),
+        doSliderOutput = ptL(setter, $("demo"), 'innerHTML'),
+        doMax = ptL(setter, $("max"), 'innerHTML'),
 		addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.sidebar).wrap(pass),
 		loader = function() {
 			//create sidebar
@@ -144,8 +144,9 @@ function router($slider) {
 			config.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
 			//post creation of sidebar
             headers = Grouper.from(headings());
-			const getMyLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, $$q('#navigation ul li a', true)),
-				src = compose(getAttrs('href'), getZero, $$q('#navigation ul li a', true))(),
+			const getExtent = $$q('#navigation ul li a', true),
+                  getMyLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, getExtent),
+				src = compose(getAttrs('href'), getZero, getExtent)(),
 				machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
 				machControls = prepare2Append(doDiv, prepAttrs([setId], ['controls'])),
 				machBase = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
@@ -176,6 +177,9 @@ function router($slider) {
            // $recur.attach($painter.cleanup);
             $painter.attach($recur.setPlayer);
             $slider.attach(doSliderOutput);
+            $slider.attach(looper.set.bind(looper));
+            doMax(getExtent().length);
+            //doMax()
             
 		};
 	window.addEventListener('load', loader);

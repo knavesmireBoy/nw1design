@@ -110,7 +110,8 @@ nW1.Looper = function() {
 		get(m = 'value') {
 			return this.status()[m];
 		}
-		set(pos) {
+		set(pos, flag) {
+           pos = flag ? pos-1 : pos;
             //receives an integer or ...
 			if (!isNaN(parseFloat(pos)) && pos >= 0 && this.group.members[pos]) {
 				this.position = pos;
@@ -121,6 +122,7 @@ nW1.Looper = function() {
                 this.forward();
                 return this.status();
             }
+            this.notify(this.get());
 			return {
 				value: this.group.members[this.position],
 				index: this.position
