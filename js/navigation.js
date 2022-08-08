@@ -150,6 +150,9 @@ function router($slider) {
 				src = compose(getAttrs('href'), getZero, getExtent)(),
 				machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
 				machControls = prepare2Append(doDiv, prepAttrs([setId], ['controls'])),
+				machButtons = prepare2Append(doDiv, prepAttrs([setId], ['buttons'])),//container for buttons
+				machSlider = prepare2Append(doDiv, prepAttrs([setId], ['slidecontainer'])),
+				machSliderInput = prepare2Append(doMake('input'), prepAttrs([setType, setMin, setMax, setVal, setId], ['range', 1, 27, 1, 'myrange'])),
 				machBase = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
 				machSlide = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide'])),
 				previewer = ptL(replacePath, $$q('#slidepreview img')),
@@ -166,8 +169,8 @@ function router($slider) {
                     doSliderOutput(i+1);
                 };
             
-			compose(machSlide, getParent, machBase, getParent, addPlayClick, machControls, machDiv)($('display'));
-			text.map(buttons).map(appendCB).map(curry2(invoke)($('controls')));
+			compose(machSlide, getParent, machBase, getGrandParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
+			text.map(buttons).map(appendCB).map(curry2(invoke)($('buttons')));
 			headers.setSearch(headers_search_strategy.bind(headers));
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
             

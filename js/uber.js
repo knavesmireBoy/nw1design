@@ -8,6 +8,8 @@ if (!window.nW1) {
 function noOp(){}
 
 
+
+
 function random (n = 10) {
     return Math.floor(Math.random() * n);
 }
@@ -297,6 +299,7 @@ const looper = nW1.Looper(),
 		$$q = (str, flag = false) => () => $q(str, flag),
       getTarget = curry2(getter)('target'),
 		getParent = curry2(getter)('parentNode'),
+      getGrandParent = compose(getParent, getParent),
 		getText = curry2(getter)('innerHTML'),
 		getNodeName = curry2(getter)('innerHTML'),
 		getClassList = curry2(getter)('classList'),
@@ -326,12 +329,17 @@ const looper = nW1.Looper(),
 		addImgLoad = onLoad(imageLoad).wrap(pass),
 		reset_opacity = compose(curry3(setter)(3)('opacity'), curry22(getter)('style')($$('slide'))),
 		doResetOpacity = onLoad(reset_opacity).wrap(pass),
+      setId = curry2(setAttribute('id')),
+      setLink = curry2(setAttribute('href')),
 		setSrc = curry2(setAttribute('src')),
 		setAlt = curry2(setAttribute('alt')),
-		setLink = curry2(setAttribute('href')),
-		setId = curry2(setAttribute('id')),
+		setVal = curry2(setAttribute('value')),
+		setMin = curry2(setAttribute('min')),
+		setMax = curry2(setAttribute('max')),
+		setType = curry2(setAttribute('type')),
+		
 		setNavId = curry2(setAttribute('id'))('navigation').wrap(pass),
-		setHref = curry2(setAttribute('href'))('.').wrap(pass),
+		setHref = setLink('.').wrap(pass),
 		getNav = $$('navigation'),
 		addKlas = ptL(invokeMethodBridge, 'add'),
 		remKlas = ptL(invokeMethodBridge, 'remove'),
