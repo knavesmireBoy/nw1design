@@ -6,6 +6,9 @@
 /*global $$: false */
 /*global $$q: false */
 
+if (!window.nW1) {
+    window.nW1 = {};
+}
 
 function tri(i, j){
     if(i){
@@ -113,8 +116,8 @@ const getTgt = (str) => $$(str),
 			return flag ? actions.reverse()[0] : fade;
 		};
 	},
-	recurMaker = function(duration = 100, wait = 50, i = 1) {
-		return {
+	recurMaker = function(duration = 100, wait = 50, i = 1, makePub = false) {
+        let ret = {
 			init: function() {
 				this.nextplayer = playMaker(this);
 				this.player = this.nextplayer();
@@ -134,6 +137,7 @@ const getTgt = (str) => $$(str),
 				}
 			},
 			undo: function(flag) {
+                con(this)
 				var o = !isNaN(flag) ? .5 : 1;
                 this.notify(o);
                 window.cancelAnimationFrame(this.t);
@@ -144,14 +148,6 @@ const getTgt = (str) => $$(str),
                 display_swap('remove');
                 }
 			},
-            stop: function(a) {
-                con(a)
-                con(this.i)
-                con(this.t)
-                if(is_inplay()) {
-                    this.undo();
-                }
-            },
 			setPlayer: function(arg) {
 				this.player = this.nextplayer(arg);
 				this.execute();
@@ -159,12 +155,17 @@ const getTgt = (str) => $$(str),
 			recur: function() {
 				this.player.inc();
 				this.t = window.requestAnimationFrame(this.execute.bind(this));
-			},
+			}/*,
 			attach: function(h) {
 				this.handlers.push(h);
 			},
 			notify: function(...arg) {
 				this.handlers.forEach((f) => f(...arg));
 			}
+            */
 		};
+        if(makePub){
+            return nW1.Publish.makepublisher(ret);
+        }
+        return ret;
 	};

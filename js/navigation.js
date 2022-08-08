@@ -1,4 +1,8 @@
-	function getLinksDeep() {
+if (!window.nW1) {
+    window.nW1 = {};
+}
+
+function getLinksDeep() {
 		var get = curry3(getTargetNode),
 			ul = this.grp.map(get('nextSibling')(/ul/i)),
 			getA = get('firstChild')(/^a$/i);
@@ -124,7 +128,7 @@ function router($slider) {
 	}
     
 	const broadcaster = Publisher.from(),
-          $recur = recurMaker(300, 99).init(),
+          $recur = recurMaker(300, 99, 1, true).init(),
           routes = router($recur),
           prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
 		prepare2Append = (doEl, doAttrs) => compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)(),
@@ -199,7 +203,7 @@ function router($slider) {
             $recur.attach($painter.doOpacity);
            // $recur.attach($painter.cleanup);
             $painter.attach($recur.setPlayer);
-            //$slider.attach(doSliderOutput);
+            $slider.attach(doSliderOutput);
             $slider.attach(looper.set.bind(looper));
             //doMax(getExtent().length);
             
