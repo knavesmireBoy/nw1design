@@ -83,7 +83,7 @@ const getTgt = (str) => $$(str),
                 
             };
 		}
-		var fade = {
+		var fader = {
 				validate: function() {
 					return $recur.i <= -1;
 				},
@@ -96,7 +96,7 @@ const getTgt = (str) => $$(str),
 				}
 			},
             
-           // fade = nW1.Publish.makepublisher(fader),
+           fade = nW1.Publish().makepublisher(fader),
             
             fadeOut = {
 				validate: function() {
