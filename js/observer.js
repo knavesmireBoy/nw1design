@@ -7,7 +7,7 @@ if (!window.nW1) {
 nW1.Publish = (function () {
     "use strict";
     
-    //arg eithe func or arguments to func
+    //arg either func or arguments to func
     function visitSubscribers(action = 'publish', type = 'any', arg) {
 
         var subscribers,
@@ -32,11 +32,14 @@ nW1.Publish = (function () {
         }
     }
 
-    return {
+    return function() {
+        
+        var ret = {
 
         subscribers: {
             set: function (prop, arg = []) {
                 this[prop] = arg;
+                return this;
             },
 
             get: function (prop) {
@@ -46,14 +49,16 @@ nW1.Publish = (function () {
             any: []
         },
 
-        attach: function (fn = () => {}, type = 'any') {
+        attach: function (fn, type = 'any') {
 
-            var subs = this.subscribers;
-
-            subs[type] = subs[type].filter(function (func) {
-                return func !== fn;
-            });
-            subs[type].push(fn);
+            if(!this.subscribers[type]){
+               this.subscribers[type] = this.subscribers.set(type).get(type);
+               }
+            
+              this.subscribers[type] = this.subscribers[type].filter(function (func, i) { 
+                  return func !== fn;
+              });
+                this.subscribers[type].push(fn);
         },
 
         remove: function (func, type = 'any') {
@@ -76,6 +81,8 @@ nW1.Publish = (function () {
             }
             return object;
         }
-    };//returned
+    };
+        return ret;
+    };
 
 }()); //gAlp.Publish

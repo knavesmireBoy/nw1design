@@ -38,22 +38,43 @@ const getTgt = (str) => $$(str),
 		return !bool;
 	},
 	painter = function(slide, base, container) {
-		return {
-			handlers: [],
-			doOpacity: function(o) {
+		let ret =  {
+			doOpacity: function(o, type) {
+                console.log(o, type)
+               // if(!isNaN(parseFloat(o))){
 				var el = getResult(slide);
 				el.style.opacity = o;
+               // }
 			},
-            cleanup: function() {
-               // [query_inplay, display_pause].forEach(always('remove'));
-            },
-			attach: function(h) {
-				this.handlers.push(h);
-			},
-			notify: function(...arg) {
-				this.handlers.forEach((f) => f(...arg));
-			},
+            update: function (flag) {
+			var s = $('slide'),
+				b = $('base'),
+                that = this;
+			doPic(s, b.src);
+			s.onload = function() {
+				doOpacity.call($recur);
+				display_inplay('inplay');
+				if (flag) {
+					doPic(b, looper.forward().value); //broadcast
+				}
+			}
+			b.onload = function (e) {
+                if(is_inplay()){
+                    //that.notify(doSwap());
+                   return compose($recur.setPlayer.bind($recur), doSwap)();
+                }
+                
+            };
+		},
+            cleanup: function(){
+                con(99)
+                query_inplay('remove');
+                display_pause('remove');
+                display_swap('remove');
+            }
+            
 		};
+        return nW1.Publish().makepublisher(ret);
 	},
 	playMaker = function($recur) {
         
@@ -107,7 +128,7 @@ const getTgt = (str) => $$(str),
 					$recur.i -= 1;
 				},
 				reset: function() {
-					$recur.i = tri(0, $recur.dur);
+					$recur.i = $recur.dur;
 					updateImages(true);
 				}
 			},
@@ -132,20 +153,18 @@ const getTgt = (str) => $$(str),
 				if (this.player.validate()) {
 					this.player.reset();
 				} else {
+                    con(this.subscribers)
 					this.notify(this.i / this.wait);
 					this.recur();
 				}
 			},
 			undo: function(flag) {
-                con(this)
 				var o = !isNaN(flag) ? .5 : 1;
                 this.notify(o);
                 window.cancelAnimationFrame(this.t);
                 this.t = flag; //either set to undefined(forward/back/exit) or null(pause)
 				if (o === 1) {
-               query_inplay('remove');
-               display_pause('remove');
-                display_swap('remove');
+                    this.notify(null, 'exit');
                 }
 			},
 			setPlayer: function(arg) {
@@ -155,17 +174,10 @@ const getTgt = (str) => $$(str),
 			recur: function() {
 				this.player.inc();
 				this.t = window.requestAnimationFrame(this.execute.bind(this));
-			}/*,
-			attach: function(h) {
-				this.handlers.push(h);
-			},
-			notify: function(...arg) {
-				this.handlers.forEach((f) => f(...arg));
 			}
-            */
 		};
         if(makePub){
-            return nW1.Publish.makepublisher(ret);
+            return nW1.Publish().makepublisher(ret);
         }
         return ret;
 	};
