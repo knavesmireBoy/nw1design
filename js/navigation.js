@@ -155,7 +155,6 @@ function router($slider) {
 			const getExtent = $$q('#navigation ul li a', true),
                   getMyLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, getExtent),
 				src = compose(getAttrs('href'), getZero, getExtent)(),
-                  
 				machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
 				machControls = prepare2Append(doDiv, prepAttrs([setId], ['controls'])),
 				machButtons = prepare2Append(doDiv, prepAttrs([setId], ['buttons'])),//container for buttons
@@ -201,7 +200,7 @@ function router($slider) {
             
             $painter = painter(getTgt('slide'), getTgt('base'), document.body);
             $recur.attach($painter.doOpacity.bind($painter));
-           //$recur.attach($painter.cleanup.bind($painter), 'exit');
+           $recur.attach($painter.cleanup.bind($painter), 'delete');
             $painter.attach($recur.setPlayer.bind($recur));
             $slider.attach(doSliderOutput);
             $slider.attach(looper.set.bind(looper));

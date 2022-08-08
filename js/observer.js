@@ -49,16 +49,13 @@ nW1.Publish = (function () {
             any: []
         },
 
-        attach: function (fn, type = 'any') {
+        attach: function (fn =() => {}, type = 'any') {
 
             if(!this.subscribers[type]){
                this.subscribers[type] = this.subscribers.set(type).get(type);
                }
-            
-              this.subscribers[type] = this.subscribers[type].filter(function (func, i) { 
-                  return func !== fn;
-              });
-                this.subscribers[type].push(fn);
+              this.subscribers[type] = this.subscribers[type].filter(func => func !== fn);
+            this.subscribers[type].push(fn);
         },
 
         remove: function (func, type = 'any') {

@@ -10,15 +10,6 @@ if (!window.nW1) {
     window.nW1 = {};
 }
 
-function tri(i, j){
-    if(i){
-        return j;
-    }
-    return j / 2;
-    return tri(i++, j);
-}
-
-
 const getTgt = (str) => $$(str),
 	is_inplay = $$q('.inplay'),
 	getHeight = curry2(getter)('height'),
@@ -39,12 +30,9 @@ const getTgt = (str) => $$(str),
 	},
 	painter = function(slide, base, container) {
 		let ret =  {
-			doOpacity: function(o, type) {
-                console.log(o, type)
-               // if(!isNaN(parseFloat(o))){
+			doOpacity: function(o) {
 				var el = getResult(slide);
 				el.style.opacity = o;
-               // }
 			},
             update: function (flag) {
 			var s = $('slide'),
@@ -67,7 +55,6 @@ const getTgt = (str) => $$(str),
             };
 		},
             cleanup: function(){
-                con(99)
                 query_inplay('remove');
                 display_pause('remove');
                 display_swap('remove');
@@ -96,7 +83,22 @@ const getTgt = (str) => $$(str),
                 
             };
 		}
-		var fadeOut = {
+		var fade = {
+				validate: function() {
+					return $recur.i <= -1;
+				},
+				inc: function() {
+					$recur.i -= 1;
+				},
+				reset: function() {
+					$recur.i = $recur.dur;
+					updateImages(true);
+				}
+			},
+            
+           // fade = nW1.Publish.makepublisher(fader),
+            
+            fadeOut = {
 				validate: function() {
 					return $recur.i <= -.1;
 				},
@@ -120,18 +122,6 @@ const getTgt = (str) => $$(str),
 					doPic($('base'), looper.forward().value);
 				}
 			},
-			fade = {
-				validate: function() {
-					return $recur.i <= -1;
-				},
-				inc: function() {
-					$recur.i -= 1;
-				},
-				reset: function() {
-					$recur.i = $recur.dur;
-					updateImages(true);
-				}
-			},
 			actions = [fadeIn, fadeOut];
 		return function(flag) {
 			return flag ? actions.reverse()[0] : fade;
@@ -153,7 +143,6 @@ const getTgt = (str) => $$(str),
 				if (this.player.validate()) {
 					this.player.reset();
 				} else {
-                    con(this.subscribers)
 					this.notify(this.i / this.wait);
 					this.recur();
 				}
@@ -164,7 +153,7 @@ const getTgt = (str) => $$(str),
                 window.cancelAnimationFrame(this.t);
                 this.t = flag; //either set to undefined(forward/back/exit) or null(pause)
 				if (o === 1) {
-                    this.notify(null, 'exit');
+                    this.notify(null, 'delete');
                 }
 			},
 			setPlayer: function(arg) {
