@@ -587,9 +587,18 @@ body.swap img#base {
     visibility: hidden;
 }
 
-.slidecontainer {
+#slidecontainer {
   width: 100%;
+    display: flex;
+    justify-content: space-between;
+    p {
+        font-size: .9em;
+    span {
+        font-weight: bold;
+    }
+    }
 }
+
 
 .slider {
   -webkit-appearance: none;

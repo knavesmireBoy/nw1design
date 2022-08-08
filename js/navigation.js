@@ -133,7 +133,7 @@ function router($slider) {
 		doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
 		doRenderNav = compose(prepend($$('navigation')), setHref, getParent, prepend(doMake('a'))),
 		setDiv = prepare2Append(doDiv, prepAttrs([setId], ['slidepreview'])),
-		setPara = prepare2Append(doMake('para'), prepAttrs([],[])),
+		setPara = prepare2Append(doMake('p'), prepAttrs([],[])),
 		setSpan1 = prepare2Append(doMake('span'), prepAttrs([setId], ['demo'])),
 		setSpan2 = prepare2Append(doMake('span'), prepAttrs([setId], ['max'])),
 		setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
@@ -165,7 +165,7 @@ function router($slider) {
 				thumbs = Grouper.from($q('#navigation ul li', true)),
 				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.menu).wrap(pass),
 				buttontext = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
-				slidertext = ['Image ', 'of '].map(doTextCBNow),
+				slidertext = ['Image ', ' of '].map(doTextCBNow),
                 sliderspans = [curry2(insertB4)($$('demo')), curry2(insertB4)($$('max'))],
 				buttons = compose(getParent, compose(prepend, doMake)('button')),
                 sliderBridge = function(path){
@@ -176,7 +176,7 @@ function router($slider) {
                 };
             
             
-			compose(machSlide, getParent, machBase, getGrandParent, getParent, setSpan2, getParent, setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
+			compose(machSlide, getParent, machBase, getParent2, getParent2, append(doTextNow(27)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
 			buttontext.map(buttons).map(appendCB).map(curry2(invoke)($('buttons')));            
             
             zip('forEach', sliderspans, slidertext);
