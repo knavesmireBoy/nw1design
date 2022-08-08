@@ -7,7 +7,39 @@ if (!window.nW1) {
 
 function noOp(){}
 
+function identity(arg) {
+		return arg;
+	}
 
+	function equals(a, b) {
+		return a === b;
+	}
+
+	function modulo(n, i) {
+		return i % n;
+	}
+
+	function increment(i) {
+		return i + 1;
+	}
+
+function getResult(o) {
+		if (typeof o === 'function') {
+			return o();
+		}
+		return o;
+	}
+
+function insertB4(neu, el) {
+    el = getResult(el);
+    var p = el.parentNode;
+    return p.insertBefore(getResult(neu), el);
+}
+
+function mapArgs (f, ...args) {
+    const mapped = args.map(getResult);
+    return f(...mapped);
+}
 
 
 function random (n = 10) {
@@ -41,17 +73,16 @@ const pApply = (fn, ...cache) => (...args) => {
 */
 
 const thunk = (f, ...args) => f(...args);
-
 	//note a function that ignores any state of champ or contender will return the first element if true and last if false
 	function best(fun, coll, arg) {
 		//fun = arg ? doPartialCB()(fun, arg) : fun;
 		return toArray(coll).reduce((champ, contender) => fun(champ, contender) ? champ : contender);
 	}
 function alternate(i, n) {
-			return function () {
-				i = (i += 1) % n;
-				return i;
-			};
+    return function () {
+        i = (i += 1) % n;
+        return i;
+    };
 }
 function doAlternate() {
     var  f = alternate(0, 2);
@@ -74,34 +105,11 @@ function toArray(coll, cb = () => true) {
 		};
 	}
 
-	function identity(arg) {
-		return arg;
-	}
-
-	function equals(a, b) {
-		return a === b;
-	}
-
-	function modulo(n, i) {
-		return i % n;
-	}
-
-	function increment(i) {
-		return i + 1;
-	}
 
 	function doInc(n) {
 		return compose(ptL(modulo, n), increment);
 	}
 	/* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
-
-
-	function getResult(o) {
-		if (typeof o === 'function') {
-			return o();
-		}
-		return o;
-	}
 
 	function doIterate(m, funs) {
 		return function(o) {
@@ -184,11 +192,6 @@ function toArray(coll, cb = () => true) {
 		}
 	}
 
-	function imageLoad() {
-		//stop slideshow; set display pic; set index;  trigger click    
-		// con(this);
-	}
-
 	function getNextElement(node) {
 		if (node && node.nodeType === 1) {
 			return node;
@@ -236,11 +239,6 @@ const looper = nW1.Looper(),
       },
 		deferPTL = doPartial(true),
 		ptL = doPartial(),
-      passy = (ptl, o) => {
-          con(ptl, o)
-			ptl(getResult(o));
-			return o;
-		},
       pass = (ptl, o) => {
 			ptl(getResult(o));
 			return o;
@@ -251,7 +249,12 @@ const looper = nW1.Looper(),
 			o = getResult(o);
 			return o[p];
 		},
-		setter = (o, k, v) => o[k] = v,
+		setter = (o, k, v) => {
+            console.log(o,k,v)
+            o = getResult(o);
+            getResult(o)[k] = v;
+            return o;
+        },
 		setterBridge = (k, o, v) => {
             o = getResult(o);
             o[k] = v;
@@ -268,23 +271,25 @@ const looper = nW1.Looper(),
 		curryL33 = fun => a => b => c => () => fun(a, b, c),
 		invoke = (f, v) => f(v),
       invokeMethod = (o, m, v) => o[m](v),
-      invokeMethodV = (o, s, m, v) => {
+      invokeMethodV = (o, p, m, v) => {
           o = getResult(o);
-          return o[s][v](m)
+          return o[p][v](m)
       },
-      invokeMethodT = (o, m, v) => {
-          return o[m](v);
+      invokeMethodPair = (o, m, p, v) => {
+          o = getResult(o);
+          return o[m](p, v)
       },
 		lazyVal = (m, p, o, v) => o[m](p, v),
 		invokeMethodBridge = (m, v, o) => {
 			o = getResult(o);
 			return invokeMethod(o, m, v);
 		},
-      invokeMethodBridgeT = (m, o, v) => {
-          o = getResult(o);
+
+		invokeMethodBridgeCB = (cb) => (m, v, o) => {
+			o = cb(o);
 			return invokeMethod(o, m, v);
 		},
-		invokeMethodBridgeCB = (cb) => (m, v, o) => {
+      invokeMethodBridgeCBT = (cb) => (m, v, o) => {
 			o = cb(o);
 			return invokeMethod(o, m, v);
 		},
@@ -314,6 +319,7 @@ const looper = nW1.Looper(),
 		doTextCBNow = curryL3(invokeMethod)(document)('createTextNode'),
 		prepend = curry2(ptL(invokeMethodBridgeCB(getResult), 'appendChild')),
 		prependCB = curry2(curryL3(invokeMethodBridgeCB(getResult))('appendChild')),
+		insertBeforeCB = curry2(curryL3(invokeMethodBridgeCBT(getResult))('insertBefore')),
 		append = ptL(invokeMethodBridgeCB(getResult), 'appendChild'),
 		appendCB = curryL3(invokeMethodBridgeCB(getResult))('appendChild'),
 		getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
@@ -326,7 +332,6 @@ const looper = nW1.Looper(),
 		getImgPath = compose(curryL3(invokeMethodBridge)('getAttribute')('src'), getTarget),
 		addClickHover = curry2(ptL(lazyVal, 'addEventListener', 'mouseover'))(hover).wrap(pass),
 		onLoad = curry2(ptL(lazyVal, 'addEventListener', 'load')),
-		addImgLoad = onLoad(imageLoad).wrap(pass),
 		reset_opacity = compose(curry3(setter)(3)('opacity'), curry22(getter)('style')($$('slide'))),
 		doResetOpacity = onLoad(reset_opacity).wrap(pass),
       setId = curry2(setAttribute('id')),

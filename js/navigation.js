@@ -31,11 +31,13 @@
 		}
 	}
 
-let headers = {};
+let headers = {},
+    $slider = null;
 
 let sliderFactory = function(element) {
+    
  function Slider(el) {
-        this.el = el;
+        this.el = getResult(el);
         this.handlers = [];
         var that = this;
         this.el.oninput = function() {
@@ -124,8 +126,6 @@ function router($slider) {
 	const broadcaster = Publisher.from(),
           $recur = recurMaker(300, 99).init(),
           routes = router($recur),
-          slider = $("myrange"),
-          $slider = sliderFactory(slider),
           prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
 		prepare2Append = (doEl, doAttrs) => compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)(),
 		doDiv = doMake('div'),
@@ -133,21 +133,25 @@ function router($slider) {
 		doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
 		doRenderNav = compose(prepend($$('navigation')), setHref, getParent, prepend(doMake('a'))),
 		setDiv = prepare2Append(doDiv, prepAttrs([setId], ['slidepreview'])),
+		setPara = prepare2Append(doMake('para'), prepAttrs([],[])),
+		setSpan1 = prepare2Append(doMake('span'), prepAttrs([setId], ['demo'])),
+		setSpan2 = prepare2Append(doMake('span'), prepAttrs([setId], ['max'])),
 		setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
 		headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
-        doSliderOutput = ptL(setter, $("demo"), 'innerHTML'),
-        doSliderInput = ptL(setter, slider, 'value'),
+        doSliderOutput = ptL(setter, $$("demo"), 'innerHTML'),
+        doSliderInput = ptL(setter, $$("myrange"), 'value'),
         doMax = ptL(setter, $("max"), 'innerHTML'),
 		addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.sidebar).wrap(pass),
 		loader = function() {
 			//create sidebar
-			compose(addImgLoad, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();
+			compose(setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();
 			config.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul')));
 			//post creation of sidebar
             headers = Grouper.from(headings());
 			const getExtent = $$q('#navigation ul li a', true),
                   getMyLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, getExtent),
 				src = compose(getAttrs('href'), getZero, getExtent)(),
+                  
 				machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
 				machControls = prepare2Append(doDiv, prepAttrs([setId], ['controls'])),
 				machButtons = prepare2Append(doDiv, prepAttrs([setId], ['buttons'])),//container for buttons
@@ -160,7 +164,9 @@ function router($slider) {
 				displayer = curryL2(replacePath)($$('base')),
 				thumbs = Grouper.from($q('#navigation ul li', true)),
 				addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.menu).wrap(pass),
-				text = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
+				buttontext = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
+				slidertext = ['Image ', 'of '].map(doTextCBNow),
+                sliderspans = [curry2(insertB4)($$('demo')), curry2(insertB4)($$('max'))],
 				buttons = compose(getParent, compose(prepend, doMake)('button')),
                 sliderBridge = function(path){
                     var i = looper.get('members').findIndex(curry2(equals)(path));
@@ -169,8 +175,13 @@ function router($slider) {
                     doSliderOutput(i+1);
                 };
             
-			compose(machSlide, getParent, machBase, getGrandParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
-			text.map(buttons).map(appendCB).map(curry2(invoke)($('buttons')));
+            
+			compose(machSlide, getParent, machBase, getGrandParent, getParent, setSpan2, getParent, setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
+			buttontext.map(buttons).map(appendCB).map(curry2(invoke)($('buttons')));            
+            
+            zip('forEach', sliderspans, slidertext);
+            $slider = sliderFactory($$("myrange"));
+                        
 			headers.setSearch(headers_search_strategy.bind(headers));
 			thumbs.setSearch(thumbs_search_strategy.bind(thumbs));
             
@@ -188,9 +199,9 @@ function router($slider) {
             $recur.attach($painter.doOpacity);
            // $recur.attach($painter.cleanup);
             $painter.attach($recur.setPlayer);
-            $slider.attach(doSliderOutput);
+            //$slider.attach(doSliderOutput);
             $slider.attach(looper.set.bind(looper));
-            doMax(getExtent().length);
+            //doMax(getExtent().length);
             
 		};
 	window.addEventListener('load', loader);
