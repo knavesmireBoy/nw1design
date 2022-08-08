@@ -176,7 +176,7 @@ function router($slider) {
                 };
             
             
-			compose(machSlide, getParent, machBase, getParent2, getParent2, append(doTextNow(27)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
+			compose(machSlide, getParent, machBase, getParent, getParent2, getParent2, append(doTextNow(27)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
 			buttontext.map(buttons).map(appendCB).map(curry2(invoke)($('buttons')));            
             
             zip('forEach', sliderspans, slidertext);
