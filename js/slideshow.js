@@ -21,7 +21,8 @@ const getTgt = (str) => $$(str),
 	display_inplay = ptL(invokeMethod, document.body.classList, 'add'),
       reducer = curry3(invokeMethod)(equals)('reduce'),
 	doOpacity = function(o) {
-		$('slide').style.opacity = o || (this.i / this.wait); //paint
+		//$('slide').style.opacity = o || (this.i / this.wait); //paint
+		$('slide').style.opacity = o; //paint
 	},
 	doSwap = function() {
 		var bool = compose(reducer)(testProp('base', 'slide', getHeight));
@@ -42,8 +43,10 @@ const getTgt = (str) => $$(str),
 			s.onload = function() {
 				doOpacity.call($recur);
 				display_inplay('inplay');
+                con(9)
 				if (flag) {
-					doPic(b, looper.forward().value); //broadcast
+                    //doBase(looper.forward().value);
+					//doPic(b, looper.forward().value); //broadcast
 				}
 			}
 			b.onload = function (e) {
@@ -68,9 +71,9 @@ const getTgt = (str) => $$(str),
 		function updateImages(flag) {
 			var s = $('slide'),
 				b = $('base');
-			doPic(s, b.src);
+			doPic(s, getImgSrc(b));
+            
 			s.onload = function() {
-				doOpacity.call($recur);
 				display_inplay('inplay');
 				if (flag) {
 					doPic(b, looper.forward().value); //broadcast
@@ -122,7 +125,7 @@ const getTgt = (str) => $$(str),
 					doPic($('base'), looper.forward().value);
 				}
 			},
-			actions = [fadeIn, fadeOut];
+			actions = [extend(fade, fadeIn), extend(fade, fadeOut)];
 		return function(flag) {
 			return flag ? actions.reverse()[0] : fade;
 		};

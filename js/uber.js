@@ -11,16 +11,33 @@ function identity(arg) {
 		return arg;
 	}
 
-
 var inherit = (function () {
-var F = function () {};
-return function (C, P) {
-F.prototype = P.prototype;
-C.prototype = new F();
-C.uber = P.prototype;
-C.prototype.constructor = C;
-}
+    var F = function () {};
+    return function (C, P) {
+        F.prototype = P.prototype;
+        C.prototype = new F();
+        C.uber = P.prototype;
+        C.prototype.constructor = C;
+    }
 }());
+
+function create(o) {
+   function F() {}
+    F.prototype = o;
+    return new F();
+}
+
+function extend(parent, child) {
+    var i;
+    child = child || {};
+    for (i in parent) {
+        if (parent.hasOwnProperty(i)) {
+            //conditionally overwrite
+            child[i] = child[i] || parent[i];
+        }
+    }
+return child;
+}
 
 	function equals(a, b) {
 		return a === b;
@@ -339,7 +356,8 @@ const looper = nW1.Looper(),
 		matchLink = compose(curry3(invokeMethod)(/^a$/i)('match'), curry2(getter)('nodeName'), getTarget),
 		matchImg = compose(curry3(invokeMethod)(/^img/i)('match'), curry2(getter)('nodeName'), getTarget),
 		matchPath = compose(curry3(invokeMethod)(/jpe?g/i)('match'), curryL3(invokeMethodBridge)('getAttribute')('href')),
-		getImgPath = compose(curryL3(invokeMethodBridge)('getAttribute')('src'), getTarget),
+		getImgSrc = curryL3(invokeMethodBridge)('getAttribute')('src'),
+		getImgPath = compose(getImgSrc, getTarget),
 		addClickHover = curry2(ptL(lazyVal, 'addEventListener', 'mouseover'))(hover).wrap(pass),
 		onLoad = curry2(ptL(lazyVal, 'addEventListener', 'load')),
 		reset_opacity = compose(curry3(setter)(3)('opacity'), curry22(getter)('style')($$('slide'))),
@@ -377,3 +395,4 @@ const looper = nW1.Looper(),
 			console.log(x);
 			return x;
 		};
+   
