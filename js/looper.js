@@ -5,21 +5,6 @@ if (!window.nW1) {
     window.nW1 = {};
 }
 
-class Publisher {
-    constructor(h = []) {
-        this.handlers = h;
-    }
-    notify(...args) {
-        this.handlers.forEach((handler) => handler(...args));
-    }
-    attach(handler, v) {
-        this.handlers = [...this.handlers, handler];
-    }
-    static from(h = []) {
-        return new Publisher(h);
-    }
-}
-
 nW1.Looper = function () {
     "use strict";
     /* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
