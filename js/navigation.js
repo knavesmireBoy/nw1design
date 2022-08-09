@@ -257,40 +257,28 @@ const looper = nW1.Looper(),
         return obj;
     },
     always = (arg) => () => arg,
-    curry = fun => a => fun(a),
     curry2 = fun => b => a => fun(a, b),
     curry22 = fun => b => a => () => fun(a, b),
     curryL2 = fun => a => b => fun(a, b),
-    curryL22 = fun => a => b => () => fun(a, b),
     curry3 = fun => c => b => a => fun(a, b, c),
     curryL3 = fun => a => b => c => fun(a, b, c),
     curryL33 = fun => a => b => c => () => fun(a, b, c),
     invoke = (f, v) => f(v),
     invokeMethod = (o, m, v) => o[m](v),
     invokeMethodV = (o, p, m, v) => {
-        o = getResult(o);
-        return o[p][v](m)
-    },
-    invokeMethodPair = (o, m, p, v) => {
-        o = getResult(o);
-        return o[m](p, v)
+        return getResult(o)[p][v](m);
     },
     lazyVal = (m, p, o, v) => o[m](p, v),
     invokeMethodBridge = (m, v, o) => {
-        o = getResult(o);
-        return invokeMethod(o, m, v);
+        return invokeMethod(getResult(o), m, v);
     },
-
     invokeMethodBridgeCB = (cb) => (m, v, o) => {
-        o = cb(o);
-        return invokeMethod(o, m, v);
+        return invokeMethod(cb(o), m, v);
     },
     invokeMethodBridgeCBT = (cb) => (m, v, o) => {
-        o = cb(o);
-        return invokeMethod(o, m, v);
+        return invokeMethod(cb(o), m, v);
     },
-    negate = (f, last_arg) => !f(last_arg),
-
+    negate = (f, arg) => !f(arg),
     $ = (str) => document.getElementById(str),
     $$ = (str) => () => $(str),
     $q = (str, flag = false) => {
@@ -302,16 +290,10 @@ const looper = nW1.Looper(),
     getParent = curry2(getter)('parentNode'),
     getParent2 = compose(getParent, getParent),
     getText = curry2(getter)('innerHTML'),
-    getNodeName = curry2(getter)('innerHTML'),
     getClassList = curry2(getter)('classList'),
-    getTextFromTarget = compose(getText, getTarget),
-    getNodeNameTarget = compose(getText, getTarget),
     doMake = deferPTL(invokeMethod, document, 'createElement'),
-    doMakeCB = curryL3(invokeMethod)(document)('createElement'),
-    doMakeNow = ptL(invokeMethod, document, 'createElement'),
     doText = deferPTL(invokeMethod, document, 'createTextNode'),
     doTextNow = ptL(invokeMethod, document, 'createTextNode'),
-    doTextCB = curryL33(invokeMethod)(document)('createTextNode'),
     doTextCBNow = curryL3(invokeMethod)(document)('createTextNode'),
     prepend = curry2(ptL(invokeMethodBridgeCB(getResult), 'appendChild')),
     prependCB = curry2(curryL3(invokeMethodBridgeCB(getResult))('appendChild')),
