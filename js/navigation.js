@@ -68,8 +68,7 @@ function router($recur) {
         },
         loop = deferPTL(invokeMethod, looper),
         set = loop('set'),
-        routines = [set(false), loop('back')(null), loop('forward')(null), set(true)],
-        play = curry3(invokeMethod)(/play/i)('match');
+        routines = [set(false), loop('back')(null), loop('forward')(null), set(true)];
     return {
         menu: function (e) {
             const found = compose(getText, getTarget)(e),
@@ -88,7 +87,7 @@ function router($recur) {
         },
         sidebar: function (e) {
             e.preventDefault();
-            const img = getImgPath(e),
+            let img = getImgPath(e),
                 visit = false;
             if (matchLink(e)) {
                 toArray($q('.active', true)).forEach((el) => el.classList.remove('active'));
@@ -97,11 +96,11 @@ function router($recur) {
             }
             if (img) {
                 visit = true;
-                looper.find(img);;
+                looper.find(img);
             }
             if (visit) {
-                alt = null;
-                $recur.undo()
+                player = null;
+                $recur.undo();
             }
         }
     };
@@ -173,7 +172,7 @@ const broadcaster = Publisher.from(),
         };
         return nW1.Publish().makepublisher(ret);
     },
-      
+
     loader = function () {
         //create sidebar
         compose(setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();

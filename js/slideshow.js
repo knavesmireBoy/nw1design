@@ -15,7 +15,6 @@
 /*global deferPTL: false */
 /*global invoke: false */
 /*global invokeMethod: false */
-/*global invokeMethodV: false */
 /*global doWhenFactory: false */
 /*global getImgSrc: false */
 /*global equals: false */
@@ -57,7 +56,6 @@ const tagTester = (name) => {
         displaySwap(bool ? 'remove' : 'add'); //paint
         return !bool;
     },
-   
     playMaker = function ($recur) {
         const doLoad = curry22(doWhenFactory())(compose($recur.setPlayer.bind($recur), doSwap))(isInplay);
 
