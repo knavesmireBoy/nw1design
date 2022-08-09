@@ -91,7 +91,7 @@ function router($slider) {
                 looper.find(img);;
             }
             if(visit){
-                alt = null;
+                player = null;
                 $slider.undo() 
             }
 		}
