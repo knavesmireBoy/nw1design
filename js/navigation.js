@@ -216,21 +216,21 @@ function getTargetNode(node, reg, dir = 'firstChild') {
 const looper = nW1.Looper(),
     config = [{
         FOP: 4
-		}, {
+    }, {
         AFEN: 3
-		}, {
+    }, {
         'Distillery House': 3
-		}, {
+    }, {
         'Benson Design': 4
-		}, {
+    }, {
         BP: 2
-		}, {
+    }, {
         UKOOA: 4
-		}, {
+    }, {
         'Orkney Holiday Cottages': 3
-		}, {
+    }, {
         'Safari Afrika': 4
-		}],
+    }],
     pApply = (fn, ...cache) => (...args) => {
         const all = cache.concat(args);
         return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);
@@ -241,21 +241,20 @@ const looper = nW1.Looper(),
         ptl(getResult(o));
         return o;
     },
-    con = (v) => console.log(v),
+    //con = (v) => console.log(v),
     compose = (...fns) => fns.reduce((f, g) => (...vs) => f(g(...vs))),
     getter = (o, p) => {
-        o = getResult(o);
-        return o[p];
+        return getResult(o)[p];
     },
     setter = (o, k, v) => {
-        o = getResult(o);
-        getResult(o)[k] = v;
-        return o;
+        let obj = getResult(o);
+        obj[k] = v;
+        return obj;
     },
     setterBridge = (k, o, v) => {
-        o = getResult(o);
-        o[k] = v;
-        return o;
+        let obj = getResult(o);
+        obj[k] = v;
+        return obj;
     },
     always = (arg) => () => arg,
     curry = fun => a => fun(a),
