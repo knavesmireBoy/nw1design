@@ -275,9 +275,6 @@ const looper = nW1.Looper(),
     invokeMethodBridgeCB = (cb) => (m, v, o) => {
         return invokeMethod(cb(o), m, v);
     },
-    invokeMethodBridgeCBT = (cb) => (m, v, o) => {
-        return invokeMethod(cb(o), m, v);
-    },
     negate = (f, arg) => !f(arg),
     $ = (str) => document.getElementById(str),
     $$ = (str) => () => $(str),
@@ -296,13 +293,10 @@ const looper = nW1.Looper(),
     doTextNow = ptL(invokeMethod, document, 'createTextNode'),
     doTextCBNow = curryL3(invokeMethod)(document)('createTextNode'),
     prepend = curry2(ptL(invokeMethodBridgeCB(getResult), 'appendChild')),
-    prependCB = curry2(curryL3(invokeMethodBridgeCB(getResult))('appendChild')),
-    insertBeforeCB = curry2(curryL3(invokeMethodBridgeCBT(getResult))('insertBefore')),
     append = ptL(invokeMethodBridgeCB(getResult), 'appendChild'),
     appendCB = curryL3(invokeMethodBridgeCB(getResult))('appendChild'),
     getAttribute = ptL(invokeMethodBridge, 'getAttribute'),
     getAttrs = curryL3(invokeMethodBridge)('getAttribute'),
-    getParentAttribute = ptL(invokeMethodBridgeCB(getParent), 'getAttribute'),
     setAttribute = ptL(lazyVal, 'setAttribute'),
     matchLink = compose(curry3(invokeMethod)(/^a$/i)('match'), curry2(getter)('nodeName'), getTarget),
     matchImg = compose(curry3(invokeMethod)(/^img/i)('match'), curry2(getter)('nodeName'), getTarget),
@@ -310,9 +304,6 @@ const looper = nW1.Looper(),
     getImgSrc = curryL3(invokeMethodBridge)('getAttribute')('src'),
     getImgPath = compose(getImgSrc, getTarget),
     addClickHover = curry2(ptL(lazyVal, 'addEventListener', 'mouseover'))(hover).wrap(pass),
-    onLoad = curry2(ptL(lazyVal, 'addEventListener', 'load')),
-    reset_opacity = compose(curry3(setter)(3)('opacity'), curry22(getter)('style')($$('slide'))),
-    doResetOpacity = onLoad(reset_opacity).wrap(pass),
     setId = curry2(setAttribute('id')),
     setLink = curry2(setAttribute('href')),
     setSrc = curry2(setAttribute('src')),
@@ -321,31 +312,26 @@ const looper = nW1.Looper(),
     setMin = curry2(setAttribute('min')),
     setMax = curry2(setAttribute('max')),
     setType = curry2(setAttribute('type')),
-
     setNavId = curry2(setAttribute('id'))('navigation').wrap(pass),
     setHref = setLink('.').wrap(pass),
-    getNav = $$('navigation'),
     addKlas = ptL(invokeMethodBridge, 'add'),
     remKlas = ptL(invokeMethodBridge, 'remove'),
     doActive = compose(addKlas('active'), getClassList).wrap(pass),
     undoActive = compose(remKlas('active'), getClassList).wrap(pass),
     doEach = curryL3(invokeMethodBridgeCB(getResult))('forEach'),
-    doFindIndex = curryL3(invokeMethodBridgeCB(getResult))('findIndex'),
     undoActiveCB = doEach(undoActive),
-    doElement = compose(doMake, identity),
-    doElementNow = compose(getResult, doElement),
     getZero = curry2(getter)(0),
-    getZeroPlus = curry2(getter)(10),
     getLength = curry2(getter)('length'),
     getKey = compose(getZero, curryL3(invokeMethod)(window.Object)('keys')),
     getKeys = compose(doTextNow, getKey),
-    getValues = compose(getZero, curryL3(invokeMethod)(window.Object)('values')),
-    doRender = prepend(document.body),
-    incrementer = compose(doInc, getLength),
+    /*
     doTest = function (x) {
         console.log(x);
         return x;
-    };
+    },
+    */
+    incrementer = compose(doInc, getLength);
+
 
 function getLinksDeep() {
     const get = curry3(getTargetNode),
