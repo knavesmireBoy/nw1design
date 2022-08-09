@@ -135,6 +135,8 @@ function prepareHeadings(ul) {
     };
 }
 
+let $painter = null;
+
 const broadcaster = Publisher.from(),
     $recur = recurMaker(300, 99, 1, true).init(),
     routes = router($recur),
@@ -153,6 +155,25 @@ const broadcaster = Publisher.from(),
     doSliderOutput = ptL(setter, $$("demo"), 'innerHTML'),
     doSliderInput = ptL(setter, $$("myrange"), 'value'),
     addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.sidebar).wrap(pass),
+    displayPause = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause'),
+    displaySwap = curry2(ptL(invokeMethod, document.body.classList))('swap'),
+    queryInplay = curry2(ptL(invokeMethod, document.body.classList))('inplay'),
+    painter = function (slide, base, container) {
+        let ret = {
+            doOpacity: function (o) {
+                let el = getResult(slide);
+                el.style.opacity = o;
+            },
+            cleanup: function () {
+                queryInplay('remove');
+                displayPause('remove');
+                displaySwap('remove');
+            }
+
+        };
+        return nW1.Publish().makepublisher(ret);
+    },
+      
     loader = function () {
         //create sidebar
         compose(setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();

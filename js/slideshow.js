@@ -5,21 +5,46 @@
 /*global $: false */
 /*global $$: false */
 /*global $$q: false */
+/*global curry2: false */
+/*global curry22: false */
+/*global curry3: false */
+/*global compose: false */
+/*global getter: false */
+/*global setterBridge: false */
+/*global ptL: false */
+/*global deferPTL: false */
+/*global invoke: false */
+/*global invokeMethod: false */
+/*global invokeMethodV: false */
+/*global doWhenFactory: false */
+/*global getImgSrc: false */
+/*global equals: false */
+/*global $$q: false */
 /*global nW1: false */
 
 if (!window.nW1) {
     window.nW1 = {};
 }
 
-const getTgt = (str) => $$(str),
+const tagTester = (name) => {
+        const tag = '[object ' + name + ']';
+        return function (obj) {
+            return toString.call(obj) === tag;
+        };
+    },
+    isFunction = tagTester('Function'),
+    getRes = function (arg) {
+        if (isFunction(arg)) {
+            return arg();
+        }
+        return arg;
+    },
+    getTgt = (str) => $$(str),
     isInplay = $$q('.inplay'),
     getHeight = curry2(getter)('height'),
 
-    testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getResult(item)).map(getprop),
+    testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getRes(item)).map(getprop),
     doPic = ptL(setterBridge, 'src'),
-    displayPause = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause'),
-    displaySwap = curry2(ptL(invokeMethod, document.body.classList))('swap'),
-    queryInplay = curry2(ptL(invokeMethod, document.body.classList))('inplay'),
     displayInplay = ptL(invokeMethod, document.body.classList, 'add'),
     onInplay = curry22(invoke)('inplay')(displayInplay),
     deferForward = deferPTL(invokeMethod, looper, 'forward', null),
@@ -27,29 +52,17 @@ const getTgt = (str) => $$(str),
     reducer = curry3(invokeMethod)(equals)('reduce'),
     updateBase = curry2(doWhenFactory())(advance),
     doSwap = function () {
-        let bool = compose(reducer)(testProp('base', 'slide', getHeight));
+        let bool = compose(reducer)(testProp('base', 'slide', getHeight)),
+            displaySwap = curry2(ptL(invokeMethod, document.body.classList))('swap');
         displaySwap(bool ? 'remove' : 'add'); //paint
         return !bool;
     },
-    painter = function (slide, base, container) {
-        let ret = {
-            doOpacity: function (o) {
-                let el = getResult(slide);
-                el.style.opacity = o;
-            },
-            cleanup: function () {
-                queryInplay('remove');
-                displayPause('remove');
-                displaySwap('remove');
-            }
-
-        };
-        return nW1.Publish().makepublisher(ret);
-    },
+   
     playMaker = function ($recur) {
         const doLoad = curry22(doWhenFactory())(compose($recur.setPlayer.bind($recur), doSwap))(isInplay);
+
         function updateImages(flag) {
-            var s = $('slide'),
+            const s = $('slide'),
                 b = $('base');
             doPic(s, getImgSrc(b));
             s.onload = () => updateBase(flag);
