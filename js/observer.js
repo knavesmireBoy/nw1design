@@ -1,21 +1,16 @@
-/*jslint browser: true*/
-/*global $, jQuery, alert*/
 if (!window.nW1) {
     window.nW1 = {};
 }
 
-nW1.Publish = (function () {
+window.nW1.Publish = (function () {
     "use strict";
-    
     //arg either func or arguments to func
     function visitSubscribers(action = 'publish', type = 'any', arg) {
 
-        var subscribers,
+        let subscribers,
             i,
             fn,
-            current,
             max;
-        
         subscribers = this.subscribers[type];
         max = subscribers ? subscribers.length : 0;
 
@@ -32,54 +27,53 @@ nW1.Publish = (function () {
         }
     }
 
-    return function() {
-        
-        var ret = {
+    return function () {
+        const ret = {
 
-        subscribers: {
-            set: function (prop, arg = []) {
-                this[prop] = arg;
-                return this;
+            subscribers: {
+                set: function (prop, arg = []) {
+                    this[prop] = arg;
+                    return this;
+                },
+
+                get: function (prop) {
+                    return this[prop];
+                },
+
+                any: []
             },
 
-            get: function (prop) {
-                return this[prop];
-            },
+            attach: function (fn, type = 'any') {
 
-            any: []
-        },
-
-        attach: function (fn =() => {}, type = 'any') {
-
-            if(!this.subscribers[type]){
-               this.subscribers[type] = this.subscribers.set(type).get(type);
-               }
-              this.subscribers[type] = this.subscribers[type].filter(func => func !== fn);
-            this.subscribers[type].push(fn);
-        },
-
-        remove: function (func, type = 'any') {
-            visitSubscribers.call(this, 'unsubscribe', type, func);
-        },
-
-        notify: function (data = null, type = 'any') {
-            visitSubscribers.call(this, 'publish', type, data);
-        },
-
-        makepublisher: function (object) {
-            var prop;
-            if (object && object.subscribers) {
-                return;
-            }
-            for (prop in this) {
-                if (this.hasOwnProperty(prop)) {
-                    object[prop] = this[prop];
+                if (!this.subscribers[type]) {
+                    this.subscribers[type] = this.subscribers.set(type).get(type);
                 }
+                this.subscribers[type] = this.subscribers[type].filter(func => func !== fn);
+                this.subscribers[type].push(fn);
+            },
+
+            remove: function (func, type = 'any') {
+                visitSubscribers.call(this, 'unsubscribe', type, func);
+            },
+
+            notify: function (data = null, type = 'any') {
+                visitSubscribers.call(this, 'publish', type, data);
+            },
+
+            makepublisher: function (object) {
+                let prop;
+                if (object && object.subscribers) {
+                    return;
+                }
+                for (prop in this) {
+                    if (this.hasOwnProperty(prop)) {
+                        object[prop] = this[prop];
+                    }
+                }
+                return object;
             }
-            return object;
-        }
-    };
+        };
         return ret;
     };
 
-}()); //gAlp.Publish
+}());
