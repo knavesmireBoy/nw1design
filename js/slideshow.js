@@ -10,16 +10,25 @@ if (!window.nW1) {
     window.nW1 = {};
 }
 
+function onload (img) {
+    
+}
+
 const getTgt = (str) => $$(str),
 	is_inplay = $$q('.inplay'),
 	getHeight = curry2(getter)('height'),
+      
 	testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getResult(item)).map(getprop),
 	doPic = ptL(setterBridge, 'src'),
 	display_pause = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause'),
 	display_swap = curry2(ptL(invokeMethod, document.body.classList))('swap'),
 	query_inplay = curry2(ptL(invokeMethod, document.body.classList))('inplay'),
 	display_inplay = ptL(invokeMethod, document.body.classList, 'add'),
+      advance = compose(curry22(invoke)('inplay')(display_inplay), doPic($$('base')), curry2(getter)('value'), deferPTL(invokeMethod, looper, 'forward', null)),
       reducer = curry3(invokeMethod)(equals)('reduce'),
+     updateBase = curry2(doWhenFactory())(advance),
+     once = doOnce(2),
+
 	doOpacity = function(o) {
 		//$('slide').style.opacity = o || (this.i / this.wait); //paint
 		$('slide').style.opacity = o; //paint
@@ -35,28 +44,6 @@ const getTgt = (str) => $$(str),
 				var el = getResult(slide);
 				el.style.opacity = o;
 			},
-            update: function (flag) {
-			var s = $('slide'),
-				b = $('base'),
-                that = this;
-			doPic(s, b.src);
-			s.onload = function() {
-				doOpacity.call($recur);
-				display_inplay('inplay');
-                con(9)
-				if (flag) {
-                    //doBase(looper.forward().value);
-					//doPic(b, looper.forward().value); //broadcast
-				}
-			}
-			b.onload = function (e) {
-                if(is_inplay()){
-                    //that.notify(doSwap());
-                   return compose($recur.setPlayer.bind($recur), doSwap)();
-                }
-                
-            };
-		},
             cleanup: function(){
                 query_inplay('remove');
                 display_pause('remove');
@@ -68,39 +55,28 @@ const getTgt = (str) => $$(str),
 	},
 	playMaker = function($recur) {
         
+        var doLoad = curry22(doWhenFactory())(compose($recur.setPlayer.bind($recur), doSwap))(is_inplay);            
+        
 		function updateImages(flag) {
 			var s = $('slide'),
 				b = $('base');
 			doPic(s, getImgSrc(b));
-            
-			s.onload = function() {
-				display_inplay('inplay');
-				if (flag) {
-					doPic(b, looper.forward().value); //broadcast
-				}
-			}
-			b.onload = function (e) {
-                if(is_inplay()){
-                   return compose($recur.setPlayer.bind($recur), doSwap)();
-                }
-                
-            };
-		}
-		var fader = {
+			s.onload = () => updateBase(flag);
+			b.onload = b.onload || doLoad;
+        }
+		var fade = {
 				validate: function() {
 					return $recur.i <= -1;
 				},
 				inc: function() {
 					$recur.i -= 1;
 				},
-				reset: function() {
+				reset: function(arg) {
 					$recur.i = $recur.dur;
 					updateImages(true);
 				}
 			},
-            
-           fade = nW1.Publish().makepublisher(fader),
-            
+                        
             fadeOut = {
 				validate: function() {
 					return $recur.i <= -.1;
@@ -125,7 +101,8 @@ const getTgt = (str) => $$(str),
 					doPic($('base'), looper.forward().value);
 				}
 			},
-			actions = [extend(fade, fadeIn), extend(fade, fadeOut)];
+			actions = [fadeIn, fadeOut];  
+                
 		return function(flag) {
 			return flag ? actions.reverse()[0] : fade;
 		};
@@ -140,14 +117,14 @@ const getTgt = (str) => $$(str),
 				this.i = i;
 				this.t = null;
 				this.handlers = [];
-				return this;
+            	return this;
 			},
 			execute: function() {
 				if (this.player.validate()) {
 					this.player.reset();
 				} else {
 					this.notify(this.i / this.wait);
-					this.recur();
+                    this.recur(); 
 				}
 			},
 			undo: function(flag) {
@@ -173,3 +150,4 @@ const getTgt = (str) => $$(str),
         }
         return ret;
 	};
+

@@ -200,11 +200,11 @@ function router($slider) {
             
             $painter = painter(getTgt('slide'), getTgt('base'), document.body);
             $recur.attach($painter.doOpacity.bind($painter));
-           $recur.attach($painter.cleanup.bind($painter), 'delete');
-            $painter.attach($recur.setPlayer.bind($recur));
-            $slider.attach(doSliderOutput);
+            $recur.attach($painter.cleanup.bind($painter), 'delete');
+            //$painter.attach($recur.setPlayer.bind($recur));
+            
+            //$slider.attach(doSliderOutput);
             $slider.attach(looper.set.bind(looper));
-            //doMax(getExtent().length);
             
 		};
 

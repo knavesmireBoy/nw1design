@@ -106,12 +106,22 @@ const thunk = (f, ...args) => f(...args);
 		//fun = arg ? doPartialCB()(fun, arg) : fun;
 		return toArray(coll).reduce((champ, contender) => fun(champ, contender) ? champ : contender);
 	}
+
+function doOnce(i) {
+    return function () {
+        i--;
+        return i > 0;
+			};
+		};
+
 function alternate(i, n) {
     return function () {
         i = (i += 1) % n;
         return i;
     };
 }
+
+
 function doAlternate() {
     var  f = alternate(0, 2);
     return function (actions, ...args) {               
@@ -159,11 +169,30 @@ function toArray(coll, cb = () => true) {
 		return vals[m]((v, i) => funs[i](v));
 	}
 
-	function doWhen(pred, action, v) {
-		if (pred(v)) {
-			return action(v);
-		}
-	}
+	function doWhenFactory(n) {
+        
+       const both = (pred, action, v) => {
+           if (pred(v)) { return action(v); }
+       },
+             action = (pred, action, v) => {
+                 if(getResult(pred)) { return action(v); }
+             },
+             pred = (pred, action, v) => {
+                if(pred(v)) { return action(); }
+            },
+             none = (pred, action) => {
+                 if(getResult(pred)) { return action(); }
+        },
+             all = [none, pred, action, both];
+        
+        return all[n] || none;
+    }
+        
+
+
+
+
+
 	class Grouper extends Publisher {
 		constructor(grp = [], kls = 'active', h = []) {
 			super(h);
@@ -288,7 +317,7 @@ const looper = nW1.Looper(),
             return o;
         },
       always = (arg) => () => arg,
-		curry = fun  => a => fun(a),
+		curry = fun => a => fun(a),
 		curry2 = fun => b => a => fun(a, b),
 		curry22 = fun => b => a => () => fun(a, b),
 		curryL2 = fun => a => b => fun(a, b),
