@@ -31,8 +31,37 @@ nW1.Looper = function () {
             return (...rest) => p(f, ...vs, ...rest);
         };
     }
+
+    function equals(a, b) {
+        return a === b;
+    }
+
+    function modulo(n, i) {
+        return i % n;
+    }
+
+    function increment(i) {
+        return i + 1;
+    }
+
+    function doInc(n) {
+        return compose(ptL(modulo, n), increment);
+    }
+
+    function getResult(o) {
+        if (isFunction(o)) {
+            return o();
+        }
+        return o;
+    }
+
     const curry2 = fun => b => a => fun(a, b),
         curry22 = fun => b => a => () => fun(a, b),
+        curryL3 = fun => a => b => c => fun(a, b, c),
+        invokeMethod = (o, m, v) => o[m](v),
+        invokeMethodBridge = (m, v, o) => {
+            return invokeMethod(getResult(o), m, v);
+        },
         getter = (o, p) => o[p],
         compose = (...fns) => fns.reduce((f, g) => (...vs) => f(g(...vs))),
         ptL = doPartial(),
