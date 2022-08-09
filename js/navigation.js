@@ -1,4 +1,5 @@
 /*jslint nomen: true */
+/*global Publisher: false */
 /*global window: false */
 /*global nW1: false */
 if (!window.nW1) {
@@ -94,17 +95,12 @@ function doInc(n) {
 function doIterate(m, funs) {
     return function (o) {
         if (funs) {
-            o = getResult(o);
-            funs[m]((f) => f(o));
-            return o;
+            let obj = getResult(o);
+            funs[m]((f) => f(obj));
+            return obj;
         }
         return o;
     };
-}
-
-function doIterateCB(m, coll, cb) {
-    o = getResult(o);
-    return coll[m](cb);
 }
 
 function zip(m, funs, vals) {
@@ -118,12 +114,12 @@ function doWhenFactory(n) {
                 return action(v);
             }
         },
-        action = (pred, action, v) => {
+        act = (pred, action, v) => {
             if (getResult(pred)) {
                 return action(v);
             }
         },
-        pred = (pred, action, v) => {
+        predi = (pred, action, v) => {
             if (pred(v)) {
                 return action();
             }
@@ -133,15 +129,10 @@ function doWhenFactory(n) {
                 return action();
             }
         },
-        all = [none, pred, action, both];
+        all = [none, predi, act, both];
 
     return all[n] || none;
 }
-
-
-
-
-
 
 class Grouper extends Publisher {
     constructor(grp = [], kls = 'active', h = []) {
