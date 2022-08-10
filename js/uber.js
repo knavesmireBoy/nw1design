@@ -6,8 +6,13 @@ if (!window.nW1) {
     window.nW1 = {};
 }
 
-function equals(a, b) {
-    return a === b;
+if (typeof Function.prototype.wrap === 'undefined') {
+    Function.prototype.wrap = function (wrapper, ..._vs) {
+        let _method = this; //the function
+        return function (...vs) {
+            return wrapper.apply(this, [_method.bind(this), ..._vs, ...vs]);
+        };
+    };
 }
 
 function modulo(n, i) {
@@ -18,21 +23,11 @@ function increment(i) {
     return i + 1;
 }
 
-function identity(v) {
-    return v;
-}
-
 function getResult(o) {
     if (typeof o === 'function') {
         return o();
     }
     return o;
-}
-
-function insertB4(neu, elm) {
-    const el = getResult(elm),
-        p = el.parentNode;
-    return p.insertBefore(getResult(neu), el);
 }
 
 function doPartial(flag) {
@@ -51,88 +46,12 @@ const pApply = (fn, ...cache) => (...args) => {
 };
 */
 
-//note a function that ignores any state of champ or contender will return the first element if true and last if false
-function best(fun, coll, arg) {
-    //fun = arg ? doPartialCB()(fun, arg) : fun;
-    return toArray(coll).reduce((champ, contender) => fun(champ, contender) ? champ : contender);
-}
-
-function alternate(i, n) {
-    return function () {
-        i = (i += 1) % n;
-        return i;
-    };
-}
-
-
-function doAlternate() {
-    const f = alternate(0, 2);
-    return function (actions, ...args) {
-        return function () {
-            return best(f, [actions[0], actions[1]])();
-        };
-    };
-}
-
-function toArray(coll, cb = () => true) {
-    return Array.prototype.slice.call(coll).filter(cb);
-}
-if (typeof Function.prototype.wrap === 'undefined') {
-    Function.prototype.wrap = function (wrapper, ..._vs) {
-        let _method = this; //the function
-        return function (...vs) {
-            return wrapper.apply(this, [_method.bind(this), ..._vs, ...vs]);
-        };
-    };
-}
-
 
 function doInc(n) {
     return compose(ptL(modulo, n), increment);
 }
 /* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
 
-function doIterate(m, funs) {
-    return function (o) {
-        if (funs) {
-            let obj = getResult(o);
-            funs[m]((f) => f(obj));
-            return obj;
-        }
-        return o;
-    };
-}
-
-function zip(m, funs, vals) {
-    return vals[m]((v, i) => funs[i](v));
-}
-
-function doWhenFactory(n) {
-
-    const both = (pred, action, v) => {
-            if (pred(v)) {
-                return action(v);
-            }
-        },
-        act = (pred, action, v) => {
-            if (getResult(pred)) {
-                return action(v);
-            }
-        },
-        predi = (pred, action, v) => {
-            if (pred(v)) {
-                return action();
-            }
-        },
-        none = (pred, action) => {
-            if (getResult(pred)) {
-                return action();
-            }
-        },
-        all = [none, predi, act, both];
-
-    return all[n] || none;
-}
 
 class Grouper extends Publisher {
     constructor(grp = [], kls = 'active', h = []) {
@@ -184,53 +103,13 @@ function replacePath(o, src) {
 }
 
 function hover(e) {
-    var preview = $q('#slidepreview img');
+    const preview = $q('#slidepreview img');
     if (matchImg(e) && e.target !== preview) {
         replacePath(preview, getAttribute('src')(e.target));
     }
 }
 
-function getNextElement(node) {
-    if (node && node.nodeType === 1) {
-        return node;
-    }
-    if (node && node.nextSibling) {
-        return getNextElement(node.nextSibling);
-    }
-    return null;
-}
-
-function getTargetNode(node, reg, dir = 'firstChild') {
-    if (!node) {
-        return null;
-    }
-    node = node.nodeType === 1 ? node : getNextElement(node);
-    var res = node && node.nodeName.match(reg);
-    if (!res) {
-        node = node && getNextElement(node[dir]);
-        return node && getTargetNode(node, reg, dir);
-    }
-    return node;
-}
-
 const looper = nW1.Looper(),
-    config = [{
-        FOP: 4
-    }, {
-        AFEN: 3
-    }, {
-        'Distillery House': 3
-    }, {
-        'Benson Design': 4
-    }, {
-        BP: 2
-    }, {
-        UKOOA: 4
-    }, {
-        'Orkney Holiday Cottages': 3
-    }, {
-        'Safari Afrika': 4
-    }],
     pApply = (fn, ...cache) => (...args) => {
         const all = cache.concat(args);
         return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);

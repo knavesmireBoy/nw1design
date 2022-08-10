@@ -1,3 +1,73 @@
+function insertB4(neu, elm) {
+    const el = getResult(elm),
+        p = el.parentNode;
+    return p.insertBefore(getResult(neu), el);
+}
+
+function doIterate(m, funs) {
+    return function (o) {
+        if (funs) {
+            let obj = getResult(o);
+            funs[m]((f) => f(obj));
+            return obj;
+        }
+        return o;
+    };
+}
+
+function getNextElement(node) {
+    if (node && node.nodeType === 1) {
+        return node;
+    }
+    if (node && node.nextSibling) {
+        return getNextElement(node.nextSibling);
+    }
+    return null;
+}
+
+function getTargetNode(node, reg, dir = 'firstChild') {
+    if (!node) {
+        return null;
+    }
+    node = node.nodeType === 1 ? node : getNextElement(node);
+    let res = node && node.nodeName.match(reg);
+    if (!res) {
+        node = node && getNextElement(node[dir]);
+        return node && getTargetNode(node, reg, dir);
+    }
+    return node;
+}
+
+function zip(m, funs, vals) {
+    return vals[m]((v, i) => funs[i](v));
+}
+
+function toArray(coll, cb = () => true) {
+    return Array.prototype.slice.call(coll).filter(cb);
+}
+//note a function that ignores any state of champ or contender will return the first element if true and last if false
+function best(fun, coll, arg) {
+    //fun = arg ? doPartialCB()(fun, arg) : fun;
+    return toArray(coll).reduce((champ, contender) => fun(champ, contender) ? champ : contender);
+}
+
+function alternate(i, n) {
+    return function () {
+        i = (i += 1) % n;
+        return i;
+    };
+}
+
+
+function doAlternate() {
+    const f = alternate(0, 2);
+    return function (actions, ...args) {
+        return function () {
+            return best(f, [actions[0], actions[1]])();
+        };
+    };
+}
+
 function getLinksDeep() {
     const get = curry3(getTargetNode),
         ul = this.grp.map(get('nextSibling')(/ul/i)),
@@ -127,7 +197,24 @@ function prepareHeadings(ul) {
 }
 let $painter = null;
 
-const broadcaster = Publisher.from(),
+const config = [{
+        FOP: 4
+    }, {
+        AFEN: 3
+    }, {
+        'Distillery House': 3
+    }, {
+        'Benson Design': 4
+    }, {
+        BP: 2
+    }, {
+        UKOOA: 4
+    }, {
+        'Orkney Holiday Cottages': 3
+    }, {
+        'Safari Afrika': 4
+    }],
+      broadcaster = Publisher.from(),
     $recur = recurMaker(300, 99, 1, true).init(),
     routes = router($recur),
     prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),

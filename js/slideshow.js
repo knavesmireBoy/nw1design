@@ -25,6 +25,37 @@ if (!window.nW1) {
     window.nW1 = {};
 }
 
+function equals(a, b) {
+    return a === b;
+}
+
+function doWhenFactory(n) {
+
+    const both = (pred, action, v) => {
+            if (pred(v)) {
+                return action(v);
+            }
+        },
+        act = (pred, action, v) => {
+            if (getResult(pred)) {
+                return action(v);
+            }
+        },
+        predi = (pred, action, v) => {
+            if (pred(v)) {
+                return action();
+            }
+        },
+        none = (pred, action) => {
+            if (getResult(pred)) {
+                return action();
+            }
+        },
+        all = [none, predi, act, both];
+
+    return all[n] || none;
+}
+
 const tagTester = (name) => {
         const tag = '[object ' + name + ']';
         return function (obj) {
