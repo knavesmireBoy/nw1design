@@ -1,4 +1,7 @@
-function insertB4(neu, elm) {
+(function(config) {
+    "use strict";
+    
+    function insertB4(neu, elm) {
     const el = getResult(elm),
         p = el.parentNode;
     return p.insertBefore(getResult(neu), el);
@@ -68,37 +71,29 @@ function doAlternate() {
     };
 }
 
-function getLinksDeep() {
+function getLinksDeep(grp) {
     const get = curry3(getTargetNode),
-        ul = this.grp.map(get('nextSibling')(/ul/i)),
+        ul = grp.map(get('nextSibling')(/ul/i)),
         getA = get('firstChild')(/^a$/i);
     return ul.map(({
         children
     }) => toArray(children)).map(lis => lis.map(compose(getAttrs('href'), getA)));
 }
 
-function getLinks() {
+function getLinks(grp) {
     const get = curry3(getTargetNode)('firstChild')(/^a$/i);
-    return toArray(this.grp).map(lis => compose(getAttrs('href'), get)(lis));
+    return grp.map(lis => compose(getAttrs('href'), get)(lis));
 }
 
 function headersSearch() {
-    const links = getLinksDeep.call(this),
+    const links = getLinksDeep(toArray(this.grp)),
         i = links.map(strs => strs.findIndex(this.finder)).findIndex(n => n >= 0);
-    this.index = i;
-    if (this.grp[i]) {
-        this.execute(this.grp[i]);
-        this.notify(this.grp[i]);
-    }
+        return compose(this.notify.bind(this), this.show.bind(this))(this.grp[i]);
 }
 
 function thumbsSearch() {
-    const links = getLinks.call(this),
-        i = links.findIndex(this.finder);
-    this.index = i;
-    if (this.grp[i]) {
-        this.execute(this.grp[i]);
-    }
+    const i = getLinks(toArray(this.grp)).findIndex(this.finder);
+    return this.show(this.grp[i]);
 }
 
 let headers = {},
@@ -124,8 +119,8 @@ function router($recur) {
     const playMaker = function () {
             const func = doAlternate(),
                 displayPause = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause'),
-                exec = compose(displayPause, always('remove'), $recur.execute.bind($recur, true)),
-                undo = compose(displayPause, always('add'), $recur.undo.bind($recur, null));
+                exec = compose(displayPause, always('remove'), $recur.play.bind($recur, true)),
+                undo = compose(displayPause, always('add'), $recur.resume.bind($recur, null));
             return func([exec, undo]);
         },
         loop = deferPTL(invokeMethod, looper),
@@ -141,7 +136,7 @@ function router($recur) {
                 player();
             } else {
                 player = null;
-                $recur.undo();
+                $recur.suspend();
                 if (routines[i]) {
                     routines[i]();
                 }
@@ -153,7 +148,7 @@ function router($recur) {
                 visit = false;
             if (matchLink(e)) {
                 toArray($q('.active', true)).forEach((el) => el.classList.remove('active'));
-                headers.execute(getTarget(e), true);
+                headers.show(getTarget(e), true);
                 visit = true;
             }
             if (img) {
@@ -162,7 +157,7 @@ function router($recur) {
             }
             if (visit) {
                 player = null;
-                $recur.undo();
+                $recur.suspend();
             }
         }
     };
@@ -195,26 +190,80 @@ function prepareHeadings(ul) {
         }
     };
 }
+
+/*
+   class Group {
+        constructor(m = []) {
+            this.members = m;
+        }
+        add(value) {
+            if (!this.has(value)) {
+                this.members.push(value);
+            }
+        }
+        remove(value) {
+            this.members.filter(negate(ptL(equals, value)));
+        }
+        has(value) {
+            return this.members.includes(value);
+        }
+        visit(cb) {
+            this.members.forEach(cb, this);
+        }
+        static from(collection) {
+            let group = new Group(),
+                i,
+                L = collection.length;
+            for (i = 0; i < L; i += 1) {
+                group.add(collection[i]);
+            }
+            return group;
+        }
+    }
+    
+    */
+class Grouper extends Publisher {
+    constructor(grp = [], kls = 'active', h = []) {
+        super(h);
+        this.grp = grp;
+        this.current = null;
+        this.finder = () => null;
+    }
+    hide(el, click) {
+        if (el && (el === this.current) && click) {
+            this.current = null;
+            return undoActive(el);
+        }
+    }
+    show(el, click) {
+        if (el && !this.hide(el, click)) {
+            undoActiveCB(this.grp);
+            this.current = doActive(el);
+        }
+        return this.current;
+    }
+    setFinder(src) {
+        this.finder = Grouper.doFind(src);
+        return this.strategy();
+    }
+    setSearch(s = () => []) {
+        this.strategy = s;
+        return this;
+    }
+
+    static from(grp, kls = 'active') {
+        return new Grouper(grp, kls);
+    }
+    static doFind(str) {
+        return function (cur) {//becomes this.finder callback
+            return str.match(/\/(\w+)_/.exec(cur)[1]);
+        };
+    }
+}
+
 let $painter = null;
 
-const config = [{
-        FOP: 4
-    }, {
-        AFEN: 3
-    }, {
-        'Distillery House': 3
-    }, {
-        'Benson Design': 4
-    }, {
-        BP: 2
-    }, {
-        UKOOA: 4
-    }, {
-        'Orkney Holiday Cottages': 3
-    }, {
-        'Safari Afrika': 4
-    }],
-      broadcaster = Publisher.from(),
+const broadcaster = Publisher.from(),
     $recur = recurMaker(300, 99, 1, true).init(),
     routes = router($recur),
     prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
@@ -310,6 +359,25 @@ const config = [{
     };
 
 window.addEventListener('load', loader);
+    
+}( [{
+        FOP: 4
+    }, {
+        AFEN: 3
+    }, {
+        'Distillery House': 3
+    }, {
+        'Benson Design': 4
+    }, {
+        BP: 2
+    }, {
+        UKOOA: 4
+    }, {
+        'Orkney Holiday Cottages': 3
+    }, {
+        'Safari Afrika': 4
+    }],
+      ));
 
 /*
 FOP : 17/12/14

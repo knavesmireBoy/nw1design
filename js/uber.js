@@ -15,6 +15,33 @@ if (typeof Function.prototype.wrap === 'undefined') {
     };
 }
 
+function doWhenFactory(n) {
+
+    const both = (pred, action, v) => {
+            if (pred(v)) {
+                return action(v);
+            }
+        },
+        act = (pred, action, v) => {
+            if (getResult(pred)) {
+                return action(v);
+            }
+        },
+        predi = (pred, action, v) => {
+            if (pred(v)) {
+                return action();
+            }
+        },
+        none = (pred, action) => {
+            if (getResult(pred)) {
+                return action();
+            }
+        },
+        all = [none, predi, act, both];
+
+    return all[n] || none;
+}
+
 function modulo(n, i) {
     return i % n;
 }
@@ -51,51 +78,6 @@ function doInc(n) {
     return compose(ptL(modulo, n), increment);
 }
 /* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
-
-
-class Grouper extends Publisher {
-    constructor(grp = [], kls = 'active', h = []) {
-        super(h);
-        this.grp = grp;
-        this.current = null;
-        this.finder = () => null;
-    }
-    getCurrent() {
-        return this.strategy();
-    }
-    undo(el, click) {
-        if ((el === this.current) && click) {
-            this.current = null;
-            return undoActive(el);
-        }
-    }
-    execute(el, click) {
-        if (!this.undo(el, click)) {
-            undoActiveCB(this.grp);
-            this.current = doActive(el);
-        }
-    }
-    setFinder(src) {
-        this.finder = Grouper.doFind(src);
-        return this.getCurrent();
-    }
-    setSearch(s = () => []) {
-        this.strategy = s;
-        return this;
-    }
-    setGroup(grp) {
-        this.grp = grp;
-        return this;
-    }
-    static from(grp, kls = 'active') {
-        return new Grouper(grp, kls);
-    }
-    static doFind(str) {
-        return function (cur) {
-            return str.match(/\/(\w+)_/.exec(cur)[1]);
-        };
-    }
-}
 
 function replacePath(o, src) {
     o = getResult(o);
@@ -203,10 +185,10 @@ const looper = nW1.Looper(),
     getLength = curry2(getter)('length'),
     getKey = compose(getZero, curryL3(invokeMethod)(window.Object)('keys')),
     getKeys = compose(doTextNow, getKey),
-    /*
+    
     doTest = function (x) {
         console.log(x);
         return x;
     },
-    */
+    
     incrementer = compose(doInc, getLength);

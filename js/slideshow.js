@@ -29,33 +29,6 @@ function equals(a, b) {
     return a === b;
 }
 
-function doWhenFactory(n) {
-
-    const both = (pred, action, v) => {
-            if (pred(v)) {
-                return action(v);
-            }
-        },
-        act = (pred, action, v) => {
-            if (getResult(pred)) {
-                return action(v);
-            }
-        },
-        predi = (pred, action, v) => {
-            if (pred(v)) {
-                return action();
-            }
-        },
-        none = (pred, action) => {
-            if (getResult(pred)) {
-                return action();
-            }
-        },
-        all = [none, predi, act, both];
-
-    return all[n] || none;
-}
-
 const tagTester = (name) => {
         const tag = '[object ' + name + ']';
         return function (obj) {
@@ -152,15 +125,15 @@ const tagTester = (name) => {
                 this.handlers = [];
                 return this;
             },
-            execute: function () {
+            play: function () {
                 if (this.player.validate()) {
                     this.player.reset();
                 } else {
                     this.notify(this.i / this.wait);
-                    this.recur();
+                    this.resume();
                 }
             },
-            undo: function (flag) {
+            suspend: function (flag) {
                 const o = !isNaN(flag) ? .5 : 1;
                 this.notify(o);
                 window.cancelAnimationFrame(this.t);
@@ -171,11 +144,11 @@ const tagTester = (name) => {
             },
             setPlayer: function (arg) {
                 this.player = this.nextplayer(arg);
-                this.execute();
+                this.play();
             },
-            recur: function () {
+            resume: function () {
                 this.player.inc();
-                this.t = window.requestAnimationFrame(this.execute.bind(this));
+                this.t = window.requestAnimationFrame(this.play.bind(this));
             }
         };
         if (makePub) {
