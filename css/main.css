@@ -384,15 +384,27 @@ main aside section a {
   border: solid 1px #999;
 }
 
-#home #about #webdesign #graphicdesign nav > ul > li:nth-child(1) > a {
+#home nav > ul > li:nth-child(1) > a {
   color: #c33;
 }
 
-#portfolio nav > ul > li:nth-child(2) > a {
+#about nav > ul > li:nth-child(2) > a {
   color: #c33;
 }
 
-#contact nav > ul > li:nth-child(3) > a {
+#webdesign nav > ul > li:nth-child(3) > a {
+  color: #c33;
+}
+
+#graphicdesign nav > ul > li:nth-child(4) > a {
+  color: #c33;
+}
+
+#portfolio nav > ul > li:nth-child(5) > a {
+  color: #c33;
+}
+
+#contact nav > ul > li:nth-child(6) > a {
   color: #c33;
 }
 
