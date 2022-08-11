@@ -147,7 +147,7 @@ footer strong:after {
   content: " | ";
 }
 
-input {
+#menu-toggle {
   position: absolute;
   left: -9999px;
 }

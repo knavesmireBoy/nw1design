@@ -46,35 +46,35 @@
   <p>Tel/Fax: 01453 298 527</p>
    <article>  
   <form action="../contact.php" method="post">
-  <table width="600" class="form">
+  <table>
     <tr>
-      <td height="20" class="bodytextwhite">Name*:</td>
+      <td >Name*:</td>
       <td>&nbsp;</td>
       <td>Company:</td>
     </tr>
     <tr>
-      <td class="bodytextwhite"><input name="Name" type="text" class="boxborder" id="Name" style="width: 260px" value="" maxlength="50" /></td>
+      <td><input name="name" id="name" maxlength="50" /></td>
       <td>&nbsp;</td>
-      <td><input name="Company" type="text" class="boxborder" id="Company" style="width: 260px" value="" maxlength="50" /></td>
+      <td><input name="Company" type="text" id="Company" maxlength="50" /></td>
     </tr>
     <tr>
-      <td height="20" class="bodytextwhite">Email*:</td>
+      <td>Email*:</td>
       <td>&nbsp;</td>
-      <td height="20"><span class="bodytextwhite">Telephone:</span></td>
+      <td>Telephone:</td>
     </tr>
     <tr>
-      <td height="20" class="bodytextwhite"><input name="Email" type="text" class="boxborder" id="Email" style="width: 260px" value="" maxlength="25" /></td>
+      <td><input name="email" type="email" class="boxborder" id="email" maxlength="25" /></td>
       <td>&nbsp;</td>
-      <td height="20"><input name="Phone" type="text" class="boxborder" id="Phone" style="width: 260px" value="" maxlength="50" /></td>
+      <td height="20"><input name="phone" type="tel" id="phone" maxlength="50" /></td>
     </tr>
 
     <tr>
-      <td class="bodytextwhite">Message*:</td>
+      <td>Message*:</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td colspan="3"><textarea name="Message" class="boxborder" id="Message" style="height: 90px; width: 563px"></textarea></td>
+      <td colspan="3"><textarea name="message" id="message"></textarea></td>
     </tr>
     <tr>
       <td colspan="3"><p align="left" class="bodytext"><span class="fineprintwhite">
@@ -82,7 +82,7 @@
         Check this box to receive updates and information from North West One Design. 
         I maintain a policy of not passing on your personal details to other 
         companies.</span></p>
-        <p align="left" class="bodytext">* - required field</p></td>
+        <p>* - required field</p></td>
     </tr>
     <tr>
       <td colspan="3"><div align="right">
