@@ -156,7 +156,7 @@ nW1.Looper = function () {
             }
         }
         remove(value) {
-            this.members.filter(negate(ptL(equals, value)));
+            this.members = this.members.filter(negate(ptL(equals, value)));
         }
         has(value) {
             return this.members.includes(value);
