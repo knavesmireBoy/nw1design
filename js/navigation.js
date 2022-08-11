@@ -269,6 +269,7 @@
                 return nW1.Publish().makepublisher(ret);
             },
               myconfig = config[document.body.id],
+              pp = document.body.web ? 27 : 52,
             loader = function () {
                 //create sidebar
                 compose(setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();
@@ -282,7 +283,7 @@
                     machControls = prepare2Append(doDiv, prepAttrs([setId], ['controls'])),
                     machButtons = prepare2Append(doDiv, prepAttrs([setId], ['buttons'])), //container for buttons
                     machSlider = prepare2Append(doDiv, prepAttrs([setId], ['slidecontainer'])),
-                    machSliderInput = prepare2Append(doMake('input'), prepAttrs([setType, setMin, setMax, setVal, setId], ['range', 1, 27, 1, 'myrange'])),
+                    machSliderInput = prepare2Append(doMake('input'), prepAttrs([setType, setMin, setMax, setVal, setId], ['range', 1, pp, 1, 'myrange'])),
                     machBase = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
                     machSlide = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide'])),
                     previewer = ptL(replacePath, $$q('#slidepreview img')),
@@ -301,7 +302,7 @@
                     };
 
 
-                compose(machSlide, getParent, machBase, getParent, getParent2, getParent2, append(doTextNow(27)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
+                compose(machSlide, getParent, machBase, getParent, getParent2, getParent2, append(doTextNow(pp)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
                 buttontext.map(buttons).map(appendCB).map(curry2(invoke)($('buttons')));
 
                 headers.search = headersSearch;
