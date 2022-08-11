@@ -140,7 +140,7 @@ const deferPTL = doPartial(true),
       lazyInvoke2 = (m, p, o, v) => o[m](p, v),
       invokeMethodBridge = (m, v, o) => {
           o = getResult(o);
-          return invokeMethod(o, m, v);
+          return invokeMethod(o, m, getResult(v));
       },
       invokeMethodBridgeCB = (cb) => (m, v, o) => {
           o = cb(o);
@@ -149,7 +149,7 @@ const deferPTL = doPartial(true),
 
       getParent = curry2(getter)('parentNode'),
       doMake = deferPTL(invokeMethod, document, 'createElement'),
-      doText = deferPTL(invokeMethod, document, 'createTextNode'),
+      doText = ptL(invokeMethod, document, 'createTextNode'),
       doMakeNow = ptL(invokeMethod, document, 'createElement'),
       getClassList = curry2(getter)('classList'),
       getTarget = curry2(getter)('target'),
@@ -188,7 +188,7 @@ lightbox.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
     document.body.scrollTop = document.documentElement.scrollTop = 0;
-    doWhen(matcher, doGit, e);
-   // doGit(e);
+    //doWhen(matcher, doGit, e);
+   doGit(e);
     
 });
