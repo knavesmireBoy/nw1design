@@ -73,13 +73,15 @@ function doAlternate() {
 
 function getLinksDeep(grp) {
     const get = curry3(getTargetNode),
-        ul = grp.map(get('nextSibling')(/ul/i)),
-        getA = get('firstChild')(/^a$/i);
+          getA = get('firstChild')(/^a$/i),
+          getLinks = compose(getAttrs('href'), getA),
+          ul = grp.map(get('nextSibling')(/ul/i));
+        
     return ul.map(({
         children
-    }) => toArray(children)).map(lis => lis.map(compose(getAttrs('href'), getA)));
+    }) => toArray(children)).map(lis => lis.map(getLinks));
 }
-
+                           
 function getLinks(grp) {
     const get = curry3(getTargetNode)('firstChild')(/^a$/i);
     return grp.map(lis => compose(getAttrs('href'), get)(lis));
@@ -243,7 +245,7 @@ class Grouper extends Publisher {
         return this.current;
     }
     setFinder(src) {
-        this.finder = Grouper.doFind(src);
+        this.finder = Grouper.doFinder(src);
         return this.strategy();
     }
     setSearch(s = () => []) {
@@ -254,8 +256,8 @@ class Grouper extends Publisher {
     static from(grp, kls = 'active') {
         return new Grouper(grp, kls);
     }
-    static doFind(str) {
-        return function (cur) {//becomes this.finder callback
+    static doFinder(str) {
+        return function (cur) {//becomes this.finder callback to findIndex
             return str.match(/\/(\w+)_/.exec(cur)[1]);
         };
     }
