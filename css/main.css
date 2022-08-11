@@ -408,6 +408,10 @@ main aside section a {
   color: #c33;
 }
 
+.portfolio nav > ul > li:nth-child(5) > a {
+  color: #c33;
+}
+
 @media only screen and (max-width: 768px) {
   main {
     display: block;

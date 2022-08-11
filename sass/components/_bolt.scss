@@ -281,6 +281,10 @@ main aside section {
      }
     }
 
+.portfolio nav > ul > li:nth-child(5) > a {
+    color: $col-hi;
+}
+
 @media only screen and (max-width: 768px) {
     main {
         display: block;
