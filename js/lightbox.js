@@ -35,15 +35,14 @@
 
 
  function FF(m, funs, o) {
-     o = getResult(o);
-     return funs[m]((f) => f(o));
+     return funs[m]((f) => f(getResult(o)));
  }
 
  function EE(m, funs) {
      return function (o) {
-         o = getResult(o);
-         funs[m]((f) => f(o));
-         return o;
+         let ob = getResult(o);
+         funs[m]((f) => f(ob));
+         return ob;
      };
  }
 
