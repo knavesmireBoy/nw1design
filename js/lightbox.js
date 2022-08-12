@@ -104,12 +104,13 @@
      git = ptL(FF, 'map', [getParentAttribute('href'), getAttribute('alt')]),
      sit = ptL(zip, 'map', [setSrc, setAlt]),
      enhance = compose(doOverlay, getClassList).wrap(doReturn),
-     doGit = compose(enhance, getParent, curry2(append)(makeDiv), addListener.wrap(doReturn), getParent, getParent, doClose, doCap, getParent, doFig, curry2(invoke)(doImg), ptL(EE, 'forEach'), sit, git, getTarget);
+     step = compose(enhance, getParent, curry2(append)(makeDiv)),
+     fig = compose(addListener.wrap(doReturn), getParent, getParent, doClose, doCap, getParent, doFig),
+     doGit = compose(step, fig, curry2(invoke)(doImg), ptL(EE, 'forEach'), sit, git, getTarget);
  lightbox.addEventListener('click', (e) => {
      e.preventDefault();
      e.stopPropagation();
      document.body.scrollTop = document.documentElement.scrollTop = 0;
-     //doWhen(matcher, doGit, e);
      doGit(e);
 
  });
