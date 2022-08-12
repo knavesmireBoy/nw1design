@@ -49,15 +49,6 @@
      return vals[m]((v, i) => funs[i](v));
  }
 
- function find(reg) {
-     return function (node) {
-         while (!node.nodeName.match(reg)) {
-             node = node.parentNode;
-         }
-         return node;
-     }
- }
-
  const deferPTL = doPartial(true),
      ptL = doPartial(),
      //con = (v) => console.log(v),
@@ -74,7 +65,6 @@
      invokeMethodBridgeCB = (cb) => (m, v, o) => {
          return invokeMethod(cb(o), m, v);
      },
-
      getParent = curry2(getter)('parentNode'),
      doMake = deferPTL(invokeMethod, document, 'createElement'),
      doText = ptL(invokeMethod, document, 'createTextNode'),
