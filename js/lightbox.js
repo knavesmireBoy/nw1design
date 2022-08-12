@@ -33,7 +33,6 @@
      return o;
  }
 
-
  function FF(m, funs, o) {
      return funs[m]((f) => f(getResult(o)));
  }
@@ -55,10 +54,9 @@
          while (!node.nodeName.match(reg)) {
              node = node.parentNode;
          }
+         return node;
      }
-     return node;
  }
-
 
  const deferPTL = doPartial(true),
      ptL = doPartial(),
