@@ -1,26 +1,3 @@
-/*jslint nomen: true */
-/*global window: false */
-/*global document: false */
-/*global looper: false */
-/*global $: false */
-/*global $$: false */
-/*global $$q: false */
-/*global curry2: false */
-/*global curry22: false */
-/*global curry3: false */
-/*global compose: false */
-/*global getter: false */
-/*global setterBridge: false */
-/*global ptL: false */
-/*global deferPTL: false */
-/*global invoke: false */
-/*global invokeMethod: false */
-/*global doWhenFactory: false */
-/*global getImgSrc: false */
-/*global equals: false */
-/*global $$q: false */
-/*global nW1: false */
-
 if (!window.nW1) {
     window.nW1 = {};
 }
@@ -134,7 +111,6 @@ const tagTester = (name) => {
                 }
             },
             suspend: function (flag) {
-                console.log(flag)
                 const o = !isNaN(flag) ? .5 : 1;
                 this.notify(o);
                 window.cancelAnimationFrame(this.t);

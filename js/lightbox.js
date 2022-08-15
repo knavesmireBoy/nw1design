@@ -11,7 +11,6 @@
      ptl(o);
      return o;
  }
-
  if (typeof Function.prototype.wrap === 'undefined') {
      Function.prototype.wrap = function (wrapper, ..._vs) {
          let _method = this; //the function
@@ -48,7 +47,6 @@
  function zip(m, funs, vals) {
      return vals[m]((v, i) => funs[i](v));
  }
-
  const deferPTL = doPartial(true),
      ptL = doPartial(),
      //con = (v) => console.log(v),
@@ -102,5 +100,4 @@
      e.stopPropagation();
      document.body.scrollTop = document.documentElement.scrollTop = 0;
      doGit(e);
-
  });

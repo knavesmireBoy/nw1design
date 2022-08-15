@@ -1,3 +1,9 @@
+/*jslint nomen: true */
+/*global window: false */
+/*global Modernizr: false */
+/*global Publisher: false */
+/*global nW1: false */
+
 (function (config, Mod) {
     "use strict";
 
@@ -319,34 +325,34 @@
 }({
     web: [{
         FOP: 4
-	}, {
+    }, {
         AFEN: 3
-	}, {
+    }, {
         'Distillery House': 3
-	}, {
+    }, {
         'Benson Design': 4
-	}, {
+    }, {
         BP: 2
-	}, {
+    }, {
         UKOOA: 4
-	}, {
+    }, {
         'Orkney Holiday Cottages': 3
-	}, {
+    }, {
         'Safari Afrika': 4
-	}],
+    }],
     print: [{
         'Concilliation Resources': 12
-	}, {
+    }, {
         'Rory Peck Trust': 12
-	}, {
+    }, {
         IWPR: 8
-	}, {
+    }, {
         'The FreedomForum': 7
-	}, {
+    }, {
         'Reporting The World': 8
-	}, {
+    }, {
         'London Fields Cycles': 5
-	}]
+    }]
 }, Modernizr));
 /*
 FOP : 17/12/14
