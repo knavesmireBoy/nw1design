@@ -100,20 +100,20 @@
         return this.show(this.grp[i]);
     }
     let headers = {},
-        $slider = null;
-    let sliderFactory = function (element) {
-        function Slider(el) {
-            this.el = getResult(el);
-            this.handlers = [];
-            const that = this;
-            this.el.oninput = function () {
-                that.notify(this.value, true);
-            };
-        }
-        Slider.prototype = new Publisher();
-        Slider.prototype.constructor = Slider;
-        return new Slider(element);
-    };
+        $slider = null,
+        sliderFactory = function (element) {
+            function Slider(el) {
+                this.el = getResult(el);
+                this.handlers = [];
+                const that = this;
+                this.el.oninput = function () {
+                    that.notify(this.value, true);
+                };
+            }
+            Slider.prototype = new Publisher();
+            Slider.prototype.constructor = Slider;
+            return new Slider(element);
+        };
 
     function router($recur) {
         let player = null;
