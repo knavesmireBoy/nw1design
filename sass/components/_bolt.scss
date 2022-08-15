@@ -839,8 +839,40 @@ body.swap img#base {
 #buttons a {
     width: 2.5em;
     height: 2.5em;
-    background-color: pink;
     display: inline-block;
-    margin: 0 .5em 0 0;
+    margin: 0;
     border-radius: 8px;
+}
+#start {
+    background: url(../assets/slider/p7ssm2_first.gif) no-repeat 0% 12% / 100%;
+}
+#back {
+    background: url(../assets/slider/p7ssm2_prev.gif) no-repeat 0% 16% / 100%;
+}
+#play {
+    background: url(../assets/slider/p7ssm2_play.gif) no-repeat 0% 9% / 100%;
+}
+.pause #play {
+    background: url(../assets/slider/p7ssm2_pause.gif) no-repeat 0% 9% / 100%;
+}
+#forward {
+    background: url(../assets/slider/p7ssm2_next.gif) no-repeat 0% 16% / 100%;
+}
+#end {
+    background: url(../assets/slider/p7ssm2_last.gif) no-repeat 0% 12% / 130%;
+}
+#start:hover {
+    background-position: 0 85%;
+}
+#back:hover {
+    background-position: 0 82%;
+}
+#play:hover {
+    background-position: 0 94%;
+}
+#forward:hover {
+    background-position: 0 82%;
+}
+#end:hover {
+    background-position: 0 83%;
 }

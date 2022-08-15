@@ -291,12 +291,10 @@
                     displayer = curryL2(replacePath)($$('base')),
                     thumbs = Finder.from($q('#navigation ul li', true)),
                     addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.menu).wrap(pass),
-                    button_text = ['begin', 'back', 'play', 'forward', 'end'],
-                    dummy_text = ' '.repeat(4).split(' '),
+                    buttontext = ['start', 'back', 'play', 'forward', 'end'],
                     slidertext = ['Image ', ' of '].map(doTextCBNow),
                     sliderspans = [curry2(insertB4)($$('demo')), curry2(insertB4)($$('max'))],
                     //buttons = compose(getParent, compose(prepend, doMake)('button')),
-                    buttons = compose(getParent, compose(prepend, doMake)('a')),
                     sliderBridge = function (path) {
                         const i = looper.get('members').findIndex(curry2(equals)(path));
                         //looper members zero indexed...
@@ -304,13 +302,15 @@
                         doSliderOutput(i + 1);
                     },
                       f = el => compose(clearInnerHTML, setHref, setId(el.innerHTML).wrap(pass))(el),
-                      button_cb = Modernizr.svg ? f : (arg) => arg,
                       button_el = Modernizr.svg ? 'a' : 'button',
-                      buttontext = Modernizr.svg ? button_text.map(doTextCBNow) : button_text.map(doTextCBNow);
+                      buttons = compose(getParent, compose(prepend, doMake)(button_el)),
+                      button_cb = Modernizr.svg ? f : (arg) => arg;
+
+
 
 
                 compose(machSlide, getParent, machBase, getParent, getParent2, getParent2, append(doTextNow(pp)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
-                buttontext.map(buttons).map(appendCB).map(curry2(invoke)($('buttons'))).map(f);
+                buttontext.map(buttons).map(appendCB).map(curry2(invoke)($('buttons'))).map(button_cb);
 
                 headers.search = headersSearch;
                 thumbs.search = thumbsSearch;
