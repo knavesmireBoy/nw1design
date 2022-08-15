@@ -303,12 +303,14 @@
                         doSliderInput(i + 1);
                         doSliderOutput(i + 1);
                     },
+                      f = el => compose(doTest, setId(el.innerHTML).wrap(pass))(el),
                       button_cb = Modernizr.svg ? setHref : (arg) => arg,
-                      buttontext = Modernizr.svg ? dummy_text.map(doTextCBNow) : button_text.map(doTextCBNow);
+                      button_el = Modernizr.svg ? 'a' : 'button',
+                      buttontext = Modernizr.svg ? button_text.map(doTextCBNow) : button_text.map(doTextCBNow);
 
 
                 compose(machSlide, getParent, machBase, getParent, getParent2, getParent2, append(doTextNow(pp)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
-                buttontext.map(buttons).map(appendCB).map(curry2(invoke)($('buttons'))).map(button_cb);
+                buttontext.map(buttons).map(appendCB).map(curry2(invoke)($('buttons'))).map(f);
 
                 headers.search = headersSearch;
                 thumbs.search = thumbsSearch;
