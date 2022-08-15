@@ -123,8 +123,8 @@ main > section p {
 
 img {
   /*max-width: 100%;
-     height: auto;
-     -msinterpolation-mode: bicubic;*/
+  height: auto;
+  -msinterpolation-mode: bicubic;*/
   border: none;
   width: 100%;
   height: auto;
@@ -154,7 +154,8 @@ table td {
   font-weight: bold;
 }
 
-input[type=submit], input[type=checkbox] {
+input[type=submit],
+input[type=checkbox] {
   width: auto;
   margin: 0 0.4em;
   display: inline-block;
@@ -167,27 +168,28 @@ footer {
   padding: 1em;
   border: dotted 1px white;
   border-width: 1px 0 0;
-  font-size: 1.3em;
   color: white;
 }
 footer > figure {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-footer > figure > figcaption {
-  color: white;
-  border: dotted 1px;
-  border-width: 1px 0 1px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 20%;
+  font-size: 1.4em;
+  background-color: #56939f;
 }
 footer > figure > a {
-  width: 4em;
   display: block;
-  box-shadow: 1px 1px 2px black;
+  grid-row: 1/6;
+  grid-column: 1/4;
+  width: 100%;
 }
 footer > figure figure {
-  flex: 0 0 100%;
-  margin: -2em 0 0;
+  grid-column: 1/6;
+  grid-row: 3/4;
+  font-size: 1.2em;
+  background-color: rgba(102, 51, 153, 0.5);
+  align-self: center;
 }
 footer > figure figure a {
   text-shadow: 1px 1px 2px black;
@@ -195,15 +197,15 @@ footer > figure figure a {
 }
 footer > figure figure a figcaption {
   font-style: italic;
-  font-size: 1em;
 }
-footer > figure figcaption {
+footer > figure > figcaption {
   white-space: nowrap;
-  text-transform: capitalize;
-  margin: 0 0 0 1em;
   font-weight: bold;
   text-shadow: 1px 1px 2px black;
-  font-size: 1.2em;
+  font-size: 1em;
+  grid-row: 1/3;
+  grid-column: 4/6;
+  background-color: rgba(255, 127, 80, 0.6);
 }
 
 #menu-toggle {
@@ -225,7 +227,8 @@ header > a {
   vertical-align: top;
 }
 
-article form p, section h1 + p {
+article form p,
+section h1 + p {
   font-size: 0.95em;
   margin: 0;
   width: 95%;
@@ -458,7 +461,8 @@ main aside section a {
     position: absolute;
     left: -9999px;
   }
-  main aside, #nav li ul {
+  main aside,
+#nav li ul {
     position: absolute;
     left: -9999px;
   }
@@ -498,7 +502,8 @@ main aside section a {
   header > nav ul li a:hover {
     background: none;
   }
-  #wrapper, header {
+  #wrapper,
+header {
     width: 100%;
     margin: 0 auto;
     padding: 0;
