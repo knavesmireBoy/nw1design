@@ -127,9 +127,11 @@
                 routines = [set(false), loop('back')(null), loop('forward')(null), set(true)];
             return {
                 menu: function (e) {
-                    const found = compose(getText, getTarget)(e),
-                        which = curry2(ptL(invokeMethodBridge, 'match'))(found),
-                        i = [/^begin$/, /^back$/, /^forward$/, /^end$/].findIndex(which);
+                    e.preventDefault();
+                    const cb = Modernizr.svg ? getAttrs('id') : getText,
+                          found = compose(cb, getTarget)(e),
+                          which = curry2(ptL(invokeMethodBridge, 'match'))(found),
+                        i = [/^start$/, /^back$/, /^forward$/, /^end$/].findIndex(which);
                     player = player || playMaker();
                     if (found === 'play') {
                         player();
