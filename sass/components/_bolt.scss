@@ -784,6 +784,7 @@ body.swap img#base {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    padding: .65em 0 0;
 
     p {
         font-size: .9em;
@@ -842,37 +843,38 @@ body.swap img#base {
     display: inline-block;
     margin: 0;
     border-radius: 8px;
+    border: solid 0px;
 }
 #start {
-    background: url(../assets/slider/p7ssm2_first.gif) no-repeat 0% 12% / 100%;
+    background: url(../assets/slider/p7ssm2_first.gif) no-repeat 75% 18% / 140%;
 }
 #back {
-    background: url(../assets/slider/p7ssm2_prev.gif) no-repeat 0% 16% / 100%;
+    background: url(../assets/slider/p7ssm2_prev.gif) no-repeat 50% 18% / 120%;
 }
 #play, .inplay .pause #play {
-    background: url(../assets/slider/p7ssm2_play.gif) no-repeat 0% 9% / 100%;
+    background: url(../assets/slider/p7ssm2_play.gif) no-repeat 50% 14% / 120%;
 }
 .inplay #play {
-    background: url(../assets/slider/p7ssm2_pause.gif) no-repeat 0% 9% / 100%;
+    background: url(../assets/slider/p7ssm2_pause.gif) no-repeat 0% 9% / 120%;
 }
 #forward {
-    background: url(../assets/slider/p7ssm2_next.gif) no-repeat 0% 16% / 100%;
+    background: url(../assets/slider/p7ssm2_next.gif) no-repeat 70% 18% / 120%;
 }
 #end {
-    background: url(../assets/slider/p7ssm2_last.gif) no-repeat 0% 12% / 130%;
+    background: url(../assets/slider/p7ssm2_last.gif) no-repeat 20% 18% / 180%;
 }
 #start:hover {
-    background-position: 0 85%;
+    background-position: 75% 82%;
 }
 #back:hover {
-    background-position: 0 82%;
+    background-position: 50% 81%;
 }
 #play:hover {
-    background-position: 0 94%;
+    background-position: 50% 90%;
 }
 #forward:hover {
-    background-position: 0 82%;
+    background-position: 70% 81%;
 }
 #end:hover {
-    background-position: 0 83%;
+    background-position: 20% 82%;
 }
