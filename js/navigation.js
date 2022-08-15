@@ -272,8 +272,8 @@
                 return nW1.Publish().makepublisher(ret);
             },
               myconfig = config[document.body.id],
-              pg = window.web ? 27 : 52;
-           const loader = function () {
+              pg = window.web ? 27 : 52,
+           loader = function () {
                 //create sidebar
                 compose(setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();
                 myconfig.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul'), myconfig));
