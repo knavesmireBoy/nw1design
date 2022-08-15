@@ -458,14 +458,13 @@ main aside section a {
   main > section {
     margin: 0;
   }
-  #menu-toggle ~ a + nav {
+  #menu-toggle ~ a + nav,
+main aside {
     position: absolute;
     left: -9999px;
   }
-  main aside,
-#nav li ul {
-    position: absolute;
-    left: -9999px;
+  #nav li ul {
+    width: calc(100% + 2em);
   }
   aside {
     border-top: 0.4em solid white;
@@ -475,6 +474,9 @@ main aside section a {
   }
   header nav {
     position: absolute;
+  }
+  footer > figure {
+    width: 100%;
   }
   #menu-toggle:checked ~ a + nav {
     left: 0;
@@ -502,6 +504,21 @@ main aside section a {
   }
   header > nav ul li a:hover {
     background: none;
+  }
+  header > nav ul li ul {
+    border-width: 0;
+    top: 1px;
+    padding: 0 0 0 calc(100% + 1em);
+    margin: 0;
+    background-color: transparent;
+    border-width: 0 !important;
+  }
+  header > nav ul li ul li {
+    width: auto;
+    box-shadow: none;
+    border-width: 0 !important;
+    background-color: white;
+    padding: 0 1em;
   }
   #wrapper,
 header {

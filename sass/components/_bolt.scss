@@ -75,7 +75,7 @@ footer {
     border: dotted 1px white;
     border-width: 1px 0 0;
     color: $col-hi;
-    
+
     & > figure {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
@@ -377,13 +377,13 @@ main aside section {
         margin: 0;
     }
 
-    #menu-toggle ~ a + nav {
+    #menu-toggle ~ a + nav,
+    main aside {
         @include hide();
     }
 
-    main aside,
     #nav li ul {
-        @include hide();
+        width: calc(100% + 2em);
     }
 
     aside {
@@ -396,6 +396,10 @@ main aside section {
 
     header nav {
         position: absolute;
+    }
+    
+    footer > figure {
+        width: 100%;
     }
 
     #menu-toggle:checked ~ a + nav {
@@ -429,6 +433,25 @@ main aside section {
             &:hover {
                 background: none;
             }
+        }
+
+        ul {
+            border-width: 0;
+            top: 1px;
+            padding: 0 0 0 calc(100% + 1em);
+            margin: 0;
+            background-color: transparent;
+            border-width: 0 !important;
+
+            li {
+                width: auto;
+                box-shadow: none;
+                border-width: 0 !important;
+                background-color: white;
+                            padding: 0 1em;
+
+            }
+
         }
     }
 
