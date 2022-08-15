@@ -291,7 +291,7 @@
                     displayer = curryL2(replacePath)($$('base')),
                     thumbs = Finder.from($q('#navigation ul li', true)),
                     addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.menu).wrap(pass),
-                    buttontext = ['start', 'back', 'play', 'forward', 'end'],
+                    buttontext = ['start', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
                     slidertext = ['Image ', ' of '].map(doTextCBNow),
                     sliderspans = [curry2(insertB4)($$('demo')), curry2(insertB4)($$('max'))],
                     //buttons = compose(getParent, compose(prepend, doMake)('button')),
@@ -305,8 +305,6 @@
                       button_el = Modernizr.svg ? 'a' : 'button',
                       buttons = compose(getParent, compose(prepend, doMake)(button_el)),
                       button_cb = Modernizr.svg ? f : (arg) => arg;
-
-
 
 
                 compose(machSlide, getParent, machBase, getParent, getParent2, getParent2, append(doTextNow(pp)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
