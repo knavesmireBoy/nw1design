@@ -873,11 +873,11 @@ body.swap img#base {
   background: url(../assets/slider/p7ssm2_prev.gif) no-repeat 0% 16%/100%;
 }
 
-#play {
+#play, .inplay .pause #play {
   background: url(../assets/slider/p7ssm2_play.gif) no-repeat 0% 9%/100%;
 }
 
-.pause #play {
+.inplay #play {
   background: url(../assets/slider/p7ssm2_pause.gif) no-repeat 0% 9%/100%;
 }
 
