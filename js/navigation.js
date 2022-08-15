@@ -303,8 +303,8 @@
                         doSliderInput(i + 1);
                         doSliderOutput(i + 1);
                     },
-                      f = el => compose(doTest, setId(el.innerHTML).wrap(pass))(el),
-                      button_cb = Modernizr.svg ? setHref : (arg) => arg,
+                      f = el => compose(clearInnerHTML, setHref, setId(el.innerHTML).wrap(pass))(el),
+                      button_cb = Modernizr.svg ? f : (arg) => arg,
                       button_el = Modernizr.svg ? 'a' : 'button',
                       buttontext = Modernizr.svg ? button_text.map(doTextCBNow) : button_text.map(doTextCBNow);
 
