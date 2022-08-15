@@ -1,4 +1,4 @@
-(function (config) {
+(function (config, Mod) {
         "use strict";
 
         function insertB4(neu, elm) {
@@ -128,12 +128,13 @@
             return {
                 menu: function (e) {
                     e.preventDefault();
-                    const cb = Modernizr.svg ? getAttrs('id') : getText,
+                    const cb = !Mod.svg ? getAttrs('id') : getText,
                           found = compose(cb, getTarget)(e),
                           which = curry2(ptL(invokeMethodBridge, 'match'))(found),
                         i = [/^start$/, /^back$/, /^forward$/, /^end$/].findIndex(which);
                     player = player || playMaker();
                     if (found === 'play') {
+                        console.log(4)
                         player();
                     } else {
                         player = null;
@@ -304,9 +305,9 @@
                         doSliderOutput(i + 1);
                     },
                       f = el => compose(clearInnerHTML, setHref, setId(el.innerHTML).wrap(pass))(el),
-                      button_el = Modernizr.svg ? 'a' : 'button',
+                      button_el = !Mod.svg ? 'a' : 'button',
                       buttons = compose(getParent, compose(prepend, doMake)(button_el)),
-                      button_cb = Modernizr.svg ? f : (arg) => arg;
+                      button_cb = !Mod.svg ? f : (arg) => arg;
 
 
                 compose(machSlide, getParent, machBase, getParent, getParent2, getParent2, append(doTextNow(pp)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
@@ -374,7 +375,7 @@
             {
                 'London Fields Cycles': 5
 }
-]}));
+]}, Modernizr));
 
     /*
     FOP : 17/12/14

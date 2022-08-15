@@ -134,6 +134,7 @@ const tagTester = (name) => {
                 }
             },
             suspend: function (flag) {
+                console.log(flag)
                 const o = !isNaN(flag) ? .5 : 1;
                 this.notify(o);
                 window.cancelAnimationFrame(this.t);
