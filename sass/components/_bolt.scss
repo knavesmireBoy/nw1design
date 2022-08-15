@@ -75,7 +75,7 @@ footer {
     border: dotted 1px white;
     border-width: 1px 0 0;
     color: $col-hi;
-
+    
     & > figure {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
