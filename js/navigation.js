@@ -246,6 +246,7 @@
             setSpan1 = prepare2Append(doMake('span'), prepAttrs([setId], ['demo'])),
             setSpan2 = prepare2Append(doMake('span'), prepAttrs([setId], ['max'])),
             setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
+            //setButtonLinks = prepare2Append(doImg, prepAttrs([setAlt], ['#'])),
             headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
             doSliderOutput = ptL(setter, $$("demo"), 'innerHTML'),
             doSliderInput = ptL(setter, $$("myrange"), 'value'),
@@ -290,20 +291,24 @@
                     displayer = curryL2(replacePath)($$('base')),
                     thumbs = Finder.from($q('#navigation ul li', true)),
                     addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.menu).wrap(pass),
-                    buttontext = ['begin', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
+                    button_text = ['begin', 'back', 'play', 'forward', 'end'],
+                    dummy_text = ' '.repeat(4).split(' '),
                     slidertext = ['Image ', ' of '].map(doTextCBNow),
                     sliderspans = [curry2(insertB4)($$('demo')), curry2(insertB4)($$('max'))],
-                    buttons = compose(getParent, compose(prepend, doMake)('button')),
+                    //buttons = compose(getParent, compose(prepend, doMake)('button')),
+                    buttons = compose(getParent, compose(prepend, doMake)('a')),
                     sliderBridge = function (path) {
                         const i = looper.get('members').findIndex(curry2(equals)(path));
                         //looper members zero indexed...
                         doSliderInput(i + 1);
                         doSliderOutput(i + 1);
-                    };
+                    },
+                      button_cb = Modernizr.svg ? setHref : (arg) => arg,
+                      buttontext = Modernizr.svg ? dummy_text.map(doTextCBNow) : button_text.map(doTextCBNow);
 
 
                 compose(machSlide, getParent, machBase, getParent, getParent2, getParent2, append(doTextNow(pp)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
-                buttontext.map(buttons).map(appendCB).map(curry2(invoke)($('buttons')));
+                buttontext.map(buttons).map(appendCB).map(curry2(invoke)($('buttons'))).map(button_cb);
 
                 headers.search = headersSearch;
                 thumbs.search = thumbsSearch;

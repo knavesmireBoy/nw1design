@@ -835,3 +835,12 @@ body.swap img#base {
     position: relative;
     left: 0;
 }
+
+#buttons a {
+    width: 2.5em;
+    height: 2.5em;
+    background-color: pink;
+    display: inline-block;
+    margin: 0 .5em 0 0;
+    border-radius: 8px;
+}
