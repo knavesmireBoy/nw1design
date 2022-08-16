@@ -769,7 +769,9 @@ header {
 }
 
 #slideshow {
-  margin: 5em;
+  margin: 5% 5% 0;
+  border: solid 1px;
+  overflow: hidden;
 }
 #slideshow.pause {
   background-color: black;

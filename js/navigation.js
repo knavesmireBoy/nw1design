@@ -24,8 +24,8 @@
         };
     }
 
-    function getNextElement(node) {
-        if (node && node.nodeType === 1) {
+    function getNextElement(node, type = 1) {
+        if (node && node.nodeType === type) {
             return node;
         }
         if (node && node.nextSibling) {
@@ -130,7 +130,7 @@
         return {
             menu: function (e) {
                 e.preventDefault();
-                const cb = Mod.svg ? getAttrs('id') : getText,
+                const cb = Mod.backgroundsize ? getAttrs('id') : getText,
                     found = compose(cb, getTarget)(e),
                     which = curry2(ptL(invokeMethodBridge, 'match'))(found),
                     i = [/^start$/, /^back$/, /^forward$/, /^end$/].findIndex(which);
@@ -231,6 +231,9 @@
     }
     let $painter = null;
     const broadcaster = Publisher.from(),
+        abbr = (el, repl) => {
+            return toArray(getResult(el).childNodes).filter(node => node.nodeType === 3).map((node, i) => node.textContent = repl[i]);
+        },
         $recur = recurMaker(300, 99, 1, true).init(),
         routes = router($recur),
         prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
@@ -240,13 +243,13 @@
         doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
         doRenderNav = compose(prepend($$('navigation')), setHref, getParent, prepend(doMake('a'))),
         setDiv = prepare2Append(doDiv, prepAttrs([setId], ['slidepreview'])),
-        setPara = prepare2Append(doMake('p'), prepAttrs([], [])),
-        setSpan1 = prepare2Append(doMake('span'), prepAttrs([setId], ['demo'])),
+        setPara = prepare2Append(doMake('p'), prepAttrs([setId], ['tracker'])),
+        setSpan1 = prepare2Append(doMake('span'), prepAttrs([setId], ['tracked'])),
         setSpan2 = prepare2Append(doMake('span'), prepAttrs([setId], ['max'])),
         setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
         //setButtonLinks = prepare2Append(doImg, prepAttrs([setAlt], ['#'])),
         headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
-        doSliderOutput = ptL(setter, $$("demo"), 'innerHTML'),
+        doSliderOutput = ptL(setter, $$("tracked"), 'innerHTML'),
         doSliderInput = ptL(setter, $$("myrange"), 'value'),
         addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.sidebar).wrap(pass),
         displayPause = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause'),
@@ -289,19 +292,24 @@
                 thumbs = Finder.from($q('#navigation ul li', true)),
                 addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.menu).wrap(pass),
                 buttontext = ['start', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
-                slidertext = ['Image ', ' of '].map(doTextCBNow),
-                sliderspans = [curry2(insertB4)($$('demo')), curry2(insertB4)($$('max'))],
-                //buttons = compose(getParent, compose(prepend, doMake)('button')),
+                slider_txt_alt = ['', '/'],
+                slider_txt = ['Image ', ' of '],
+                slidertext = slider_txt.map(doTextCBNow),
+                sliderRestore = pApply(abbr, $$('tracker'), slider_txt),
+                sliderReplace = pApply(abbr, $$('tracker'), slider_txt_alt),
+                sliderOptions = [sliderReplace, sliderRestore],
+                sliderActions = doAlternate()(sliderOptions),
+                sliderspans = [curry2(insertB4)($$('tracked')), curry2(insertB4)($$('max'))],
                 sliderBridge = function (path) {
                     const i = looper.get('members').findIndex(curry2(equals)(path));
                     //looper members zero indexed...
                     doSliderInput(i + 1);
                     doSliderOutput(i + 1);
                 },
-                f = el => compose(clearInnerHTML, setHref, setId(el.innerHTML).wrap(pass))(el),
-                button_el = Mod.svg ? 'a' : 'button',
+                fixInnerHTML = el => compose(clearInnerHTML, setHref, setId(el.innerHTML).wrap(pass))(el),
+                button_el = Mod.backgroundsize ? 'a' : 'button',
                 buttons = compose(getParent, compose(prepend, doMake)(button_el)),
-                button_cb = Mod.svg ? f : (arg) => arg;
+                button_cb = Mod.backgroundsize ? fixInnerHTML : arg => arg;
             compose(machSlide, getParent, machBase, getParent, getParent2, getParent2, append(doTextNow(pg)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
             buttontext.map(buttons).map(appendCB).map(curry2(invoke)($('buttons'))).map(button_cb);
             headers.search = headersSearch;
@@ -320,6 +328,9 @@
             $recur.attach($painter.doOpacity.bind($painter));
             $recur.attach($painter.cleanup.bind($painter), 'delete');
             $slider.attach(looper.set.bind(looper));
+            sliderActions();
+            setTimeout(sliderActions, 2222)
+
         };
     window.addEventListener('load', loader);
 }({

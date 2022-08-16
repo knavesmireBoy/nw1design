@@ -115,13 +115,16 @@ const looper = nW1.Looper(),
 	curry22 = fun => b => a => () => fun(a, b),
 	curryL2 = fun => a => b => fun(a, b),
 	curry3 = fun => c => b => a => fun(a, b, c),
+	curry4 = fun => d => c => b => a => fun(a, b, c, d),
 	curryL3 = fun => a => b => c => fun(a, b, c),
 	curryL33 = fun => a => b => c => () => fun(a, b, c),
+    doGet = curry2(getter),
 	invoke = (f, v) => f(v),
 	invokeMethod = (o, m, v) => o[m](v),
 	invokeMethodV = (o, p, m, v) => {
 		return getResult(o)[p][v](m);
 	},
+	invokePair = (o, m, k, v) => getResult(o)[m](k, v),
 	lazyVal = (m, p, o, v) => o[m](p, v),
 	invokeMethodBridge = (m, v, o) => {
 		return invokeMethod(getResult(o), m, v);
