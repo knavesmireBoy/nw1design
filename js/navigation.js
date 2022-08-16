@@ -249,12 +249,19 @@ function throttle (callback, time) {
         }
     }
     let $painter = null,
-        throttlePause;
-
+        throttlePause,
+        getDesktop = pApply(Modernizr.mq, ipad);
+    
     const broadcaster = Publisher.from(),
         abbr = (el, repl) => {
             return toArray(getResult(el).childNodes).filter(node => node.nodeType === 3).map((node, i) => node.textContent = repl[i]);
         },
+          negater = function (alternators) {
+              if (!getDesktop()) {
+                  alternators.forEach(f => f());
+                  getDesktop = pApply(negate, getDesktop);
+			}
+		},
         $recur = recurMaker(300, 99, 1, true).init(),
         routes = router($recur),
         prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
@@ -293,6 +300,7 @@ function throttle (callback, time) {
         myconfig = config[document.body.id],
         pg = window.web ? 27 : 52,
         loader = function () {
+            //getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
             //create sidebar
             compose(setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();
             myconfig.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul'), myconfig));
@@ -351,7 +359,7 @@ function throttle (callback, time) {
             $recur.attach($painter.cleanup.bind($painter), 'delete');
             $slider.attach(looper.set.bind(looper));
             sliderActions();
-            window.addEventListener('resize', pApply(throttle, sliderActions, 222));
+            window.addEventListener('resize', pApply(throttle, pApply(negater, [sliderActions]), 222));
 
         };
     window.addEventListener('load', loader);

@@ -132,7 +132,7 @@ const looper = nW1.Looper(),
 	invokeMethodBridgeCB = (cb) => (m, v, o) => {
 		return invokeMethod(cb(o), m, v);
 	},
-	negate = (f, arg) => !f(arg),
+	negate = (f, ...args) => !f(...args),
 	$ = (str) => document.getElementById(str),
 	$$ = (str) => () => $(str),
 	$q = (str, flag = false) => {
