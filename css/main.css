@@ -770,7 +770,6 @@ header {
 
 #slideshow {
   margin: 5% 5% 0;
-  border: solid 1px;
   overflow: hidden;
 }
 #slideshow.pause {
@@ -779,10 +778,6 @@ header {
 #slideshow.pause button:nth-child(3) {
   background-color: gainsboro;
 }
-.inplay #slideshow {
-  background-color: violet;
-}
-
 #display img {
   float: left;
 }
@@ -803,14 +798,17 @@ body.swap img#base {
 
 #controls {
   display: flex;
+  background-color: #95bec6;
 }
 
 #buttons {
-  flex: 3 1 100%;
+  flex: 1 2 100%;
+  min-width: 14em;
+  max-width: 15em;
 }
 
 #slidecontainer {
-  width: 100%;
+  flex: 1 1 10em;
   display: flex;
   justify-content: space-between;
   padding: 0.65em 0 0;
@@ -818,12 +816,13 @@ body.swap img#base {
 #slidecontainer p {
   font-size: 0.9em;
   margin: 0;
+  flex: 1 1 5em;
 }
 #slidecontainer p span {
   font-weight: bold;
 }
 #slidecontainer input {
-  flex: 0 1 50%;
+  flex: 4 1 5em;
   margin: 0 1em 0 0;
   height: 1.5em;
 }
