@@ -6,6 +6,25 @@
 
 (function (config, Mod, ipad) {
     "use strict";
+    
+    //https://webdesign.tutsplus.com/tutorials/javascript-debounce-and-throttle--cms-36783
+    //initialize throttlePause variable outside throttle function
+ 
+function throttle (callback, time) {
+  //don't run the function if throttlePause is true
+  if (throttlePause) return;
+ 
+  //set throttlePause to true after the if condition. This allows the function to be run once
+  throttlePause = true;
+   
+  //setTimeout runs the callback within the specified time
+  setTimeout(() => {
+    callback();
+     
+    //throttlePause is set to false once the function has been called, allowing the throttle function to loop
+    throttlePause = false;
+  }, time);
+}
 
     function insertB4(neu, elm) {
         const el = getResult(elm),
@@ -229,7 +248,9 @@
             };
         }
     }
-    let $painter = null;
+    let $painter = null,
+        throttlePause;
+
     const broadcaster = Publisher.from(),
         abbr = (el, repl) => {
             return toArray(getResult(el).childNodes).filter(node => node.nodeType === 3).map((node, i) => node.textContent = repl[i]);
@@ -298,7 +319,7 @@
                 slidertext = slider_load.map(doTextCBNow),
                 sliderRestore = pApply(abbr, $$('tracker'), slider_txt),
                 sliderReplace = pApply(abbr, $$('tracker'), slider_txt_alt),
-                sliderOptions = Mod.mq(ipad) ? [sliderReplace, sliderRestore] : [sliderRestore, sliderReplace],
+                sliderOptions = Mod.mq(ipad) ? [sliderRestore, sliderReplace] : [sliderReplace, sliderRestore],
                 sliderActions = doAlternate()(sliderOptions),
                 sliderspans = [curry2(insertB4)($$('tracked')), curry2(insertB4)($$('max'))],
                 sliderBridge = function (path) {
@@ -330,7 +351,7 @@
             $recur.attach($painter.cleanup.bind($painter), 'delete');
             $slider.attach(looper.set.bind(looper));
             sliderActions();
-            setTimeout(sliderActions, 2222)
+            window.addEventListener('resize', pApply(throttle, sliderActions, 222));
 
         };
     window.addEventListener('load', loader);
