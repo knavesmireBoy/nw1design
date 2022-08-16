@@ -300,7 +300,7 @@ function throttle (callback, time) {
         myconfig = config[document.body.id],
         pg = window.web ? 27 : 52,
         loader = function () {
-            //getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
+            getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
             //create sidebar
             compose(setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();
             myconfig.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul'), myconfig));

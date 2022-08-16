@@ -90,6 +90,7 @@ footer {
             grid-row: 1/6;
             grid-column: 1/4;
             width: 100%;
+           
         }
 
         figure {
@@ -120,6 +121,12 @@ footer {
 
         }
 
+    }
+     a:first-child:after {
+                content: ' | ';
+            }
+    a:hover {
+        color: $col-hi
     }
 }
 
@@ -671,10 +678,6 @@ body.swap img#base {
     align-content: center;
 }
 
-#controls > * {
-    border: solid 1px;
-}
-
 #buttons {
     flex: 1 1 5em;
     padding: 0.5em;
@@ -697,10 +700,10 @@ body.swap img#base {
     }
 
     input {
-        flex: 4 1 5em;
+        flex: 6 1 5em;
         margin: 0 1em 0 0;
         height: 1.5em;
-         align-self: center;
+        align-self: center;
     }
 }
 
@@ -741,7 +744,7 @@ body.swap img#base {
     height: calc(22px + (14 * ((100vw - 768px) / (1280 - 768))));
     margin: 0;
     border-radius: 8px;
-    border: solid 1px;
+    border: solid 0px;
     flex: 1 1 3em;
 }
 #start {
@@ -858,8 +861,7 @@ body.swap img#base {
                 box-shadow: none;
                 border-width: 0 !important;
                 background-color: white;
-                            padding: 0 1em;
-
+                padding: 0 1em;
             }
 
         }
@@ -884,5 +886,9 @@ body.swap img#base {
     #buttons a {
         height: calc(22px + (14 * ((100vw - 574px) / (768 - 574))));
     }
+    input#myrange {
+        flex: 12 1 5em;
+    }
 
 }
+
