@@ -4,7 +4,7 @@
 /*global Publisher: false */
 /*global nW1: false */
 
-(function (config, Mod) {
+(function (config, Mod, ipad) {
     "use strict";
 
     function insertB4(neu, elm) {
@@ -294,10 +294,11 @@
                 buttontext = ['start', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
                 slider_txt_alt = ['', '/'],
                 slider_txt = ['Image ', ' of '],
-                slidertext = slider_txt.map(doTextCBNow),
+                slider_load = Mod.mq(ipad) ? slider_txt : slider_txt_alt,
+                slidertext = slider_load.map(doTextCBNow),
                 sliderRestore = pApply(abbr, $$('tracker'), slider_txt),
                 sliderReplace = pApply(abbr, $$('tracker'), slider_txt_alt),
-                sliderOptions = [sliderReplace, sliderRestore],
+                sliderOptions = Mod.mq(ipad) ? [sliderReplace, sliderRestore] : [sliderRestore, sliderReplace],
                 sliderActions = doAlternate()(sliderOptions),
                 sliderspans = [curry2(insertB4)($$('tracked')), curry2(insertB4)($$('max'))],
                 sliderBridge = function (path) {
@@ -364,7 +365,7 @@
     }, {
         'London Fields Cycles': 5
     }]
-}, Modernizr));
+}, Modernizr, '(min-width: 1024px)'));
 /*
 FOP : 17/12/14
 BENSON
