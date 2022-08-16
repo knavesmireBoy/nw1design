@@ -2,7 +2,7 @@ html,
 body {}
 
 body {
-    font: normal .8em/1.6 $font-fam;
+    font: normal .75em/1.6 $font-fam;
     color: $col-body;
     background-image: url(../images/structure/bg.gif);
     position: relative;
@@ -368,113 +368,6 @@ main aside section {
     color: $col-hi;
 }
 
-@media only screen and (max-width: 768px) {
-    main {
-        display: block;
-    }
-
-    main > section {
-        margin: 0;
-    }
-
-    #menu-toggle ~ a + nav,
-    main aside {
-        @include hide();
-    }
-
-    #nav li ul {
-        width: calc(100% + 2em);
-    }
-
-    aside {
-        border-top: .4em solid white;
-    }
-
-    main > aside > section {
-        width: 100%;
-    }
-
-    header nav {
-        position: absolute;
-    }
-    
-    footer > figure {
-        width: 100%;
-    }
-
-    #menu-toggle:checked ~ a + nav {
-        left: 0;
-    }
-
-    header > nav ul {
-        display: block;
-        background: hsla(255, 255, 255, 0.95);
-        border: 0 solid;
-        text-align: left;
-        line-height: 2;
-        margin: -1em 0 0 1em;
-        display: inline-block;
-        padding: 0 1em;
-        box-shadow: 1px 1px 2px #000;
-
-    }
-
-    header > nav ul li {
-        border: 1px solid #999;
-        border-width: 0 0 1px;
-
-        &:last-child {
-            border-width: 0;
-        }
-
-        a {
-            padding: 0;
-
-            &:hover {
-                background: none;
-            }
-        }
-
-        ul {
-            border-width: 0;
-            top: 1px;
-            padding: 0 0 0 calc(100% + 1em);
-            margin: 0;
-            background-color: transparent;
-            border-width: 0 !important;
-
-            li {
-                width: auto;
-                box-shadow: none;
-                border-width: 0 !important;
-                background-color: white;
-                            padding: 0 1em;
-
-            }
-
-        }
-    }
-
-    #wrapper,
-    header {
-        width: 100%;
-        margin: 0 auto;
-        padding: 0;
-        border-width: 0;
-    }
-
-    header {
-        padding: 2em 0 0;
-    }
-
-    header > a {
-        margin: 0 0 1em;
-    }
-
-}
-
-//moby
-
 #about main aside section a:last-of-type {
     padding: 1em 2em 0;
 }
@@ -775,19 +668,23 @@ body.swap img#base {
 #controls {
     display: flex;
     background-color: $col-bg;
+    align-content: center;
+}
+
+#controls > * {
+    border: solid 1px;
 }
 
 #buttons {
-    flex: 1 2 100%;
-    min-width: 14em;
-    max-width: 15em;
+    flex: 1 1 5em;
+    padding: 0.5em;
+    display: flex;
 }
 
 #slidecontainer {
-    flex: 1 1 10em;
+    flex: 3 1 5em;
     display: flex;
-    justify-content: space-between;
-    padding: .65em 0 0;
+    padding: 0 1em;
 
     p {
         font-size: .9em;
@@ -796,12 +693,14 @@ body.swap img#base {
         span {
             font-weight: bold;
         }
+        align-self: center;
     }
 
     input {
         flex: 4 1 5em;
         margin: 0 1em 0 0;
         height: 1.5em;
+         align-self: center;
     }
 }
 
@@ -824,13 +723,11 @@ body.swap img#base {
     height: 15px;
     width: 15px;
     border-radius: 8px;
-
     background: $col-bg;
     cursor: pointer;
 }
 
 #slidecontainer input::-moz-range-thumb {
-
     background: #04AA6D;
     cursor: pointer;
 }
@@ -841,12 +738,11 @@ body.swap img#base {
 }
 
 #buttons a {
-    width: 2.5em;
-    height: 2.5em;
-    display: inline-block;
+    height: calc(22px + (14 * ((100vw - 768px) / (1280 - 768))));
     margin: 0;
     border-radius: 8px;
-    border: solid 0px;
+    border: solid 1px;
+    flex: 1 1 3em;
 }
 #start {
     background: url(../assets/slider/p7ssm2_first.gif) no-repeat 75% 18% / 140%;
@@ -880,4 +776,113 @@ body.swap img#base {
 }
 #end:hover {
     background-position: 20% 82%;
+}
+
+@media only screen and (max-width: 768px) {
+    main {
+        display: block;
+    }
+
+    main > section {
+        margin: 0;
+    }
+
+    #menu-toggle ~ a + nav,
+    main aside {
+        @include hide();
+    }
+
+    #nav li ul {
+        width: calc(100% + 2em);
+    }
+
+    aside {
+        border-top: .4em solid white;
+    }
+
+    main > aside > section {
+        width: 100%;
+    }
+
+    header nav {
+        position: absolute;
+    }
+    
+    footer > figure {
+        width: 100%;
+    }
+
+    #menu-toggle:checked ~ a + nav {
+        left: 0;
+    }
+
+    header > nav ul {
+        display: block;
+        background: hsla(255, 255, 255, 0.95);
+        border: 0 solid;
+        text-align: left;
+        line-height: 2;
+        margin: -1em 0 0 1em;
+        display: inline-block;
+        padding: 0 1em;
+        box-shadow: 1px 1px 2px #000;
+
+    }
+
+    header > nav ul li {
+        border: 1px solid #999;
+        border-width: 0 0 1px;
+
+        &:last-child {
+            border-width: 0;
+        }
+
+        a {
+            padding: 0;
+
+            &:hover {
+                background: none;
+            }
+        }
+
+        ul {
+            border-width: 0;
+            top: 1px;
+            padding: 0 0 0 calc(100% + 1em);
+            margin: 0;
+            background-color: transparent;
+            border-width: 0 !important;
+
+            li {
+                width: auto;
+                box-shadow: none;
+                border-width: 0 !important;
+                background-color: white;
+                            padding: 0 1em;
+
+            }
+
+        }
+    }
+
+    #wrapper,
+    header {
+        width: 100%;
+        margin: 0 auto;
+        padding: 0;
+        border-width: 0;
+    }
+
+    header {
+        padding: 2em 0 0;
+    }
+
+    header > a {
+        margin: 0 0 1em;
+    }
+    
+    #buttons a {
+        height: calc(22px + (14 * ((100vw - 574px) / (768 - 574))));
+    }
+
 }
