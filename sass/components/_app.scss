@@ -121,8 +121,8 @@ main > section p {
   margin: 1.77em 0;
   font-size: calc(11px + 2 * (100vw - 300px) / 980);
 }
-main section  ul,
-main section  ol {
+main > section  ul,
+main > section  ol {
   list-style: disc;
   list-style-position: inside;
   margin: 0 0 0 1em;
