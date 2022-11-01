@@ -6,21 +6,21 @@
 
 (function (config, Mod, ipad) {
     "use strict";
-    
+
     //https://webdesign.tutsplus.com/tutorials/javascript-debounce-and-throttle--cms-36783
     //initialize throttlePause variable outside throttle function
- 
+
 function throttle (callback, time) {
   //don't run the function if throttlePause is true
   if (throttlePause) return;
- 
+
   //set throttlePause to true after the if condition. This allows the function to be run once
   throttlePause = true;
-   
+
   //setTimeout runs the callback within the specified time
   setTimeout(() => {
     callback();
-     
+
     //throttlePause is set to false once the function has been called, allowing the throttle function to loop
     throttlePause = false;
   }, time);
@@ -251,7 +251,7 @@ function throttle (callback, time) {
     let $painter = null,
         throttlePause,
         getDesktop = pApply(Modernizr.mq, ipad);
-    
+
     const broadcaster = Publisher.from(),
         abbr = (el, repl) => {
             return toArray(getResult(el).childNodes).filter(node => node.nodeType === 3).map((node, i) => node.textContent = repl[i]);
@@ -269,8 +269,10 @@ function throttle (callback, time) {
         doDiv = doMake('div'),
         doImg = doMake('img'),
         doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
-        doRenderNav = compose(prepend($$('navigation')), setHref, getParent, prepend(doMake('a'))),
+        doRenderNav = compose(prepend($$('submenu')), setHref, getParent, prepend(doMake('a'))),
         setDiv = prepare2Append(doDiv, prepAttrs([setId], ['slidepreview'])),
+        setSubMenu = prepare2Append(doDiv, prepAttrs([setId], ['submenu'])),
+        setInnerDiv = prepare2Append(doDiv, prepAttrs([setId], ['inner'])),
         setPara = prepare2Append(doMake('p'), prepAttrs([setId], ['tracker'])),
         setSpan1 = prepare2Append(doMake('span'), prepAttrs([setId], ['tracked'])),
         setSpan2 = prepare2Append(doMake('span'), prepAttrs([setId], ['max'])),
@@ -302,7 +304,7 @@ function throttle (callback, time) {
         loader = function () {
             getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
             //create sidebar
-            compose(setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();
+            compose(setSubMenu, getParent, getParent, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();
             myconfig.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul'), myconfig));
             //post creation of sidebar
             headers = Finder.from(headings());
@@ -340,7 +342,7 @@ function throttle (callback, time) {
                 button_el = Mod.backgroundsize ? 'a' : 'button',
                 buttons = compose(getParent, compose(prepend, doMake)(button_el)),
                 button_cb = Mod.backgroundsize ? fixInnerHTML : arg => arg;
-            compose(machSlide, getParent, machBase, getParent, getParent2, getParent2, append(doTextNow(pg)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
+            compose(getParent, machSlide, getParent, machBase, setInnerDiv, getParent, getParent2, getParent2, append(doTextNow(pg)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
             buttontext.map(buttons).map(appendCB).map(curry2(invoke)($('buttons'))).map(button_cb);
             headers.search = headersSearch;
             thumbs.search = thumbsSearch;

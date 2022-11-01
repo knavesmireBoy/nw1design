@@ -31,7 +31,7 @@
   padding: 0 0 1vw;
 }
 
-#display .inner {
+#display #inner {
   margin: 1vw calc(4vw + (4 * (100vw - 812px) / (1280 - 812)));
   text-align: center;
 }
@@ -43,7 +43,7 @@
 #display img {
   float: left;
 }
-
+/*
 .inplay img#slide {
   margin-left: -100%;
 }
@@ -58,6 +58,21 @@ img#base,
 
 .static img#slide {
   margin-left: 0;
+}
+*/
+
+img#slide {
+    margin-left: -100%;
+    float: left;
+    visibility: hidden;
+}
+
+.inplay img#slide {
+    visibility: visible;
+}
+
+body.swap img#base {
+    visibility: hidden;
 }
 
 #controls {
@@ -146,34 +161,33 @@ img#base,
 }
 
 #start {
-  background-image: url(../assets/bg/sprites/backwards.png);
+  background-image: url(../../assets/bg/sprites/backwards.png);
 }
 
 #back {
-  background-image: url(../assets/bg/sprites/backward.png);
+  background-image: url(../../assets/bg/sprites/backward.png);
 }
 
 #play,
 .inplay .pause #play {
-  background-image: url(../assets/bg/sprites/plays.png);
+  background-image: url(../../assets/bg/sprites/plays.png);
 }
 
 .inplay #play {
-  background-image: url(../assets/bg/sprites/pause.png);
+  background-image: url(../../assets/bg/sprites/pause.png);
 }
 
 #forward {
-  background-image: url(../assets/bg/sprites/forward.png);
+  background-image: url(../../assets/bg/sprites/forward.png);
 }
 
 #end {
-  background-image: url(../assets/bg/sprites/forwards.png);
+  background-image: url(../../assets/bg/sprites/forwards.png);
 }
 
 #buttons a:hover {
   background-position: 50% 100%;
 }
-
 
 #navigation {
   position: relative;
@@ -186,13 +200,13 @@ img#base,
   padding: 0.5em;
 }
 
-#navigation .submenu ul li a {
+#navigation #submenu ul li a {
   background-color: hsl(190, 30%, 73%);
   padding: 0.25em;
   border: solid 1px black;
 }
 
-#navigation .submenu > a {
+#navigation #submenu > a {
   background-color: hsl(190, 30%, 73%);
   color: hsl(217, 50%, 40%);
   padding: 0.25em 0.6em;
@@ -200,11 +214,11 @@ img#base,
   border-width: 1px 0;
   border-color: white white gray;
 }
-#navigation .submenu > a.active {
+#navigation #submenu > a.active {
   color: white;
 }
 
-#navigation .submenu > a:hover {
+#navigation #submenu > a:hover {
   color: hsl(0, 60%, 50%);
   text-decoration: underline;
 }
@@ -214,7 +228,7 @@ img#base,
   height: 2.5em;
 }
 
-#navigation .submenu ul li {
+#navigation #submenu ul li {
   overflow: hidden;
   margin: 0 0.3em;
   display: inline-block;
@@ -224,7 +238,7 @@ img#base,
   border-color: hsl(0, 60%, 50%);
 }
 
-#navigation .submenu > a.active + ul li a:hover {
+#navigation #submenu > a.active + ul li a:hover {
   border-color: orange;
 }
 
@@ -233,22 +247,22 @@ img#base,
   background-color: white;
 }
 
-#navigation .submenu > a:after {
+#navigation #submenu > a:after {
   content: "+";
   color: white;
   float: right;
 }
 
-#navigation .submenu > a.active:after {
+#navigation #submenu > a.active:after {
   content: "-";
 }
 
-#navigation .submenu ul {
+#navigation #submenu ul {
   position: absolute;
   left: -9999px;
 }
 
-#navigation .submenu a.active + ul {
+#navigation #submenu a.active + ul {
   position: relative;
   left: 0;
 }
