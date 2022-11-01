@@ -173,19 +173,7 @@ img#base,
 #buttons a:hover {
   background-position: 50% 100%;
 }
-.webdesign main aside section ul {
-  margin: 1em 0 0;
-}
-.webdesign main aside section ul li:first-child, .graphicdesign main aside ul {
-  font-weight: 700;
-}
 
-.graphicdesign main ul {
-  list-style: disc;
-  list-style-position: inside;
-  text-align: left;
-  margin: 1em 0 0 2em;
-}
 
 #navigation {
   position: relative;

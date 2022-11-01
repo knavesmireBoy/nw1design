@@ -121,14 +121,14 @@ main > section p {
   margin: 1.77em 0;
   font-size: calc(11px + 2 * (100vw - 300px) / 980);
 }
-main > section > ul,
-main > section > ol {
+main section  ul,
+main section  ol {
   list-style: disc;
   list-style-position: inside;
   margin: 0 0 0 1em;
 }
 
-main > section > ol {
+main section  ol {
   list-style: decimal;
 }
 
@@ -307,6 +307,20 @@ main aside section:nth-child(n + 2) {
 }
 #wrapper footer ul > li > a {
   border-color: white;
+}
+
+.webdesign main aside section ul {
+  margin: 1em 0 0;
+}
+.webdesign main aside section ul li:first-child, .graphicdesign main aside ul {
+  font-weight: 700;
+}
+
+.graphicdesign main ul {
+  list-style: disc;
+  list-style-position: inside;
+  text-align: left;
+  margin: 1em 0 0 2em;
 }
 
 /*/////////////////////////*/
