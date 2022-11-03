@@ -81,10 +81,7 @@ header nav > ul > li ul li {
   clear: both;
 }
 
-main#content {
-  padding: 1em 0 3em 1.5em;
-  background-image: none;
-}
+
 #menu-toggle {
   position: absolute;
   left: -9999px;
@@ -94,16 +91,81 @@ main#content {
   main {
     display: block;
   }
-  main > section {
-    margin: 0;
-  }
-  main > aside > section {
-    width: 100%;
-  }
-  header nav {
-    position: absolute;
+
+  aside {
+    border-top: 0.4em solid white;
   }
 
+  header {
+    width: 100%;
+    margin: 0 auto;
+      padding: 1em 0 0;
+    border-width: 0;
+  }
+
+  header label {
+    margin: 0 0 0.6em 1.6em;
+  }
+  header > a {
+    margin: 0 0 1em;
+  }
+
+    footer > figure {
+      width: 100%;
+    }
+    main > section {
+      margin: 0;
+    }
+    main > aside > section {
+      width: 100%;
+    }
+    header nav {
+      position: absolute;
+    }
+
+    header > nav ul {
+      display: block;
+      background: hsla(255deg, 100%, 100%, 0.9);
+      border: 0 solid;
+      text-align: left;
+      line-height: 2;
+      margin: -1em 0 0 2vw;
+      display: inline-block;
+      padding: 0 1em;
+      box-shadow: 1px 1px 2px #000;
+    }
+    header > nav ul li {
+      border: 1px solid #999;
+      border-width: 0 0 1px;
+    }
+    header > nav ul li:last-child {
+      border-width: 0;
+    }
+    header > nav ul li a {
+      padding: 0;
+    }
+    header > nav ul li a:hover {
+      background: none;
+    }
+    header > nav ul li ul {
+      border-width: 0;
+      top: 1px;
+      padding: 0 0 0 calc(10%);
+      margin: 0 0 0 calc(90% + 1em);
+      background-color: transparent;
+      border-width: 0 !important;
+      box-shadow: none;
+    }
+    header > nav ul li ul li {
+      width: auto;
+      box-shadow: none;
+      border-width: 0 !important;
+      background-color: rgb(244,255,255);
+      padding: 0 1em;
+    }
+    .contact .inner {
+      padding: 1em;
+    }
 
   #menu-toggle:checked ~ a + nav {
     left: 8vw;
@@ -113,7 +175,7 @@ main#content {
   main aside {
     position: absolute;
     left: -9999px;
-  }
+}
   #nav li ul {
     width: calc(100% + 2em);
   }

@@ -284,7 +284,7 @@ body.swap img#base {
 
 @media only screen and (max-width: 900px) {
   #buttons a:link {
-    height: calc(22px + 14 * (100vw - 667px) / (900 - 667));
+    height: calc(27px + 12 * (100vw - 667px) / (900 - 667));
     margin: 0 9px 0 0;
     border: solid 1px;
   }
@@ -303,6 +303,10 @@ body.swap img#base {
   #display .portrait {
     margin: 1vw 8vw;
   }
+  .portfolio #display {
+    margin: 0;
+  }
+
 }
 
 @media only screen and (max-width: 667px) {
@@ -311,7 +315,7 @@ body.swap img#base {
     left: -9999px;
   }
   #buttons a:link {
-    height: calc(37px + 9 * (100vw - 574px) / (667 - 574));
+    height: calc(42px + 9 * (100vw - 574px) / (667 - 574));
   }
   #slidecontainer {
     flex: 1 1 5em;
