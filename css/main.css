@@ -552,6 +552,7 @@ header nav > ul > li ul li {
   background-color: hsl(190deg, 30%, 68%);
   border: 1em solid #fff;
   width: 80vw;
+  max-width: 1024px;
   margin: 0.7em auto;
   padding: 0;
   border: solid 1px #999;
