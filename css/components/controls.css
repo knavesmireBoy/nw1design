@@ -32,7 +32,7 @@
 }
 
 #display #inner {
-  margin: 1vw calc(4vw + (4 * (100vw - 812px) / (1280 - 812)));
+  margin: 1vw calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
   text-align: center;
 }
 
@@ -96,7 +96,7 @@ body.swap img#base {
   border: solid 1px orange;
 }
 #slidecontainer p {
-  font-size: calc(10px + (4 * (100vw - 812px) / (1280 - 812)));
+  font-size: calc(10px + (4 * (100vw - 900px) / (1280 - 900)));
   margin: 0;
   flex: 4 1 1em;
   align-self: center;
@@ -282,14 +282,14 @@ body.swap img#base {
   }
 }
 
-@media only screen and (max-width: 812px) {
+@media only screen and (max-width: 900px) {
   #buttons a:link {
-    height: calc(24px + 10 * (100vw - 667px) / (812 - 667));
+    height: calc(22px + 14 * (100vw - 667px) / (900 - 667));
     margin: 0 9px 0 0;
     border: solid 1px;
   }
   #slidecontainer p {
-    font-size: calc(12px + (2 * (100vw - 574px) / (812 - 574)));
+    font-size: calc(12px + (2 * (100vw - 574px) / (900 - 667)));
   }
   input#myrange {
     flex: 12 1 5em;

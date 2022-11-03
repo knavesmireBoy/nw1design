@@ -333,33 +333,22 @@ main aside section:nth-child(n + 2) {
 }
 
 /*/////////////////////////*/
-@media only screen and (max-width: 812px) {
-  main {
-    display: block;
-  }
-  main > section {
-    margin: 0;
-  }
+@media only screen and (max-width: 900px) {
+
   aside {
     border-top: 0.4em solid white;
   }
-  main > aside > section {
-    width: 100%;
-  }
-  header nav {
-    position: absolute;
-  }
+
   footer > figure {
     width: 100%;
   }
-
   header > nav ul {
     display: block;
     background: hsla(255deg, 100%, 100%, 0.95);
     border: 0 solid;
     text-align: left;
     line-height: 2;
-    margin: -1em 0 0 1em;
+    margin: -1em 0 0 1.6em;
     display: inline-block;
     padding: 0 1em;
     box-shadow: 1px 1px 2px #000;

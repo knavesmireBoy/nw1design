@@ -17,7 +17,7 @@ header label {
   height: 4.9em;
   display: inline-block;
   vertical-align: top;
-  background: url("../assets/bg/misc/logo.gif") no-repeat 3% 20% / cover;
+  background: url("../assets/bg/misc/nw1_logo.png") no-repeat 3% 20% / cover;
 }
 
 header h1 {
@@ -90,7 +90,7 @@ main#content {
   left: -9999px;
 }
 
-@media only screen and (max-width: 812px) {
+@media only screen and (max-width: 900px) {
   main {
     display: block;
   }
@@ -103,17 +103,8 @@ main#content {
   header nav {
     position: absolute;
   }
-  header > nav ul {
-    display: block;
-    background: hsla(255deg, 100%, 100%, 0.95);
-    border: 0 solid;
-    text-align: left;
-    line-height: 2;
-    margin: -1em 0 0 1em;
-    display: inline-block;
-    padding: 0 1em;
-    box-shadow: 1px 1px 2px #000;
-  }
+
+
   #menu-toggle:checked ~ a + nav {
     left: 8vw;
     z-index: 2;
@@ -125,6 +116,12 @@ main#content {
   }
   #nav li ul {
     width: calc(100% + 2em);
+  }
+  header label {
+    background: url("../assets/bg/misc/nw1_logo_sprite_alt.png") no-repeat center top / 100%;
+  }
+  header label:hover {
+    background-position: center 102%;
   }
 }
 
