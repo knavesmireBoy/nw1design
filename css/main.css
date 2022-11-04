@@ -162,7 +162,7 @@ main span {
 }
 */
 form input {
-  width: 90%;
+  width: 100%;
 }
 
 table td {
@@ -217,8 +217,9 @@ footer ul li:last-child a {
 }
 
 main > section p {
-  margin: 1.77em 0;
-  font-size: calc(11px + 2 * (100vw - 300px) / 980);
+  margin-top: calc(12px + 10 * (100vw - 574px) / 706);
+  margin-bottom: calc(12px + 10 * (100vw - 574px) / 706);
+  font-size: calc(12px + 1 * (100vw - 574px) / 706);
 }
 
 main > section ul,
@@ -379,7 +380,6 @@ main aside section:nth-child(n+2) {
 
 .contact .inner {
   padding: 2em 4em 1em;
-  margin: 1em;
   border: solid 1px hsl(190deg, 30%, 61%);
 }
 
@@ -389,10 +389,69 @@ main aside section:nth-child(n+2) {
   font-size: 1.2em;
 }
 
-.contact tr:last-child td {
-  color: red;
-  text-align: center;
-  margin: 0 auto;
+.contact main > section {
+  margin: 1em 1.5em 1.5em;
+}
+
+.contact .inner {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-weight: bold;
+  font-size: 1.2em;
+  padding: 2em 4em 1em;
+  margin: 1em;
+  border: solid 1px hsl(190deg, 30%, 61%);
+}
+
+.contact form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.contact form div {
+  flex: 1 1 40%;
+  padding: 0.5em 0;
+}
+
+.contact form div:nth-child(odd) {
+  margin: 0 1em 0 0;
+}
+
+.contact form div:nth-child(odd) label, form p:last-of-type {
+  color: black;
+}
+
+.contact form label {
+  margin: 0 0 0.25em;
+  display: block;
+}
+
+.contact form label:last-of-type, .contact textarea {
+  flex: 1 1 100%;
+}
+
+.dial {
+  font-size: 1.1em;
+}
+
+.contact div input[required], .contact textarea {
+  color: black;
+}
+
+/*not on submit*/
+.contact div > input {
+  color: black;
+}
+
+.contact div input:focus, .contact textarea:focus {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.contact textarea {
+  margin: 0 0 1em;
+}
+
+#submit {
+  margin-left: auto;
 }
 
 .home nav > ul > li:nth-child(1) > a,
@@ -661,14 +720,22 @@ main aside {
   header label:hover {
     background-position: center 102%;
   }
+  .contact form div:nth-child(4) {
+    flex: 1 1 10%;
+  }
 }
-/*///////*/
 @media only screen and (max-width: 668px) {
   footer span {
     display: block;
   }
   footer p a:last-of-type::after {
     content: "";
+  }
+  .contact form div:nth-child(even) {
+    flex: 1 1 100%;
+  }
+  .contact form div:nth-child(odd) {
+    margin: 0;
   }
 }
 @media only screen and (max-width: 550px) {

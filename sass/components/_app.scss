@@ -66,7 +66,7 @@ main span {
 
 
 form input {
-  width: 90%;
+  width: 100%;
 }
 
 table td {
@@ -117,9 +117,11 @@ footer ul li:last-child a {
   border-width: 0;
 }
 
+
 main > section p {
-  margin: 1.77em 0;
-  font-size: calc(11px + 2 * (100vw - 300px) / 980);
+  margin-top: calc(12px + 10 * (100vw - 574px) / (1280 - 574));
+  margin-bottom: calc(12px + 10 * (100vw - 574px) / (1280 - 574));
+  font-size: calc(12px + 1 * (100vw - 574px) / (1280 - 574));
 }
 main > section  ul,
 main > section  ol {
@@ -270,7 +272,6 @@ main aside section:nth-child(n + 2) {
 
 .contact .inner {
   padding: 2em 4em 1em;
-  margin: 1em;
   border: solid 1px hsl(190, 30%, 61%);
 }
 
@@ -279,10 +280,59 @@ main aside section:nth-child(n + 2) {
   font-weight: bold;
   font-size: 1.2em;
 }
-.contact tr:last-child td {
-  color: red;
-  text-align: center;
-  margin: 0 auto;
+
+.contact main > section {
+  margin: 1em 1.5em 1.5em;
+}
+.contact .inner {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-weight: bold;
+  font-size: 1.2em;
+  padding: 2em 4em 1em;
+  margin: 1em;
+  border: solid 1px hsl(190, 30%, 61%);
+}
+.contact form {
+  display: flex;
+  flex-wrap: wrap;
+}
+.contact form div {
+  flex: 1 1 40%;
+  padding: .5em 0;
+}
+.contact form div:nth-child(odd) {
+  margin: 0 1em 0 0;
+}
+.contact form div:nth-child(odd) label, form p:last-of-type {
+color: black;
+}
+.contact form label {
+  margin: 0 0 .25em;
+  display: block;
+}
+.contact form label:last-of-type, .contact textarea {
+  flex: 1 1 100%;
+}
+.dial {
+  font-size: 1.1em;
+}
+
+
+.contact div input[required], .contact textarea {
+  color: black;
+}
+/*not on submit*/
+.contact div > input {
+  color: black;
+}
+.contact div input:focus, .contact textarea:focus {
+  background-color: rgba(255,255,255, .25);
+}
+.contact textarea {
+  margin: 0 0 1em;
+}
+#submit {
+  margin-left: auto;
 }
 
 .home nav > ul > li:nth-child(1) > a,

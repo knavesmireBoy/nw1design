@@ -43,53 +43,22 @@
         <div id="innerwrap">
             <main id="content" role="main">
             <section>
-    <h1>Contact me</h1>
-  <p>Tel/Fax: 01453 298 527</p>
    <article>
 		 <div class="inner">
-  <form action="../contact.php" method="post">
-  <table>
-    <tr>
-      <td >Name*:</td>
-      <td>Company:</td>
-    </tr>
-    <tr>
-      <td><input name="name" id="name" maxlength="50" /></td>
-      <td><input name="Company" type="text" id="Company" maxlength="50" /></td>
-    </tr>
-    <tr>
-      <td>Email*:</td>
-      <td>Telephone:</td>
-    </tr>
-    <tr>
-      <td><input name="email" type="email" id="email" maxlength="25" /></td>
-      <td><input name="phone" type="tel" id="phone" maxlength="50" /></td>
-    </tr>
-
-    <tr>
-      <td>Message*:</td>
-    </tr>
-    <tr>
-      <td colspan="3"><textarea name="message" id="message"></textarea></td>
-    </tr>
-    <tr>
-      <td colspan="3">
-          <input name="updates" type="checkbox" id="updates" value="requested" />
-          <p>
-        Check this box to receive updates and information from North West One Design.
-        I maintain a policy of not passing on your personal details to other
-        companies.</p>
-        <p>* - required field</p></td>
-    </tr>
-    <tr>
-      <td colspan="3">
-          <input name="submit" value="send" type="submit"/>
-      </td>
-    </tr>
-  </table>
-</form></div></article>
-                </section>
-            </main>
+			 <h1>Contact me</h1>
+              <p class="dial"><a href="tel:01453298527">Tel/Fax: 01453 298 527</a></p>
+<form action="../contact.php" method="post">
+	<div class=""><label for="name">Name*:</label><input type="" name="name" id="name" required="" value=""></div>
+	<div class=""><label for="company">Company:</label><input type="text" name="company" id="company" value=""></div>
+	<div><label for="email">Email*:</label><input type="email" name="email" id="email" required="" value=""></div>
+	<div class=""><label for="tel">Telephone:</label><input type="tel" name="tel" id="tel" value=""></div>
+	<label for="message">Message*:</label>
+	<textarea name="message" id="message" required=""></textarea>
+	<input name="updates" type="checkbox" id="updates" value="requested">
+	<p>Check this box to receive updates and information from North West One Design. I maintain a policy of not passing on your personal details to other companies.</p>
+	<p>* - Required field</p>
+	<input name="submit" id="submit" type="submit" value="SEND"></form></div></article>
+                </section></main>
 			<!--<p><a href="http://www.fieldstherapies.co.uk"><img src="images/buttons/quote.jpg" alt="massage hackney" width="193" height="180" border="0" usemap="#Map" /></a> -->
 		</div>
 			<footer role="contentinfo"><ul>
