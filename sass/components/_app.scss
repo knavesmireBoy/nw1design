@@ -238,6 +238,7 @@ main aside section h2 {
   padding: 0.8em 0;
   text-align: left;
   white-space: nowrap;
+  font-size: calc(12px + 6 * (100vw - 574px) / (1280 - 574));
 }
 main aside section h2 + a {
   margin: 2em 2em 1em;

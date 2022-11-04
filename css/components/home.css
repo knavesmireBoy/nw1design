@@ -46,7 +46,7 @@
   position: relative;
   font-style: normal;
 }
-/*https://css-tricks.com/apply-a-filter-to-a-background-image/*/
+/*https://css-tricks.com/apply-a-filter-to-a-background-image/
 #audit:before,
 #phoney:before {
   content: "";
@@ -67,6 +67,12 @@
 #phoney:hover:before {
   filter: contrast(2);
 }
+*/
+#audit:hover,
+#phoney:hover {
+  filter: contrast(1.5);
+}
+
 
 @keyframes giffy {
   0%  { background-image: url("../assets/bg/misc/bensondesign1_tmb.jpg"); }

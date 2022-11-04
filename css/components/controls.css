@@ -267,12 +267,12 @@ body.swap img#base {
 
 @media only screen and (max-width: 900px) {
   #buttons a:link {
-    height: calc(30px + 12 * (100vw - 667px) / (900 - 667));
+    height: calc(26px + 13 * (100vw - 667px) / (900 - 667));
     margin: 0 9px 0 0;
     border: solid 1px;
   }
   #slidecontainer p {
-    font-size: calc(12px + (2 * (100vw - 574px) / (900 - 667)));
+    font-size: calc(12px + (2 * (100vw - 667px) / (900 - 667)));
   }
   input#myrange {
     flex: 12 1 5em;

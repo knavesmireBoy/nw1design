@@ -99,7 +99,7 @@ function longhand(o) {
 /* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
 function replacePath(o, src) {
 	o = getResult(o);
-	if(o.parentNode.id === 'slidepreview'){
+	if(o.parentNode.id === 'inner'){
 		longhand($('base'));
 	}
 	o.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
