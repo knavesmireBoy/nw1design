@@ -86,16 +86,22 @@ const pApply = (fn, ...cache) => (...args) => {
 function doInc(n) {
 	return compose(ptL(modulo, n), increment);
 }
-/* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
-function replacePath(o, src) {
-	o = getResult(o);
+
+function longhand(o) {
+
 	if(o.naturalHeight && (o.naturalHeight > o.naturalWidth)){
 		document.body.classList.add('portrait');
 	}
-	else {
-		document.body.classList.remove('portrait');
+	else if(o.naturalHeight && (o.naturalHeight < o.naturalWidth)){
+	document.body.classList.remove('portrait');
 	}
-
+}
+/* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
+function replacePath(o, src) {
+	o = getResult(o);
+	if(o.parentNode.id === 'slidepreview'){
+		longhand($('base'));
+	}
 	o.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
 }
 

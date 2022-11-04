@@ -21,7 +21,6 @@
   overflow: hidden;
 }
 #slideshow.pause {
-  background-color: black;
 }
 #slideshow.pause button:nth-child(3) {
   background-color: gainsboro;
@@ -34,6 +33,7 @@
 #display #inner {
   margin: 1vw calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
   text-align: center;
+  overflow: hidden;
 }
 
 .portrait #display #inner  {
@@ -43,23 +43,6 @@
 #display img {
   float: left;
 }
-/*
-.inplay img#slide {
-  margin-left: -100%;
-}
-
-.inplay img#base {
-  display: block;
-}
-img#base,
-.static img#base {
-  display: none;
-}
-
-.static img#slide {
-  margin-left: 0;
-}
-*/
 
 img#slide {
     margin-left: -100%;
@@ -148,7 +131,7 @@ body.swap img#base {
 }
 
 #buttons a:link {
-  height: calc(10px + (6 * (100vw - 1024px) / (1280 - 1024)));
+  height: calc(21px + (10 * (100vw - 900px) / (1280 - 900)));
   margin: 0 5px 0 0;
   flex: 1 1 22px;
   background-repeat: no-repeat;
@@ -170,7 +153,7 @@ body.swap img#base {
 
 #play,
 .inplay .pause #play {
-  background-image: url(../../assets/bg/sprites/plays.png);
+  background-image: url(../../assets/bg/sprites/play.png);
 }
 
 .inplay #play {
@@ -303,6 +286,9 @@ body.swap img#base {
 
   .portfolio #display {
     margin: 0;
+  }
+  .portrait #display #inner  {
+    margin: 1vw 8vw;
   }
 
 }
