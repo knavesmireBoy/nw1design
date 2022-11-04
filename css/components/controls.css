@@ -36,7 +36,7 @@
   text-align: center;
 }
 
-#display .portrait {
+.portrait #display #inner  {
   margin: 1vw 10vw;
 }
 
@@ -148,7 +148,7 @@ body.swap img#base {
 }
 
 #buttons a:link {
-  height: calc(24px + (6 * (100vw - 1024px) / (1280 - 1024)));
+  height: calc(10px + (6 * (100vw - 1024px) / (1280 - 1024)));
   margin: 0 5px 0 0;
   flex: 1 1 22px;
   background-repeat: no-repeat;
@@ -284,7 +284,7 @@ body.swap img#base {
 
 @media only screen and (max-width: 900px) {
   #buttons a:link {
-    height: calc(27px + 12 * (100vw - 667px) / (900 - 667));
+    height: calc(30px + 12 * (100vw - 667px) / (900 - 667));
     margin: 0 9px 0 0;
     border: solid 1px;
   }
@@ -300,9 +300,7 @@ body.swap img#base {
   #slidecontainer {
     flex: 2 1 5em;
   }
-  #display .portrait {
-    margin: 1vw 8vw;
-  }
+
   .portfolio #display {
     margin: 0;
   }

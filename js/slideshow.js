@@ -6,6 +6,10 @@ function equals(a, b) {
     return a === b;
 }
 
+function doPortrait(m, o, v) {
+  return o.classList[m](v);
+}
+
 const tagTester = (name) => {
         const tag = '[object ' + name + ']';
         return function (obj) {
@@ -22,7 +26,7 @@ const tagTester = (name) => {
     getTgt = (str) => $$(str),
     isInplay = $$q('.inplay'),
     getHeight = curry2(getter)('height'),
-
+    applyPortait = curry3(doPortrait)('portrait'),
     testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getRes(item)).map(getprop),
     doPic = ptL(setterBridge, 'src'),
     displayInplay = ptL(invokeMethod, document.body.classList, 'add'),

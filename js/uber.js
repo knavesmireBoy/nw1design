@@ -14,6 +14,20 @@ if (typeof Function.prototype.wrap === 'undefined') {
 	};
 }
 
+function def(x) {
+  return typeof x !== "undefined";
+}
+
+function mittelFactory(flag) {
+  if (flag) {
+    return (f, o, v) => (m) => f(o, m, v);
+  }
+  else if (isBoolean(flag)) {
+    return (f, m, v) => (o, k) => def(v) ? f(o, m, k, v) : f(o, m, v);
+  }
+  return (f, m, k) => (o, v) => def(k) ? f(o, m, k, v) : f(o, m, v);
+}
+
 function doWhenFactory(n) {
 	const both = (pred, action, v) => {
 			if (pred(v)) {
@@ -75,6 +89,13 @@ function doInc(n) {
 /* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
 function replacePath(o, src) {
 	o = getResult(o);
+	if(o.naturalHeight && (o.naturalHeight > o.naturalWidth)){
+		document.body.classList.add('portrait');
+	}
+	else {
+		document.body.classList.remove('portrait');
+	}
+
 	o.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
 }
 
@@ -118,7 +139,7 @@ const looper = nW1.Looper(),
 	curry4 = fun => d => c => b => a => fun(a, b, c, d),
 	curryL3 = fun => a => b => c => fun(a, b, c),
 	curryL33 = fun => a => b => c => () => fun(a, b, c),
-    doGet = curry2(getter),
+  doGet = curry2(getter),
 	invoke = (f, v) => f(v),
 	invokeMethod = (o, m, v) => o[m](v),
 	invokeMethodV = (o, p, m, v) => {
@@ -132,6 +153,7 @@ const looper = nW1.Looper(),
 	invokeMethodBridgeCB = (cb) => (m, v, o) => {
 		return invokeMethod(cb(o), m, v);
 	},
+	invokeClass = (o, s, m, v) => getResult(o)[s][m](v),
 	negate = (f, ...args) => !f(...args),
 	$ = (str) => document.getElementById(str),
 	$$ = (str) => () => $(str),

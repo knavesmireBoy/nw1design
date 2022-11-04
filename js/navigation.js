@@ -144,6 +144,7 @@ function throttle (callback, time) {
                 return func([exec, undo]);
             },
             loop = deferPTL(invokeMethod, looper),
+
             set = loop('set'),
             routines = [set(false), loop('back')(null), loop('forward')(null), set(true)];
         return {
@@ -253,6 +254,8 @@ function throttle (callback, time) {
         getDesktop = pApply(Modernizr.mq, ipad);
 
     const broadcaster = Publisher.from(),
+    goCompare = (prop, pred) => (a, b) => pred(a[prop], b[prop]),
+    //getSmaller = goCompare('length', ltThan),
         abbr = (el, repl) => {
             return toArray(getResult(el).childNodes).filter(node => node.nodeType === 3).map((node, i) => node.textContent = repl[i]);
         },
