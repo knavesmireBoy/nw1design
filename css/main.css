@@ -705,6 +705,15 @@ main aside {
   .contact form div:nth-child(odd) {
     margin: 0;
   }
+  #wrapper {
+    width: 100vw;
+    margin: 0;
+    border: solid 0px #999;
+  }
+  html body {
+    margin: 0;
+    padding: 0;
+  }
 }
 @media only screen and (max-width: 550px) {
   footer ul {
@@ -719,6 +728,34 @@ main aside {
     width: 4.62em;
     margin: 0 0 0 1em;
     height: 3.234em;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .contact main > section {
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    font-size: 0.6rem;
+  }
+  .contact .inner > * {
+    margin: 0;
+  }
+  .contact .inner {
+    border-width: 0;
+  }
+  header h1 {
+    margin-top: 4px;
+    width: 10em;
+    padding-top: 2.48em;
+  }
+  header label {
+    width: 7.0875em;
+    height: 4.91625em;
+    margin-bottom: 0.3em;
+    border: solid 1px blue;
+  }
+  footer {
+    padding: 0.35em 0;
   }
 }
 @media only screen and (max-width: 360px) {
