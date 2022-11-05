@@ -30,13 +30,13 @@
   padding: 0 0 1vw;
 }
 
-#display #inner {
+#display .inner {
   margin: 1vw calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
   text-align: center;
   overflow: hidden;
 }
 
-.portrait #display #inner  {
+.portrait #display .inner  {
   margin: 1vw 10vw;
 }
 
@@ -183,13 +183,13 @@ body.swap img#base {
   padding: 0.5em;
 }
 
-#navigation #submenu ul li a {
+#navigation .submenu ul li a {
   background-color: hsl(190, 30%, 73%);
   padding: 0.25em;
   border: solid 1px black;
 }
 
-#navigation #submenu > a {
+#navigation .submenu > a {
   background-color: hsl(190, 30%, 73%);
   color: hsl(217, 50%, 40%);
   padding: 0.25em 0.6em;
@@ -197,11 +197,11 @@ body.swap img#base {
   border-width: 1px 0;
   border-color: white white gray;
 }
-#navigation #submenu > a.active {
+#navigation .submenu > a.active {
   color: white;
 }
 
-#navigation #submenu > a:hover {
+#navigation .submenu > a:hover {
   color: hsl(0, 60%, 50%);
   text-decoration: underline;
 }
@@ -211,7 +211,7 @@ body.swap img#base {
   height: 2.5em;
 }
 
-#navigation #submenu ul li {
+#navigation .submenu ul li {
   overflow: hidden;
   margin: 0 0.3em;
   display: inline-block;
@@ -221,7 +221,7 @@ body.swap img#base {
   border-color: hsl(0, 60%, 50%);
 }
 
-#navigation #submenu > a.active + ul li a:hover {
+#navigation .submenu > a.active + ul li a:hover {
   border-color: orange;
 }
 
@@ -230,22 +230,22 @@ body.swap img#base {
   background-color: white;
 }
 
-#navigation #submenu > a:after {
+#navigation .submenu > a:after {
   content: "+";
   color: white;
   float: right;
 }
 
-#navigation #submenu > a.active:after {
+#navigation .submenu > a.active:after {
   content: "-";
 }
 
-#navigation #submenu ul {
+#navigation .submenu ul {
   position: absolute;
   left: -9999px;
 }
 
-#navigation #submenu a.active + ul {
+#navigation .submenu a.active + ul {
   position: relative;
   left: 0;
 }
@@ -287,7 +287,7 @@ body.swap img#base {
   .portfolio #display {
     margin: 0;
   }
-  .portrait #display #inner  {
+  .portrait #display .inner  {
     margin: 1vw 8vw;
   }
 
