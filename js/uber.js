@@ -87,16 +87,7 @@ function doInc(n) {
 	return compose(ptL(modulo, n), increment);
 }
 
-function longhand1(o) {
-
-	if(o.naturalHeight && (o.naturalHeight > o.naturalWidth)){
-		document.body.classList.add('portrait');
-	}
-	else if(o.naturalHeight && (o.naturalHeight < o.naturalWidth)){
-		document.body.classList.remove('portrait');
-	}
-}
-function longhand() {
+function makePortrait() {
 	if(this.naturalHeight && (this.naturalHeight > this.naturalWidth)){
 		document.body.classList.add('portrait');
 	}
@@ -104,23 +95,29 @@ function longhand() {
 		document.body.classList.remove('portrait');
 	}
 }
-/* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
+
+function replacePathSimple(o, src) {
+	o = getResult(o);
+	o.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
+}
 
 function replacePath(o, src) {
 	o = getResult(o);
-	let play = $q('.inplay');
-//	$('slide').removeEventListener('load', longhand);
-	//o.removeEventListener('load', longhand);
+	o.removeEventListener('load', makePortrait);
+
+	if($q('.inplay')){
 	if(o.id === 'base'){
-		if(play){
-			$('slide').addEventListener('load', longhand);
-		}
-		else {
-	//	o.addEventListener('load', longhand);
+		$('slide').addEventListener('load', makePortrait);
 		}
 	}
-	o.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
+	else {
+		if(o.id === 'base') {
+			o.addEventListener('load', makePortrait);
+		}
+	}
+	replacePathSimple(o, src);
 }
+
 
 function hover(e) {
 	const preview = $q('#slidepreview img');

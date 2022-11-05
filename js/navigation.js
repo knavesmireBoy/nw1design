@@ -321,7 +321,7 @@ function throttle (callback, time) {
                 machSliderInput = prepare2Append(doMake('input'), prepAttrs([setType, setMin, setMax, setVal, setId], ['range', 1, pg, 1, 'myrange'])),
                 machBase = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
                 machSlide = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide'])),
-                previewer = ptL(replacePath, $$q('#slidepreview img')),
+                previewer = ptL(replacePathSimple, $$q('#slidepreview img')),
                 displayer = curryL2(replacePath)($$('base')),
                 thumbs = Finder.from($q('#navigation ul li', true)),
                 addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.menu).wrap(pass),
