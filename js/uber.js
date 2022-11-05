@@ -87,20 +87,37 @@ function doInc(n) {
 	return compose(ptL(modulo, n), increment);
 }
 
-function longhand(o) {
+function longhand1(o) {
 
 	if(o.naturalHeight && (o.naturalHeight > o.naturalWidth)){
 		document.body.classList.add('portrait');
 	}
 	else if(o.naturalHeight && (o.naturalHeight < o.naturalWidth)){
-	document.body.classList.remove('portrait');
+		document.body.classList.remove('portrait');
+	}
+}
+function longhand() {
+	if(this.naturalHeight && (this.naturalHeight > this.naturalWidth)){
+		document.body.classList.add('portrait');
+	}
+	else if(this.naturalHeight && (this.naturalHeight < this.naturalWidth)){
+		document.body.classList.remove('portrait');
 	}
 }
 /* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
+
 function replacePath(o, src) {
 	o = getResult(o);
-	if(o.parentNode.id === 'inner'){
-		longhand($('base'));
+	let play = $q('.inplay');
+//	$('slide').removeEventListener('load', longhand);
+	//o.removeEventListener('load', longhand);
+	if(o.id === 'base'){
+		if(play){
+			$('slide').addEventListener('load', longhand);
+		}
+		else {
+	//	o.addEventListener('load', longhand);
+		}
 	}
 	o.setAttribute('src', src.replace('thumbs', 'fullsize').replace('tmb', 'fs'));
 }
