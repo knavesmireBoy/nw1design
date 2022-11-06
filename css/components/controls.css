@@ -295,7 +295,7 @@ body.swap img#base {
     left: -9999px;
   }
   #buttons a:link {
-    height: calc(54px + 13 * (100vw - 574px) / (667 - 574));
+    height: calc(55px + 13 * (100vw - 574px) / (667 - 574));
   }
   #slidecontainer {
     flex: 1 1 5em;
