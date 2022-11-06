@@ -265,14 +265,15 @@ body.swap img#base {
   }
 }
 
+
 @media only screen and (max-width: 900px) {
   #buttons a:link {
-    height: calc(26px + 13 * (100vw - 667px) / (900 - 667));
+    height: calc(24px + 12 * (100vw - 667px) / (900 - 667));
     margin: 0 9px 0 0;
     border: solid 1px;
   }
   #slidecontainer p {
-    font-size: calc(12px + (2 * (100vw - 667px) / (900 - 667)));
+    font-size: calc(12px + (2 * (100vw - 574px) / (900 - 574)));
   }
   input#myrange {
     flex: 12 1 5em;
@@ -283,23 +284,19 @@ body.swap img#base {
   #slidecontainer {
     flex: 2 1 5em;
   }
-
-  .portfolio #display {
-    margin: 0;
-  }
-  .portrait #display .inner  {
+  #display .portrait {
     margin: 1vw 8vw;
   }
-
 }
 
+@me
 @media only screen and (max-width: 667px) {
   #slidecontainer input {
     position: absolute;
     left: -9999px;
   }
   #buttons a:link {
-    height: calc(42px + 9 * (100vw - 574px) / (667 - 574));
+    height: calc(52px + 13 * (100vw - 574px) / (667 - 574));
   }
   #slidecontainer {
     flex: 1 1 5em;
@@ -315,21 +312,20 @@ body.swap img#base {
 
 @media only screen and (max-width: 573px) {
   #buttons a:link {
-    height: calc(13px + 30 * (100vw - 280px) / (573 - 280));
-    border: solid 1px lime;
+    height: calc(28px + 36 * (100vw - 320px) / (573 - 320));
     margin: 0 2px 0 0;
   }
 
   #slideshow {
     margin: 0;
   }
+
 }
 @media only screen and (max-width: 413px) {
   #buttons {
     flex: 4 1 1em;
   }
   #buttons a:link {
-    height: calc(8px + 20 * (100vw - 249px) / (413 - 249));
     border: solid 1px yellow;
   }
   #slideshow p em:first-child {
