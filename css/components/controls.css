@@ -268,7 +268,7 @@ body.swap img#base {
 
 @media only screen and (max-width: 900px) {
   #buttons a:link {
-    height: calc(24px + 12 * (100vw - 667px) / (900 - 667));
+    height: calc(26px + 12 * (100vw - 667px) / (900 - 667));
     margin: 0 9px 0 0;
     border: solid 1px;
   }
@@ -289,14 +289,13 @@ body.swap img#base {
   }
 }
 
-@me
 @media only screen and (max-width: 667px) {
   #slidecontainer input {
     position: absolute;
     left: -9999px;
   }
   #buttons a:link {
-    height: calc(52px + 13 * (100vw - 574px) / (667 - 574));
+    height: calc(54px + 13 * (100vw - 574px) / (667 - 574));
   }
   #slidecontainer {
     flex: 1 1 5em;
