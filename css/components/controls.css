@@ -58,7 +58,6 @@ img#slide {
 
 body.swap img#base {
     visibility: hidden;
-    display: none;
 }
 
 #controls {
