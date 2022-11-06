@@ -322,7 +322,7 @@ main#content {
     left: -9999px;
   }
   #buttons a:link {
-    height: calc(55px + 13 * (100vw - 574px) / (667 - 574));
+    height: calc(52px + 13 * (100vw - 574px) / (667 - 574));
   }
   #slidecontainer {
     flex: 1 1 5em;
@@ -335,6 +335,7 @@ main#content {
     left: 0;
   }
 }
+
 
 @media only screen and (max-width: 573px) {
   #buttons a:link {
