@@ -345,7 +345,7 @@ function throttle (callback, time) {
                     //looper members zero indexed...
                     j = !member ? 1 : j;
                     /*also as it stands looper reverses the array before counting forwards
-                    may have to fix that but at the moment fixxing here*/
+                    may have to fix that but at the moment fixing here*/
                     //this is the fix if looper is in reverse mode
                     j = rev ? l - i : j;
                     doSliderInput(j);
