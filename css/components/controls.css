@@ -250,6 +250,12 @@ body.swap img#base {
   left: 0;
 }
 
+main#content {
+  padding: 1em 0 0 1.5em;
+  background-image: none;
+}
+
+
 .webdesign main > aside a:hover img {
   filter: contrast(1.5);
 }
