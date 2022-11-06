@@ -139,7 +139,6 @@ const looper = nW1.Looper(),
 	//con = (v) => console.log(v),
 	compose = (...fns) => fns.reduce((f, g) => (...vs) => f(g(...vs))),
 	getter = (o, p) => {
-		console.log(o[p])
 		return getResult(o)[p];
 	},
 	setter = (o, k, v) => {

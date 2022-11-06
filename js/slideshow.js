@@ -25,7 +25,12 @@ const tagTester = (name) => {
     },
     getTgt = (str) => $$(str),
     isInplay = $$q('.inplay'),
-    getHeight = curry2(getter)('naturalHeight'),
+    //getHeight = curry2(getter)('naturalHeight'),
+    getHeight = (o) => {
+      let h = o.naturalHeight;
+      h = Math.floor(h/10);
+      return h * 10;
+    },
     applyPortait = curry3(doPortrait)('portrait'),
     testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getRes(item)).map(getprop),
     doPic = ptL(setterBridge, 'src'),
