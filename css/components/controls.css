@@ -48,14 +48,17 @@ img#slide {
     margin-left: -100%;
     float: left;
     visibility: hidden;
+    display: none;
 }
 
 .inplay img#slide {
     visibility: visible;
+    display: block;
 }
 
 body.swap img#base {
     visibility: hidden;
+    display: none;
 }
 
 #controls {
