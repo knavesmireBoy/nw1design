@@ -44,22 +44,41 @@
   float: left;
 }
 
-img#slide {
-    margin-left: -100%;
-    float: left;
-    visibility: hidden;
-    display: none;
+img#slide, body.swap img#base {
+    position: absolute;
+    left: -9999px;
 }
 
 .inplay img#slide {
-    visibility: visible;
-    display: block;
+  margin-left: -100%;
+  position: static;
+  left: 0;
+}
+ img#slide {
+
+ }
+
+body.swap img#slide {
+  margin-left: 0;
+}
+/*
+
+.inplay img#slide {
+  margin-left: -100%;
 }
 
-body.swap img#base {
-    visibility: hidden;
+.inplay img#base {
+  display: block;
+}
+img#base,
+.static img#base {
+  display: none;
 }
 
+.static img#slide {
+  margin-left: 0;
+}
+*/
 #controls {
   display: flex;
   background-image: linear-gradient(transparent, hsl(190, 30%, 68%));
