@@ -116,6 +116,7 @@ nW1.Looper = function() {
       if(typeof flag === 'function'){//dirty
         return preNotify.call(this);
       }
+
       return postNotify.call(this);
     }
     find(tgt) {
@@ -158,6 +159,17 @@ nW1.Looper = function() {
       return new LoopIterator(Group.from(coll), advancer, handlers);
     }
   }
+  class PreLoopIterator extends LoopIterator {
+    forward(flag) {
+      if (!flag && this.rev) {
+        return this.back(true);
+      }
+      return preNotify.call(this);
+    }
+    static from(coll, advancer, handlers = []) {
+      return new PreLoopIterator(Group.from(coll), advancer, handlers);
+    }
+  }
   class Group {
     constructor(m = []) {
       this.members = m;
@@ -193,8 +205,13 @@ nW1.Looper = function() {
       getSubject: function() {
         return this.$subject;
       },
-      build: function(coll, advancer, handlers = []) {
-        this.setSubject(LoopIterator.from(coll, advancer(coll), handlers));
+      build: function(coll, advancer, handlers = [], flag) {
+        if(flag && isBoolean(flag)){
+          this.setSubject(PreLoopIterator.from(coll, advancer(coll), handlers));
+        }
+        else {
+          this.setSubject(LoopIterator.from(coll, advancer(coll), handlers));
+        }
       }
     },
     doGet = curry22(getter),

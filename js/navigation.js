@@ -155,6 +155,7 @@ function throttle (callback, time) {
                     i = [/^start$/, /^back$/, /^forward$/, /^end$/].findIndex(which);
                 player = player || playMaker();
                 if (found.match(/^p/i)) {
+                  //looper.build(getMyLinks(), incrementer, [], true)
                     player();
                 } else {
                     player = null;
@@ -308,9 +309,9 @@ function throttle (callback, time) {
             myconfig.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul'), myconfig));
             //post creation of sidebar
             headers = Finder.from(headings());
-            const getExtent = $$q('#navigation ul li a', true),
-                getMyLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, getExtent),
-                src = compose(getAttrs('href'), getZero, getExtent)(),
+            const  getExtent = $$q('#navigation ul li a', true),
+                  getMyLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, getExtent),
+                  src = compose(getAttrs('href'), getZero, getExtent)(),
                 machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
                 machControls = prepare2Append(doDiv, prepAttrs([setId], ['controls'])),
                 machButtons = prepare2Append(doDiv, prepAttrs([setId], ['buttons'])), //container for buttons
