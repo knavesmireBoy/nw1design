@@ -93,10 +93,10 @@ function doInc(n) {
 
 function makePortrait() {
 	if(this.naturalHeight && (this.naturalHeight > this.naturalWidth)){
-		document.body.classList.add('portrait');
+		$('wrapper').classList.add('portrait');
 	}
 	else if(this.naturalHeight && (this.naturalHeight < this.naturalWidth)){
-		document.body.classList.remove('portrait');
+		$('wrapper').classList.remove('portrait');
 	}
 }
 

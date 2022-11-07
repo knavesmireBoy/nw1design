@@ -7,6 +7,8 @@
   padding: 1em;
   margin: 1em auto;
   border: solid 1px #999;
+  max-height: 16em;
+  overflow: hidden;
 }
 .portfolio #display {
   margin: 0 1.5em 0 0;
@@ -226,8 +228,8 @@ img#base,
 }
 
 #navigation a img {
-  width: 2.5em;
-  height: 2.5em;
+  width: calc(18px + 16 * (100vw - 900px) / (1280 - 900));
+  height: calc(18px + 16 * (100vw - 900px) / (1280 - 900));
 }
 
 #navigation .submenu ul li {
