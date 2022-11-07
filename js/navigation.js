@@ -349,18 +349,15 @@ function throttle (callback, time) {
                     i = members.findIndex(curry2(equals)(path)),
                     l = members.length,
                     member = members[i],
-                    rev = looper.get('rev'),
                     j = !member ? 1 : i + 1,
                     txt = getLast($('slide').src.split('/')),
                     $base = $('base');
 
                     //looper members zero indexed...
-                    /*also as it stands looper reverses the array before counting forwards
-                    may have to fix that but at the moment fixing here*/
-                    //this is the fix if looper is in reverse mode
-                    j = rev ? l - i : j;
+                    /*also as it stands looper reverses the array when the back button is pressed
+                    before counting forwards may have to fix that but at the moment this undoes that */
+                    j = looper.get('rev') ? (l - i) : j;
                     //need to defer this on slideshow??
-
                     if(!$base.onload || path.match(txt)){
                       doSliders(j);
                     }

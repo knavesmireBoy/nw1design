@@ -108,8 +108,8 @@ nW1.Looper = function() {
       which won't correspond to the current visible (slide) pic in the main display area
       so we notify, THEN advance
       not happy it depends on a flag maybe a fresh looper is required
+      and the flag is the presence of an onload function on a dom element
       */
-
       if (!flag && this.rev) {
         return this.back(true);
       }
