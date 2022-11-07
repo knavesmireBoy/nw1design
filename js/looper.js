@@ -40,6 +40,16 @@ nW1.Looper = function() {
     }
     return o;
   }
+  function preNotify() {
+    this.notify(this.get());
+    this.position = this.advance(this.position);
+    return this.status();
+  }
+  function postNotify() {
+    this.position = this.advance(this.position);
+    this.notify(this.get());
+    return this.status();
+  }
 
   const curry2 = fun => b => a => fun(a, b),
     curry22 = fun => b => a => () => fun(a, b),
@@ -61,16 +71,6 @@ nW1.Looper = function() {
     isBoolean = tagTester('Boolean'),
     isFunction = tagTester('Function');
 
-    function preNotify() {
-      this.notify(this.get());
-      this.position = this.advance(this.position);
-      return this.status();
-    }
-    function postNotify() {
-      this.position = this.advance(this.position);
-      this.notify(this.get());
-      return this.status();
-    }
 
   function makeProxyIterator(src, tgt, methods) {
     function mapper(method) {
@@ -86,12 +86,13 @@ nW1.Looper = function() {
   }
 
   class LoopIterator extends Publisher {
-    constructor(group = [], advancer = () => 1, handlers = []) {
+    constructor(group = [], advancer = () => 1, handlers = [], flag =  false) {
       super(handlers);
       this.group = group;
       this.position = 0;
       this.rev = false;
       this.advance = advancer;
+      this.setStategy(flag);
     }
     back(flag) {
       if (!this.rev || (flag && isBoolean(flag))) {
@@ -106,18 +107,12 @@ nW1.Looper = function() {
       /*
       when slidehow is playing the sidebar column will be receiving the src of the base pic
       which won't correspond to the current visible (slide) pic in the main display area
-      so we notify, THEN advance
-      not happy it depends on a flag maybe a fresh looper is required
-      and the flag is the presence of an onload function on a dom element
+      so we notify, THEN advance, setStrategy
       */
       if (!flag && this.rev) {
         return this.back(true);
       }
-      if(typeof flag === 'function'){//dirty
-        return preNotify.call(this);
-      }
-
-      return postNotify.call(this);
+      return this.notifier.call(this);
     }
     find(tgt) {
       // return this.set(_.findIndex(this.group.members, _.partial(equals, tgt)));
@@ -143,6 +138,9 @@ nW1.Looper = function() {
         value: this.group.members[this.position],
         index: this.position
       };
+    }
+    setStategy(flag) {
+      this.notifier = flag ? preNotify : postNotify;
     }
     status() {
       return {
@@ -216,6 +214,6 @@ nW1.Looper = function() {
     },
     doGet = curry22(getter),
     incrementer = compose(doInc, doGet('length')),
-    methods = ['attach', 'back', 'status', 'find', 'forward', 'get', 'notify', 'play', 'set', 'visit'];
+    methods = ['attach', 'back', 'status', 'find', 'forward', 'get', 'notify', 'play', 'set', 'visit', 'setStategy'];
   return makeProxyIterator(LoopIterator.from([], incrementer, []), target, methods);
 };

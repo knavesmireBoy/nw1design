@@ -155,10 +155,11 @@ function throttle (callback, time) {
                     i = [/^start$/, /^back$/, /^forward$/, /^end$/].findIndex(which);
                 player = player || playMaker();
                 if (found.match(/^p/i)) {
-                  //looper.build(getMyLinks(), incrementer, [], true)
+                looper.setStategy(true);
                     player();
                 } else {
                     player = null;
+                    looper.setStategy();
                     $recur.suspend();
                     if (routines[i]) {
                         routines[i]();
@@ -254,6 +255,8 @@ function throttle (callback, time) {
         getDesktop = pApply(Modernizr.mq, ipad);
 
     const broadcaster = Publisher.from(),
+    getExtentLoad = $$q('#navigation ul li a', true),
+    getMyLinksLoad = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, getExtentLoad),
         abbr = (el, repl) => {
             return toArray(getResult(el).childNodes).filter(node => node.nodeType === 3).map((node, i) => node.textContent = repl[i]);
         },
@@ -296,6 +299,8 @@ function throttle (callback, time) {
                     queryInplay('remove');
                     displayPause('remove');
                     displaySwap('remove');
+                    base.onload = null;
+                    slide.onload = null;
                 }
             };
             return nW1.Publish().makepublisher(ret);
@@ -337,21 +342,18 @@ function throttle (callback, time) {
                   doSliderInput(i);
                   doSliderOutput(i);
                 },
-                fixPreview = (orig) => {
-                  return orig($('slide').onload);
-                },
                 sliderBridge = function (path) {
                     let members = looper.get('members'),
                     i = members.findIndex(curry2(equals)(path)),
                     l = members.length,
                     member = members[i],
+                    //reached end
                     j = !member ? 1 : i + 1,
                     txt = getLast($('slide').src.split('/'));
                     //looper members zero indexed...
                     /*also as it stands looper reverses the array when the back button is pressed
                     before counting forwards may have to fix that but at the moment this undoes that */
                     j = looper.get('rev') ? (l - i) : j;
-                    //need to defer this on slideshow??
                     if(!$('base').onload || path.match(txt)){
                       doSliders(j);
                     }
@@ -370,7 +372,6 @@ function throttle (callback, time) {
             broadcaster.attach(thumbs.setFinder.bind(thumbs));
             broadcaster.attach(previewer);
             broadcaster.notify(src);
-            looper.forward = looper.forward.wrap(fixPreview);
             looper.build(getMyLinks(), incrementer, []);
             looper.attach(displayer);
             looper.attach(broadcaster.notify.bind(broadcaster));
