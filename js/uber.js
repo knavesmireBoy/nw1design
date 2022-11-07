@@ -204,6 +204,9 @@ tagTester = (name) => {
   doGet = curry2(getter),
 	invoke = (f, v) => f(v),
 	invokeMethod = (o, m, v) => o[m](v),
+	invokeMethodBind = (o, m, v) => {
+		return o[m].call(o, v);
+	},
 	invokeMethodV = (o, p, m, v) => {
 		return getResult(o)[p][v](m);
 	},

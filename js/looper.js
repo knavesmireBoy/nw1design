@@ -61,6 +61,17 @@ nW1.Looper = function() {
     isBoolean = tagTester('Boolean'),
     isFunction = tagTester('Function');
 
+    function preNotify() {
+      this.notify(this.get());
+      this.position = this.advance(this.position);
+      return this.status();
+    }
+    function postNotify() {
+      this.position = this.advance(this.position);
+      this.notify(this.get());
+      return this.status();
+    }
+
   function makeProxyIterator(src, tgt, methods) {
     function mapper(method) {
       if (src[method] && isFunction(src[method])) {
@@ -92,22 +103,20 @@ nW1.Looper = function() {
       return this.forward(this.rev);
     }
     forward(flag) {
-      //restore forward on play
-      if (!flag && this.rev) {
-        return this.back(true);
-      }
-      this.position = this.advance(this.position);
       /*
       when slidehow is playing the sidebar column will be receiving the src of the base pic
       which won't correspond to the current visible (slide) pic in the main display area
-      this is the fix...
-      needs to be overwitten, or wrapped
+      so we notify, THEN advance
+      not happy it depends on a flag maybe a fresh looper is required
       */
-    const i = this.position - 1,
-        j = (i === -1) ? 0 : i,
-        member = document.querySelector('.inplay') ? this.group.members[j] : this.get();
-      this.notify(member);
-      return this.status();
+
+      if (!flag && this.rev) {
+        return this.back(true);
+      }
+      if(flag){
+        return preNotify.call(this);
+      }
+      return postNotify.call(this);
     }
     find(tgt) {
       // return this.set(_.findIndex(this.group.members, _.partial(equals, tgt)));

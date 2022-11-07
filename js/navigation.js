@@ -143,10 +143,9 @@ function throttle (callback, time) {
                     undo = compose(displayPause, always('add'), $recur.suspend.bind($recur, null));
                 return func([exec, undo]);
             },
-            loop = deferPTL(invokeMethod, looper),
-
+            loop = deferPTL(invokeMethodBind, looper),
             set = loop('set'),
-            routines = [set(false), loop('back')(null), loop('forward')(null), set(true)];
+            routines = [set(false), loop('back', null), loop('forward', null), set(true)];
         return {
             menu: function (e) {
                 e.preventDefault();
@@ -342,6 +341,9 @@ function throttle (callback, time) {
                   doSliderInput(i);
                   doSliderOutput(i);
                 },
+                fixPreview = (orig) => {
+                  return orig($('slide').onload);
+                },
                 sliderBridge = function (path) {
                     let members = looper.get('members'),
                     i = members.findIndex(curry2(equals)(path)),
@@ -350,9 +352,8 @@ function throttle (callback, time) {
                     rev = looper.get('rev'),
                     j = !member ? 1 : i + 1,
                     txt = getLast($('slide').src.split('/')),
-                    $base = $('base');;
+                    $base = $('base');
 
-                      
                     //looper members zero indexed...
                     /*also as it stands looper reverses the array before counting forwards
                     may have to fix that but at the moment fixing here*/
@@ -378,6 +379,7 @@ function throttle (callback, time) {
             broadcaster.attach(thumbs.setFinder.bind(thumbs));
             broadcaster.attach(previewer);
             broadcaster.notify(src);
+        looper.forward = looper.forward.wrap(fixPreview);
             looper.build(getMyLinks(), incrementer, []);
             looper.attach(displayer);
             looper.attach(broadcaster.notify.bind(broadcaster));
