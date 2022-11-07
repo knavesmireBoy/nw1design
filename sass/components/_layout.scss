@@ -75,11 +75,13 @@ header nav > ul > li ul li {
   margin: 0.7em auto;
   padding: 0;
   border: solid 1px #999;
+  overflow: hidden;
 }
 #innerwrap:after {
   content: "";
   display: table;
   clear: both;
+  overflow: hidden;
 }
 
 #menu-toggle {

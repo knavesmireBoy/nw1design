@@ -50,7 +50,6 @@
 img#slide, body.swap img#base {
     position: absolute;
     left: -9999px;
-    background-color: red;
 }
 
 .inplay img#slide {
@@ -231,6 +230,8 @@ img#base,
 #navigation a img {
   width: calc(18px + 16 * (100vw - 900px) / (1280 - 900));
   height: calc(18px + 16 * (100vw - 900px) / (1280 - 900));
+  width: 2.5em;
+  height: 2.5em;
 }
 
 #navigation .submenu ul li {
