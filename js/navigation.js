@@ -350,15 +350,13 @@ function throttle (callback, time) {
                     l = members.length,
                     member = members[i],
                     j = !member ? 1 : i + 1,
-                    txt = getLast($('slide').src.split('/')),
-                    $base = $('base');
-
+                    txt = getLast($('slide').src.split('/'));
                     //looper members zero indexed...
                     /*also as it stands looper reverses the array when the back button is pressed
                     before counting forwards may have to fix that but at the moment this undoes that */
                     j = looper.get('rev') ? (l - i) : j;
                     //need to defer this on slideshow??
-                    if(!$base.onload || path.match(txt)){
+                    if(!$('base').onload || path.match(txt)){
                       doSliders(j);
                     }
                 },
@@ -376,7 +374,7 @@ function throttle (callback, time) {
             broadcaster.attach(thumbs.setFinder.bind(thumbs));
             broadcaster.attach(previewer);
             broadcaster.notify(src);
-        looper.forward = looper.forward.wrap(fixPreview);
+            looper.forward = looper.forward.wrap(fixPreview);
             looper.build(getMyLinks(), incrementer, []);
             looper.attach(displayer);
             looper.attach(broadcaster.notify.bind(broadcaster));
@@ -387,6 +385,7 @@ function throttle (callback, time) {
             $slider.attach(looper.set.bind(looper));
             sliderActions();
             window.addEventListener('resize', pApply(throttle, pApply(negater, [sliderActions]), 222));
+            doCompare($('base'));
 
         };
     window.addEventListener('load', loader);

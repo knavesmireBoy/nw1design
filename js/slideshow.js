@@ -18,10 +18,16 @@ const getTgt = (str) => $$(str),
       h = Math.floor(h/10);
       return h * 10;
     },
+    compare = (pred) => (p, a, b) => {
+      return typeof p === 'string' ? pred(a[p], b[p]) : p ? pred(p[a], p[b]) : pred(a, b);
+    },
+    eitherOr = (a, b, pred) => pred ? a : b,
     applyPortait = curry3(doPortrait)('portrait'),
     testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getRes(item)).map(getprop),
     doPic = ptL(setterBridge, 'src'),
+
     displayInplay = ptL(invokeMethod, document.body.classList, 'add'),
+    doCompare = compose(applyPortait(document.body), ptL(eitherOr, 'add', 'remove'), curry3(compare(gtThan))('naturalWidth')('naturalHeight')),
     onInplay = curry22(invoke)('inplay')(displayInplay),
     deferForward = deferPTL(invokeMethod, looper, 'forward', null),
     advance = compose(onInplay, doPic($$('base')), curry2(getter)('value'), deferForward),
