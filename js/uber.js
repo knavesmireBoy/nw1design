@@ -91,12 +91,12 @@ function doInc(n) {
 	return compose(ptL(modulo, n), increment);
 }
 
-function makePortrait() {
+function makePortrait(el) {
 	if(this.naturalHeight && (this.naturalHeight > this.naturalWidth)){
-		$('wrapper').classList.add('portrait');
+		el.classList.add('portrait');
 	}
 	else if(this.naturalHeight && (this.naturalHeight < this.naturalWidth)){
-		$('wrapper').classList.remove('portrait');
+		el.classList.remove('portrait');
 	}
 }
 
@@ -107,16 +107,16 @@ function replacePathSimple(o, src) {
 
 function replacePath(o, src) {
 	o = getResult(o);
-	o.removeEventListener('load', makePortrait);
+	o.removeEventListener('load', ptL(makePortrait, $('wrapper')));
 
 	if($q('.inplay')){
 	if(o.id === 'base'){
-		$('slide').addEventListener('load', makePortrait);
+		$('slide').addEventListener('load', ptL(makePortrait, $('wrapper')));
 		}
 	}
 	else {
 		if(o.id === 'base') {
-			o.addEventListener('load', makePortrait);
+			o.addEventListener('load', ptL(makePortrait, $('wrapper')));
 		}
 	}
 	replacePathSimple(o, src);
@@ -132,6 +132,7 @@ function hover(e) {
 	const preview = $q('#slidepreview img');
 	if (matchImg(e) && e.target !== preview) {
 		replacePath(preview, getAttribute('src')(e.target));
+		makePortrait.call(e.target, $('navigation'));
 	}
 }
 

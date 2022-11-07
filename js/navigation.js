@@ -382,7 +382,8 @@ function throttle (callback, time) {
             $slider.attach(looper.set.bind(looper));
             sliderActions();
             window.addEventListener('resize', pApply(throttle, pApply(negater, [sliderActions]), 222));
-            doCompare($('base'));
+            compose(applyPortait($('wrapper')), doCompare)($('base'));
+            compose(applyPortait($('navigation')), doCompare)($('base'));
         };
     window.addEventListener('load', loader);
 }({
