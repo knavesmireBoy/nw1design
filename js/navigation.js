@@ -298,6 +298,9 @@ function throttle (callback, time) {
                     queryInplay('remove');
                     displayPause('remove');
                     displaySwap('remove');
+                },
+                init: function() {
+
                 }
             };
             return nW1.Publish().makepublisher(ret);
@@ -335,6 +338,10 @@ function throttle (callback, time) {
                 sliderOptions = Mod.mq(ipad) ? [sliderRestore, sliderReplace] : [sliderReplace, sliderRestore],
                 sliderActions = doAlternate()(sliderOptions),
                 sliderspans = [curry2(insertB4)($$('tracked')), curry2(insertB4)($$('max'))],
+                doSliders = (i) => {
+                  doSliderInput(i);
+                  doSliderOutput(i);
+                },
                 sliderBridge = function (path) {
                     let members = looper.get('members'),
                     i = members.findIndex(curry2(equals)(path)),
@@ -342,18 +349,19 @@ function throttle (callback, time) {
                     member = members[i],
                     rev = looper.get('rev'),
                     j = !member ? 1 : i + 1,
-                    check = $('slide').src.split('/'),
-                    max = check.length,
-                    txt = check[max-1],
-                    pos = getMyComputedStyle($('slide'), 'position');
+                    txt = getLast($('slide').src.split('/')),
+                    $base = $('base');;
+
+                      
                     //looper members zero indexed...
                     /*also as it stands looper reverses the array before counting forwards
                     may have to fix that but at the moment fixing here*/
                     //this is the fix if looper is in reverse mode
                     j = rev ? l - i : j;
-                    if((pos === 'static' && path.match(txt)) || pos !== 'absolute'){
-                      doSliderInput(j);
-                      doSliderOutput(j);
+                    //need to defer this on slideshow??
+
+                    if(!$base.onload || path.match(txt)){
+                      doSliders(j);
                     }
                 },
                 fixInnerHTML = el => compose(clearInnerHTML, setHref, setId(el.innerHTML).wrap(pass))(el),

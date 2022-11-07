@@ -165,6 +165,9 @@ tagTester = (name) => {
         }
         return arg;
     },
+		getLast = (array) => {
+			return array[array.length - 1];
+		},
 	pApply = (fn, ...cache) => (...args) => {
 		const all = cache.concat(args);
 		return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);

@@ -92,6 +92,7 @@ nW1.Looper = function() {
       return this.forward(this.rev);
     }
     forward(flag) {
+      //restore forward on play
       if (!flag && this.rev) {
         return this.back(true);
       }
