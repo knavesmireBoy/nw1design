@@ -27,10 +27,10 @@ const getTgt = (str) => $$(str),
     doPic = ptL(setterBridge, 'src'),
 
     displayInplay = ptL(invokeMethod, document.body.classList, 'add'),
-    doCompare = compose(applyPortait(document.body), ptL(eitherOr, 'add', 'remove'), curry3(compare(gtThanEq))('naturalWidth')('naturalHeight')),
+    doCompare = compose(applyPortait($('wrapper')), ptL(eitherOr, 'add', 'remove'), curry3(compare(gtThanEq))('naturalWidth')('naturalHeight')),
     onInplay = curry22(invoke)('inplay')(displayInplay),
     deferForward = deferPTL(invokeMethod, looper, 'forward', null),
-    advance = compose(onInplay, doPic($$('base')), curry2(getter)('value'), deferForward),
+    advance = compose(doCompare, $$('slide'), onInplay, doPic($$('base')), curry2(getter)('value'), deferForward),
     reducer = curry3(invokeMethod)(equals)('reduce'),
     updateBase = curry2(doWhenFactory())(advance),
     doSwap = function () {

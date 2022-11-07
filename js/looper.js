@@ -113,7 +113,7 @@ nW1.Looper = function() {
       if (!flag && this.rev) {
         return this.back(true);
       }
-      if(flag){
+      if(typeof flag === 'function'){//dirty
         return preNotify.call(this);
       }
       return postNotify.call(this);

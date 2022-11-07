@@ -253,8 +253,6 @@ function throttle (callback, time) {
         getDesktop = pApply(Modernizr.mq, ipad);
 
     const broadcaster = Publisher.from(),
-    goCompare = (prop, pred) => (a, b) => pred(a[prop], b[prop]),
-    //getSmaller = goCompare('length', ltThan),
         abbr = (el, repl) => {
             return toArray(getResult(el).childNodes).filter(node => node.nodeType === 3).map((node, i) => node.textContent = repl[i]);
         },
@@ -297,9 +295,6 @@ function throttle (callback, time) {
                     queryInplay('remove');
                     displayPause('remove');
                     displaySwap('remove');
-                },
-                init: function() {
-
                 }
             };
             return nW1.Publish().makepublisher(ret);
