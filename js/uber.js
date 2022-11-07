@@ -94,9 +94,11 @@ function doInc(n) {
 function makePortrait(el) {
 	if(this.naturalHeight && (this.naturalHeight > this.naturalWidth)){
 		el.classList.add('portrait');
+		$('navigation').classList.add('portrait');
 	}
 	else if(this.naturalHeight && (this.naturalHeight < this.naturalWidth)){
 		el.classList.remove('portrait');
+			$('navigation').classList.remove('portrait');
 	}
 }
 
@@ -107,16 +109,17 @@ function replacePathSimple(o, src) {
 
 function replacePath(o, src) {
 	o = getResult(o);
-	o.removeEventListener('load', ptL(makePortrait, $('wrapper')));
+	let binder = makePortrait.bind(o, $('wrapper'))
+	o.removeEventListener('load', binder);
 
 	if($q('.inplay')){
 	if(o.id === 'base'){
-		$('slide').addEventListener('load', ptL(makePortrait, $('wrapper')));
+		$('slide').addEventListener('load', binder);
 		}
 	}
 	else {
 		if(o.id === 'base') {
-			o.addEventListener('load', ptL(makePortrait, $('wrapper')));
+			o.addEventListener('load', binder);
 		}
 	}
 	replacePathSimple(o, src);
