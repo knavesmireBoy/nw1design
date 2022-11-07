@@ -61,8 +61,8 @@ function increment(i) {
 	return i + 1;
 }
 
-function gtThan(a, b) {
-	return a > b;
+function gtThanEq(a, b) {
+	return a >= b;
 }
 
 function getResult(o) {

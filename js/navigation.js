@@ -386,7 +386,6 @@ function throttle (callback, time) {
             sliderActions();
             window.addEventListener('resize', pApply(throttle, pApply(negater, [sliderActions]), 222));
             doCompare($('base'));
-
         };
     window.addEventListener('load', loader);
 }({
