@@ -44,17 +44,14 @@
 }
 
 #display img {
-  float: left;
 }
 
 img#slide, body.swap img#base {
-    position: absolute;
-    left: -9999px;
+  display: none;
 }
 
 .inplay img#slide {
-  margin-left: -100%;
-  position: static;
+  display: block;
   left: 0;
 }
 
