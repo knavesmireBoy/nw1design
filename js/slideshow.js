@@ -10,20 +10,7 @@ function doPortrait(m, o, v) {
   return o.classList[m](v);
 }
 
-const tagTester = (name) => {
-        const tag = '[object ' + name + ']';
-        return function (obj) {
-            return toString.call(obj) === tag;
-        };
-    },
-    isFunction = tagTester('Function'),
-    getRes = function (arg) {
-        if (isFunction(arg)) {
-            return arg();
-        }
-        return arg;
-    },
-    getTgt = (str) => $$(str),
+const getTgt = (str) => $$(str),
     isInplay = $$q('.inplay'),
     //getHeight = curry2(getter)('naturalHeight'),
     getHeight = (o) => {

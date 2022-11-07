@@ -47,6 +47,7 @@
 img#slide, body.swap img#base {
     position: absolute;
     left: -9999px;
+    background-color: red;
 }
 
 .inplay img#slide {
@@ -54,9 +55,6 @@ img#slide, body.swap img#base {
   position: static;
   left: 0;
 }
- img#slide {
-
- }
 
 body.swap img#slide {
   margin-left: 0;
@@ -152,7 +150,7 @@ img#base,
 }
 
 #buttons a:link {
-  height: calc(21px + (10 * (100vw - 900px) / (1280 - 900)));
+  height: calc(21px + (9 * (100vw - 900px) / (1280 - 900)));
   margin: 0 5px 0 0;
   flex: 1 1 22px;
   background-repeat: no-repeat;

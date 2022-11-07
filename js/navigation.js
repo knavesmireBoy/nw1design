@@ -336,20 +336,25 @@ function throttle (callback, time) {
                 sliderActions = doAlternate()(sliderOptions),
                 sliderspans = [curry2(insertB4)($$('tracked')), curry2(insertB4)($$('max'))],
                 sliderBridge = function (path) {
-                    let i = looper.get('members').findIndex(curry2(equals)(path)),
-                    j = i + 1,
-                    members = looper.get('members'),
-                    member = members[j],
+                    let members = looper.get('members'),
+                    i = members.findIndex(curry2(equals)(path)),
                     l = members.length,
-                    rev = looper.get('rev');
+                    member = members[i],
+                    rev = looper.get('rev'),
+                    j = !member ? 1 : i + 1,
+                    check = $('slide').src.split('/'),
+                    max = check.length,
+                    txt = check[max-1],
+                    pos = getMyComputedStyle($('slide'), 'position');
                     //looper members zero indexed...
-                    j = !member ? 1 : j;
                     /*also as it stands looper reverses the array before counting forwards
                     may have to fix that but at the moment fixing here*/
                     //this is the fix if looper is in reverse mode
                     j = rev ? l - i : j;
-                    doSliderInput(j);
-                    doSliderOutput(j);
+                    if((pos === 'static' && path.match(txt)) || pos !== 'absolute'){
+                      doSliderInput(j);
+                      doSliderOutput(j);
+                    }
                 },
                 fixInnerHTML = el => compose(clearInnerHTML, setHref, setId(el.innerHTML).wrap(pass))(el),
                 button_el = Mod.backgroundsize ? 'a' : 'button',

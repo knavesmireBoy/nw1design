@@ -118,6 +118,11 @@ function replacePath(o, src) {
 	replacePathSimple(o, src);
 }
 
+function toCamelCase(variable) {
+		return variable.replace(/-([a-z])/g, function (str, letter) {
+			return letter.toUpperCase();
+		});
+	}
 
 function hover(e) {
 	const preview = $q('#slidepreview img');
@@ -125,7 +130,41 @@ function hover(e) {
 		replacePath(preview, getAttribute('src')(e.target));
 	}
 }
+
+function getMyComputedStyle (element, styleProperty) {
+			if (!element || !styleProperty) {
+				return null;
+			}
+			var computedStyle = null,
+				def = document.defaultView || window;
+			if (typeof element.currentStyle !== 'undefined') {
+				computedStyle = element.currentStyle;
+			} else if (def && def.getComputedStyle && isFunction(def.getComputedStyle)) {
+				computedStyle = def.getComputedStyle(element, null);
+			}
+			if (computedStyle) {
+				try {
+					return computedStyle[styleProperty] || computedStyle[toCamelCase(styleProperty)];
+				} catch (e) {
+					return computedStyle[styleProperty];
+				}
+			}
+		}
+
 const looper = nW1.Looper(),
+tagTester = (name) => {
+        const tag = '[object ' + name + ']';
+        return function (obj) {
+            return toString.call(obj) === tag;
+        };
+    },
+    isFunction = tagTester('Function'),
+    getRes = function (arg) {
+        if (isFunction(arg)) {
+            return arg();
+        }
+        return arg;
+    },
 	pApply = (fn, ...cache) => (...args) => {
 		const all = cache.concat(args);
 		return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);
