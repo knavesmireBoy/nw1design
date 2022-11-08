@@ -8,6 +8,13 @@
 (function (config, Mod, ipad) {
   "use strict";
 
+
+  function pApply (fn, ...cache) {
+	return function (...args) {
+		const all = cache.concat(args);
+		return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);
+};
+}
   //https://webdesign.tutsplus.com/tutorials/javascript-debounce-and-throttle--cms-36783
   //initialize throttlePause variable outside throttle function
 
@@ -33,10 +40,17 @@
     return a === b;
 }
 
+function getResult(o) {
+    if (typeof o === "function") {
+      return o();
+    }
+    return o;
+  }
+
   function insertB4(neu, elm) {
-    const el = nW1.getResult(elm),
+    const el = getResult(elm),
       p = el.parentNode;
-    return p.insertBefore(nW1.getResult(neu), el);
+    return p.insertBefore(getResult(neu), el);
   }
 
 
@@ -74,7 +88,7 @@
   function doIterate(m, funs) {
     return function (o) {
       if (funs) {
-        let obj = nW1.getResult(o);
+        let obj = getResult(o);
         funs[m]((f) => f(obj));
         return obj;
       }
@@ -147,7 +161,7 @@
 
   function getLinks(grp) {
     const get = curry3(getTargetNode)("firstChild")(/^a$/i);
-    return grp.map((lis) => compose(nW1.getAttrs("href"), get)(lis));
+    return grp.map((lis) => compose(utils.getAttrs("href"), get)(lis));
   }
 
   function getLinksDeep(grp) {
@@ -172,7 +186,7 @@
     $slider = null,
     sliderFactory = function (element) {
       function Slider(el) {
-        this.el = nW1.getResult(el);
+        this.el = getResult(el);
         this.handlers = [];
         const that = this;
         this.el.oninput = function () {
@@ -189,7 +203,7 @@
     const playMaker = function () {
         const func = doAlternate(),
           displayPause = ptL(
-            nW1.invokeMethodV,
+            utils.invokeMethodV,
             $$("slideshow"),
             "classList",
             "pause"
@@ -328,7 +342,14 @@
   const broadcaster = Publisher.from(),
   utils = nW1.utils,
     always = utils.always,
-    getResult = utils.getResult,
+    ptL = utils.ptL,
+    looper = nW1.Looper(),
+    curry2 = utils.curry2,
+    curry3 = utils.curry3,
+    pass = utils.pass,
+    curryL2 = (fun) => (a) => (b) => fun(a, b),
+    curryL33 = (fun) => (a) => (b) => (c) => () => fun(a, b, c),
+    compose = utils.compose,
     doMake = utils.doMake,
     append = utils.append,
     prepend = utils.prepend,
@@ -339,8 +360,9 @@
     getParent = utils.getParent,
     getParent2 = utils.getParent2,
     setAttribute = utils.setAttribute,
+    invokeMethod = utils.invokeMethod,
     invokeMethodBridge = utils.invokeMethodBridge,
-    pApply = utils.pApply,
+    $ = utils.$,
     $$ = utils.$$,
     $q = utils.$q,
     $$q = utils.$$q,
@@ -351,14 +373,6 @@
       ),
     getLast = (array) => array[array.length - 1],
     getTgt = (str) => $$(str),
-    ptL = utils.ptL,
-    invokeMethod = utils.invokeMethod,
-    compose = utils.compose,
-    looper = nW1.Looper(),
-    curry2 = utils.curry2,
-    curry3 = utils.curry3,
-    curryL3 = (fun) => (a) => (b) => (c) => fun(a, b, c),
-    curryL33 = (fun) => (a) => (b) => (c) => () => fun(a, b, c),
     getImgPath = compose(utils.getImgSrc, utils.getTarget),
     setVal = curry2(setAttribute("value")),
     setMin = curry2(setAttribute("min")),
@@ -403,7 +417,7 @@
     ),
     addClickHover = curry2(ptL(utils.lazyVal, "addEventListener", "mouseover"))(
         hover
-      ).wrap(utils.pass),
+      ).wrap(pass),
     setDiv = prepare2Append(doDiv, prepAttrs([setId], ["slidepreview"])),
     setSubMenu = prepare2Append(doDiv, prepAttrs([setKlas], ["submenu"])),
     setInnerDiv = prepare2Append(doDiv, prepAttrs([setKlas], ["inner"])),
@@ -413,14 +427,14 @@
     setImg = prepare2Append(doImg, prepAttrs([utils.setAlt], ["currentpicture"])),
     //setButtonLinks = prepare2Append(doImg, prepAttrs([setAlt], ['#'])),
     headings = compose(
-      curry2(toArray)(utils.curryL2(utils.negate)(utils.matchPath)),
+      curry2(toArray)(curryL2(utils.negate)(utils.matchPath)),
       $$q("#navigation a", true)
     ),
     doSliderOutput = ptL(utils.setter, $$("tracked"), "innerHTML"),
     doSliderInput = ptL(utils.setter, $$("myrange"), "value"),
     addClickPreview = curry2(ptL(utils.lazyVal, "addEventListener", "click"))(
       routes.sidebar
-    ).wrap(utils.pass),
+    ).wrap(pass),
     displayPause = ptL(utils.invokeMethodV, $$("slideshow"), "classList", "pause"),
     displaySwap = curry2(ptL(invokeMethod, document.body.classList))("swap"),
     queryInplay = curry2(ptL(invokeMethod, document.body.classList))("inplay"),
@@ -471,7 +485,7 @@
       headers = Finder.from(headings());
       const getExtent = $$q("#navigation ul li a", true),
         getMyLinks = compose(
-          curryL3(invokeMethodBridge)("map")((a) => a.getAttribute("href")),
+          utils.curryL3(invokeMethodBridge)("map")((a) => a.getAttribute("href")),
           toArray,
           getExtent
         ),
@@ -499,11 +513,11 @@
           prepAttrs([setSrc, setAlt, setId], [src, "current", "slide"])
         ),
         previewer = ptL(replacePathSimple, $$q("#slidepreview img")),
-        displayer = utils.curryL2(replacePath)($$("base")),
+        displayer = curryL2(replacePath)($$("base")),
         thumbs = Finder.from($q("#navigation ul li", true)),
         addPlayClick = curry2(ptL(utils.lazyVal, "addEventListener", "click"))(
           routes.menu
-        ).wrap(utils.pass),
+        ).wrap(pass),
         buttontext = ["start", "back", "play", "forward", "end"].map(
           utils.doTextCBNow
         ),
@@ -522,8 +536,8 @@
           curry2(insertB4)($$("max"))
         ],
         doSliders = (i) => {
-          doSliderInput(i);
-          doSliderOutput(i);
+       doSliderInput(i);
+       doSliderOutput(i);
         },
         sliderBridge = function (path) {
           let members = looper.get("members"),
@@ -542,7 +556,7 @@
           }
         },
         fixInnerHTML = (el) =>
-          compose(utils.clearInnerHTML, utils.setHref, setId(el.innerHTML).wrap(utils.pass))(el),
+          compose(utils.clearInnerHTML, utils.setHref, setId(el.innerHTML).wrap(pass))(el),
         buttonEl = Mod.backgroundsize ? "a" : "button",
         buttons = compose(getParent, compose(prepend, doMake)(buttonEl)),
         buttonCb = Mod.backgroundsize ? fixInnerHTML : (arg) => arg;
