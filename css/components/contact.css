@@ -1,0 +1,53 @@
+main > section {
+    margin: 1em 1.5em 1.5em;
+  }
+  
+  .inner {
+    padding: 2em 4em 1em;
+    border: solid 1px hsl(190, 30%, 61%);
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  
+  form {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  form div {
+    flex: 1 1 40%;
+    padding: .5em 0;
+  }
+  form div:nth-child(odd) {
+    margin: 0 1em 0 0;
+  }
+  form div:nth-child(odd) label, form p:last-of-type {
+  color: black;
+  }
+  form label {
+    margin: 0 0 .25em;
+    display: block;
+  }
+  form label:last-of-type, textarea {
+    flex: 1 1 100%;
+  }
+  .dial {
+    font-size: 1.1em;
+  }
+  
+  div input[required], textarea {
+    color: black;
+  }
+  /*not on submit*/
+  div > input {
+    color: black;
+  }
+  div input:focus, textarea:focus {
+    background-color: rgba(255,255,255, .25);
+  }
+  textarea {
+    margin: 0 0 1em;
+  }
+  #submit {
+    margin-left: auto;
+  }

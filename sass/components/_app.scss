@@ -29,7 +29,6 @@ textarea {
   height: 10em;
 }
 
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -39,21 +38,11 @@ img {
   /*max-width: 100%;
   height: auto;
   -msinterpolation-mode: bicubic;*/
-  border: none;
   width: 100%;
   height: auto;
   display: block;
 }
 
-
-/* <strong><em>TEXT<em><strong> is frowned upon
-so this is preferred: <strong class="em">TEXT<strong>
-to simplify processing in JS using <b> tag and class of em for bold italics
-*/
-b.em {
-  font-style: italic;
-  color: purple;
-}
 /*
 main span {
   background-color: yellow;
@@ -64,7 +53,6 @@ main span {
 }
 */
 
-
 form input {
   width: 100%;
 }
@@ -74,12 +62,6 @@ table td {
   font-weight: bold;
 }
 
-input[type="submit"],
-input[type="checkbox"] {
-  width: auto;
-  margin: 0 0.4em;
-  display: inline-block;
-}
 footer ul,
 footer p {
   margin: 1em auto 1em;
@@ -91,9 +73,6 @@ footer p {
   color: white;
 }
 
-footer p a:link:after {
-  content: " | ";
-}
 footer li {
   display: inline-block;
 }
@@ -108,15 +87,6 @@ footer li a {
   border-width: 0 1px 0 0;
   padding: 0 0.5em;
 }
-
-footer a:hover {
-  color: hsl(0, 60%, 50%);
-  border-color: white;
-}
-footer ul li:last-child a {
-  border-width: 0;
-}
-
 
 main > section p {
   margin-top: calc(12px + 10 * (100vw - 574px) / (1280 - 574));
@@ -159,60 +129,6 @@ article form p {
   vertical-align: text-top;
 }
 
-header nav > ul li ul li {
-  background: hsl(190, 30%, 88%);
-}
-
-header nav > ul li:hover ul {
-  width: 100%;
-  border-top: solid 1px #999;
-  box-sizing: content-box;
-  left: -1px;
-}
-
-header aside img {
-  border: 1px solid hsl(0, 60%, 50%);
-  border-width: 0 0 0.75em 0;
-}
-header aside img:hover {
-  filter: contrast(1.5);
-}
-
-header nav > ul {
-  text-align: center;
-  width: auto;
-  height: auto;
-  border: 2px solid #fff;
-  border-width: 3px 0;
-  background-image: linear-gradient(#fff, hsl(190, 30%, 68%));
-}
-header nav > ul li {
-  border: solid 1px #999;
-  border-width: 0 1px 1px 1px;
-}
-header nav > ul li a {
-  border-width: 0.5em 0 0;
-  display: block;
-  color: hsl(190, 30%, 50%);
-  font-weight: bold;
-  padding: 0.5em 0;
-  width: 100%;
-  text-transform: capitalize;
-}
-header nav > ul li > a:hover {
-  color: hsl(0, 60%, 50%);
-  background-image: linear-gradient(hsl(190, 30%, 68%), #fff);
-}
-header nav > ul li > :nth-child(1) {
-  border-left: solid 0 #fff;
-}
-
-header nav > ul > li {
-  border-right: solid 1px #999;
-  border-left: solid 1px #fff;
-  border-top: 0.5em solid #c33;
-}
-
 main > * {
   border: solid 1em #fff;
   background-color: hsl(190, 30%, 92%);
@@ -225,6 +141,11 @@ main aside section {
   padding: 0 0 1em;
   line-height: 1.4;
   margin: 0 0 1.5em;
+}
+
+main aside section a {
+  color: hsl(0, 60%, 50%);
+  display: block;
 }
 
 main aside section h2 {
@@ -243,6 +164,78 @@ main aside section h2 {
 main aside section h2 + a {
   margin: 2em 2em 1em;
 }
+header aside img {
+  border: 1px solid hsl(0, 60%, 50%);
+  border-width: 0 0 0.75em 0;
+}
+
+header aside img:hover {
+  filter: contrast(1.5);
+}
+/*
+header nav > ul {
+  text-align: center;
+  width: auto;
+  height: auto;
+  border: 2px solid #fff;
+  border-width: 3px 0;
+  background-image: linear-gradient(#fff, hsl(190, 30%, 68%));
+}
+header nav > ul li {
+  border: solid 1px #999;
+  border-width: 0 1px 1px 1px;
+}
+*/
+
+header nav > ul {
+  text-align: center;
+  width: auto;
+  height: auto;
+  border: 2px solid #FFF;
+  border-width: 3px 0;
+  background-image: linear-gradient(#FFF, $col-bg);
+
+  & > li {
+      border: solid 1px #999;
+      border-width: 0 1px 1px 1px;
+      border-left: solid 1px #fff;
+      border-top: 0.5em solid #c33;
+
+      a {
+          border-width: .5em 0 0;
+          display: block;
+          color: $col-nav;
+          font-weight: bold;
+          padding: .5em 0;
+          width: 100%;
+      }
+
+      & > a:hover {
+          color: $col-hi;
+          background-image: linear-gradient($col-bg, #FFF);
+      }
+
+      & > :nth-child(1) {
+          border-left: solid 0 #FFF;
+      }
+      & > ul li {
+        border: solid 1px #999;
+        background-color: hsl(190, 30%, 88%);
+        border-width: 0 1px 1px;
+      }
+      &:hover ul {
+        width: 100%;
+        border-top: solid 1px #999;
+        box-sizing: content-box;
+        left: -1px;
+      }
+      & a:hover {
+        color: hsl(0, 60%, 50%);
+        background-image: linear-gradient(hsl(190, 30%, 68%), #fff);
+      }
+  }
+}
+
 main aside section h2:before {
   content: "";
   width: 1em;
@@ -256,84 +249,38 @@ main aside section h2:before {
   box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.6),
   inset -1px -1px 2px rgba(0, 0, 0, 0.6);
 }
-main aside section a {
+
+
+footer a:hover {
   color: hsl(0, 60%, 50%);
-  display: block;
+  border-color: white;
+}
+footer ul li:last-child a {
+  border-width: 0;
+}
+footer p a:link:after {
+  content: " | ";
+}
+
+input[type="submit"],
+input[type="checkbox"] {
+  width: auto;
+  margin: 0 0.4em;
+  display: inline-block;
+}
+
+/* <strong><em>TEXT<em><strong> is frowned upon
+so this is preferred: <strong class="em">TEXT<strong>
+to simplify processing in JS using <b> tag and class of em for bold italics
+*/
+b.em {
+  font-style: italic;
 }
 
 .home main aside section,
 .about main aside section,
 main aside section:nth-child(n + 2) {
   margin: 0;
-}
-
-.contact main > section {
-  margin: 1em 1.5em 1.5em;
-}
-
-.contact .inner {
-  padding: 2em 4em 1em;
-  border: solid 1px hsl(190, 30%, 61%);
-}
-
-.contact .inner {
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-.contact main > section {
-  margin: 1em 1.5em 1.5em;
-}
-.contact .inner {
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-weight: bold;
-  font-size: 1.2em;
-  padding: 2em 4em 1em;
-  margin: 1em;
-  border: solid 1px hsl(190, 30%, 61%);
-}
-.contact form {
-  display: flex;
-  flex-wrap: wrap;
-}
-.contact form div {
-  flex: 1 1 40%;
-  padding: .5em 0;
-}
-.contact form div:nth-child(odd) {
-  margin: 0 1em 0 0;
-}
-.contact form div:nth-child(odd) label, form p:last-of-type {
-color: black;
-}
-.contact form label {
-  margin: 0 0 .25em;
-  display: block;
-}
-.contact form label:last-of-type, .contact textarea {
-  flex: 1 1 100%;
-}
-.dial {
-  font-size: 1.1em;
-}
-
-
-.contact div input[required], .contact textarea {
-  color: black;
-}
-/*not on submit*/
-.contact div > input {
-  color: black;
-}
-.contact div input:focus, .contact textarea:focus {
-  background-color: rgba(255,255,255, .25);
-}
-.contact textarea {
-  margin: 0 0 1em;
-}
-#submit {
-  margin-left: auto;
 }
 
 .home nav > ul > li:nth-child(1) > a,
