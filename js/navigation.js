@@ -382,8 +382,11 @@ function throttle (callback, time) {
             $slider.attach(looper.set.bind(looper));
             sliderActions();
             window.addEventListener('resize', pApply(throttle, pApply(negater, [sliderActions]), 222));
-            compose(applyPortait($('wrapper')), doCompare)($('base'));
-            compose(applyPortait($('navigation')), doCompare)($('base'));
+            setTimeout (function() {
+                compose(applyPortait($('wrapper')), doCompare)($('base'));
+                compose(applyPortait($('navigation')), doCompare)($('base'));
+            }, 666);
+           
         };
     window.addEventListener('load', loader);
 }({

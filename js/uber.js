@@ -109,9 +109,9 @@ function replacePathSimple(o, src) {
 
 function replacePath(o, src) {
 	o = getResult(o);
-	let binder = makePortrait.bind(o, $('wrapper'))
+	let binder = makePortrait.bind(o, $('wrapper'));
+	binder = () => {};
 	o.removeEventListener('load', binder);
-
 	if($q('.inplay')){
 	if(o.id === 'base'){
 		$('slide').addEventListener('load', binder);
