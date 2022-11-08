@@ -427,23 +427,23 @@ header a {
 }
 
 main > section {
-  flex: 5 1 20em;
   margin: 0 1.5em;
   padding: 1em;
+  flex: 5 1 20em;
 }
 
 main > aside {
-  flex: 1 1 20em;
   background-color: white;
   margin: 0 1.5em 0 0;
+  flex: 1 1 20em;
 }
 
 header nav > ul {
   display: flex;
 }
 header nav > ul > li {
-  flex: 1 3 10em;
   position: relative;
+  flex: 1 3 10em;
 }
 header nav > ul > li ul {
   position: absolute;
@@ -458,11 +458,11 @@ header nav > ul > li ul li {
   background-color: hsl(190deg, 30%, 68%);
   border: 1em solid #fff;
   width: 80vw;
-  max-width: 1024px;
   margin: 0.7em auto;
   padding: 0;
   border: solid 1px #999;
   overflow: hidden;
+  max-width: 1024px;
 }
 
 #innerwrap:after {
@@ -500,7 +500,6 @@ header nav > ul > li ul li {
     position: absolute;
   }
   header nav ul {
-    display: block;
     background: hsla(255deg, 100%, 100%, 0.9);
     border: 0 solid;
     text-align: left;
@@ -549,8 +548,8 @@ header nav > ul > li ul li {
     padding: 1em;
   }
   #menu-toggle:checked ~ a + nav {
-    left: 8vw;
     z-index: 2;
+    left: 8vw;
   }
   #menu-toggle ~ a + nav,
 main aside {
