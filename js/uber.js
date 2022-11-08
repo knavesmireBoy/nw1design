@@ -1,8 +1,4 @@
 /*jslint nomen: true */
-/*global Publisher: false */
-/*global window: false */
-/*global nW1: false */
-
 /* eslint-disable indent */
 
 if (!window.nW1) {
@@ -63,12 +59,11 @@ const  tagTester = (name) => {
       return toString.call(obj) === tag;
     };
   },
-  getRes = function (arg) {
-    if (this.isFunction(arg)) {
-      return arg();
-    }
-    return arg;
+  $q = (str, flag = false) => {
+    const m = flag ? "querySelectorAll" : "querySelector";
+    return document[m](str);
   },
+
   pApply = (fn, ...cache) =>
     (...args) => {
       const all = cache.concat(args);
@@ -104,17 +99,11 @@ const  tagTester = (name) => {
   invokeMethodBridgeCB = (cb) => (m, v, o) => {
     return invokeMethod(cb(o), m, v);
   },
-  setterBridge = (k, o, v) => {
-    let obj = getResult(o);
-    obj[k] = v;
-    return obj;
-  },
   always = (arg) => () => arg,
   setAttribute = ptL(lazyVal, "setAttribute"),
   curry2 = (fun) => (b) => (a) => fun(a, b),
   curry22 = (fun) => (b) => (a) => () => fun(a, b),
   curry3 = (fun) => (c) => (b) => (a) => fun(a, b, c),
-  curry4 = (fun) => (d) => (c) => (b) => (a) => fun(a, b, c, d),
   curryL3 = (fun) => (a) => (b) => (c) => fun(a, b, c),
   doEach = curryL3(invokeMethodBridgeCB(getResult))("forEach"),
   getZero = curry2(getter)(0),
@@ -157,10 +146,7 @@ isBoolean: tagTester("Boolean"),
   negate: (f, ...args) => !f(...args),
   $: (str) => document.getElementById(str),
   $$: (str) => () => $(str),
-  $q: (str, flag = false) => {
-    const m = flag ? "querySelectorAll" : "querySelector";
-    return document[m](str);
-  },
+  $q: $q,
   $$q: (str, flag = false) => () => $q(str, flag),
   getTarget: getTarget,
   getParent: getParent,
@@ -182,12 +168,10 @@ isBoolean: tagTester("Boolean"),
     curry2(getter)("nodeName"),
     getTarget
   ),
- 
   matchPath: compose(
     curry3(invokeMethod)(/jpe?g/i)("match"),
     curryL3(invokeMethodBridge)("getAttribute")("href")
   ),
-
   setId: curry2(setAttribute("id")),
   setKlas: curry2(setAttribute("class")),
   setSrc: curry2(setAttribute("src")),
@@ -215,4 +199,3 @@ isBoolean: tagTester("Boolean"),
 
 };
 }());
-

@@ -22,6 +22,8 @@
  * of control over the experience.
 */
 
+/* eslint-disable indent */
+
 ;(function(window, document, undefined){
   var classes = [];
   

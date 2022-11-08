@@ -58,9 +58,20 @@ curry3 = utils.curry3,
     compare = (pred) => (p, a, b) => {
       return typeof p === 'string' ? pred(a[p], b[p]) : p ? pred(p[a], p[b]) : pred(a, b);
     },
+    getRes = function (arg) {
+        if (this.isFunction(arg)) {
+          return arg();
+        }
+        return arg;
+      },
+      setterBridge = (k, o, v) => {
+        let obj = utils.getResult(o);
+        obj[k] = v;
+        return obj;
+      },
     eitherOr = (a, b, pred) => pred ? a : b,
-    testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => utils.getRes(item)).map(getprop),
-    doPic = ptL(utils.setterBridge, 'src'),
+    testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getRes(item)).map(getprop),
+    doPic = ptL(setterBridge, 'src'),
 
     displayInplay = ptL(invokeMethod, document.body.classList, 'add'),
     doCompare = compose(ptL(eitherOr, 'add', 'remove'), curry3(compare(gtThanEq))('naturalWidth')('naturalHeight')),

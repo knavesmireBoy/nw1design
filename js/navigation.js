@@ -349,9 +349,6 @@
         curry2(utils.getter)("nodeName"),
         utils.getTarget
       ),
-      addClickHover = curry2(ptL(utils.lazyVal, "addEventListener", "mouseover"))(
-        hover
-      ).wrap(utils.pass),
     getLast = (array) => array[array.length - 1],
     getTgt = (str) => $$(str),
     ptL = utils.ptL,
@@ -404,6 +401,9 @@
       getParent,
       prepend(doMake("a"))
     ),
+    addClickHover = curry2(ptL(utils.lazyVal, "addEventListener", "mouseover"))(
+        hover
+      ).wrap(utils.pass),
     setDiv = prepare2Append(doDiv, prepAttrs([setId], ["slidepreview"])),
     setSubMenu = prepare2Append(doDiv, prepAttrs([setKlas], ["submenu"])),
     setInnerDiv = prepare2Append(doDiv, prepAttrs([setKlas], ["inner"])),
@@ -456,7 +456,7 @@
         getParent,
         curry2(invoke)($q("#display ul")),
         prepend,
-        utils.addClickHover,
+        addClickHover,
         addClickPreview,
         utils.setNavId,
         append(doMake("section")()),
