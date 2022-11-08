@@ -57,36 +57,6 @@ function doInc(n) {
   return compose(ptL(modulo, n), increment);
 }
 
-function makePortrait(el) {
-  if (this.naturalHeight && this.naturalHeight > this.naturalWidth) {
-    el.classList.add("portrait");
-    $("navigation").classList.add("portrait");
-  } else if (this.naturalHeight && this.naturalHeight < this.naturalWidth) {
-    el.classList.remove("portrait");
-    $("navigation").classList.remove("portrait");
-  }
-}
-
-function replacePathSimple(o, src) {
-  o = getResult(o);
-  o.setAttribute("src", src.replace("thumbs", "fullsize").replace("tmb", "fs"));
-}
-
-function replacePath(o, src) {
-  o = getResult(o);
-  let binder = makePortrait.bind(o, $("wrapper"));
-  o.removeEventListener("load", binder);
-  if ($q(".inplay")) {
-    if (o.id === "base") {
-      $("slide").addEventListener("load", binder);
-    }
-  } else {
-    if (o.id === "base") {
-      o.addEventListener("load", binder);
-    }
-  }
-  replacePathSimple(o, src);
-}
 
 function hover(e) {
   const preview = $q("#slidepreview img");
@@ -107,9 +77,6 @@ const  tagTester = (name) => {
       return arg();
     }
     return arg;
-  },
-  getLast = (array) => {
-    return array[array.length - 1];
   },
   pApply = (fn, ...cache) =>
     (...args) => {

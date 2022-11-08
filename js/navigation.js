@@ -28,10 +28,46 @@
     }, time);
   }
 
+  function equals(a, b) {
+    return a === b;
+}
+
   function insertB4(neu, elm) {
     const el = nW1.getResult(elm),
       p = el.parentNode;
     return p.insertBefore(nW1.getResult(neu), el);
+  }
+
+
+  function makePortrait(el) {
+    if (this.naturalHeight && this.naturalHeight > this.naturalWidth) {
+      el.classList.add("portrait");
+      $("navigation").classList.add("portrait");
+    } else if (this.naturalHeight && this.naturalHeight < this.naturalWidth) {
+      el.classList.remove("portrait");
+      $("navigation").classList.remove("portrait");
+    }
+  }
+
+  function replacePathSimple(o, src) {
+    o = getResult(o);
+    o.setAttribute("src", src.replace("thumbs", "fullsize").replace("tmb", "fs"));
+  }
+  
+  function replacePath(o, src) {
+    o = getResult(o);
+    let binder = makePortrait.bind(o, $("wrapper"));
+    o.removeEventListener("load", binder);
+    if ($q(".inplay")) {
+      if (o.id === "base") {
+        $("slide").addEventListener("load", binder);
+      }
+    } else {
+      if (o.id === "base") {
+        o.addEventListener("load", binder);
+      }
+    }
+    replacePathSimple(o, src);
   }
 
   function doIterate(m, funs) {
@@ -278,7 +314,7 @@
   }
   let $painter = null,
     throttlePause,
-    getDesktop = utils.pApply(Modernizr.mq, ipad);
+    getDesktop = pApply(Modernizr.mq, ipad);
 
   const broadcaster = Publisher.from(),
   utils = nW1.utils,
@@ -292,10 +328,14 @@
     setKlas = utils.setKlas,
     setId = utils.setId,
     getParent = utils.getParent,
+    getParent2 = utils.getParent2,
+    setAttribute = utils.setAttribute,
     invokeMethodBridge = utils.invokeMethodBridge,
+    pApply = utils.pApply,
     $$ = utils.$$,
     $q = utils.$q,
     $$q = utils.$$q,
+    getLast = (array) => array[array.length - 1],
     getTgt = (str) => $$(str),
     ptL = utils.ptL,
     invokeMethod = utils.invokeMethod,
@@ -304,6 +344,12 @@
     curry2 = utils.curry2,
     curry3 = utils.curry3,
     getImgPath = compose(utils.getImgSrc, utils.getTarget),
+    setVal = curry2(setAttribute("value")),
+    setMin = curry2(setAttribute("min")),
+    setMax = curry2(setAttribute("max")),
+    setType = curry2(setAttribute("type")),
+    setSrc = curry2(setAttribute("src")),
+    setAlt = curry2(setAttribute("alt")),
     /*
     getExtentLoad = $$q("#navigation ul li a", true),
     getMyLinksLoad = compose(
@@ -320,7 +366,7 @@
     negater = function (alternators) {
       if (!getDesktop()) {
         alternators.forEach((f) => f());
-        getDesktop = utils.pApply(utils.negate, getDesktop);
+        getDesktop = pApply(utils.negate, getDesktop);
       }
     },
     $recur = nW1.recurMaker(300, 99, 1, true).init(),
@@ -379,14 +425,14 @@
           displaySwap("remove");
           base.onload = null;
           slide.onload = null;
-        },
+        }
       };
       return nW1.Publish().makepublisher(ret);
     },
     myconfig = config[document.body.id],
     pg = window.web ? 27 : 52,
     loader = function () {
-      getDesktop = Mod.mq(ipad) ? getDesktop : utils.pApply(negate, getDesktop);
+      getDesktop = Mod.mq(ipad) ? getDesktop : pApply(utils.negate, getDesktop);
       //create sidebar
       compose(
         setSubMenu,
@@ -442,27 +488,27 @@
           prepAttrs([setSrc, setAlt, setId], [src, "current", "slide"])
         ),
         previewer = ptL(replacePathSimple, $$q("#slidepreview img")),
-        displayer = curryL2(replacePath)($$("base")),
+        displayer = utils.curryL2(replacePath)($$("base")),
         thumbs = Finder.from($q("#navigation ul li", true)),
-        addPlayClick = curry2(ptL(lazyVal, "addEventListener", "click"))(
+        addPlayClick = curry2(ptL(utils.lazyVal, "addEventListener", "click"))(
           routes.menu
-        ).wrap(pass),
+        ).wrap(utils.pass),
         buttontext = ["start", "back", "play", "forward", "end"].map(
-          doTextCBNow
+          utils.doTextCBNow
         ),
-        slider_txt_alt = ["", "/"],
-        slider_txt = ["Image ", " of "],
-        slider_load = Mod.mq(ipad) ? slider_txt : slider_txt_alt,
-        slidertext = slider_load.map(doTextCBNow),
-        sliderRestore = pApply(abbr, $$("tracker"), slider_txt),
-        sliderReplace = pApply(abbr, $$("tracker"), slider_txt_alt),
+        sliderTxtAlt = ["", "/"],
+        sliderTxt = ["Image ", " of "],
+        sliderLoad = Mod.mq(ipad) ? sliderTxt : sliderTxtAlt,
+        slidertext = sliderLoad.map(utils.doTextCBNow),
+        sliderRestore = pApply(abbr, $$("tracker"), sliderTxt),
+        sliderReplace = pApply(abbr, $$("tracker"), sliderTxtAlt),
         sliderOptions = Mod.mq(ipad)
           ? [sliderRestore, sliderReplace]
           : [sliderReplace, sliderRestore],
         sliderActions = doAlternate()(sliderOptions),
         sliderspans = [
           curry2(insertB4)($$("tracked")),
-          curry2(insertB4)($$("max")),
+          curry2(insertB4)($$("max"))
         ],
         doSliders = (i) => {
           doSliderInput(i);
@@ -486,9 +532,9 @@
         },
         fixInnerHTML = (el) =>
           compose(clearInnerHTML, setHref, setId(el.innerHTML).wrap(pass))(el),
-        button_el = Mod.backgroundsize ? "a" : "button",
-        buttons = compose(getParent, compose(prepend, doMake)(button_el)),
-        button_cb = Mod.backgroundsize ? fixInnerHTML : (arg) => arg;
+        buttonEl = Mod.backgroundsize ? "a" : "button",
+        buttons = compose(getParent, compose(prepend, doMake)(buttonEl)),
+        buttonCb = Mod.backgroundsize ? fixInnerHTML : (arg) => arg;
       compose(
         getParent,
         machSlide,
@@ -498,10 +544,10 @@
         getParent,
         getParent2,
         getParent2,
-        append(doTextNow(pg)),
+        append(utils.doTextNow(pg)),
         setSpan2,
         getParent2,
-        append(doTextNow(1)),
+        append(utils.doTextNow(1)),
         setSpan1,
         setPara,
         getParent,
@@ -515,9 +561,9 @@
       )($("display"));
       buttontext
         .map(buttons)
-        .map(appendCB)
+        .map(utils.appendCB)
         .map(curry2(invoke)($("buttons")))
-        .map(button_cb);
+        .map(buttonCb);
       headers.search = headersSearch;
       thumbs.search = thumbsSearch;
       zip("forEach", sliderspans, slidertext);
@@ -526,7 +572,7 @@
       broadcaster.attach(thumbs.setFinder.bind(thumbs));
       broadcaster.attach(previewer);
       broadcaster.notify(src);
-      looper.build(getMyLinks(), incrementer, []);
+      looper.build(getMyLinks(), utils.incrementer, []);
       looper.attach(displayer);
       looper.attach(broadcaster.notify.bind(broadcaster));
       looper.attach(sliderBridge);
@@ -540,8 +586,8 @@
         pApply(throttle, pApply(negater, [sliderActions]), 222)
       );
       setTimeout(function () {
-        compose(applyPortait($("wrapper")), doCompare)($("base"));
-        compose(applyPortait($("navigation")), doCompare)($("base"));
+        compose(utils.applyPortait($("wrapper")), utils.doCompare)($("base"));
+        compose(utils.applyPortait($("navigation")), utils.doCompare)($("base"));
       }, 666);
     };
   window.addEventListener("load", loader);
