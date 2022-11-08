@@ -343,6 +343,8 @@
     looper = nW1.Looper(),
     curry2 = utils.curry2,
     curry3 = utils.curry3,
+    curryL3 = (fun) => (a) => (b) => (c) => fun(a, b, c),
+    curryL33 = (fun) => (a) => (b) => (c) => () => fun(a, b, c),
     getImgPath = compose(utils.getImgSrc, utils.getTarget),
     setVal = curry2(setAttribute("value")),
     setMin = curry2(setAttribute("min")),
@@ -371,7 +373,7 @@
     },
     $recur = nW1.recurMaker(300, 99, 1, true).init(),
     routes = router($recur),
-    prepAttrs = (keys, vals) => utils.curryL33(zip)("map")(keys)(vals),
+    prepAttrs = (keys, vals) => curryL33(zip)("map")(keys)(vals),
     prepare2Append = (doEl, doAttrs) =>
       compose(
         append,
@@ -460,7 +462,7 @@
       headers = Finder.from(headings());
       const getExtent = $$q("#navigation ul li a", true),
         getMyLinks = compose(
-          utils.curryL3(invokeMethodBridge)("map")((a) => a.getAttribute("href")),
+          curryL3(invokeMethodBridge)("map")((a) => a.getAttribute("href")),
           toArray,
           getExtent
         ),
@@ -531,7 +533,7 @@
           }
         },
         fixInnerHTML = (el) =>
-          compose(clearInnerHTML, setHref, setId(el.innerHTML).wrap(pass))(el),
+          compose(utils.clearInnerHTML, utils.setHref, setId(el.innerHTML).wrap(utils.pass))(el),
         buttonEl = Mod.backgroundsize ? "a" : "button",
         buttons = compose(getParent, compose(prepend, doMake)(buttonEl)),
         buttonCb = Mod.backgroundsize ? fixInnerHTML : (arg) => arg;
@@ -595,50 +597,50 @@
   {
     web: [
       {
-        FOP: 4,
+        FOP: 4
       },
       {
-        AFEN: 3,
+        AFEN: 3
       },
       {
-        "Distillery House": 3,
+        "Distillery House": 3
       },
       {
-        "Benson Design": 4,
+        "Benson Design": 4
       },
       {
-        BP: 2,
+        BP: 2
       },
       {
-        UKOOA: 4,
+        UKOOA: 4
       },
       {
-        "Orkney Holiday Cottages": 3,
+        "Orkney Holiday Cottages": 3
       },
       {
-        "Safari Afrika": 4,
+        "Safari Afrika": 4
       },
     ],
     print: [
       {
-        "Concilliation Resources": 12,
+        "Concilliation Resources": 12
       },
       {
-        "Rory Peck Trust": 12,
+        "Rory Peck Trust": 12
       },
       {
-        IWPR: 8,
+        IWPR: 8
       },
       {
-        "The FreedomForum": 7,
+        "The FreedomForum": 7
       },
       {
-        "Reporting The World": 8,
+        "Reporting The World": 8
       },
       {
-        "London Fields Cycles": 5,
-      },
-    ],
+        "London Fields Cycles": 5
+      }
+    ]
   },
   Modernizr,
   "(min-width: 1024px)"

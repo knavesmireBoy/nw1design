@@ -125,7 +125,9 @@ const  tagTester = (name) => {
   remKlas = ptL(invokeMethodBridge, "remove");
 
 return {
-
+always: always,
+curry2: curry2,
+curry3: curry3,
 isFunction: tagTester("Function"),
 getImgSrc: getImgSrc,
 isBoolean: tagTester("Boolean"),
