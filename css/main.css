@@ -509,7 +509,7 @@ main {
 }
 
 header {
-  padding: 0 0 0;
+  padding: 0;
   margin: 1em 1.5em;
   border: 1em solid #fff;
   background-image: linear-gradient(#fff, hsl(190deg, 30%, 68%));
@@ -541,7 +541,7 @@ header h1 {
 
 main > section {
   flex: 5 1 20em;
-  margin: 0 1.5em 0;
+  margin: 0 1.5em;
   padding: 1em;
 }
 
@@ -678,8 +678,7 @@ header nav > ul > li ul li {
   }
   #menu-toggle ~ a + nav,
 main aside {
-    position: absolute;
-    left: -9999px;
+    display: none;
   }
   #nav li ul {
     width: calc(100% + 2em);
@@ -688,13 +687,17 @@ main aside {
     background: url("../assets/bg/misc/nw1_logo_sprite_alt.png") no-repeat center top/100%;
   }
   header label:hover {
-    background-position: center 102%;
+    background-position: center 102.5%;
   }
   .contact form div:nth-child(4) {
     flex: 1 1 10%;
   }
 }
 @media only screen and (max-width: 668px) {
+  #menu-toggle:checked ~ a + nav {
+    left: 0;
+    display: block;
+  }
   footer span {
     display: block;
   }
@@ -710,7 +713,7 @@ main aside {
   #wrapper {
     width: 100vw;
     margin: 0;
-    border: solid 0px #999;
+    border: solid 0 #999;
   }
   html body {
     margin: 0;
@@ -767,3 +770,5 @@ main aside {
     content: none;
   }
 }
+
+/*# sourceMappingURL=main.css.map */

@@ -225,15 +225,13 @@ img#base,
 }
 
 #navigation a img {
-  width: calc(18px + 16 * (100vw - 900px) / (1280 - 900));
-  height: calc(18px + 16 * (100vw - 900px) / (1280 - 900));
-  width: 2.5em;
-  height: 2.5em;
+  width: calc(18px + 17 * (100vw - 900px) / (1280 - 900));
+  height: calc(18px + 17 * (100vw - 900px) / (1280 - 900));
 }
 
 #navigation .submenu ul li {
   overflow: hidden;
-  margin: 0 0.3em;
+  margin: 0.3em;
   display: inline-block;
 }
 
@@ -365,4 +363,8 @@ main#content {
 #buttons a:link,
 #slidecontainer p {
   border-width: 0px;
+}
+html {
+    visibility: visible;
+    opacity: 1;
 }
