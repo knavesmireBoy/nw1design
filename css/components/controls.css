@@ -23,11 +23,7 @@
   margin: 0;
   overflow: hidden;
 }
-#slideshow.pause {
-}
-#slideshow.pause button:nth-child(3) {
-  background-color: gainsboro;
-}
+
 #display {
   overflow: hidden;
   padding: 0 0 1vw;
@@ -274,32 +270,19 @@ main#content {
   background-image: none;
 }
 
-.webdesign main > aside a:hover img {
-  filter: contrast(1.5);
-}
-
-.webdesign main aside section ul {
-  margin: 1em 0 0;
-}
-.webdesign main aside section ul li:first-child,
-.graphicdesign main aside ul {
-  font-weight: 700;
-}
-
-.graphicdesign main ul {
-  list-style: disc;
-  list-style-position: inside;
-  text-align: left;
-  margin: 1em 0 0 2em;
-}
-
 .no-js .portfolio main > section ul {
   list-style: none;
 }
 .no-js .portfolio main > section ul li {
   flex: 1 1 10em;
   display: inline-block;
+}
+.no-js .portfolio main > section ul li a {
   border: solid 1px blue;
+  display: block;
+}
+.no-js .portfolio main > section ul li a:hover {
+  border: solid 1px #c33;
 }
 
 @media only screen and (max-width: 1200px) {
