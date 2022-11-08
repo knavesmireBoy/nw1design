@@ -1,8 +1,13 @@
 body {
-  font: normal .75em/1.6 Verdana, Arial, Helvetica, sans-serif;
+  font: normal 0.75em/1.6 Verdana, Arial, Helvetica, sans-serif;
   color: hsl(223, 14%, 29%);
   position: relative;
   background-image: url("../assets/bg/misc/bg.gif");
+}
+
+main > * {
+  border: solid 1em #fff;
+  background-color: hsl(190, 30%, 92%);
 }
 
 h1 {
@@ -43,23 +48,8 @@ img {
   display: block;
 }
 
-/*
-main span {
-  background-color: yellow;
-}
-
-.foo {
-  background-color: orange;
-}
-*/
-
 form input {
   width: 100%;
-}
-
-table td {
-  font-size: 0.9em;
-  font-weight: bold;
 }
 
 footer ul,
@@ -68,48 +58,47 @@ footer p {
   text-align: center;
 }
 
-footer p {
-  margin: 0 0 1em;
-  color: white;
-}
-
-footer li {
-  display: inline-block;
-}
-
-footer a {
-  font-weight: normal;
-  color: white;
-}
-
-footer li a {
-  border: solid 1px;
-  border-width: 0 1px 0 0;
-  padding: 0 0.5em;
+footer {
+  & p {
+    margin: 0 0 1em;
+    color: white;
+  }
+  & li {
+    display: inline-block;
+    & a {
+      border: solid 1px;
+      border-width: 0 1px 0 0;
+      padding: 0 0.5em;
+    }
+  }
+  & a {
+    font-weight: normal;
+    color: white;
+    &:hover {
+      color: hsl(0, 60%, 50%);
+      border-color: white;
+    }
+  }
+  & ul li:last-child a {
+    border-width: 0;
+  }
+  & p a:link:after {
+    content: " | ";
+  }
 }
 
 main > section p {
   margin-top: calc(12px + 10 * (100vw - 574px) / (1280 - 574));
-  margin-bottom: calc(12px + 10 * (100vw - 574px) / (1280 - 574));
   font-size: calc(12px + 1 * (100vw - 574px) / (1280 - 574));
 }
-main > section  ul,
-main > section  ol {
+main > section ul,
+main > section ol {
   list-style: disc;
   list-style-position: inside;
   margin: 0 0 0 1em;
 }
 
-.no-js .portfolio main > section  ul {
-  list-style: none;
-}
-.no-js .portfolio main > section  ul li {
-  flex: 1 1 10em;
-  display: inline-block;
-  border: solid 1px blue;
-}
-
-main section  ol {
+main section ol {
   list-style: decimal;
 }
 
@@ -119,120 +108,96 @@ aside section h1 + p {
   margin: 0;
   width: 95%;
 }
-aside section {
-  background-image: linear-gradient(hsl(190, 30%, 74%), #fff 60%);
-  position: relative;
-}
-
-article form p {
-  display: inline-block;
-  vertical-align: text-top;
-}
-
-main > * {
-  border: solid 1em #fff;
-  background-color: hsl(190, 30%, 92%);
-}
 
 main aside section {
+  position: relative;
   text-align: center;
   border: 1px solid hsl(190, 30%, 68%);
   border-width: 0 1px 1.5em;
   padding: 0 0 1em;
   line-height: 1.4;
   margin: 0 0 1.5em;
+  background-image: linear-gradient(hsl(190, 30%, 74%), #fff 60%);
+  & a {
+    color: hsl(0, 60%, 50%);
+    display: block;
+  }
+  & h2 {
+    color: #fff;
+    text-transform: uppercase;
+    line-height: 1;
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+    background-color: hsl(190, 30%, 73%);
+    padding: 0.8em 0;
+    text-align: left;
+    white-space: nowrap;
+    font-size: calc(12px + 6 * (100vw - 574px) / (1280 - 574));
+    & + a {
+      margin: 2em 2em 1em;
+    }
+  }
 }
 
-main aside section a {
-  color: hsl(0, 60%, 50%);
-  display: block;
-}
-
-main aside section h2 {
-  color: #fff;
-  text-transform: uppercase;
-  line-height: 1;
-  width: 100%;
-  display: inline-block;
-  vertical-align: top;
-  background-color: hsl(190, 30%, 73%);
-  padding: 0.8em 0;
-  text-align: left;
-  white-space: nowrap;
-  font-size: calc(12px + 6 * (100vw - 574px) / (1280 - 574));
-}
-main aside section h2 + a {
-  margin: 2em 2em 1em;
-}
 header aside img {
   border: 1px solid hsl(0, 60%, 50%);
   border-width: 0 0 0.75em 0;
+  &:hover {
+    filter: contrast(1.5);
+  }
 }
 
-header aside img:hover {
-  filter: contrast(1.5);
+b.em {
+  font-style: italic;
 }
-/*
+
 header nav > ul {
   text-align: center;
   width: auto;
   height: auto;
   border: 2px solid #fff;
   border-width: 3px 0;
-  background-image: linear-gradient(#fff, hsl(190, 30%, 68%));
-}
-header nav > ul li {
-  border: solid 1px #999;
-  border-width: 0 1px 1px 1px;
-}
-*/
-
-header nav > ul {
-  text-align: center;
-  width: auto;
-  height: auto;
-  border: 2px solid #FFF;
-  border-width: 3px 0;
-  background-image: linear-gradient(#FFF, $col-bg);
+  background-image: linear-gradient(#fff, $col-bg);
 
   & > li {
+    border: solid 1px #999;
+    border-width: 0 1px 1px 1px;
+    border-left: solid 1px #fff;
+    border-top: 0.5em solid $col-hi;
+
+    a {
+      border-width: 0.5em 0 0;
+      display: block;
+      color: $col-nav;
+      font-weight: bold;
+      padding: 0.5em 0;
+      width: 100%;
+    }
+
+    & > a:hover {
+      color: $col-hi;
+      background-image: linear-gradient($col-bg, #fff);
+    }
+
+    & > :nth-child(1) {
+      border-left: solid 0 #fff;
+    }
+    & > ul li {
       border: solid 1px #999;
-      border-width: 0 1px 1px 1px;
-      border-left: solid 1px #fff;
-      border-top: 0.5em solid #c33;
-
-      a {
-          border-width: .5em 0 0;
-          display: block;
-          color: $col-nav;
-          font-weight: bold;
-          padding: .5em 0;
-          width: 100%;
-      }
-
-      & > a:hover {
-          color: $col-hi;
-          background-image: linear-gradient($col-bg, #FFF);
-      }
-
-      & > :nth-child(1) {
-          border-left: solid 0 #FFF;
-      }
-      & > ul li {
-        border: solid 1px #999;
-        background-color: hsl(190, 30%, 88%);
-        border-width: 0 1px 1px;
-      }
-      &:hover ul {
-        width: 100%;
-        border-top: solid 1px #999;
-        box-sizing: content-box;
-        left: -1px;
-      }
-      & a:hover {
-        color: hsl(0, 60%, 50%);
-        background-image: linear-gradient(hsl(190, 30%, 68%), #fff);
-      }
+      background-color: hsl(190, 30%, 88%);
+      border-width: 0 1px 1px;
+    }
+    &:hover ul {
+      width: 100%;
+      border-top: solid 1px #999;
+      left: -1px;
+      box-sizing: content-box;
+    }
+    & a:hover {
+      color: hsl(0, 60%, 50%);
+      background-image: linear-gradient(hsl(190, 30%, 68%), #fff);
+    }
   }
 }
 
@@ -247,19 +212,7 @@ main aside section h2:before {
   margin: 0 0.3em 0 0.5em;
   text-transform: uppercase;
   box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.6),
-  inset -1px -1px 2px rgba(0, 0, 0, 0.6);
-}
-
-
-footer a:hover {
-  color: hsl(0, 60%, 50%);
-  border-color: white;
-}
-footer ul li:last-child a {
-  border-width: 0;
-}
-footer p a:link:after {
-  content: " | ";
+    inset -1px -1px 2px rgba(0, 0, 0, 0.6);
 }
 
 input[type="submit"],
@@ -269,58 +222,35 @@ input[type="checkbox"] {
   display: inline-block;
 }
 
-/* <strong><em>TEXT<em><strong> is frowned upon
-so this is preferred: <strong class="em">TEXT<strong>
-to simplify processing in JS using <b> tag and class of em for bold italics
-*/
-b.em {
-  font-style: italic;
-}
-
 .home main aside section,
 .about main aside section,
 main aside section:nth-child(n + 2) {
   margin: 0;
 }
 
-.home nav > ul > li:nth-child(1) > a,
-.home footer ul > li:nth-child(1) > a {
-  color: hsl(0, 60%, 50%);
+@for $i from 1 through length($navlist) {
+  $l: nth($navlist, $i);
+
+  #{$l} nav > ul > li:nth-child(#{$i}) > a,
+  #{$l} footer > ul > li:nth-child(#{$i}) > a {
+    color: $col-hi;
+  }
 }
 
-.about nav > ul > li:nth-child(2) > a,
-.about footer > ul > li:nth-child(2) > a {
-  color: hsl(0, 60%, 50%);
+.portfolio nav > ul > li:nth-child(5) > a {
+  color: $col-hi;
 }
 
-.webdesign nav > ul > li:nth-child(3) > a,
-.webdesign footer > ul > li:nth-child(3) > a {
-  color: hsl(0, 60%, 50%);
-}
-
-.graphicdesign nav > ul > li:nth-child(4) > a,
-.graphicdesign footer > ul > li:nth-child(4) > a {
-  color: hsl(0, 60%, 50%);
-}
-
-.contact nav > ul > li:nth-child(6) > a,
-.contact footer > ul > li:nth-child(6) > a {
-  color: hsl(0, 60%, 50%);
-}
-
-.portfolio nav > ul > li:nth-child(5) > a,
-.portfolio footer > ul > li:nth-child(5) > a {
-  color: hsl(0, 60%, 50%);
-}
-#wrapper footer ul > li > a {
-  border-color: white;
+.webdesign main > aside a:hover img {
+  filter: contrast(1.5);
 }
 
 .webdesign main aside section ul {
   margin: 1em 0 0;
 }
-.webdesign main aside section ul li:first-child, .graphicdesign main aside ul {
-  font-weight: 700;
+.webdesign main aside section ul li:first-child,
+.graphicdesign main aside ul {
+  font-weight: bold;
 }
 
 .graphicdesign main ul {
@@ -329,3 +259,17 @@ main aside section:nth-child(n + 2) {
   text-align: left;
   margin: 1em 0 0 2em;
 }
+
+#wrapper footer ul > li > a {
+  border-color: white;
+}
+
+/*
+main span {
+  background-color: yellow;
+}
+
+.foo {
+  background-color: orange;
+}
+*/

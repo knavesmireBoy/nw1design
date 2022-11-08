@@ -39,14 +39,15 @@
   overflow: hidden;
 }
 
-.portrait #display .inner  {
+.portrait #display .inner {
   margin: 1vw 10vw;
 }
 
 #display img {
 }
 
-img#slide, body.swap img#base {
+img#slide,
+body.swap img#base {
   display: none;
 }
 
@@ -273,9 +274,32 @@ main#content {
   background-image: none;
 }
 
-
 .webdesign main > aside a:hover img {
   filter: contrast(1.5);
+}
+
+.webdesign main aside section ul {
+  margin: 1em 0 0;
+}
+.webdesign main aside section ul li:first-child,
+.graphicdesign main aside ul {
+  font-weight: 700;
+}
+
+.graphicdesign main ul {
+  list-style: disc;
+  list-style-position: inside;
+  text-align: left;
+  margin: 1em 0 0 2em;
+}
+
+.no-js .portfolio main > section ul {
+  list-style: none;
+}
+.no-js .portfolio main > section ul li {
+  flex: 1 1 10em;
+  display: inline-block;
+  border: solid 1px blue;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -288,7 +312,6 @@ main#content {
     left: -9999px;
   }
 }
-
 
 @media only screen and (max-width: 900px) {
   #buttons a:link {
@@ -333,7 +356,6 @@ main#content {
   }
 }
 
-
 @media only screen and (max-width: 573px) {
   #buttons a:link {
     height: calc(28px + 36 * (100vw - 320px) / (573 - 320));
@@ -343,7 +365,6 @@ main#content {
   #slideshow {
     margin: 0;
   }
-
 }
 @media only screen and (max-width: 413px) {
   #buttons {
@@ -365,6 +386,6 @@ main#content {
   border-width: 0px;
 }
 html {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }

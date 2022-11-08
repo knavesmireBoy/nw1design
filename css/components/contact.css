@@ -51,3 +51,8 @@ main > section {
   #submit {
     margin-left: auto;
   }
+
+  article form p {
+    display: inline-block;
+    vertical-align: text-top;
+  }
