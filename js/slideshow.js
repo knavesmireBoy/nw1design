@@ -1,3 +1,9 @@
+/*jslint nomen: true */
+/*global Publisher: false */
+/*global window: false */
+/*global nW1: false */
+/* eslint-disable indent */
+
 if (!window.nW1) {
     window.nW1 = {};
 }
@@ -6,13 +12,46 @@ function equals(a, b) {
     return a === b;
 }
 
-function doPortrait(m, o, v) {
-  return o.classList[m](v);
+function gtThanEq(a, b) {
+	return a >= b;
 }
 
-const getTgt = (str) => $$(str),
-    isInplay = $$q('.inplay'),
-    //getHeight = curry2(getter)('naturalHeight'),
+
+function doWhenFactory(n) {
+	const both = (pred, action, v) => {
+			if (pred(v)) {
+				return action(v);
+			}
+		},
+		act = (pred, action, v) => {
+			if (nW1.utils.getResult(pred)) {
+				return action(v);
+			}
+		},
+		predi = (pred, action, v) => {
+			if (pred(v)) {
+				return action();
+			}
+		},
+		none = (pred, action) => {
+			if (nW1.utils.getResult(pred)) {
+				return action();
+			}
+		},
+		all = [none, predi, act, both];
+	return all[n] || none;
+}
+
+const utils = nW1.utils,
+$$ = utils.$$,
+getTgt = (str) => $$(str),
+ptL = utils.ptL,
+invokeMethod = utils.invokeMethod,
+compose = utils.compose,
+looper = nW1.Looper(),
+curry2 = utils.curry2,
+curry3 = utils.curry3,
+    isInplay = utils.$$q('.inplay'),
     getHeight = (o) => {
       let h = o.naturalHeight;
       h = Math.floor(h/10);
@@ -22,15 +61,14 @@ const getTgt = (str) => $$(str),
       return typeof p === 'string' ? pred(a[p], b[p]) : p ? pred(p[a], p[b]) : pred(a, b);
     },
     eitherOr = (a, b, pred) => pred ? a : b,
-    applyPortait = curry3(doPortrait)('portrait'),
-    testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getRes(item)).map(getprop),
-    doPic = ptL(setterBridge, 'src'),
+    testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => utils.getRes(item)).map(getprop),
+    doPic = ptL(utils.setterBridge, 'src'),
 
     displayInplay = ptL(invokeMethod, document.body.classList, 'add'),
     doCompare = compose(ptL(eitherOr, 'add', 'remove'), curry3(compare(gtThanEq))('naturalWidth')('naturalHeight')),
-    onInplay = curry22(invoke)('inplay')(displayInplay),
-    deferForward = deferPTL(invokeMethod, looper, 'forward', null),
-    advance = compose(/*doCompare, $$('slide'), */onInplay, doPic($$('base')), curry2(getter)('value'), deferForward),
+    onInplay = utils.curry22(utils.invoke)('inplay')(displayInplay),
+    deferForward = utils.deferPTL(invokeMethod, looper, 'forward', null),
+    advance = compose(doCompare, $$('slide'), onInplay, doPic($$('base')), curry2(utils.getter)('value'), deferForward),
     reducer = curry3(invokeMethod)(equals)('reduce'),
     updateBase = curry2(doWhenFactory())(advance),
     doSwap = function () {
@@ -40,12 +78,12 @@ const getTgt = (str) => $$(str),
         return !bool;
     },
     playMaker = function ($recur) {
-        const doLoad = curry22(doWhenFactory())(compose($recur.setPlayer.bind($recur), doSwap))(isInplay);
+        const doLoad = utils.curry22(doWhenFactory())(compose($recur.setPlayer.bind($recur), doSwap))(isInplay);
 
         function updateImages(flag) {
             const s = $('slide'),
                 b = $('base');
-            doPic(s, getImgSrc(b));
+            doPic(s, utils.getImgSrc(b));
             s.onload = () => updateBase(flag);
             b.onload = b.onload || doLoad;
         }
@@ -91,8 +129,8 @@ const getTgt = (str) => $$(str),
         return function (flag) {
             return flag ? actions.reverse()[0] : fade;
         };
-    },
-    recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
+    };
+    nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
         let ret = {
             init: function () {
                 this.nextplayer = playMaker(this);

@@ -29,10 +29,11 @@
   padding: 0 0 1vw;
 }
 
-#display .inner {
+/*.swap .portait #display .inner, */#display .inner {
   margin: 1vw calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
   text-align: center;
   overflow: hidden;
+  background-color: #999;
 }
 
 .portrait #display .inner {
@@ -369,7 +370,7 @@ main#content {
 #slidecontainer p {
   border-width: 0px;
 }
-html {
+html #wrapper {
   visibility: visible;
   opacity: 1;
 }
