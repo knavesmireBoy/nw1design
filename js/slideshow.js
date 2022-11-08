@@ -1,6 +1,4 @@
 /*jslint nomen: true */
-/*global Publisher: false */
-/*global window: false */
 /*global nW1: false */
 /* eslint-disable indent */
 

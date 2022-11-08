@@ -1,5 +1,4 @@
 /*jslint nomen: true */
-/*global window: false */
 /*global Modernizr: false */
 /*global Publisher: false */
 /*global nW1: false */
@@ -14,7 +13,9 @@
 
   function throttle(callback, time) {
     //don't run the function if throttlePause is true
-    if (throttlePause) return;
+    if (throttlePause) {
+        return;
+    }
 
     //set throttlePause to true after the if condition. This allows the function to be run once
     throttlePause = true;
@@ -50,24 +51,24 @@
   }
 
   function replacePathSimple(o, src) {
-    o = getResult(o);
-    o.setAttribute("src", src.replace("thumbs", "fullsize").replace("tmb", "fs"));
+    let ob = getResult(o);
+    ob.setAttribute("src", src.replace("thumbs", "fullsize").replace("tmb", "fs"));
   }
-  
+
   function replacePath(o, src) {
-    o = getResult(o);
+    let ob = getResult(o);
     let binder = makePortrait.bind(o, $("wrapper"));
-    o.removeEventListener("load", binder);
+    ob.removeEventListener("load", binder);
     if ($q(".inplay")) {
-      if (o.id === "base") {
+      if (ob.id === "base") {
         $("slide").addEventListener("load", binder);
       }
     } else {
-      if (o.id === "base") {
-        o.addEventListener("load", binder);
+      if (ob.id === "base") {
+        ob.addEventListener("load", binder);
       }
     }
-    replacePathSimple(o, src);
+    replacePathSimple(ob, src);
   }
 
   function doIterate(m, funs) {
@@ -79,6 +80,14 @@
       }
       return o;
     };
+  }
+
+  function hover(e) {
+    const preview = $q("#slidepreview img");
+    if (matchImg(e) && e.target !== preview) {
+      replacePath(preview, utils.getAttribute("src")(e.target));
+      makePortrait.call(e.target, $("navigation"));
+    }
   }
 
   function getNextElement(node, type = 1) {
@@ -95,13 +104,13 @@
     if (!node) {
       return null;
     }
-    node = node.nodeType === 1 ? node : getNextElement(node);
-    let res = node && node.nodeName.match(reg);
+    let mynode = node.nodeType === 1 ? node : getNextElement(node);
+    let res = mynode && mynode.nodeName.match(reg);
     if (!res) {
-      node = node && getNextElement(node[dir]);
-      return node && getTargetNode(node, reg, dir);
+      mynode = mynode && getNextElement(mynode[dir]);
+      return mynode && getTargetNode(mynode, reg, dir);
     }
-    return node;
+    return mynode;
   }
 
   function zip(m, funs, vals) {
@@ -335,6 +344,14 @@
     $$ = utils.$$,
     $q = utils.$q,
     $$q = utils.$$q,
+    matchImg =  compose(
+        curry3(invokeMethod)(/^img/i)("match"),
+        curry2(utils.getter)("nodeName"),
+        utils.getTarget
+      ),
+      addClickHover = curry2(ptL(utils.lazyVal, "addEventListener", "mouseover"))(
+        hover
+      ).wrap(utils.pass),
     getLast = (array) => array[array.length - 1],
     getTgt = (str) => $$(str),
     ptL = utils.ptL,
@@ -352,14 +369,6 @@
     setType = curry2(setAttribute("type")),
     setSrc = curry2(setAttribute("src")),
     setAlt = curry2(setAttribute("alt")),
-    /*
-    getExtentLoad = $$q("#navigation ul li a", true),
-    getMyLinksLoad = compose(
-      curryL3(utils.invokeMethodBridge)("map")((a) => a.getAttribute("href")),
-      toArray,
-      getExtentLoad
-    ),
-    */
     abbr = (el, repl) => {
       return toArray(getResult(el).childNodes)
         .filter((node) => node.nodeType === 3)
@@ -619,7 +628,7 @@
       },
       {
         "Safari Afrika": 4
-      },
+      }
     ],
     print: [
       {
