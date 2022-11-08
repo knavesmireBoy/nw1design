@@ -50,6 +50,7 @@ body.swap img#base {
 .inplay img#slide {
   display: block;
   left: 0;
+  margin-left: -100%;
 }
 
 body.swap img#slide {
