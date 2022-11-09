@@ -162,7 +162,7 @@ const tagTester = (name) => {
         ptl(getResult(o));
         return o;
     },
-    //con = (v) => console.log(v),
+    log = (v) => console.log(v),
     compose = (...fns) => fns.reduce((f, g) => (...vs) => f(g(...vs))),
     getter = (o, p) => {
         return getResult(o)[p];
@@ -187,7 +187,10 @@ const tagTester = (name) => {
     curryL33 = fun => a => b => c => () => fun(a, b, c),
   doGet = curry2(getter),
     invoke = (f, v) => f(v),
-    invokeMethod = (o, m, v) => o[m](v),
+    invokeMethod = (o, m, v) => {
+		console.log(o, m,v);
+		return o[m](v);
+	},
     invokeMethodBind = (o, m, v) => {
         return o[m].call(o, v);
     },
