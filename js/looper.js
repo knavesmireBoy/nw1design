@@ -217,3 +217,4 @@ nW1.Looper = function() {
     methods = ['attach', 'back', 'status', 'find', 'forward', 'get', 'notify', 'play', 'set', 'visit', 'setStategy'];
   return makeProxyIterator(LoopIterator.from([], incrementer, []), target, methods);
 };
+
