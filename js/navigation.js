@@ -153,7 +153,7 @@ function throttle (callback, time) {
                     undo = compose(displayPause, always('add'), $recur.suspend.bind($recur, null));
                 return func([exec, undo]);
             },
-            loop = deferPTL(invokeMethodBind, looper),
+            loop = deferPTL(invokeMethodBind, nW1.Looper),
             set = loop('set'),
             routines = [set(false), loop('back', null), loop('forward', null), set(true)];
         return {
@@ -165,11 +165,11 @@ function throttle (callback, time) {
                     i = [/^start$/, /^back$/, /^forward$/, /^end$/].findIndex(which);
                 player = player || playMaker();
                 if (found.match(/^p/i)) {
-                looper.setStategy(true);
+                nW1.Looper.setStrategy(true);
                     player();
                 } else {
                     player = null;
-                    looper.setStategy();
+                    nW1.Looper.setStrategy();
                     $recur.suspend();
                     if (routines[i]) {
                         routines[i]();
@@ -187,7 +187,7 @@ function throttle (callback, time) {
                 }
                 if (img) {
                     visit = true;
-                    looper.find(img);
+                    nW1.Looper.find(img);
                 }
                 if (visit) {
                     player = null;
@@ -265,6 +265,7 @@ function throttle (callback, time) {
         getDesktop = pApply(Modernizr.mq, ipad);
 
     const broadcaster = Publisher.from(),
+    looper = nW1.Looper,
     getExtentLoad = $$q('#navigation ul li a', true),
     getMyLinksLoad = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, getExtentLoad),
         abbr = (el, repl) => {

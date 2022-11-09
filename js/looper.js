@@ -2,12 +2,15 @@
 /*global window: false */
 /*global Publisher: false */
 /*global nW1: false */
+/* eslint-disable indent */
+
 if (!window.nW1) {
   window.nW1 = {};
 }
 
-nW1.Looper = function() {
+nW1.Looper = (function () {
   "use strict";
+
   /* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
   function doPartial(flag) {
     return function p(f, ...vs) {
@@ -51,31 +54,35 @@ nW1.Looper = function() {
     return this.status();
   }
 
-  const curry2 = fun => b => a => fun(a, b),
-    curry22 = fun => b => a => () => fun(a, b),
-    curryL3 = fun => a => b => c => fun(a, b, c),
+  const curry2 = (fun) => (b) => (a) => fun(a, b),
+    curry22 = (fun) => (b) => (a) => () => fun(a, b),
+    curryL3 = (fun) => (a) => (b) => (c) => fun(a, b, c),
     invokeMethod = (o, m, v) => o[m](v),
     invokeMethodBridge = (m, v, o) => {
       return invokeMethod(getResult(o), m, v);
     },
     getter = (o, p) => o[p],
-    compose = (...fns) => fns.reduce((f, g) => (...vs) => f(g(...vs))),
+    compose = (...fns) =>
+      fns.reduce(
+        (f, g) =>
+          (...vs) =>
+            f(g(...vs))
+      ),
     ptL = doPartial(),
     negate = (f, lastarg) => !f(lastarg),
     tagTester = (name) => {
-      const tag = '[object ' + name + ']';
-      return function(obj) {
+      const tag = "[object " + name + "]";
+      return function (obj) {
         return toString.call(obj) === tag;
       };
     },
-    isBoolean = tagTester('Boolean'),
-    isFunction = tagTester('Function');
-
+    isBoolean = tagTester("Boolean"),
+    isFunction = tagTester("Function");
 
   function makeProxyIterator(src, tgt, methods) {
     function mapper(method) {
       if (src[method] && isFunction(src[method])) {
-        tgt[method] = function() {
+        tgt[method] = function () {
           return this.$subject[method].apply(this.$subject, arguments);
         };
       }
@@ -86,18 +93,18 @@ nW1.Looper = function() {
   }
 
   class LoopIterator extends Publisher {
-    constructor(group = [], advancer = () => 1, handlers = [], flag =  false) {
+    constructor(group = [], advancer = () => 1, handlers = [], flag = false) {
       super(handlers);
       this.group = group;
       this.position = 0;
       this.rev = false;
       this.advance = advancer;
-      this.setStategy(flag);
+      this.setStrategy(flag);
     }
     back(flag) {
       if (!this.rev || (flag && isBoolean(flag))) {
         this.group.members = this.group.members.reverse();
-        this.position = this.group.members.length - 2 - (this.position);
+        this.position = this.group.members.length - 2 - this.position;
         this.position = this.advance(this.position);
         this.rev = !this.rev;
       }
@@ -105,10 +112,10 @@ nW1.Looper = function() {
     }
     forward(flag) {
       /*
-      when slidehow is playing the sidebar column will be receiving the src of the base pic
-      which won't correspond to the current visible (slide) pic in the main display area
-      so we notify, THEN advance, setStrategy
-      */
+    when slidehow is playing the sidebar column will be receiving the src of the base pic
+    which won't correspond to the current visible (slide) pic in the main display area
+    so we notify, THEN advance, setStrategy
+    */
       if (!flag && this.rev) {
         return this.back(true);
       }
@@ -116,12 +123,16 @@ nW1.Looper = function() {
     }
     find(tgt) {
       // return this.set(_.findIndex(this.group.members, _.partial(equals, tgt)));
-      const match = curryL3(invokeMethodBridge)('match'),
-        cb = compose(match, curry2(getter)(1), ptL(invokeMethod, /\/(\w+)_/, 'exec'))(tgt);
+      const match = curryL3(invokeMethodBridge)("match"),
+        cb = compose(
+          match,
+          curry2(getter)(1),
+          ptL(invokeMethod, /\/(\w+)_/, "exec")
+        )(tgt);
       this.set(this.group.members.findIndex(cb));
       this.notify(this.get());
     }
-    get(m = 'value') {
+    get(m = "value") {
       return this.status()[m];
     }
     set(pos, flag) {
@@ -136,10 +147,10 @@ nW1.Looper = function() {
       this.notify(this.get());
       return {
         value: this.group.members[this.position],
-        index: this.position
+        index: this.position,
       };
     }
-    setStategy(flag) {
+    setStrategy(flag) {
       this.notifier = flag ? preNotify : postNotify;
     }
     status() {
@@ -147,7 +158,7 @@ nW1.Looper = function() {
         members: this.group.members,
         value: this.group.members[this.position],
         index: this.position,
-        rev: this.rev
+        rev: this.rev,
       };
     }
     visit(cb) {
@@ -155,17 +166,6 @@ nW1.Looper = function() {
     }
     static from(coll, advancer, handlers = []) {
       return new LoopIterator(Group.from(coll), advancer, handlers);
-    }
-  }
-  class PreLoopIterator extends LoopIterator {
-    forward(flag) {
-      if (!flag && this.rev) {
-        return this.back(true);
-      }
-      return preNotify.call(this);
-    }
-    static from(coll, advancer, handlers = []) {
-      return new PreLoopIterator(Group.from(coll), advancer, handlers);
     }
   }
   class Group {
@@ -197,24 +197,35 @@ nW1.Looper = function() {
     }
   }
   const target = {
-      setSubject: function(s) {
+      setSubject: function (s) {
         this.$subject = s;
       },
-      getSubject: function() {
+      getSubject: function () {
         return this.$subject;
       },
-      build: function(coll, advancer, handlers = [], flag) {
-        if(flag && isBoolean(flag)){
-          this.setSubject(PreLoopIterator.from(coll, advancer(coll), handlers));
-        }
-        else {
-          this.setSubject(LoopIterator.from(coll, advancer(coll), handlers));
-        }
-      }
+      build: function (coll, advancer, handlers = [], flag) {
+        this.setSubject(LoopIterator.from(coll, advancer(coll), handlers));
+      },
     },
     doGet = curry22(getter),
-    incrementer = compose(doInc, doGet('length')),
-    methods = ['attach', 'back', 'status', 'find', 'forward', 'get', 'notify', 'play', 'set', 'visit', 'setStategy'];
-  return makeProxyIterator(LoopIterator.from([], incrementer, []), target, methods);
-};
+    incrementer = compose(doInc, doGet("length")),
+    methods = [
+      "attach",
+      "back",
+      "status",
+      "find",
+      "forward",
+      "get",
+      "notify",
+      "play",
+      "set",
+      "visit",
+      "setStrategy"
+    ];
 
+  return makeProxyIterator(
+    LoopIterator.from([], incrementer, []),
+    target,
+    methods
+  );
+}());

@@ -127,12 +127,6 @@ function replacePath(o, src) {
     replacePathSimple(o, src);
 }
 
-function toCamelCase(variable) {
-        return variable.replace(/-([a-z])/g, function (str, letter) {
-            return letter.toUpperCase();
-        });
-    }
-
 function hover(e) {
     const preview = $q('#slidepreview img');
     if (matchImg(e) && e.target !== preview) {
@@ -140,7 +134,7 @@ function hover(e) {
         makePortrait.call(e.target, $('navigation'));
     }
 }
-const looper = nW1.Looper();
+//const looper = nW1.Looper();
 
 const tagTester = (name) => {
         const tag = '[object ' + name + ']';

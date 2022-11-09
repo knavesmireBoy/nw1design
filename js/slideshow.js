@@ -1,5 +1,8 @@
 /* eslint-disable indent */
-
+/*global nW1: false */
+if (!window.nW1) {
+    window.nW1 = {};
+}
 
 if (!window.nW1) {
     window.nW1 = {};
@@ -32,7 +35,7 @@ const getTgt = (str) => $$(str),
     displayInplay = ptL(invokeMethod, document.body.classList, 'add'),
     doCompare = compose(ptL(eitherOr, 'add', 'remove'), curry3(compare(gtThanEq))('naturalWidth')('naturalHeight')),
     onInplay = curry22(invoke)('inplay')(displayInplay),
-    deferForward = deferPTL(invokeMethod, looper, 'forward', null),
+    deferForward = deferPTL(invokeMethod, nW1.looper, 'forward', null),
     advance = compose(/*doCompare, $$('slide'), */onInplay, doPic($$('base')), curry2(getter)('value'), deferForward),
     reducer = curry3(invokeMethod)(equals)('reduce'),
     updateBase = curry2(doWhenFactory())(advance),
@@ -86,7 +89,7 @@ const getTgt = (str) => $$(str),
                     $recur.i += 1;
                 },
                 reset: function () {
-                    doPic($('base'), looper.forward().value);
+                    doPic($('base'), nW1.looper.forward().value);
                 }
             },
             actions = [fadeIn, fadeOut];
