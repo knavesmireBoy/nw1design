@@ -10,11 +10,6 @@ function equals(a, b) {
     return a === b;
 }
 
-function gtThanEq(a, b) {
-	return a >= b;
-}
-
-
 function doWhenFactory(n) {
 	const both = (pred, action, v) => {
 			if (pred(v)) {
@@ -49,15 +44,14 @@ compose = utils.compose,
 looper = nW1.Looper(),
 curry2 = utils.curry2,
 curry3 = utils.curry3,
+doCompare = utils.doCompare,
     isInplay = utils.$$q('.inplay'),
     getHeight = (o) => {
       let h = o.naturalHeight;
       h = Math.floor(h/10);
       return h * 10;
     },
-    compare = (pred) => (p, a, b) => {
-      return typeof p === 'string' ? pred(a[p], b[p]) : p ? pred(p[a], p[b]) : pred(a, b);
-    },
+
     getRes = function (arg) {
         if (this.isFunction(arg)) {
           return arg();
@@ -69,12 +63,9 @@ curry3 = utils.curry3,
         obj[k] = v;
         return obj;
       },
-    eitherOr = (a, b, pred) => pred ? a : b,
     testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getRes(item)).map(getprop),
     doPic = ptL(setterBridge, 'src'),
-
     displayInplay = ptL(invokeMethod, document.body.classList, 'add'),
-    doCompare = compose(ptL(eitherOr, 'add', 'remove'), curry3(compare(gtThanEq))('naturalWidth')('naturalHeight')),
     onInplay = utils.curry22(utils.invoke)('inplay')(displayInplay),
     deferForward = utils.deferPTL(invokeMethod, looper, 'forward', null),
     advance = compose(doCompare, $$('slide'), onInplay, doPic($$('base')), curry2(utils.getter)('value'), deferForward),
