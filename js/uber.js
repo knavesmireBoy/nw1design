@@ -1,10 +1,12 @@
 /*jslint nomen: true */
-/*global Publisher: false */
-/*global window: false */
+/* eslint-disable indent */
+
 /*global nW1: false */
 if (!window.nW1) {
     window.nW1 = {};
 }
+//nW1.utils = (function() {
+//"use strict";
 if (typeof Function.prototype.wrap === 'undefined') {
     Function.prototype.wrap = function(wrapper, ..._vs) {
         let _method = this; //the function
@@ -138,29 +140,9 @@ function hover(e) {
         makePortrait.call(e.target, $('navigation'));
     }
 }
+const looper = nW1.Looper();
 
-function getMyComputedStyle (element, styleProperty) {
-            if (!element || !styleProperty) {
-                return null;
-            }
-            var computedStyle = null,
-                def = document.defaultView || window;
-            if (typeof element.currentStyle !== 'undefined') {
-                computedStyle = element.currentStyle;
-            } else if (def && def.getComputedStyle && isFunction(def.getComputedStyle)) {
-                computedStyle = def.getComputedStyle(element, null);
-            }
-            if (computedStyle) {
-                try {
-                    return computedStyle[styleProperty] || computedStyle[toCamelCase(styleProperty)];
-                } catch (e) {
-                    return computedStyle[styleProperty];
-                }
-            }
-        }
-
-const looper = nW1.Looper(),
-tagTester = (name) => {
+const tagTester = (name) => {
         const tag = '[object ' + name + ']';
         return function (obj) {
             return toString.call(obj) === tag;
@@ -283,4 +265,6 @@ tagTester = (name) => {
         return x;
     },
     incrementer = compose(doInc, getLength);
+
+//}());
 

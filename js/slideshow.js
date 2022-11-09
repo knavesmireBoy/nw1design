@@ -1,3 +1,6 @@
+/* eslint-disable indent */
+
+
 if (!window.nW1) {
     window.nW1 = {};
 }

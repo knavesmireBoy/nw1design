@@ -1,18 +1,28 @@
 /*jslint nomen: true */
-/*global window: false */
 /*global Modernizr: false */
 /*global Publisher: false */
 /*global nW1: false */
+/* eslint-disable indent */
+
 
 (function (config, Mod, ipad) {
     "use strict";
+
+    function getResult(o) {
+        if (typeof o === 'function') {
+            return o();
+        }
+        return o;
+    }
 
     //https://webdesign.tutsplus.com/tutorials/javascript-debounce-and-throttle--cms-36783
     //initialize throttlePause variable outside throttle function
 
 function throttle (callback, time) {
   //don't run the function if throttlePause is true
-  if (throttlePause) return;
+  if (throttlePause) {
+    return;
+  }
 
   //set throttlePause to true after the if condition. This allows the function to be run once
   throttlePause = true;
