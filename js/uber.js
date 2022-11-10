@@ -156,7 +156,7 @@ nW1.ops = (function () {
     addClickHover: curry2(ptL(utils.lazyVal, "addEventListener", "mouseover"))(
       hover
     ).wrap(pass),
-	setter: setter,
+    setter: setter,
     setId: curry2(setAttribute("id")),
     setKlas: curry2(setAttribute("class")),
     setSrc: curry2(setAttribute("src")),
