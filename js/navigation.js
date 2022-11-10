@@ -53,70 +53,6 @@ function throttle (callback, time) {
         };
     }
 
-    function getNextElement(node, type = 1) {
-        if (node && node.nodeType === type) {
-            return node;
-        }
-        if (node && node.nextSibling) {
-            return getNextElement(node.nextSibling);
-        }
-        return null;
-    }
-
-    function getTargetNode(node, reg, dir = 'firstChild') {
-        if (!node) {
-            return null;
-        }
-        node = node.nodeType === 1 ? node : getNextElement(node);
-        let res = node && node.nodeName.match(reg);
-        if (!res) {
-            node = node && getNextElement(node[dir]);
-            return node && getTargetNode(node, reg, dir);
-        }
-        return node;
-    }
-
-    function zip(m, funs, vals) {
-        return vals[m]((v, i) => funs[i](v));
-    }
-
-    function toArray(coll, cb = () => true) {
-        return Array.prototype.slice.call(coll).filter(cb);
-    }
-    //note a function that ignores any state of champ or contender will return the first element if true and last if false
-    function best(fun, coll, arg) {
-        //fun = arg ? doPartialCB()(fun, arg) : fun;
-        return toArray(coll).reduce((champ, contender) => fun(champ, contender) ? champ : contender);
-    }
-
-    function alternate(i, n) {
-        return function () {
-            i = (i += 1) % n;
-            return i;
-        };
-    }
-
-    function doAlternate() {
-        const f = alternate(0, 2);
-        return function (actions, ...args) {
-            return function () {
-                return best(f, [actions[0], actions[1]])();
-            };
-        };
-    }
-
-    function getLinks(grp) {
-        const get = curry3(getTargetNode)('firstChild')(/^a$/i);
-        return grp.map(lis => compose(getAttrs('href'), get)(lis));
-    }
-
-    function getLinksDeep(grp) {
-        const ul = grp.map(curry3(getTargetNode)('nextSibling')(/ul/i)),
-            lis = ul.map(({
-                children
-            }) => toArray(children));
-        return lis.map(getLinks);
-    }
 
     function headersSearch() {
         const links = getLinksDeep(toArray(this.grp)),
@@ -264,42 +200,79 @@ function throttle (callback, time) {
         throttlePause,
         getDesktop = pApply(Modernizr.mq, ipad);
 
-    const broadcaster = Publisher.from(),
+    const utils = nW1.utils,
+    ops = nW1.ops,
+    broadcaster = Publisher.from(),
     looper = nW1.Looper,
-    getExtentLoad = $$q('#navigation ul li a', true),
-    getMyLinksLoad = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, getExtentLoad),
+    compose = utils.compose,
+    curry2 = utils.curryRight(2),
+    curryL2 = utils.curryLeft(2),
+    curry3 = utils.curryRight(3),
+    curryL3 = utils.curryLeft(3),
+    curryL33 = utils.curryLeft(3, true),
+    invoke = utils.invoke,
+    invokeMethod = utils.invokeMethod,
+    invokeMethodBridge = utils.invokeMethodBridge,
+    ptL = utils.doPartial(),
+    doMake = ops.doMake,
+    getLinks = (grp) => {
+        const get = curry3(ops.getTargetNode)('firstChild')(/^a$/i);
+        return grp.map(lis => compose(ops.getAttrs('href'), get)(lis));
+    },
+    getLinksDeep = (grp) => {
+        const ul = grp.map(curry3(ops.getTargetNode)('nextSibling')(/ul/i)),
+            lis = ul.map(({
+                children
+            }) => utils.toArray(children));
+        return lis.map(getLinks);
+    },
+    getExtentLoad = utils.$$Q('#navigation ul li a', true),
+    getHref = (a) => a.getAttribute('href'),
+    append = ops.append,
+    prepend = ops.prepend,
+    getParent = ops.getParent,
+    setId = ops.setId,
+    setAlt = ops.setAlt,
+    setSrc = ops.setSrc,
+    setter = ops.setter,
+    toArray = utils.toArray,
+    negate = utils.negate,
+    getMyLinksLoad = compose(curryL3(utils.invokeMethodBridge)('map')(getHref), utils.toArray, getExtentLoad),
         abbr = (el, repl) => {
-            return toArray(getResult(el).childNodes).filter(node => node.nodeType === 3).map((node, i) => node.textContent = repl[i]);
+            let isEl = node => node.nodeType === 3,
+            setText = (node, i) => node.textContent = repl[i];
+            return utils.toArray(getResult(el).childNodes).filter(isEl).map(setText);
         },
           negater = function (alternators) {
               if (!getDesktop()) {
                   alternators.forEach(f => f());
-                  getDesktop = pApply(negate, getDesktop);
+                  getDesktop = ops.pApply(utils.negate, getDesktop);
             }
         },
-        $recur = recurMaker(300, 99, 1, true).init(),
+        $recur = nW1.recurMaker(300, 99, 1, true).init(),
         routes = router($recur),
-        prepAttrs = (keys, vals) => curryL33(zip)('map')(keys)(vals),
-        prepare2Append = (doEl, doAttrs) => compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)(),
+        prepAttrs = (keys, vals) => curryL33(utils.zip)('map')(keys)(vals),
+        prep2Append = (doEl, doAttrs) => compose(append, curry2(invoke)(doEl), ptL(doIterate, 'forEach'), doAttrs)(),
         doDiv = doMake('div'),
         doImg = doMake('img'),
-        doH2 = compose(append, getParent, prepend(doMake('h2')), doText('Navigation'))(),
-        doRenderNav = compose(prepend($$q('.submenu')), setHref, getParent, prepend(doMake('a'))),
-        setDiv = prepare2Append(doDiv, prepAttrs([setId], ['slidepreview'])),
-        setSubMenu = prepare2Append(doDiv, prepAttrs([setKlas], ['submenu'])),
-        setInnerDiv = prepare2Append(doDiv, prepAttrs([setKlas], ['inner'])),
-        setPara = prepare2Append(doMake('p'), prepAttrs([setId], ['tracker'])),
-        setSpan1 = prepare2Append(doMake('span'), prepAttrs([setId], ['tracked'])),
-        setSpan2 = prepare2Append(doMake('span'), prepAttrs([setId], ['max'])),
-        setImg = prepare2Append(doImg, prepAttrs([setAlt], ['currentpicture'])),
-        //setButtonLinks = prepare2Append(doImg, prepAttrs([setAlt], ['#'])),
-        headings = compose(curry2(toArray)(curryL2(negate)(matchPath)), $$q('#navigation a', true)),
-        doSliderOutput = ptL(setter, $$("tracked"), 'innerHTML'),
-        doSliderInput = ptL(setter, $$("myrange"), 'value'),
-        addClickPreview = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.sidebar).wrap(pass),
-        displayPause = ptL(invokeMethodV, $$('slideshow'), 'classList', 'pause'),
-        displaySwap = curry2(ptL(invokeMethod, document.body.classList))('swap'),
-        queryInplay = curry2(ptL(invokeMethod, document.body.classList))('inplay'),
+        doH2 = compose(append, getParent, prepend(doMake('h2')), ops.doText('Navigation'))(),
+        doRenderNav = compose(prepend(utils.$$Q('.submenu')), ops.setHref, getParent, prepend(doMake('a'))),
+        setDiv = prep2Append(doDiv, prepAttrs([setId], ['slidepreview'])),
+        setSubMenu = prep2Append(doDiv, prepAttrs([ops.setKlas], ['submenu'])),
+        setInnerDiv = prep2Append(doDiv, prepAttrs([ops.setKlas], ['inner'])),
+        setPara = prep2Append(doMake('p'), prepAttrs([setId], ['tracker'])),
+        setSpan1 = prep2Append(doMake('span'), prepAttrs([setId], ['tracked'])),
+        setSpan2 = prep2Append(doMake('span'), prepAttrs([setId], ['max'])),
+        setImg = prep2Append(doImg, prepAttrs([ops.setAlt], ['currentpicture'])),
+        //setButtonLinks = prep2Append(doImg, prepAttrs([setAlt], ['#'])),
+        headings = compose(curry2(toArray)(curryL2(negate)(ops.matchPath)), utils.$$Q('#navigation a', true)),
+        doSliderOutput = ptL(setter, utils.$$("tracked"), 'innerHTML'),
+        doSliderInput = ptL(setter, utils.$$("myrange"), 'value'),
+        addClickPreview = curry2(ptL(utils.lazyVal, 'addEventListener', 'click'))(routes.sidebar).wrap(ops.pass),
+        displayPause = ptL(utils.invokeMethodV, utils.$$('slideshow'), 'classList', 'pause'),
+        bodyKlas = curry2(ptL(invokeMethod, document.body.classList)),
+        displaySwap = bodyKlas('swap'),
+        queryInplay = bodyKlas('inplay'),
         painter = function (slide, base, container) {
             let ret = {
                 doOpacity: function (o) {
@@ -316,51 +289,55 @@ function throttle (callback, time) {
             };
             return nW1.Publish().makepublisher(ret);
         },
+        onDisplayUL = curry2(invoke)(utils.$Q('#display ul')),
         myconfig = config[document.body.id],
         pg = window.web ? 27 : 52,
+        getZero = curry2(ops.setter)(0),
+        gtThanEq = (a, b) => a >= b,
         loader = function () {
-            getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
+            getDesktop = Mod.mq(ipad) ? getDesktop : ops.pApply(negate, getDesktop);
             //create sidebar
-            compose(setSubMenu, getParent, getParent, setImg, setDiv, getParent, doH2, getParent, curry2(invoke)($q('#display ul')), prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();
-            myconfig.map(getKeys).map(doRenderNav).forEach(prepareHeadings($q('#navigation ul'), myconfig));
+            compose(setSubMenu, getParent, getParent, setImg, setDiv, getParent, doH2, getParent, onDisplayUL, prepend, addClickHover, addClickPreview, setNavId, append(doMake('section')()), prepend($('content')), doMake('aside'))();
+            myconfig.map(ops.getKeys).map(doRenderNav).forEach(prepareHeadings(utils.$Q('#navigation ul'), myconfig));
             //post creation of sidebar
             headers = Finder.from(headings());
-            const  getExtent = $$q('#navigation ul li a', true),
-                  getMyLinks = compose(curryL3(invokeMethodBridge)('map')((a) => a.getAttribute('href')), toArray, getExtent),
-                  src = compose(getAttrs('href'), getZero, getExtent)(),
-                machDiv = prepare2Append(doDiv, prepAttrs([setId], ['slideshow'])),
-                machControls = prepare2Append(doDiv, prepAttrs([setId], ['controls'])),
-                machButtons = prepare2Append(doDiv, prepAttrs([setId], ['buttons'])), //container for buttons
-                machSlider = prepare2Append(doDiv, prepAttrs([setId], ['slidecontainer'])),
-                machSliderInput = prepare2Append(doMake('input'), prepAttrs([setType, setMin, setMax, setVal, setId], ['range', 1, pg, 1, 'myrange'])),
-                machBase = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
-                machSlide = prepare2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide'])),
-                previewer = ptL(replacePathSimple, $$q('#slidepreview img')),
-                displayer = curryL2(replacePath)($$('base')),
-                thumbs = Finder.from($q('#navigation ul li', true)),
-                addPlayClick = curry2(ptL(lazyVal, 'addEventListener', 'click'))(routes.menu).wrap(pass),
-                buttontext = ['start', 'back', 'play', 'forward', 'end'].map(doTextCBNow),
-                slider_txt_alt = ['', '/'],
-                slider_txt = ['Image ', ' of '],
-                slider_load = Mod.mq(ipad) ? slider_txt : slider_txt_alt,
-                slidertext = slider_load.map(doTextCBNow),
-                sliderRestore = pApply(abbr, $$('tracker'), slider_txt),
-                sliderReplace = pApply(abbr, $$('tracker'), slider_txt_alt),
+            const getExtent = utils.$$Q('#navigation ul li a', true),
+                  getMyLinks = compose(curryL3(invokeMethodBridge)('map')(getHref), toArray, getExtent),
+                  src = compose(ops.getAttrs('href'), getZero, getExtent)(),
+                machDiv = prep2Append(doDiv, prepAttrs([setId], ['slideshow'])),
+                machControls = prep2Append(doDiv, prepAttrs([setId], ['controls'])),
+                machButtons = prep2Append(doDiv, prepAttrs([setId], ['buttons'])), //container for buttons
+                machSlider = prep2Append(doDiv, prepAttrs([setId], ['slidecontainer'])),
+                attrs = [ops.setType, ops.setMin, ops.setMax, ops.setVal, setId],
+                machSliderInput = prep2Append(doMake('input'), prepAttrs(attrs, ['range', 1, pg, 1, 'myrange'])),
+                machBase = prep2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'base'])),
+                machSlide = prep2Append(doImg, prepAttrs([setSrc, setAlt, setId], [src, 'current', 'slide'])),
+                previewer = ptL(ops.replacePathSimple, utils.$$Q('#slidepreview img')),
+                displayer = curryL2(ops.replacePath)(utils.$$('base')),
+                thumbs = Finder.from(utils.$$Q('#navigation ul li', true)),
+                addPlayClick = curry2(ptL(utils.lazyVal, 'addEventListener', 'click'))(routes.menu).wrap(ops.pass),
+                buttontext = ['start', 'back', 'play', 'forward', 'end'].map(ops.doTextCBNow),
+                sliderTxtAlt = ['', '/'],
+                sliderTxt = ['Image ', ' of '],
+                sliderLoad = Mod.mq(ipad) ? sliderTxt : sliderTxtAlt,
+                slidertext = sliderLoad.map(ops.doTextCBNow),
+                sliderRestore = ops.pApply(abbr, utils.$$('tracker'), sliderTxt),
+                sliderReplace = ops.pApply(abbr, utils.$$('tracker'), sliderTxtAlt),
                 sliderOptions = Mod.mq(ipad) ? [sliderRestore, sliderReplace] : [sliderReplace, sliderRestore],
-                sliderActions = doAlternate()(sliderOptions),
-                sliderspans = [curry2(insertB4)($$('tracked')), curry2(insertB4)($$('max'))],
+                sliderActions = utils.doAlternate()(sliderOptions),
+                sliderspans = [curry2(insertB4)(utils.$$('tracked')), curry2(insertB4)(utils.$$('max'))],
                 doSliders = (i) => {
                   doSliderInput(i);
                   doSliderOutput(i);
                 },
                 sliderBridge = function (path) {
                     let members = looper.get('members'),
-                    i = members.findIndex(curry2(equals)(path)),
+                    i = members.findIndex(curry2((a,b) => a === b)(path)),
                     l = members.length,
                     member = members[i],
                     //reached end
                     j = !member ? 1 : i + 1,
-                    txt = getLast($('slide').src.split('/'));
+                    txt = ops.getLast($('slide').src.split('/'));
                     //looper members zero indexed...
                     /*also as it stands looper reverses the array when the back button is pressed
                     before counting forwards may have to fix that but at the moment this undoes that */
@@ -369,35 +346,38 @@ function throttle (callback, time) {
                       doSliders(j);
                     }
                 },
-                fixInnerHTML = el => compose(clearInnerHTML, setHref, setId(el.innerHTML).wrap(pass))(el),
-                button_el = Mod.backgroundsize ? 'a' : 'button',
-                buttons = compose(getParent, compose(prepend, doMake)(button_el)),
-                button_cb = Mod.backgroundsize ? fixInnerHTML : arg => arg;
-            compose(getParent, machSlide, getParent, machBase, setInnerDiv, getParent, getParent2, getParent2, append(doTextNow(pg)), setSpan2, getParent2, append(doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
-            buttontext.map(buttons).map(appendCB).map(curry2(invoke)($('buttons'))).map(button_cb);
+                fixInnerHTML = el => compose(ops.clearInnerHTML, ops.setHref, setId(el.innerHTML).wrap(ops.pass))(el),
+                buttonEl = Mod.backgroundsize ? 'a' : 'button',
+                buttons = compose(getParent, compose(prepend, doMake)(buttonEl)),
+                buttonCb = Mod.backgroundsize ? fixInnerHTML : arg => arg,
+                climb = compose(getParent, ops.getParent2, ops.getParent2),
+                setState = ptL(utils.eitherOr, 'add', 'remove'),
+                doCompare = compose(setState, curry3(utils.compare(gtThanEq))('naturalWidth')('naturalHeight'));
+
+            compose(getParent, machSlide, getParent, machBase, setInnerDiv, climb, append(ops.doTextNow(pg)), setSpan2, ops.getParent2, append(ops.doTextNow(1)), setSpan1, setPara, getParent, machSliderInput, machSlider, addPlayClick, getParent, machButtons, machControls, machDiv)($('display'));
+            buttontext.map(buttons).map(ops.appendCB).map(curry2(invoke)($('buttons'))).map(buttonCb);
             headers.search = headersSearch;
             thumbs.search = thumbsSearch;
-            zip('forEach', sliderspans, slidertext);
-            $slider = sliderFactory($$("myrange"));
+            utils.zip('forEach', sliderspans, slidertext);
+            $slider = sliderFactory(utils.$$("myrange"));
             broadcaster.attach(headers.setFinder.bind(headers));
             broadcaster.attach(thumbs.setFinder.bind(thumbs));
             broadcaster.attach(previewer);
             broadcaster.notify(src);
-            looper.build(getMyLinks(), incrementer, []);
+            looper.build(getMyLinks(), ops.incrementer, []);
             looper.attach(displayer);
             looper.attach(broadcaster.notify.bind(broadcaster));
             looper.attach(sliderBridge);
-            $painter = painter(getTgt('slide'), getTgt('base'), document.body);
+            $painter = painter(ops.getTarget('slide'), ops.getTarget('base'), document.body);
             $recur.attach($painter.doOpacity.bind($painter));
             $recur.attach($painter.cleanup.bind($painter), 'delete');
             $slider.attach(looper.set.bind(looper));
             sliderActions();
-            window.addEventListener('resize', pApply(throttle, pApply(negater, [sliderActions]), 222));
-            setTimeout (function() {
-                compose(applyPortait($('wrapper')), doCompare)($('base'));
-                compose(applyPortait($('navigation')), doCompare)($('base'));
+            window.addEventListener('resize', ops.pApply(throttle, ops.pApply(negater, [sliderActions]), 222));
+            window.setTimeout(function() {
+                compose(applyPortait(utils.$('wrapper')), doCompare)(utils.$('base'));
+                compose(applyPortait(utils.$('navigation')), doCompare)(utils.$('base'));
             }, 666);
-           
         };
     window.addEventListener('load', loader);
 }({

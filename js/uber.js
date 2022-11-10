@@ -8,6 +8,12 @@ if (!window.nW1) {
 //nW1.utils = (function() {
 //"use strict";
 
+function pApply (fn, ...cache) {
+return (...args) => {
+  const all = cache.concat(args);
+  return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);
+};
+}
 function makePortrait(el) {
   if (this.naturalHeight && this.naturalHeight > this.naturalWidth) {
     el.classList.add("portrait");
@@ -16,6 +22,29 @@ function makePortrait(el) {
     el.classList.remove("portrait");
     $("navigation").classList.remove("portrait");
   }
+}
+
+function getNextElement(node, type = 1) {
+	if (node && node.nodeType === type) {
+		return node;
+	}
+	if (node && node.nextSibling) {
+		return getNextElement(node.nextSibling);
+	}
+	return null;
+}
+
+function getTargetNode(node, reg, dir = 'firstChild') {
+	if (!node) {
+		return null;
+	}
+	node = node.nodeType === 1 ? node : getNextElement(node);
+	let res = node && node.nodeName.match(reg);
+	if (!res) {
+		node = node && getNextElement(node[dir]);
+		return node && getTargetNode(node, reg, dir);
+	}
+	return node;
 }
 
 nW1.ops = (function () {
@@ -71,7 +100,7 @@ nW1.ops = (function () {
       getTarget
     ),
     hover = (e) => {
-      const preview = $q("#slidepreview img");
+      const preview = $Q("#slidepreview img");
       if (matchImg(e) && e.target !== preview) {
         replacePath(preview, getAttribute("src")(e.target));
         makePortrait.call(e.target, $("navigation"));
@@ -101,7 +130,10 @@ nW1.ops = (function () {
     };
 
   return {
-    getParent2: compose(getParent, getParent),
+    getNextElement: getNextElement,
+	getTargetNode: getTargetNode,
+	getRes: getRes,
+	getParent2: compose(getParent, getParent),
     getText: curry2(getter)("innerHTML"),
     doGet: curry2(getter),
     doMake: deferPTL(invokeMethod, document, "createElement"),
@@ -124,6 +156,7 @@ nW1.ops = (function () {
     addClickHover: curry2(ptL(utils.lazyVal, "addEventListener", "mouseover"))(
       hover
     ).wrap(pass),
+	setter: setter,
     setId: curry2(setAttribute("id")),
     setKlas: curry2(setAttribute("class")),
     setSrc: curry2(setAttribute("src")),
@@ -144,12 +177,10 @@ nW1.ops = (function () {
     },
     log: (v) => console.log(v),
     getLast: (array) => array[array.length - 1],
-    pApply:
-      (fn, ...cache) =>
-      (...args) => {
-        const all = cache.concat(args);
-        return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);
-      },
     incrementer: compose(doInc, getLength),
+	pApply: pApply,
+	replacePath: replacePath,
+	replacePathSimple: replacePathSimple,
+	pass: pass
   };
 }());

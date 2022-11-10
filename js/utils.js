@@ -130,8 +130,23 @@ nW1.utils = (function () {
           return false;
         };
       return ret && defer ? ret.def : ret ? ret.imm : noOp;
-    };
-
+    },
+    toArray = (coll, cb = () => true) => Array.prototype.slice.call(coll).filter(cb),
+    best = (fun, coll, arg) => {
+        return toArray(coll).reduce((champ, contender) => fun(champ, contender) ? champ : contender);
+    },
+    alternate = (i, n) => {
+        return () => {
+            let j = (i + 1) % n;
+            return j;
+        };
+    },
+    doAlternate = () => {
+        const f = alternate(0, 2);
+        return (actions, ...args) => {
+            return () => best(f, [actions[0], actions[1]])();
+            };
+        };
   return {
     $: $,
     $$: (str) => () => $(str),
@@ -160,6 +175,12 @@ nW1.utils = (function () {
     invokeMethodBridge: (m, v, o) => invokeMethod(o, m, v),
     invokeMethodBridgeCB: (cb) => (m, v, o) => invokeMethod(cb(o), m, v),
     invokeClass: (o, s, m, v) => getResult(o)[s][m](v),
-    negate: (f, ...args) => !f(...args)
+    negate: (f, ...args) => !f(...args),
+    zip: (m, funs, vals) => vals[m]((v, i) => funs[i](v)),
+    eitherOr: (a, b, pred) => pred ? a : b,
+    compare: (pred) => (p, a, b) => {
+        return typeof p === 'string' ? pred(a[p], b[p]) : p ? pred(p[a], p[b]) : pred(a, b);
+      },
+    toArray:  toArray
   };
 }());
