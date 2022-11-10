@@ -283,7 +283,7 @@
       getParent,
       prepend(doMake("h2")),
       ops.doText("Navigation")
-    ),
+    )(),
     doRenderNav = compose(
       prepend(utils.$$Q(".submenu")),
       ops.setHref,
