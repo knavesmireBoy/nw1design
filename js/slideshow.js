@@ -4,15 +4,8 @@ if (!window.nW1) {
     window.nW1 = {};
 }
 
-function equals(a, b) {
-    return a === b;
-}
-
-function doPortrait(m, o, v) {
-  return o.classList[m](v);
-}
-
 const utils = nW1.utils,
+equals = (a, b) a === b,
 getTgt = (str) => utils.$$(str),
 curry2 = utils.curryRight(2),
 curry22 = utils.curryRight(2, true),
@@ -51,14 +44,12 @@ invokeMethod = utils.invokeMethod,
     eitherOr = (a, b, pred) => pred ? a : b,
     testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getRes(item)).map(getprop),
     doPic = ptL(setterBridge, 'src'),
-
     displayInplay = ptL(invokeMethod, document.body.classList, 'add'),
     doCompare = compose(ptL(eitherOr, 'add', 'remove'), curry3(compare(gtThanEq))('naturalWidth')('naturalHeight')),
     onInplay = curry22(invoke)('inplay')(displayInplay),
     deferForward = utils.deferPTL(invokeMethod, nW1.Looper, 'forward', null),
     advance = compose(doCompare, $$('slide'), onInplay, doPic($$('base')), curry2(getter)('value'), deferForward),
     reducer = curry3(invokeMethod)(equals)('reduce'),
-    updateBase = curry2(utils.doWhenFactory())(advance),
     doSwap = function () {
         let bool = compose(reducer)(testProp('base', 'slide', getHeight)),
             displaySwap = curry2(ptL(invokeMethod, document.body.classList))('swap');
@@ -66,15 +57,17 @@ invokeMethod = utils.invokeMethod,
         return !bool;
     },
     playMaker = function ($recur) {
-        const doLoad = curry22(utils.doWhenFactory())(compose($recur.setPlayer.bind($recur), doSwap))(isInplay);
-
-        function updateImages(flag) {
+        const doLoad = curry22(utils.doWhenFactory())(compose($recur.setPlayer.bind($recur), doSwap))(isInplay),
+       // getImgSrc = curryL3(invokeMethodBridge)('getAttribute')('src');
+        getImgSrc = curry2(utils.mittelFactory(invokeMethod, 'getAttribute'))('src'),
+        updateBase = curry2(utils.doWhenFactory())(advance),
+        updateImages = (flag) => {
             const s = utils.$('slide'),
                 b = utils.$('base');
             doPic(s, getImgSrc(b));
             s.onload = () => updateBase(flag);
             b.onload = b.onload || doLoad;
-        }
+        };
         const fade = {
                 validate: function () {
                     return $recur.i <= -1;
@@ -117,8 +110,8 @@ invokeMethod = utils.invokeMethod,
         return function (flag) {
             return flag ? actions.reverse()[0] : fade;
         };
-    },
-    recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
+    };
+    nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
         let ret = {
             init: function () {
                 this.nextplayer = playMaker(this);
@@ -161,4 +154,3 @@ invokeMethod = utils.invokeMethod,
         }
         return ret;
     };
-
