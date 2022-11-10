@@ -179,7 +179,9 @@ nW1.utils = (function () {
     },
     invokeMethodV: (o, p, m, v) => o[p][v](m),
     invokePair: (o, m, k, v) => getResult(o)[m](k, v),
-    lazyVal: (m, p, o, v) => getResult(o)[m](p, v),
+    lazyVal: (m, p, o, v) => {
+      return getResult(o)[m](p, v);
+    },
     invokeMethodBridge: (m, v, o) => invokeMethod(o, m, v),
     invokeMethodBridgeCB: (cb) => (m, v, o) => invokeMethod(cb(o), m, v),
     invokeClass: (o, s, m, v) => getResult(o)[s][m](v),

@@ -281,6 +281,7 @@
     doH2 = compose(
       append,
       getParent,
+      ops.doTest,
       prepend(doMake("h2")),
       ops.doText("Navigation")
     )(),
