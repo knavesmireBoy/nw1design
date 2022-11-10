@@ -87,44 +87,47 @@ nW1.utils = (function () {
     curryRight = (i, defer = false) => {
       const once = {
           imm: (fn) => (a) => fn(a),
-          def: (fn) => (a) => () => fn(a),
+          def: (fn) => (a) => () => fn(a)
         },
         twice = {
           imm: (fn) => (b) => (a) => fn(a, b),
-          def: (fn) => (b) => (a) => () => fn(a, b),
+          def: (fn) => (b) => (a) => () => fn(a, b)
         },
         thrice = {
           imm: (fn) => (c) => (b) => (a) => fn(a, b, c),
-          def: (fn) => (c) => (b) => (a) => () => fn(a, b, c),
+          def: (fn) => (c) => (b) => (a) => () => fn(a, b, c)
         },
         quart = {
           imm: (fn) => (d) => (c) => (b) => (a) => fn(a, b, c, d),
-          def: (fn) => (d) => (c) => (b) => (a) => () => fn(a, b, c, d),
+          def: (fn) => (d) => (c) => (b) => (a) => () => fn(a, b, c, d)
         },
         options = [null, once, twice, thrice, quart],
-        ret = options[i];
-      return ret && defer ? ret.def : ret ? ret.imm : function () {};
+        ret = options[i],
+        noOp = () => {
+            return false;
+        };
+      return ret && defer ? ret.def : ret ? ret.imm : noOp;
     },
     curryLeft = (i, defer = false) => {
       const once = {
           imm: (fn) => (a) => fn(a),
-          def: (fn) => (a) => () => fn(a),
+          def: (fn) => (a) => () => fn(a)
         },
         twice = {
           imm: (fn) => (a) => (b) => fn(a, b),
-          def: (fn) => (a) => (b) => () => fn(a, b),
+          def: (fn) => (a) => (b) => () => fn(a, b)
         },
         thrice = {
           imm: (fn) => (a) => (b) => (c) => fn(a, b, c),
-          def: (fn) => (a) => (b) => (c) => () => fn(a, b, c),
+          def: (fn) => (a) => (b) => (c) => () => fn(a, b, c)
         },
         quart = {
           imm: (fn) => (a) => (b) => (c) => (d) => fn(a, b, c, d),
-          def: (fn) => (a) => (b) => (c) => (d) => () => fn(a, b, c, d),
+          def: (fn) => (a) => (b) => (c) => (d) => () => fn(a, b, c, d)
         },
         options = [null, once, twice, thrice, quart],
         ret = options[i],
-        noOp = () => { 
+        noOp = () => {
             return false;
         };
       return ret && defer ? ret.def : ret ? ret.imm : noOp;
