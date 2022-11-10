@@ -4,10 +4,6 @@ if (!window.nW1) {
     window.nW1 = {};
 }
 
-if (!window.nW1) {
-    window.nW1 = {};
-}
-
 function equals(a, b) {
     return a === b;
 }
@@ -16,8 +12,9 @@ function doPortrait(m, o, v) {
   return o.classList[m](v);
 }
 
-const getTgt = (str) => $$(str),
-    isInplay = $$q('.inplay'),
+const utils = nW1.utils,
+getTgt = (str) => utils.$$(str),
+    isInplay = utils.$$Q('.inplay'),
     //getHeight = curry2(getter)('naturalHeight'),
     getHeight = (o) => {
       let h = o.naturalHeight;
@@ -30,27 +27,27 @@ const getTgt = (str) => $$(str),
     eitherOr = (a, b, pred) => pred ? a : b,
     applyPortait = curry3(doPortrait)('portrait'),
     testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getRes(item)).map(getprop),
-    doPic = ptL(setterBridge, 'src'),
+    doPic = utils.ptL(setterBridge, 'src'),
 
-    displayInplay = ptL(invokeMethod, document.body.classList, 'add'),
-    doCompare = compose(ptL(eitherOr, 'add', 'remove'), curry3(compare(gtThanEq))('naturalWidth')('naturalHeight')),
+    displayInplay = utils.ptL(invokeMethod, document.body.classList, 'add'),
+    doCompare = compose(utils.ptL(eitherOr, 'add', 'remove'), curry3(compare(gtThanEq))('naturalWidth')('naturalHeight')),
     onInplay = curry22(invoke)('inplay')(displayInplay),
-    deferForward = deferPTL(invokeMethod, nW1.Looper, 'forward', null),
-    advance = compose(/*doCompare, $$('slide'), */onInplay, doPic($$('base')), curry2(getter)('value'), deferForward),
+    deferForward = utils.deferPTL(invokeMethod, nW1.Looper, 'forward', null),
+    advance = compose(/*doCompare, utils.$$('slide'), */onInplay, doPic(utils.$$('base')), curry2(getter)('value'), deferForward),
     reducer = curry3(invokeMethod)(equals)('reduce'),
-    updateBase = curry2(doWhenFactory())(advance),
+    updateBase = curry2(utils.doWhenFactory())(advance),
     doSwap = function () {
         let bool = compose(reducer)(testProp('base', 'slide', getHeight)),
-            displaySwap = curry2(ptL(invokeMethod, document.body.classList))('swap');
+            displaySwap = curry2(utils.ptL(invokeMethod, document.body.classList))('swap');
         displaySwap(bool ? 'remove' : 'add'); //paint
         return !bool;
     },
     playMaker = function ($recur) {
-        const doLoad = curry22(doWhenFactory())(compose($recur.setPlayer.bind($recur), doSwap))(isInplay);
+        const doLoad = curry22(utils.doWhenFactory())(compose($recur.setPlayer.bind($recur), doSwap))(isInplay);
 
         function updateImages(flag) {
-            const s = $('slide'),
-                b = $('base');
+            const s = utils.$('slide'),
+                b = utils.$('base');
             doPic(s, getImgSrc(b));
             s.onload = () => updateBase(flag);
             b.onload = b.onload || doLoad;
@@ -89,7 +86,7 @@ const getTgt = (str) => $$(str),
                     $recur.i += 1;
                 },
                 reset: function () {
-                    doPic($('base'), nW1.Looper.forward().value);
+                    doPic(utils.$('base'), nW1.Looper.forward().value);
                 }
             },
             actions = [fadeIn, fadeOut];

@@ -188,7 +188,6 @@ const tagTester = (name) => {
   doGet = curry2(getter),
     invoke = (f, v) => f(v),
     invokeMethod = (o, m, v) => {
-		console.log(o, m,v);
 		return o[m](v);
 	},
     invokeMethodBind = (o, m, v) => {
