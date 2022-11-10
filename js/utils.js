@@ -44,12 +44,20 @@ nW1.utils = (function () {
         return (...rest) => p(f, ...args, ...rest);
       };
     },
-    compose = (...fns) =>
+    compose1 = (...fns) =>
       fns.reduce(
         (f, g) =>
           (...vs) =>
             f(g(...vs))
       ),
+      compose = (...fns) => {
+        return fns.reduce((f, g) => {
+          return (...vs) => {
+            console.log(f, g, vs);
+            return f(g(...vs));
+          };
+        });
+      },
     invokeMethod = (o, m, v) => getResult(o)[m](v),
     doWhenFactory = (n) => {
       const both = (pred, action, v) => {
