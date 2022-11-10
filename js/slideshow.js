@@ -3,9 +3,7 @@
 if (!window.nW1) {
     window.nW1 = {};
 }
-
 const utils = nW1.utils,
-equals = (a, b) a === b,
 getTgt = (str) => utils.$$(str),
 curry2 = utils.curryRight(2),
 curry22 = utils.curryRight(2, true),
@@ -14,12 +12,14 @@ compose = utils.compose,
 $$ = utils.$$,
 isFunction = utils.tagTester("Function"),
 ptL = utils.doPartial(),
+deferPTL = utils.doPartial(true),
 getRes = function (arg) {
     if (isFunction(arg)) {
         return arg();
     }
     return arg;
 },
+equals = (a, b) => (a === b),
 getter = (o, p) => o[p],
 gtThanEq = (a, b) => a >= b,
 setter = (o, k, v) => {
@@ -47,7 +47,7 @@ invokeMethod = utils.invokeMethod,
     displayInplay = ptL(invokeMethod, document.body.classList, 'add'),
     doCompare = compose(ptL(eitherOr, 'add', 'remove'), curry3(compare(gtThanEq))('naturalWidth')('naturalHeight')),
     onInplay = curry22(invoke)('inplay')(displayInplay),
-    deferForward = utils.deferPTL(invokeMethod, nW1.Looper, 'forward', null),
+    deferForward = deferPTL(invokeMethod, nW1.Looper, 'forward', null),
     advance = compose(doCompare, $$('slide'), onInplay, doPic($$('base')), curry2(getter)('value'), deferForward),
     reducer = curry3(invokeMethod)(equals)('reduce'),
     doSwap = function () {

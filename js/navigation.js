@@ -101,7 +101,7 @@
           );
         return func([exec, undo]);
       },
-      loop = utils.deferPTL(utils.invokeMethodBind, nW1.Looper),
+      loop = deferPTL(utils.invokeMethodBind, nW1.Looper),
       set = loop("set"),
       routines = [
         set(false),
@@ -218,7 +218,7 @@
   }
   let $painter = null,
     throttlePause,
-    getDesktop = ops.pApply(Modernizr.mq, ipad);
+    getDesktop = nW1.ops.pApply(Modernizr.mq, ipad);
 
   const utils = nW1.utils,
     ops = nW1.ops,
@@ -234,6 +234,7 @@
     invokeMethod = utils.invokeMethod,
     invokeMethodBridge = utils.invokeMethodBridge,
     ptL = utils.doPartial(),
+    deferPTL = utils.doPartial(true),
     doMake = ops.doMake,
     getLinks = (grp) => {
       const get = curry3(ops.getTargetNode)("firstChild")(/^a$/i);
@@ -282,7 +283,7 @@
       getParent,
       prepend(doMake("h2")),
       ops.doText("Navigation")
-    )(),
+    ),
     doRenderNav = compose(
       prepend(utils.$$Q(".submenu")),
       ops.setHref,
@@ -354,7 +355,7 @@
         addClickPreview,
         utils.setNavId,
         append(doMake("section")()),
-        prepend($("content")),
+        prepend(utils.$("content")),
         doMake("aside")
       )();
       myconfig
