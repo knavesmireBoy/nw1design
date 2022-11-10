@@ -30,31 +30,6 @@ function mittelFactory(flag) {
   return (f, m, k) => (o, v) => def(k) ? f(o, m, k, v) : f(o, m, v);
 }
 
-function doWhenFactory(n) {
-    const both = (pred, action, v) => {
-            if (pred(v)) {
-                return action(v);
-            }
-        },
-        act = (pred, action, v) => {
-            if (getResult(pred)) {
-                return action(v);
-            }
-        },
-        predi = (pred, action, v) => {
-            if (pred(v)) {
-                return action();
-            }
-        },
-        none = (pred, action) => {
-            if (getResult(pred)) {
-                return action();
-            }
-        },
-        all = [none, predi, act, both];
-    return all[n] || none;
-}
-
 function modulo(n, i) {
     return i % n;
 }

@@ -11,38 +11,6 @@ if (!window.nW1) {
 nW1.Looper = (function () {
   "use strict";
 
-  /* don't use partially applied callbacks in map, forEach etc.. as argument length will confound...*/
-  function doPartial(flag) {
-    return function p(f, ...vs) {
-      if (f.length === vs.length) {
-        return flag ? () => f(...vs) : f(...vs);
-      }
-      return (...rest) => p(f, ...vs, ...rest);
-    };
-  }
-
-  function equals(a, b) {
-    return a === b;
-  }
-
-  function modulo(n, i) {
-    return i % n;
-  }
-
-  function increment(i) {
-    return i + 1;
-  }
-
-  function doInc(n) {
-    return compose(ptL(modulo, n), increment);
-  }
-
-  function getResult(o) {
-    if (isFunction(o)) {
-      return o();
-    }
-    return o;
-  }
   function preNotify() {
     this.notify(this.get());
     this.position = this.advance(this.position);
@@ -54,43 +22,31 @@ nW1.Looper = (function () {
     return this.status();
   }
 
-  const curry2 = (fun) => (b) => (a) => fun(a, b),
-    curry22 = (fun) => (b) => (a) => () => fun(a, b),
-    curryL3 = (fun) => (a) => (b) => (c) => fun(a, b, c),
-    invokeMethod = (o, m, v) => o[m](v),
-    invokeMethodBridge = (m, v, o) => {
-      return invokeMethod(getResult(o), m, v);
-    },
+  const utils = nW1.utils,
+    curry2 = utils.curryRight(2),
+    curry22 = utils.curryRight(2, true),
+    curryL3 = utils.curryLeft(3),
     getter = (o, p) => o[p],
-    compose = (...fns) =>
-      fns.reduce(
-        (f, g) =>
-          (...vs) =>
-            f(g(...vs))
-      ),
-    ptL = doPartial(),
-    negate = (f, lastarg) => !f(lastarg),
-    tagTester = (name) => {
-      const tag = "[object " + name + "]";
-      return function (obj) {
-        return toString.call(obj) === tag;
+    compose = utils.compose,
+    ptL = utils.doPartial(),
+    isBoolean = utils.tagTester("Boolean"),
+    isFunction = utils.tagTester("Function"),
+    equals = (a, b) => a === b,
+    modulo = (n, i) => i % n,
+    increment = (i) => i + 1,
+    doInc = (n) => compose(ptL(modulo, n), increment),
+    makeProxyIterator = (src, tgt, methods) => {
+      const mapper = (method) => {
+        if (src[method] && isFunction(src[method])) {
+          tgt[method] = function () {
+            return this.$subject[method].apply(this.$subject, arguments);
+          };
+        }
       };
-    },
-    isBoolean = tagTester("Boolean"),
-    isFunction = tagTester("Function");
-
-  function makeProxyIterator(src, tgt, methods) {
-    function mapper(method) {
-      if (src[method] && isFunction(src[method])) {
-        tgt[method] = function () {
-          return this.$subject[method].apply(this.$subject, arguments);
-        };
-      }
-    }
-    tgt.setSubject(src);
-    methods.forEach(mapper);
-    return tgt;
-  }
+      tgt.setSubject(src);
+      methods.forEach(mapper);
+      return tgt;
+    };
 
   class LoopIterator extends Publisher {
     constructor(group = [], advancer = () => 1, handlers = [], flag = false) {
@@ -123,11 +79,11 @@ nW1.Looper = (function () {
     }
     find(tgt) {
       // return this.set(_.findIndex(this.group.members, _.partial(equals, tgt)));
-      const match = curryL3(invokeMethodBridge)("match"),
+      const match = curryL3(utils.invokeMethodBridge)("match"),
         cb = compose(
           match,
           curry2(getter)(1),
-          ptL(invokeMethod, /\/(\w+)_/, "exec")
+          ptL(utils.invokeMethod, /\/(\w+)_/, "exec")
         )(tgt);
       this.set(this.group.members.findIndex(cb));
       this.notify(this.get());
@@ -147,7 +103,7 @@ nW1.Looper = (function () {
       this.notify(this.get());
       return {
         value: this.group.members[this.position],
-        index: this.position,
+        index: this.position
       };
     }
     setStrategy(flag) {
@@ -158,7 +114,7 @@ nW1.Looper = (function () {
         members: this.group.members,
         value: this.group.members[this.position],
         index: this.position,
-        rev: this.rev,
+        rev: this.rev
       };
     }
     visit(cb) {
@@ -178,7 +134,7 @@ nW1.Looper = (function () {
       }
     }
     remove(value) {
-      this.members = this.members.filter(negate(ptL(equals, value)));
+      this.members = this.members.filter(utils.negate(ptL(equals, value)));
     }
     has(value) {
       return this.members.includes(value);
@@ -205,7 +161,7 @@ nW1.Looper = (function () {
       },
       build: function (coll, advancer, handlers = [], flag) {
         this.setSubject(LoopIterator.from(coll, advancer(coll), handlers));
-      },
+      }
     },
     doGet = curry22(getter),
     incrementer = compose(doInc, doGet("length")),
@@ -227,5 +183,5 @@ nW1.Looper = (function () {
     LoopIterator.from([], incrementer, []),
     target,
     methods
-  );
-}());
+    );
+  }());

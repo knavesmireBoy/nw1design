@@ -14,6 +14,30 @@ function doPortrait(m, o, v) {
 
 const utils = nW1.utils,
 getTgt = (str) => utils.$$(str),
+curry2 = utils.curryRight(2),
+curry22 = utils.curryRight(2, true),
+curry3 = utils.curryRight(3),
+compose = utils.compose,
+$$ = utils.$$,
+isFunction = utils.tagTester("Function"),
+ptL = utils.doPartial(),
+getRes = function (arg) {
+    if (isFunction(arg)) {
+        return arg();
+    }
+    return arg;
+},
+getter = (o, p) => o[p],
+gtThanEq = (a, b) => a >= b,
+setter = (o, k, v) => {
+    getRes(o)[k] = v;
+},
+setterBridge = (k, o, v) => {
+    setter(o, k, v);
+    return getRes(o);
+},
+invoke = (f, v) => f(v),
+invokeMethod = utils.invokeMethod,
     isInplay = utils.$$Q('.inplay'),
     //getHeight = curry2(getter)('naturalHeight'),
     getHeight = (o) => {
@@ -25,20 +49,19 @@ getTgt = (str) => utils.$$(str),
       return typeof p === 'string' ? pred(a[p], b[p]) : p ? pred(p[a], p[b]) : pred(a, b);
     },
     eitherOr = (a, b, pred) => pred ? a : b,
-    applyPortait = curry3(doPortrait)('portrait'),
     testProp = (a, b, getprop) => [a, b].map(getTgt).map((item) => getRes(item)).map(getprop),
-    doPic = utils.ptL(setterBridge, 'src'),
+    doPic = ptL(setterBridge, 'src'),
 
-    displayInplay = utils.ptL(invokeMethod, document.body.classList, 'add'),
-    doCompare = compose(utils.ptL(eitherOr, 'add', 'remove'), curry3(compare(gtThanEq))('naturalWidth')('naturalHeight')),
+    displayInplay = ptL(invokeMethod, document.body.classList, 'add'),
+    doCompare = compose(ptL(eitherOr, 'add', 'remove'), curry3(compare(gtThanEq))('naturalWidth')('naturalHeight')),
     onInplay = curry22(invoke)('inplay')(displayInplay),
     deferForward = utils.deferPTL(invokeMethod, nW1.Looper, 'forward', null),
-    advance = compose(/*doCompare, utils.$$('slide'), */onInplay, doPic(utils.$$('base')), curry2(getter)('value'), deferForward),
+    advance = compose(doCompare, $$('slide'), onInplay, doPic($$('base')), curry2(getter)('value'), deferForward),
     reducer = curry3(invokeMethod)(equals)('reduce'),
     updateBase = curry2(utils.doWhenFactory())(advance),
     doSwap = function () {
         let bool = compose(reducer)(testProp('base', 'slide', getHeight)),
-            displaySwap = curry2(utils.ptL(invokeMethod, document.body.classList))('swap');
+            displaySwap = curry2(ptL(invokeMethod, document.body.classList))('swap');
         displaySwap(bool ? 'remove' : 'add'); //paint
         return !bool;
     },
