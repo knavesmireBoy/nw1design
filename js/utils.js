@@ -6,13 +6,13 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 
-if (typeof Function.prototype.wrap === 'undefined') {
-    Function.prototype.wrap = function(wrapper, ..._vs) {
-        let _method = this; //the function
-        return function(...vs) {
-            return wrapper.apply(this, [_method.bind(this), ..._vs, ...vs]);
-        };
+if (typeof Function.prototype.wrap === "undefined") {
+  Function.prototype.wrap = function (wrapper, ..._vs) {
+    let _method = this; //the function
+    return function (...vs) {
+      return wrapper.apply(this, [_method.bind(this), ..._vs, ...vs]);
     };
+  };
 }
 
 nW1.utils = (function () {
@@ -23,7 +23,7 @@ nW1.utils = (function () {
       }
       return o;
     },
-    def = x => typeof x !== "undefined",
+    def = (x) => typeof x !== "undefined",
     tagTester = (name) => {
       const tag = "[object " + name + "]";
       return function (obj) {
@@ -76,14 +76,13 @@ nW1.utils = (function () {
       return all[n] || none;
     },
     mittelFactory = (flag) => {
-        if (flag) {
-          return (f, o, v) => (m) => f(o, m, v);
-        }
-        else if (isBoolean(flag)) {
-          return (f, m, v) => (o, k) => def(v) ? f(o, m, k, v) : f(o, m, v);
-        }
-        return (f, m, k) => (o, v) => def(k) ? f(o, m, k, v) : f(o, m, v);
-      },
+      if (flag) {
+        return (f, o, v) => (m) => f(o, m, v);
+      } else if (isBoolean(flag)) {
+        return (f, m, v) => (o, k) => def(v) ? f(o, m, k, v) : f(o, m, v);
+      }
+      return (f, m, k) => (o, v) => def(k) ? f(o, m, k, v) : f(o, m, v);
+    },
     curryRight = (i, defer = false) => {
       const once = {
           imm: (fn) => (a) => fn(a),
@@ -104,7 +103,7 @@ nW1.utils = (function () {
         options = [null, once, twice, thrice, quart],
         ret = options[i],
         noOp = () => {
-            return false;
+          return false;
         };
       return ret && defer ? ret.def : ret ? ret.imm : noOp;
     },
@@ -128,11 +127,10 @@ nW1.utils = (function () {
         options = [null, once, twice, thrice, quart],
         ret = options[i],
         noOp = () => {
-            return false;
+          return false;
         };
       return ret && defer ? ret.def : ret ? ret.imm : noOp;
     };
-
 
   return {
     $: $,
@@ -143,7 +141,8 @@ nW1.utils = (function () {
       () =>
         $q(str, flag),
     compose: compose,
-    tagTester, tagTester,
+    tagTester,
+    tagTester,
     doWhenFactory: doWhenFactory,
     doPartial: doPartial,
     always: (a) => () => a,
@@ -162,5 +161,5 @@ nW1.utils = (function () {
     invokeMethodBridgeCB: (cb) => (m, v, o) => invokeMethod(cb(o), m, v),
     invokeClass: (o, s, m, v) => getResult(o)[s][m](v),
     negate: (f, ...args) => !f(...args)
-};
+  };
 }());
