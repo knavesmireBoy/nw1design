@@ -45,13 +45,13 @@ nW1.utils = (function () {
         return (...rest) => p(f, ...args, ...rest);
       };
     },
-    compose1 = (...fns) =>
+    compose = (...fns) =>
       fns.reduce(
         (f, g) =>
           (...vs) =>
             f(g(...vs))
       ),
-      compose = (...fns) => {
+      composeVerbose = (...fns) => {
         return fns.reduce((f, g) => {
           return (...vs) => {
           //console.log(f, g, ...vs);

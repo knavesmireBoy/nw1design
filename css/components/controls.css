@@ -10,7 +10,7 @@
   overflow: hidden;
 }
 #navigation.portrait #slidepreview {
-  width: 41.5%;
+  width: 41.1%;
 }
 .portfolio #display {
   margin: 0 1.5em 0 0;
@@ -229,7 +229,6 @@ img#base,
 }
 
 #navigation .submenu ul li {
-  overflow: hidden;
   margin: 0.3em;
   display: inline-block;
 }

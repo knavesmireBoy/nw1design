@@ -127,7 +127,10 @@ nW1.ops = (function () {
         }
       }
       replacePathSimple(o, src);
-    };
+    },
+    doPortrait = (m, o, v) => {
+      return o.classList[m](v);
+      };
 
   return {
     getNextElement: getNextElement,
@@ -185,6 +188,7 @@ nW1.ops = (function () {
     getZero: getZero,
     incrementer: compose(doInc, getLength),
     pApply: pApply,
+    applyPortait: curry3(doPortrait)('portrait'),
     replacePath: replacePath,
     replacePathSimple: replacePathSimple,
     pass: pass
