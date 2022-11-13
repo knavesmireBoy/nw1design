@@ -31,9 +31,9 @@ nW1.utils = (function () {
       };
     },
     isBoolean = tagTester("Boolean"),
-    $ = (str) => document.getElementById(str),
-    $$ = (str) => () => $(str),
-    $q = (str, flag = false) => {
+    byId = (str) => document.getElementById(str),
+    byIdDefer = (str) => () => byId(str),
+    byTag = (str, flag = false) => {
       const m = flag ? "querySelectorAll" : "querySelector";
       return document[m](str);
     },
@@ -165,13 +165,13 @@ nW1.utils = (function () {
             };
         };
   return {
-    $: $,
-    $$: (str) => () => $(str),
-    $Q: $q,
+    $: byId,
+    $$: byIdDefer,
+    $Q: byTag,
     $$Q:
       (str, flag = false) =>
       () =>
-        $q(str, flag),
+        byTag(str, flag),
     compose: compose,
     tagTester,
     tagTester,
@@ -208,7 +208,7 @@ nW1.utils = (function () {
       },
     toArray:  toArray,
     doAlternate: doAlternate,
-    getTgt: (str) => $$(str),
+    getTgt: (str) => byIdDefer(str),
     doTest: function (x) {
       console.log(x);
       return x;
