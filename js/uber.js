@@ -8,11 +8,11 @@ if (!window.nW1) {
 //nW1.utils = (function() {
 //"use strict";
 
-function pApply (fn, ...cache) {
-return (...args) => {
-  const all = cache.concat(args);
-  return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);
-};
+function pApply(fn, ...cache) {
+  return (...args) => {
+    const all = cache.concat(args);
+    return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);
+  };
 }
 function makePortrait(el) {
   if (this.naturalHeight && this.naturalHeight > this.naturalWidth) {
@@ -25,26 +25,26 @@ function makePortrait(el) {
 }
 
 function getNextElement(node, type = 1) {
-	if (node && node.nodeType === type) {
-		return node;
-	}
-	if (node && node.nextSibling) {
-		return getNextElement(node.nextSibling);
-	}
-	return null;
+  if (node && node.nodeType === type) {
+    return node;
+  }
+  if (node && node.nextSibling) {
+    return getNextElement(node.nextSibling);
+  }
+  return null;
 }
 
-function getTargetNode(node, reg, dir = 'firstChild') {
-	if (!node) {
-		return null;
-	}
-	node = node.nodeType === 1 ? node : getNextElement(node);
-	let res = node && node.nodeName.match(reg);
-	if (!res) {
-		node = node && getNextElement(node[dir]);
-		return node && getTargetNode(node, reg, dir);
-	}
-	return node;
+function getTargetNode(node, reg, dir = "firstChild") {
+  if (!node) {
+    return null;
+  }
+  node = node.nodeType === 1 ? node : getNextElement(node);
+  let res = node && node.nodeName.match(reg);
+  if (!res) {
+    node = node && getNextElement(node[dir]);
+    return node && getTargetNode(node, reg, dir);
+  }
+  return node;
 }
 
 nW1.ops = (function () {
@@ -61,7 +61,6 @@ nW1.ops = (function () {
     invokeMethod = utils.invokeMethod,
     invokeMethodBridge = utils.invokeMethodBridge,
     invokeMethodBridgeCB = utils.invokeMethodBridgeCB,
-    deferPTL = utils.doPartial(true),
     ptL = utils.doPartial(),
     pass = (ptl, o) => {
       ptl(getRes(o));
@@ -72,6 +71,7 @@ nW1.ops = (function () {
     setter = (o, k, v) => {
       let obj = getRes(o);
       obj[k] = v;
+      //return obj;
     },
     curry2 = utils.curryRight(2),
     curry3 = utils.curryRight(3),
@@ -89,7 +89,7 @@ nW1.ops = (function () {
     remKlas = ptL(invokeMethodBridge, "remove"),
     undoActive = compose(remKlas("active"), getClassList).wrap(pass),
     doEach = curryL3(invokeMethodBridgeCB(getRes))("forEach"),
-    getZero = curry2(getter)(0),
+    getZero = curry2(getter)('0'),
     getLength = curry2(getter)("length"),
     getKey = compose(getZero, curryL3(invokeMethod)(window.Object)("keys")),
     modulo = (n, i) => i % n,
@@ -101,7 +101,7 @@ nW1.ops = (function () {
       getTarget
     ),
     hover = (e) => {
-      const preview = $Q("#slidepreview img");
+      const preview = utils.$Q("#slidepreview img");
       if (matchImg(e) && e.target !== preview) {
         replacePath(preview, getAttribute("src")(e.target));
         makePortrait.call(e.target, $("navigation"));
@@ -132,12 +132,14 @@ nW1.ops = (function () {
 
   return {
     getNextElement: getNextElement,
-	getTargetNode: getTargetNode,
-	getRes: getRes,
-	getParent2: compose(getParent, getParent),
+    getTargetNode: getTargetNode,
+    getTarget: getTarget,
+    getRes: getRes,
+    getParent: getParent,
+    getParent2: compose(getParent, getParent),
     getText: curry2(getter)("innerHTML"),
     doGet: curry2(getter),
-    doMake: curryL33(invokeMethod, document, "createElement"),
+    doMake: curryL33(invokeMethod)(document)("createElement"),
     //doText: deferPTL(invokeMethod, document, "createTextNode"),
     doText: curryL33(invokeMethod)(document)("createTextNode"),
     doTextCBNow: curryL3(invokeMethod)(document)("createTextNode"),
@@ -177,12 +179,14 @@ nW1.ops = (function () {
       console.log(x);
       return x;
     },
+    doTextNow: doTextNow,
     log: (v) => console.log(v),
     getLast: (array) => array[array.length - 1],
+    getZero: getZero,
     incrementer: compose(doInc, getLength),
-	pApply: pApply,
-	replacePath: replacePath,
-	replacePathSimple: replacePathSimple,
-	pass: pass
+    pApply: pApply,
+    replacePath: replacePath,
+    replacePathSimple: replacePathSimple,
+    pass: pass
   };
 }());

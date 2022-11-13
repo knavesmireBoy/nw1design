@@ -150,7 +150,7 @@
         }
       }
     };
-  }
+  }//router
 
   function prepareHeadings(ul, conf) {
     return function (el, i, els) {
@@ -215,7 +215,7 @@
         return str.match(/\/(\w+)_/.exec(cur)[1]);
       };
     }
-  }
+  }//finder
   let $painter = null,
     throttlePause,
     getDesktop = nW1.ops.pApply(Modernizr.mq, ipad);
@@ -336,7 +336,6 @@
     onDisplayUL = curry2(invoke)(utils.$Q("#display ul")),
     myconfig = config[document.body.id],
     pg = window.web ? 27 : 52,
-    getZero = curry2(ops.setter)(0),
     gtThanEq = (a, b) => a >= b,
     loader = function () {
       getDesktop = Mod.mq(ipad) ? getDesktop : ops.pApply(negate, getDesktop);
@@ -352,9 +351,9 @@
         getParent,
         onDisplayUL,
         prepend,
-        utils.addClickHover,
+        ops.addClickHover,
         addClickPreview,
-        utils.setNavId,
+        ops.setNavId,
         append(doMake("section")()),
         prepend(utils.$("content")),
         doMake("aside")
@@ -371,7 +370,7 @@
           toArray,
           getExtent
         ),
-        src = compose(ops.getAttrs("href"), getZero, getExtent)(),
+        src = compose(ops.getAttrs("href"), utils.doTest, ops.getZero, getExtent)(),
         machDiv = prep2Append(doDiv, prepAttrs([setId], ["slideshow"])),
         machControls = prep2Append(doDiv, prepAttrs([setId], ["controls"])),
         machButtons = prep2Append(doDiv, prepAttrs([setId], ["buttons"])), //container for buttons
@@ -423,12 +422,12 @@
             member = members[i],
             //reached end
             j = !member ? 1 : i + 1,
-            txt = ops.getLast($("slide").src.split("/"));
+            txt = ops.getLast(utils.$("slide").src.split("/"));
           //looper members zero indexed...
           /*also as it stands looper reverses the array when the back button is pressed
                     before counting forwards may have to fix that but at the moment this undoes that */
           j = looper.get("rev") ? l - i : j;
-          if (!$("base").onload || path.match(txt)) {
+          if (!utils.$("base").onload || path.match(txt)) {
             doSliders(j);
           }
         },
@@ -469,11 +468,11 @@
         machButtons,
         machControls,
         machDiv
-      )($("display"));
+      )(utils.$("display"));
       buttontext
         .map(buttons)
         .map(ops.appendCB)
-        .map(curry2(invoke)($("buttons")))
+        .map(curry2(invoke)(utils.$("buttons")))
         .map(buttonCb);
       headers.search = headersSearch;
       thumbs.search = thumbsSearch;

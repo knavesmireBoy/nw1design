@@ -53,12 +53,20 @@ nW1.utils = (function () {
       compose = (...fns) => {
         return fns.reduce((f, g) => {
           return (...vs) => {
-            console.log(f, g, vs);
+          //console.log(f, g, ...vs);
             return f(g(...vs));
           };
         });
       },
-    invokeMethod = (o, m, v) => getResult(o)[m](v),
+    invokeMethod = (o, m, v) => {
+      try {
+        return getResult(o)[m](v);
+      }
+      catch(e){
+        console.log(o,m,v);
+        return o[m](v);
+      }
+    },
     doWhenFactory = (n) => {
       const both = (pred, action, v) => {
           if (pred(v)) {
@@ -183,7 +191,10 @@ nW1.utils = (function () {
       return getResult(o)[m](p, v);
     },
     invokeMethodBridge: (m, v, o) => invokeMethod(o, m, v),
-    invokeMethodBridgeCB: (cb) => (m, v, o) => invokeMethod(cb(o), m, v),
+    invokeMethodBridgeCB: (cb) => (m, v, o) => {
+      console.log(cb(o), m, v);
+      return invokeMethod(cb(o), m, v);
+    },
     invokeClass: (o, s, m, v) => getResult(o)[s][m](v),
     negate: (f, ...args) => !f(...args),
     zip: (m, funs, vals) => vals[m]((v, i) => funs[i](v)),
@@ -191,6 +202,11 @@ nW1.utils = (function () {
     compare: (pred) => (p, a, b) => {
         return typeof p === 'string' ? pred(a[p], b[p]) : p ? pred(p[a], p[b]) : pred(a, b);
       },
-    toArray:  toArray
+    toArray:  toArray,
+    doAlternate: doAlternate,
+    doTest: function (x) {
+      console.log(x);
+      return x;
+    }
   };
 }());
