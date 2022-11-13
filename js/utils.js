@@ -64,7 +64,7 @@ nW1.utils = (function () {
         return getResult(o)[m](v);
       }
       catch(e){
-       // console.log(o,m,v);
+    // console.log(e,o,m,v);
         return o[m](v);
       }
     },
@@ -94,11 +94,11 @@ nW1.utils = (function () {
     },
     mittelFactory = (flag) => {
       if (flag) {
-        return (f, o, v) => (m) => f(o, m, v);
+        return (f, o, v = undefined) => (m) => f(o, m, v);
       } else if (isBoolean(flag)) {
-        return (f, m, v) => (o, k) => def(v) ? f(o, m, k, v) : f(o, m, v);
+        return (f, m, v = undefined) => (o, k) => def(v) ? f(o, m, k, v) : f(o, m, v);
       }
-      return (f, m, k) => (o, v) => def(k) ? f(o, m, k, v) : f(o, m, v);
+      return (f, m, k = undefined) => (o, v) => def(k) ? f(o, m, k, v) : f(o, m, v);
     },
     curryRight = (i, defer = false) => {
       const once = {
