@@ -85,7 +85,7 @@
         const func = utils.doAlternate(),
           displayPause = ptL(
             utils.invokeMethodV,
-            utils.$$("slideshow"),
+            $$("slideshow"),
             "classList",
             "pause"
           ),
@@ -134,7 +134,7 @@
         let img = ops.getImgPath(e),
           visit = false;
         if (ops.matchLink(e)) {
-          toArray(utils.$Q(".active", true)).forEach((el) =>
+          toArray($Q(".active", true)).forEach((el) =>
             el.classList.remove("active")
           );
           headers.show(ops.getTarget(e), true);
@@ -224,6 +224,10 @@
     ops = nW1.ops,
     broadcaster = Publisher.from(),
     looper = nW1.Looper,
+    $ = utils.$,
+    $$ = utils.$$,
+    $Q = utils.$Q,
+    $$Q = utils.$$Q,
     compose = utils.compose,
     curry2 = utils.curryRight(2),
     curryL2 = utils.curryLeft(2),
@@ -236,7 +240,7 @@
     ptL = utils.doPartial(),
     deferPTL = utils.doPartial(true),
     doMake = ops.doMake,
-    getTgt = (str) => utils.$(str),
+    getTgt = (str) => $(str),
     getLinks = (grp) => {
       const get = curry3(ops.getTargetNode)("firstChild")(/^a$/i);
       return grp.map((lis) => compose(ops.getAttrs("href"), get)(lis));
@@ -286,7 +290,7 @@
       ops.doText("Navigation")
     )(),
     doRenderNav = compose(
-      prepend(utils.$$Q(".submenu")),
+      prepend($$Q(".submenu")),
       ops.setHref,
       getParent,
       prepend(doMake("a"))
@@ -301,16 +305,16 @@
     //setButtonLinks = prep2Append(doImg, prepAttrs([setAlt], ['#'])),
     headings = compose(
       curry2(toArray)(curryL2(negate)(ops.matchPath)),
-      utils.$$Q("#navigation a", true)
+      $$Q("#navigation a", true)
     ),
-    doSliderOutput = ptL(setter, utils.$$("tracked"), "innerHTML"),
-    doSliderInput = ptL(setter, utils.$$("myrange"), "value"),
+    doSliderOutput = ptL(setter, $$("tracked"), "innerHTML"),
+    doSliderInput = ptL(setter, $$("myrange"), "value"),
     addClickPreview = curry2(ptL(utils.lazyVal, "addEventListener", "click"))(
       routes.sidebar
     ).wrap(ops.pass),
     displayPause = ptL(
       utils.invokeMethodV,
-      utils.$$("slideshow"),
+      $$("slideshow"),
       "classList",
       "pause"
     ),
@@ -333,7 +337,7 @@
       };
       return nW1.Publish().makepublisher(ret);
     },
-    onDisplayUL = curry2(invoke)(utils.$Q("#display ul")),
+    onDisplayUL = curry2(invoke)($Q("#display ul")),
     myconfig = config[document.body.id],
     pg = window.web ? 27 : 52,
     gtThanEq = (a, b) => a >= b,
@@ -355,16 +359,16 @@
         addClickPreview,
         ops.setNavId,
         append(doMake("section")()),
-        prepend(utils.$("content")),
+        prepend($("content")),
         doMake("aside")
       )();
       myconfig
         .map(ops.getKeys)
         .map(doRenderNav)
-        .forEach(prepareHeadings(utils.$Q("#navigation ul"), myconfig));
+        .forEach(prepareHeadings($Q("#navigation ul"), myconfig));
       //post creation of sidebar
       headers = Finder.from(headings());
-      const getExtent = utils.$$Q("#navigation ul li a", true),
+      const getExtent = $$Q("#navigation ul li a", true),
         getMyLinks = compose(
           curryL3(invokeMethodBridge)("map")(getHref),
           toArray,
@@ -388,9 +392,9 @@
           doImg,
           prepAttrs([setSrc, setAlt, setId], [src, "current", "slide"])
         ),
-        previewer = ptL(ops.replacePathSimple, utils.$$Q("#slidepreview img")),
-        displayer = curryL2(ops.replacePath)(utils.$$("base")),
-        thumbs = Finder.from(utils.$$Q("#navigation ul li", true)),
+        previewer = ptL(ops.replacePathSimple, $$Q("#slidepreview img")),
+        displayer = curryL2(ops.replacePath)($$("base")),
+        thumbs = Finder.from($$Q("#navigation ul li", true)),
         addPlayClick = curry2(ptL(utils.lazyVal, "addEventListener", "click"))(
           routes.menu
         ).wrap(ops.pass),
@@ -401,15 +405,15 @@
         sliderTxt = ["Image ", " of "],
         sliderLoad = Mod.mq(ipad) ? sliderTxt : sliderTxtAlt,
         slidertext = sliderLoad.map(ops.doTextCBNow),
-        sliderRestore = ops.pApply(abbr, utils.$$("tracker"), sliderTxt),
-        sliderReplace = ops.pApply(abbr, utils.$$("tracker"), sliderTxtAlt),
+        sliderRestore = ops.pApply(abbr, $$("tracker"), sliderTxt),
+        sliderReplace = ops.pApply(abbr, $$("tracker"), sliderTxtAlt),
         sliderOptions = Mod.mq(ipad)
           ? [sliderRestore, sliderReplace]
           : [sliderReplace, sliderRestore],
         sliderActions = utils.doAlternate()(sliderOptions),
         sliderspans = [
-          curry2(insertB4)(utils.$$("tracked")),
-          curry2(insertB4)(utils.$$("max"))
+          curry2(insertB4)($$("tracked")),
+          curry2(insertB4)($$("max"))
         ],
         doSliders = (i) => {
           doSliderInput(i);
@@ -422,12 +426,12 @@
             member = members[i],
             //reached end
             j = !member ? 1 : i + 1,
-            txt = ops.getLast(utils.$("slide").src.split("/"));
+            txt = ops.getLast($("slide").src.split("/"));
           //looper members zero indexed...
           /*also as it stands looper reverses the array when the back button is pressed
                     before counting forwards may have to fix that but at the moment this undoes that */
           j = looper.get("rev") ? l - i : j;
-          if (!utils.$("base").onload || path.match(txt)) {
+          if (!$("base").onload || path.match(txt)) {
             doSliders(j);
           }
         },
@@ -468,16 +472,16 @@
         machButtons,
         machControls,
         machDiv
-      )(utils.$("display"));
+      )($("display"));
       buttontext
         .map(buttons)
         .map(ops.appendCB)
-        .map(curry2(invoke)(utils.$("buttons")))
+        .map(curry2(invoke)($("buttons")))
         .map(buttonCb);
       headers.search = headersSearch;
       thumbs.search = thumbsSearch;
       utils.zip("forEach", sliderspans, slidertext);
-      $slider = sliderFactory(utils.$$("myrange"));
+      $slider = sliderFactory($$("myrange"));
       broadcaster.attach(headers.setFinder.bind(headers));
       broadcaster.attach(thumbs.setFinder.bind(thumbs));
       broadcaster.attach(previewer);
@@ -500,8 +504,8 @@
         ops.pApply(throttle, ops.pApply(negater, [sliderActions]), 222)
       );
       window.setTimeout(function () {
-        // compose(applyPortait(utils.$('wrapper')), doCompare)(utils.$('base'));
-        //  compose(applyPortait(utils.$('navigation')), doCompare)(utils.$('base'));
+        // compose(applyPortait($('wrapper')), doCompare)($('base'));
+        //  compose(applyPortait($('navigation')), doCompare)($('base'));
       }, 666);
     };
   window.addEventListener("load", loader);
