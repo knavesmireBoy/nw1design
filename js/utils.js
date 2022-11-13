@@ -187,7 +187,7 @@ nW1.utils = (function () {
       return getResult(o)[m].call(o, v);
     },
     invokeMethodV: (o, p, m, v) => {
-      console.log(o,m,p,v);
+      //console.log(o,m,p,v);
       return getResult(o)[p][v](m);
     },
     invokePair: (o, m, k, v) => getResult(o)[m](k, v),

@@ -282,7 +282,6 @@
     doH2 = compose(
       append,
       getParent,
-      ops.doTest,
       prepend(doMake("h2")),
       ops.doText("Navigation")
     )(),
@@ -371,7 +370,7 @@
           toArray,
           getExtent
         ),
-        src = compose(ops.getAttrs("href"), utils.doTest, ops.getZero, getExtent)(),
+        src = compose(ops.getAttrs("href"), ops.getZero, getExtent)(),
         machDiv = prep2Append(doDiv, prepAttrs([setId], ["slideshow"])),
         machControls = prep2Append(doDiv, prepAttrs([setId], ["controls"])),
         machButtons = prep2Append(doDiv, prepAttrs([setId], ["buttons"])), //container for buttons
