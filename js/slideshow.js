@@ -65,7 +65,6 @@ const utils = nW1.utils,
     onInplay,
     doPic($$("base")),
     curry2(getter)("value"),
-    utils.doTest,
     deferForward
   ),
   reducer = curry3(invokeMethod)(equals)("reduce"),
@@ -85,10 +84,9 @@ const utils = nW1.utils,
       updateImages = (flag) => {
         const s = utils.$("slide"),
           b = utils.$("base");
-         console.log(getImgSrc(b), b.getAttribute('src'));
-       doPic(s, getImgSrc(b));
-       s.onload = () => updateBase(flag);
-     b.onload = b.onload || doLoad;
+        doPic(s, getImgSrc(b));
+        s.onload = () => updateBase(flag);
+        b.onload = b.onload || doLoad;
       };
     const fade = {
         validate: function () {

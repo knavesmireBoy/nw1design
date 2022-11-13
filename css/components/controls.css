@@ -33,7 +33,7 @@
   margin: 1vw calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
   text-align: center;
   overflow: hidden;
-  background-color: #999;
+  background-color: pink;
 }
 
 .portrait #display .inner {

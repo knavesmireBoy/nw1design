@@ -60,11 +60,11 @@ nW1.utils = (function () {
         });
       },
     invokeMethod = (o, m, v) => {
+      //issue with Object.keys
       try {
         return getResult(o)[m](v);
       }
       catch(e){
-    // console.log(e,o,m,v);
         return o[m](v);
       }
     },

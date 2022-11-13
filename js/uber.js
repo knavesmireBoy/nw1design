@@ -38,11 +38,11 @@ function getTargetNode(node, reg, dir = "firstChild") {
   if (!node) {
     return null;
   }
-  node = node.nodeType === 1 ? node : getNextElement(node);
-  let res = node && node.nodeName.match(reg);
+  let mynode = node.nodeType === 1 ? node : getNextElement(node);
+  let res = mynode && mynode.nodeName.match(reg);
   if (!res) {
-    node = node && getNextElement(node[dir]);
-    return node && getTargetNode(node, reg, dir);
+    mynode = mynode && getNextElement(mynode[dir]);
+    return mynode && getTargetNode(mynode, reg, dir);
   }
   return node;
 }
