@@ -49,7 +49,6 @@ function getTargetNode(node, reg, dir = "firstChild") {
 
 nW1.ops = (function () {
   const utils = nW1.utils,
-    $Q = utils.$q,
     tagTester = utils.tagTester,
     isFunction = tagTester("Function"),
     getRes = function (arg) {
@@ -104,7 +103,7 @@ nW1.ops = (function () {
       const preview = utils.$Q("#slidepreview img");
       if (matchImg(e) && e.target !== preview) {
         replacePath(preview, getAttribute("src")(e.target));
-        makePortrait.call(e.target, $("navigation"));
+        makePortrait.call(e.target, utils.$("navigation"));
       }
     },
     replacePathSimple = (o, src) => {
@@ -115,10 +114,10 @@ nW1.ops = (function () {
     },
     replacePath = (ob, src) => {
       let o = getRes(ob),
-        binder = makePortrait.bind(o, $("wrapper"));
+        binder = makePortrait.bind(o, utils.$("wrapper"));
       //binder = () => {};
       o.removeEventListener("load", binder);
-      if ($Q(".inplay")) {
+      if (utils.$Q(".inplay")) {
         if (o.id === "base") {
           $("slide").addEventListener("load", binder);
         }
@@ -173,6 +172,7 @@ nW1.ops = (function () {
     setNavId: curry2(setAttribute("id"))("navigation").wrap(pass),
     setHref: setLink(".").wrap(pass),
     doActive: compose(addKlas("active"), getClassList).wrap(pass),
+    undoActive: undoActive,
     undoActiveCB: doEach(undoActive),
     getKeys: compose(doTextNow, getKey),
     doTest: function (x) {

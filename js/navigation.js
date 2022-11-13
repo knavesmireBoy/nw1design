@@ -236,6 +236,7 @@
     ptL = utils.doPartial(),
     deferPTL = utils.doPartial(true),
     doMake = ops.doMake,
+    getTgt = (str) => utils.$(str),
     getLinks = (grp) => {
       const get = curry3(ops.getTargetNode)("firstChild")(/^a$/i);
       return grp.map((lis) => compose(ops.getAttrs("href"), get)(lis));
@@ -487,8 +488,8 @@
       looper.attach(broadcaster.notify.bind(broadcaster));
       looper.attach(sliderBridge);
       $painter = painter(
-        ops.getTarget("slide"),
-        ops.getTarget("base"),
+        getTgt("slide"),
+        getTgt("base"),
         document.body
       );
       $recur.attach($painter.doOpacity.bind($painter));

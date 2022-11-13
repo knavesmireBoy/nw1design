@@ -4,7 +4,7 @@ if (!window.nW1) {
     window.nW1 = {};
 }
 const utils = nW1.utils,
-getTgt = (str) => utils.$$(str),
+getTgt = (str) => utils.$(str),
 curry2 = utils.curryRight(2),
 curry22 = utils.curryRight(2, true),
 curry3 = utils.curryRight(3),

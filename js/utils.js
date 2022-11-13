@@ -32,6 +32,7 @@ nW1.utils = (function () {
     },
     isBoolean = tagTester("Boolean"),
     $ = (str) => document.getElementById(str),
+    $$ = (str) => () => $(str),
     $q = (str, flag = false) => {
       const m = flag ? "querySelectorAll" : "querySelector";
       return document[m](str);
@@ -63,7 +64,7 @@ nW1.utils = (function () {
         return getResult(o)[m](v);
       }
       catch(e){
-        console.log(o,m,v);
+       // console.log(o,m,v);
         return o[m](v);
       }
     },
@@ -185,14 +186,17 @@ nW1.utils = (function () {
     invokeMethodBind: (o, m, v) => {
       return getResult(o)[m].call(o, v);
     },
-    invokeMethodV: (o, p, m, v) => o[p][v](m),
+    invokeMethodV: (o, p, m, v) => {
+      console.log(o,m,p,v);
+      return getResult(o)[p][v](m);
+    },
     invokePair: (o, m, k, v) => getResult(o)[m](k, v),
     lazyVal: (m, p, o, v) => {
       return getResult(o)[m](p, v);
     },
     invokeMethodBridge: (m, v, o) => invokeMethod(o, m, v),
     invokeMethodBridgeCB: (cb) => (m, v, o) => {
-      console.log(cb(o), m, v);
+      //console.log(cb(o), m, v);
       return invokeMethod(cb(o), m, v);
     },
     invokeClass: (o, s, m, v) => getResult(o)[s][m](v),
@@ -204,6 +208,7 @@ nW1.utils = (function () {
       },
     toArray:  toArray,
     doAlternate: doAlternate,
+    getTgt: (str) => $$(str),
     doTest: function (x) {
       console.log(x);
       return x;
