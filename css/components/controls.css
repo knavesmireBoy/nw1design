@@ -279,10 +279,12 @@ main#content {
   display: inline-block;
 }
 .no-js .portfolio main > section ul li a {
-  border: solid 1px blue;
   display: block;
 }
-.no-js .portfolio main > section ul li a:hover {
+.no-js .portfolio main > section ul li {
+  border: solid 1px blue;
+}
+.no-js .portfolio main > section ul li:hover {
   border: solid 1px #c33;
 }
 
