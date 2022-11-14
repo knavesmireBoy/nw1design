@@ -170,8 +170,9 @@
     }
     let $painter = null,
       throttlePause,
-      getDesktop = nW1.ops.pApply(Modernizr.mq, ipad);
+      getDesktop = nW1.utils.pApply(Modernizr.mq, ipad);
     const utils = nW1.utils,
+    Finder = nW1.getFinder(),
       ops = nW1.ops,
       broadcaster = Publisher.from(),
       looper = nW1.Looper,
@@ -190,6 +191,7 @@
       invokeMethodBridge = utils.invokeMethodBridge,
       ptL = utils.doPartial(),
       deferPTL = utils.doPartial(true),
+      pApply = utils.pApply,
       doMake = ops.doMake,
       getTgt = (str) => $(str),
       getLinks = (grp) => {
@@ -208,7 +210,7 @@
       setId = ops.setId,
       setAlt = ops.setAlt,
       setSrc = ops.setSrc,
-      setter = ops.setter,
+      setter = utils.setter,
       toArray = utils.toArray,
       negate = utils.negate,
       abbr = (el, repl) => {
@@ -219,7 +221,7 @@
       negater = function (alternators) {
         if (!getDesktop()) {
           alternators.forEach((f) => f());
-          getDesktop = ops.pApply(utils.negate, getDesktop);
+          getDesktop = pApply(utils.negate, getDesktop);
         }
       },
       $recur = nW1.recurMaker(300, 99, 1, true).init(),
@@ -262,7 +264,7 @@
       doSliderInput = ptL(setter, $$("myrange"), "value"),
       addClickPreview = curry2(ptL(utils.lazyVal, "addEventListener", "click"))(
         routes.sidebar
-      ).wrap(ops.pass),
+      ).wrap(utils.pass),
       displayPause = ptL(
         utils.invokeMethodV,
         $$("slideshow"),
@@ -272,7 +274,7 @@
       bodyKlas = curry2(ptL(invokeMethod, document.body.classList)),
       displaySwap = bodyKlas("swap"),
       queryInplay = bodyKlas("inplay"),
-      painter = function (slide, base, container) {
+      painter = function (slide, base) {
         let ret = {
           doOpacity: function (o) {
             let el = getResult(slide);
@@ -293,7 +295,7 @@
       pg = window.web ? 27 : 52,
       gtThanEq = (a, b) => a >= b,
       loader = function () {
-        getDesktop = Mod.mq(ipad) ? getDesktop : ops.pApply(negate, getDesktop);
+        getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
         //create sidebar
         compose(
           setSubMenu,
@@ -348,7 +350,7 @@
           thumbs = Finder.from($$Q("#navigation ul li", true)),
           addPlayClick = curry2(ptL(utils.lazyVal, "addEventListener", "click"))(
             routes.menu
-          ).wrap(ops.pass),
+          ).wrap(utils.pass),
           buttontext = ["start", "back", "play", "forward", "end"].map(
             ops.doTextCBNow
           ),
@@ -356,8 +358,8 @@
           sliderTxt = ["Image ", " of "],
           sliderLoad = Mod.mq(ipad) ? sliderTxt : sliderTxtAlt,
           slidertext = sliderLoad.map(ops.doTextCBNow),
-          sliderRestore = ops.pApply(abbr, $$("tracker"), sliderTxt),
-          sliderReplace = ops.pApply(abbr, $$("tracker"), sliderTxtAlt),
+          sliderRestore = pApply(abbr, $$("tracker"), sliderTxt),
+          sliderReplace = pApply(abbr, $$("tracker"), sliderTxtAlt),
           sliderOptions = Mod.mq(ipad)
             ? [sliderRestore, sliderReplace]
             : [sliderReplace, sliderRestore],
@@ -390,7 +392,7 @@
             compose(
               ops.clearInnerHTML,
               ops.setHref,
-              setId(el.innerHTML).wrap(ops.pass)
+              setId(el.innerHTML).wrap(utils.pass)
             )(el),
           buttonEl = Mod.backgroundsize ? "a" : "button",
           buttons = compose(getParent, compose(prepend, doMake)(buttonEl)),
@@ -451,7 +453,7 @@
         sliderActions();
         window.addEventListener(
           "resize",
-          ops.pApply(throttle, ops.pApply(negater, [sliderActions]), 222)
+          pApply(throttle, pApply(negater, [sliderActions]), 222)
         );
         window.setTimeout(function () {
             compose(ops.applyPortait($('wrapper')), doCompare)($('base'));

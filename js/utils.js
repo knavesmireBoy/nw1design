@@ -17,6 +17,25 @@ if (typeof Function.prototype.wrap === "undefined") {
 
 nW1.utils = (function () {
   "use strict";
+
+  function pApply(fn, ...cache) {
+    return (...args) => {
+      const all = cache.concat(args);
+      return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);
+    };
+  }
+
+  /*
+  function composeVerbose (...fns) {
+    return fns.reduce((f, g) => {
+      return (...vs) => {
+      //console.log(f, g, ...vs);
+        return f(g(...vs));
+      };
+    });
+  }
+*/
+
   const getResult = (o) => {
       if (typeof o === "function") {
         return o();
@@ -51,23 +70,6 @@ nW1.utils = (function () {
           (...vs) =>
             f(g(...vs))
       ),
-      composeVerbose = (...fns) => {
-        return fns.reduce((f, g) => {
-          return (...vs) => {
-          //console.log(f, g, ...vs);
-            return f(g(...vs));
-          };
-        });
-      },
-    invokeMethod = (o, m, v) => {
-      //issue with Object.keys
-      try {
-        return getResult(o)[m](v);
-      }
-      catch(e){
-        return o[m](v);
-      }
-    },
     doWhenFactory = (n) => {
       const both = (pred, action, v) => {
           if (pred(v)) {
@@ -94,11 +96,17 @@ nW1.utils = (function () {
     },
     mittelFactory = (flag) => {
       if (flag) {
-        return (f, o, v = undefined) => (m) => f(o, m, v);
+        return (f, o, v = undefined) =>
+          (m) =>
+            f(o, m, v);
       } else if (isBoolean(flag)) {
-        return (f, m, v = undefined) => (o, k) => def(v) ? f(o, m, k, v) : f(o, m, v);
+        return (f, m, v = undefined) =>
+          (o, k) =>
+            def(v) ? f(o, m, k, v) : f(o, m, v);
       }
-      return (f, m, k = undefined) => (o, v) => def(k) ? f(o, m, k, v) : f(o, m, v);
+      return (f, m, k = undefined) =>
+        (o, v) =>
+          def(k) ? f(o, m, k, v) : f(o, m, v);
     },
     curryRight = (i, defer = false) => {
       const once = {
@@ -148,22 +156,33 @@ nW1.utils = (function () {
         };
       return ret && defer ? ret.def : ret ? ret.imm : noOp;
     },
-    toArray = (coll, cb = () => true) => Array.prototype.slice.call(coll).filter(cb),
+    toArray = (coll, cb = () => true) =>
+      Array.prototype.slice.call(coll).filter(cb),
     best = (fun, coll, arg) => {
-        return toArray(coll).reduce((champ, contender) => fun(champ, contender) ? champ : contender);
+      return toArray(coll).reduce((champ, contender) =>
+        fun(champ, contender) ? champ : contender
+      );
     },
     alternate = (i, n) => {
-        return () => {
-            let j = (i + 1) % n;
-            return j;
-        };
+      return () => {
+        let j = (i + 1) % n;
+        return j;
+      };
     },
     doAlternate = () => {
-        const f = alternate(0, 2);
-        return (actions, ...args) => {
-            return () => best(f, [actions[0], actions[1]])();
-            };
-        };
+      const f = alternate(0, 2);
+      return (actions, ...args) => {
+        return () => best(f, [actions[0], actions[1]])();
+      };
+    },
+    invokeMethod = (o, m, v) => {
+      //issue with Object.keys
+      try {
+        return getResult(o)[m](v);
+      } catch (e) {
+        return o[m](v);
+      }
+    };
   return {
     $: byId,
     $$: byIdDefer,
@@ -174,9 +193,17 @@ nW1.utils = (function () {
         byTag(str, flag),
     compose: compose,
     tagTester,
-    tagTester,
     doWhenFactory: doWhenFactory,
     doPartial: doPartial,
+    setter: (o, k, v) => {
+      let obj = getResult(o);
+      obj[k] = v;
+    },
+    pApply: pApply,
+    pass: (ptl, o) => {
+      ptl(getResult(o));
+      return o;
+    },
     always: (a) => () => a,
     curryRight: curryRight,
     curryLeft: curryLeft,
@@ -202,11 +229,15 @@ nW1.utils = (function () {
     invokeClass: (o, s, m, v) => getResult(o)[s][m](v),
     negate: (f, ...args) => !f(...args),
     zip: (m, funs, vals) => vals[m]((v, i) => funs[i](v)),
-    eitherOr: (a, b, pred) => pred ? a : b,
+    eitherOr: (a, b, pred) => (pred ? a : b),
     compare: (pred) => (p, a, b) => {
-        return typeof p === 'string' ? pred(a[p], b[p]) : p ? pred(p[a], p[b]) : pred(a, b);
-      },
-    toArray:  toArray,
+      return typeof p === "string"
+        ? pred(a[p], b[p])
+        : p
+        ? pred(p[a], p[b])
+        : pred(a, b);
+    },
+    toArray: toArray,
     doAlternate: doAlternate,
     getTgt: (str) => byIdDefer(str),
     doTest: function (x) {

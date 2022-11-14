@@ -5,15 +5,7 @@
 if (!window.nW1) {
   window.nW1 = {};
 }
-//nW1.utils = (function() {
-//"use strict";
 
-function pApply(fn, ...cache) {
-  return (...args) => {
-    const all = cache.concat(args);
-    return all.length >= fn.length ? fn(...all) : pApply(fn, ...all);
-  };
-}
 function makePortrait(el) {
   if (this.naturalHeight && this.naturalHeight > this.naturalWidth) {
     el.classList.add("portrait");
@@ -61,17 +53,9 @@ nW1.ops = (function () {
     invokeMethodBridge = utils.invokeMethodBridge,
     invokeMethodBridgeCB = utils.invokeMethodBridgeCB,
     ptL = utils.doPartial(),
-    pass = (ptl, o) => {
-      ptl(getRes(o));
-      return o;
-    },
     compose = utils.compose,
+    pass = utils.pass,
     getter = (o, p) => getRes(o)[p],
-    setter = (o, k, v) => {
-      let obj = getRes(o);
-      obj[k] = v;
-      //return obj;
-    },
     curry2 = utils.curryRight(2),
     curry3 = utils.curryRight(3),
     curryL3 = utils.curryLeft(3),
@@ -140,7 +124,6 @@ nW1.ops = (function () {
     getParent: getParent,
     getParent2: compose(getParent, getParent),
     getText: curry2(getter)("innerHTML"),
-    doGet: curry2(getter),
     doMake: curryL33(invokeMethod)(document)("createElement"),
     //doText: deferPTL(invokeMethod, document, "createTextNode"),
     doText: curryL33(invokeMethod)(document)("createTextNode"),
@@ -162,7 +145,6 @@ nW1.ops = (function () {
     addClickHover: curry2(ptL(utils.lazyVal, "addEventListener", "mouseover"))(
       hover
     ).wrap(pass),
-    setter: setter,
     setId: curry2(setAttribute("id")),
     setKlas: curry2(setAttribute("class")),
     setSrc: curry2(setAttribute("src")),
@@ -171,26 +153,24 @@ nW1.ops = (function () {
     setMin: curry2(setAttribute("min")),
     setMax: curry2(setAttribute("max")),
     setType: curry2(setAttribute("type")),
-    clearInnerHTML: curry3(setter)("")("innerHTML"),
+    clearInnerHTML: curry3(utils.setter)("")("innerHTML"),
     setNavId: curry2(setAttribute("id"))("navigation").wrap(pass),
     setHref: setLink(".").wrap(pass),
     doActive: compose(addKlas("active"), getClassList).wrap(pass),
     undoActive: undoActive,
     undoActiveCB: doEach(undoActive),
     getKeys: compose(doTextNow, getKey),
+    doTextNow: doTextNow,
+    getLast: (array) => array[array.length - 1],
+    getZero: getZero,
+    incrementer: compose(doInc, getLength),
+    applyPortait: curry3(doPortrait)('portrait'),
+    replacePath: replacePath,
+    replacePathSimple: replacePathSimple,
     doTest: function (x) {
       console.log(x);
       return x;
     },
-    doTextNow: doTextNow,
-    log: (v) => console.log(v),
-    getLast: (array) => array[array.length - 1],
-    getZero: getZero,
-    incrementer: compose(doInc, getLength),
-    pApply: pApply,
-    applyPortait: curry3(doPortrait)('portrait'),
-    replacePath: replacePath,
-    replacePathSimple: replacePathSimple,
-    pass: pass
+    log: (v) => console.log(v)
   };
 }());
