@@ -90,26 +90,41 @@ nW1.ops = (function () {
         makePortrait.call(e.target, utils.$("navigation"));
       }
     },
-    replacePathSimple = (o, src) => {
-      getRes(o).setAttribute(
+    replacePathSimple = (o, src, el = utils.$('wrapper')) => {
+      let obj = getRes(o);
+      obj.setAttribute(
+        "src",
+        src.replace("thumbs", "fullsize").replace("tmb", "fs")
+      );
+      //can't overwite slide onload
+      obj.onload = obj.onload || makePortrait.bind(obj, el);
+    },
+
+
+    replacePath2 = (o, src, el = utils.$('wrapper')) => {
+      let obj = getRes(o);
+      obj.setAttribute(
         "src",
         src.replace("thumbs", "fullsize").replace("tmb", "fs")
       );
     },
+
     replacePath = (ob, src) => {
-      let o = getRes(ob),
+      let o = getRes(ob);
+      /*
         binder = makePortrait.bind(o, utils.$("wrapper"));
       //binder = () => {};
       o.removeEventListener("load", binder);
       if (utils.$Q(".inplay")) {
         if (o.id === "base") {
-          $("slide").addEventListener("load", binder);
+          utils.$("slide").addEventListener("load", binder);
         }
       } else {
         if (o.id === "base") {
           o.addEventListener("load", binder);
         }
       }
+      */
       replacePathSimple(o, src);
     },
     doPortrait = (m, o, v) => {
@@ -167,6 +182,7 @@ nW1.ops = (function () {
     applyPortrait: curry3(doPortrait)('portrait'),
     replacePath: replacePath,
     replacePathSimple: replacePathSimple,
+    makePortrait: makePortrait,
     doTest: function (x) {
       console.log(x);
       return x;

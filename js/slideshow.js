@@ -4,6 +4,7 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 const utils = nW1.utils,
+ops = nW1.ops,
   getTgt = (str) => utils.$(str),
   curry2 = utils.curryRight(2),
   curry22 = utils.curryRight(2, true),
@@ -85,7 +86,10 @@ const utils = nW1.utils,
         const s = utils.$("slide"),
           b = utils.$("base");
         doPic(s, getImgSrc(b));
-        s.onload = () => updateBase(flag);
+        s.onload = (e) => {
+            updateBase(flag);
+            ops.makePortrait.bind(e.target);
+        };
         b.onload = b.onload || doLoad;
       };
     const fade = {
