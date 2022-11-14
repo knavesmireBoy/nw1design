@@ -9,10 +9,10 @@ if (!window.nW1) {
 function makePortrait(el = nW1.utils.$('wrapper')) {
   if (this.naturalHeight && this.naturalHeight > this.naturalWidth) {
     el.classList.add("portrait");
-   // nW1.utils.$("navigation").classList.add("portrait");
+   nW1.utils.$("navigation").classList.add("portrait");
   } else if (this.naturalHeight && this.naturalHeight < this.naturalWidth) {
     el.classList.remove("portrait");
-   // nW1.utils.$("navigation").classList.remove("portrait");
+   nW1.utils.$("navigation").classList.remove("portrait");
   }
 }
 
