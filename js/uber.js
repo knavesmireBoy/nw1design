@@ -6,13 +6,13 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 
-function makePortrait(el) {
+function makePortrait(el = nW1.utils.$('wrapper')) {
   if (this.naturalHeight && this.naturalHeight > this.naturalWidth) {
     el.classList.add("portrait");
-    nW1.utils.$("navigation").classList.add("portrait");
+   // nW1.utils.$("navigation").classList.add("portrait");
   } else if (this.naturalHeight && this.naturalHeight < this.naturalWidth) {
     el.classList.remove("portrait");
-    nW1.utils.$("navigation").classList.remove("portrait");
+   // nW1.utils.$("navigation").classList.remove("portrait");
   }
 }
 
@@ -83,49 +83,20 @@ nW1.ops = (function () {
       curry2(getter)("nodeName"),
       getTarget
     ),
+    replacePath = (o, src, el = utils.$('wrapper')) => {
+      let obj = getRes(o);
+      obj.setAttribute(
+        "src",
+        src.replace("thumbs", "fullsize").replace("tmb", "fs")
+      );
+     obj.onload = obj.onload || makePortrait.bind(obj, el);
+    },
     hover = (e) => {
       const preview = utils.$Q("#slidepreview img");
+      preview.onload = null;
       if (matchImg(e) && e.target !== preview) {
-        replacePath(preview, getAttribute("src")(e.target));
-        makePortrait.call(e.target, utils.$("navigation"));
+        replacePath(preview, getAttribute("src")(e.target), utils.$("navigation"));
       }
-    },
-    replacePathSimple = (o, src, el = utils.$('wrapper')) => {
-      let obj = getRes(o);
-      obj.setAttribute(
-        "src",
-        src.replace("thumbs", "fullsize").replace("tmb", "fs")
-      );
-      //can't overwite slide onload
-      obj.onload = obj.onload || makePortrait.bind(obj, el);
-    },
-
-
-    replacePath2 = (o, src, el = utils.$('wrapper')) => {
-      let obj = getRes(o);
-      obj.setAttribute(
-        "src",
-        src.replace("thumbs", "fullsize").replace("tmb", "fs")
-      );
-    },
-
-    replacePath = (ob, src) => {
-      let o = getRes(ob);
-      /*
-        binder = makePortrait.bind(o, utils.$("wrapper"));
-      //binder = () => {};
-      o.removeEventListener("load", binder);
-      if (utils.$Q(".inplay")) {
-        if (o.id === "base") {
-          utils.$("slide").addEventListener("load", binder);
-        }
-      } else {
-        if (o.id === "base") {
-          o.addEventListener("load", binder);
-        }
-      }
-      */
-      replacePathSimple(o, src);
     },
     doPortrait = (m, o, v) => {
       return o.classList[m](v);
@@ -181,7 +152,6 @@ nW1.ops = (function () {
     incrementer: compose(doInc, getLength),
     applyPortrait: curry3(doPortrait)('portrait'),
     replacePath: replacePath,
-    replacePathSimple: replacePathSimple,
     makePortrait: makePortrait,
     doTest: function (x) {
       console.log(x);

@@ -345,7 +345,7 @@
             doImg,
             prepAttrs([setSrc, setAlt, setId], [src, "current", "slide"])
           ),
-          previewer = ptL(ops.replacePathSimple, $$Q("#slidepreview img")),
+          previewer = ptL(ops.replacePath, $$Q("#slidepreview img")),
           displayer = curryL2(ops.replacePath)($$("base")),
           thumbs = Finder.from($$Q("#navigation ul li", true)),
           addPlayClick = curry2(ptL(utils.lazyVal, "addEventListener", "click"))(

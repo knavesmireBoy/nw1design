@@ -88,7 +88,7 @@ ops = nW1.ops,
         doPic(s, getImgSrc(b));
         s.onload = (e) => {
             updateBase(flag);
-            ops.makePortrait.bind(e.target);
+            ops.makePortrait.call(e.target);
         };
         b.onload = b.onload || doLoad;
       };
