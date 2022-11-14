@@ -456,8 +456,8 @@
           pApply(throttle, pApply(negater, [sliderActions]), 222)
         );
         window.setTimeout(function () {
-            compose(ops.applyPortait($('wrapper')), doCompare)($('base'));
-            compose(ops.applyPortait($('navigation')), doCompare)($('base'));
+            compose(ops.applyPortrait($('wrapper')), doCompare)($('base'));
+            compose(ops.applyPortrait($('navigation')), doCompare)($('base'));
         }, 666);
       };
     window.addEventListener("load", loader);

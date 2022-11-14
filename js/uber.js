@@ -164,7 +164,7 @@ nW1.ops = (function () {
     getLast: (array) => array[array.length - 1],
     getZero: getZero,
     incrementer: compose(doInc, getLength),
-    applyPortait: curry3(doPortrait)('portrait'),
+    applyPortrait: curry3(doPortrait)('portrait'),
     replacePath: replacePath,
     replacePathSimple: replacePathSimple,
     doTest: function (x) {
