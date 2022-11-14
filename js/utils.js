@@ -197,7 +197,6 @@ nW1.utils = (function () {
     doPartial: doPartial,
     setter: (o, k, v) => {
       let obj = getResult(o);
-      console.log(v);
       obj[k] = v;
     },
     pApply: pApply,
