@@ -1,6 +1,6 @@
- /*jslint nomen: true */
+/*jslint nomen: true */
 /* eslint-disable indent */
- 
+
  function doPartial(flag) {
      return function p(f, ...vs) {
          if (f.length === vs.length) {

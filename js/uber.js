@@ -108,6 +108,7 @@ nW1.ops = (function () {
       },
       m = utils.mittelFactory(),
       f = m(utils.setter, 'classList'),
+      //https://stackoverflow.com/questions/49241330/javascript-domtokenlist-prototype
       prepClassList = utils.pApply(f, utils.$$('navigation'));
       $wrapper = nW1.Publish().makepublisher(utils.$('wrapper'));
       $wrapper.attach(prepClassList);
