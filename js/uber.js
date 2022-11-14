@@ -6,13 +6,18 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 
+let $wrapper = {};
+
 function makePortrait(el = nW1.utils.$('wrapper')) {
+
   if (this.naturalHeight && this.naturalHeight > this.naturalWidth) {
     el.classList.add("portrait");
-   nW1.utils.$("navigation").classList.add("portrait");
+   //$wrapper.notify('portrait');
+ nW1.utils.$("navigation").classList.add("portrait");
   } else if (this.naturalHeight && this.naturalHeight < this.naturalWidth) {
     el.classList.remove("portrait");
-   nW1.utils.$("navigation").classList.remove("portrait");
+   //$wrapper.notify('');
+ nW1.utils.$("navigation").classList.remove("portrait");
   }
 }
 
@@ -100,7 +105,12 @@ nW1.ops = (function () {
     },
     doPortrait = (m, o, v) => {
       return o.classList[m](v);
-      };
+      },
+      m = utils.mittelFactory(),
+      f = m(utils.setter, 'classList'),
+      prepClassList = ptL(f, utils.$$('navigation'));
+      $wrapper = nW1.Publish().makepublisher(utils.$('wrapper'));
+      $wrapper.attach(prepClassList);
 
   return {
     getNextElement: getNextElement,

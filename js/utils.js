@@ -197,6 +197,7 @@ nW1.utils = (function () {
     doPartial: doPartial,
     setter: (o, k, v) => {
       let obj = getResult(o);
+      console.log(v);
       obj[k] = v;
     },
     pApply: pApply,
@@ -205,6 +206,7 @@ nW1.utils = (function () {
       return o;
     },
     always: (a) => () => a,
+    identity: (a) => a,
     curryRight: curryRight,
     curryLeft: curryLeft,
     mittelFactory: mittelFactory,
@@ -214,7 +216,6 @@ nW1.utils = (function () {
       return getResult(o)[m].call(o, v);
     },
     invokeMethodV: (o, p, m, v) => {
-      //console.log(o,m,p,v);
       return getResult(o)[p][v](m);
     },
     invokePair: (o, m, k, v) => getResult(o)[m](k, v),
@@ -239,6 +240,7 @@ nW1.utils = (function () {
     },
     toArray: toArray,
     doAlternate: doAlternate,
+    driller: (o, p) =>  o[p] || o,
     getTgt: (str) => byIdDefer(str),
     doTest: function (x) {
       console.log(x);

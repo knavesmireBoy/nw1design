@@ -451,6 +451,7 @@
         $recur.attach($painter.cleanup.bind($painter), "delete");
         $slider.attach(looper.set.bind(looper));
         sliderActions();
+        //$Q('.active').classList.remove('active');
         window.addEventListener(
           "resize",
           pApply(throttle, pApply(negater, [sliderActions]), 222)
