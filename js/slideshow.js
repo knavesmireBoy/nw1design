@@ -90,7 +90,8 @@ ops = nW1.ops,
             updateBase(flag);
             ops.makePortrait.call(e.target);
         };
-        b.onload = b.onload || doLoad;
+        //b.onload = b.onload || doLoad;
+        b.onload = doLoad;
       };
     const fade = {
         validate: function () {

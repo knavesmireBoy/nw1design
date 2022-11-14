@@ -94,11 +94,14 @@ nW1.ops = (function () {
         "src",
         src.replace("thumbs", "fullsize").replace("tmb", "fs")
       );
-     obj.onload = obj.onload || makePortrait.bind(obj, el);
+    obj.onload = obj.onload || makePortrait.bind(obj, el);
     },
     hover = (e) => {
       const preview = utils.$Q("#slidepreview img");
       preview.onload = null;
+      if(utils.$('slide').onload){
+        return;
+      }
       if (matchImg(e) && e.target !== preview) {
         replacePath(preview, getAttribute("src")(e.target), utils.$("navigation"));
       }
