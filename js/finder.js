@@ -39,11 +39,27 @@ if (!window.nW1) {
         static from(grp, kls = "active") {
           return new Finder(grp, kls);
         }
-        static doFinder(str) {
+        static doFinder1(str) {
           return function (cur) {
             let res = str.match(/\/(\w+)_/.exec(cur)[1]);
             //becomes this.finder callback to findIndex
             return res;
+          };
+        }
+
+        static doFinder(str) {
+          return function (cur) {
+            let reg = /\/(\w+)_/,
+            reg2 = /\/([a-z]+\d)_/,
+            reg3 = /\/([a-z]+\d\d)_/;
+            try {
+              return str.match(reg3.exec(cur)[1]);
+            }
+            catch(e){
+              return str.match(reg2.exec(cur)[1]);
+            }
+           return null;
+            //becomes this.finder callback to findIndex
           };
         }
       };
