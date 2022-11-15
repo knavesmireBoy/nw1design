@@ -41,8 +41,9 @@ if (!window.nW1) {
         }
         static doFinder(str) {
           return function (cur) {
+            let res = str.match(/\/(\w+)_/.exec(cur)[1]);
             //becomes this.finder callback to findIndex
-            return str.match(/\/(\w+)_/.exec(cur)[1]);
+            return res;
           };
         }
       };
