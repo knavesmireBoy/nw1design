@@ -180,7 +180,12 @@ nW1.utils = (function () {
       try {
         return getResult(o)[m](v);
       } catch (e) {
-        return o[m](v);
+        try {
+          return o[m](v);
+        }
+        catch(er){
+          console.log(er, o, m, v);
+        }
       }
     };
   return {

@@ -4,7 +4,7 @@
 /*global nW1: false */
 /* eslint-disable indent */
 
-(function (config, Mod, ipad) {
+(function (Mod, ipad) {
     "use strict";
     function getResult(o) {
       if (typeof o === "function") {
@@ -141,33 +141,6 @@
         }
       };
     }//router
-    function prepareHeadings(ul, conf) {
-      return function (el, i, els) {
-        let n = Object.values(conf[i])[0],
-          j = 0,
-          lis = ul.children,
-          ol,
-          neu;
-        while (j < n) {
-          if (!j) {
-            ol = doMake("ul")();
-          }
-          if (j === n) {
-            j = -1;
-          }
-          neu = append(lis[0], ol).parentNode;
-          if (els[i + 1]) {
-            el.parentNode.insertBefore(neu, els[i + 1]);
-          } else {
-            el.parentNode.append(neu);
-          }
-          j++;
-        }
-        if (!els[i + 1]) {
-          ul.parentNode.removeChild(ul);
-        }
-      };
-    }
     let $painter = null,
       throttlePause,
       getDesktop = nW1.utils.pApply(Modernizr.mq, ipad);
@@ -236,25 +209,10 @@
         )(),
       doDiv = doMake("div"),
       doImg = doMake("img"),
-      doH2 = compose(
-        append,
-        getParent,
-        prepend(doMake("h2")),
-        ops.doText("Navigation")
-      )(),
-      doRenderNav = compose(
-        prepend($$Q(".submenu")),
-        ops.setHref,
-        getParent,
-        prepend(doMake("a"))
-      ),
-      setDiv = prep2Append(doDiv, prepAttrs([setId], ["slidepreview"])),
-      setSubMenu = prep2Append(doDiv, prepAttrs([ops.setKlas], ["submenu"])),
       setInnerDiv = prep2Append(doDiv, prepAttrs([ops.setKlas], ["inner"])),
       setPara = prep2Append(doMake("p"), prepAttrs([setId], ["tracker"])),
       setSpan1 = prep2Append(doMake("span"), prepAttrs([setId], ["tracked"])),
       setSpan2 = prep2Append(doMake("span"), prepAttrs([setId], ["max"])),
-      setImg = prep2Append(doImg, prepAttrs([ops.setAlt], ["currentpicture"])),
       //setButtonLinks = prep2Append(doImg, prepAttrs([setAlt], ['#'])),
       headings = compose(
         curry2(toArray)(curryL2(negate)(ops.matchPath)),
@@ -291,36 +249,13 @@
         return nW1.Publish().makepublisher(ret);
       },
       onDisplayUL = curry2(invoke)($Q("#display ul")),
-      myconfig = config[document.body.id],
       pg = window.web ? 27 : 52,
       gtThanEq = (a, b) => a >= b,
       loader = function () {
-        getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
-        //create sidebar
-        compose(
-          setSubMenu,
-          getParent,
-          getParent,
-          setImg,
-          setDiv,
-          getParent,
-          doH2,
-          getParent,
-          onDisplayUL,
-          prepend,
-          ops.addClickHover,
-          addClickPreview,
-          ops.setNavId,
-          append(doMake("section")()),
-          prepend($("content")),
-          doMake("aside")
-        )();
-        myconfig
-          .map(ops.getKeys)
-          .map(doRenderNav)
-          .forEach(prepareHeadings($Q("#navigation ul"), myconfig));
+        getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);  
         //post creation of sidebar
         headers = Finder.from(headings());
+
         const getExtent = $$Q("#navigation ul li a", true),
           getMyLinks = compose(
             curryL3(invokeMethodBridge)("map")(getHref),
@@ -460,60 +395,11 @@
             compose(ops.applyPortrait($('wrapper')), doCompare)($('base'));
             compose(ops.applyPortrait($('navigation')), doCompare)($('base'));
         }, 666);
+
+
       };
     window.addEventListener("load", loader);
-  }(
-    {
-      web: [
-        {
-          FOP: 4
-        },
-        {
-          AFEN: 3
-        },
-        {
-          "Distillery House": 3
-        },
-        {
-          "Benson Design": 4
-        },
-        {
-          BP: 2
-        },
-        {
-          UKOOA: 4
-        },
-        {
-          "Orkney Holiday Cottages": 3
-        },
-        {
-          "Safari Afrika": 4
-        }
-      ],
-      print: [
-        {
-          "Concilliation Resources": 12
-        },
-        {
-          "Rory Peck Trust": 12
-        },
-        {
-          IWPR: 8
-        },
-        {
-          "The FreedomForum": 7
-        },
-        {
-          "Reporting The World": 8
-        },
-        {
-          "London Fields Cycles": 5
-        }
-      ]
-    },
-    Modernizr,
-    "(min-width: 1024px)"
-  ));
+  }(Modernizr,"(min-width: 1024px)"));
   /*
   FOP : 17/12/14
   BENSON
