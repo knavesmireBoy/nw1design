@@ -11,6 +11,10 @@ let $wrapper = {};
 function makePortrait(el = nW1.utils.$('wrapper')) {
   let kls = this.naturalHeight > this.naturalWidth ? 'portrait' : '';
   $wrapper.notify(kls);
+  //https://stackoverflow.com/questions/49241330/javascript-domtokenlist-prototype
+  if(el === nW1.utils.$('wrapper')){
+    el.classList = kls;
+  }
 }
 
 function getNextElement(node, type = 1) {
@@ -27,8 +31,8 @@ function getTargetNode(node, reg, dir = "firstChild") {
   if (!node) {
     return null;
   }
-  let mynode = node.nodeType === 1 ? node : getNextElement(node);
-  let res = mynode && mynode.nodeName.match(reg);
+  let mynode = node.nodeType === 1 ? node : getNextElement(node),
+  res = mynode && mynode.nodeName.match(reg);
   if (!res) {
     mynode = mynode && getNextElement(mynode[dir]);
     return mynode && getTargetNode(mynode, reg, dir);
@@ -103,11 +107,8 @@ nW1.ops = (function () {
       m = utils.mittelFactory(),
       f = m(utils.setter, 'classList'),
       wrapper = utils.$$('wrapper'),
-      //https://stackoverflow.com/questions/49241330/javascript-domtokenlist-prototype
-      prepClassListNav = utils.pApply(f, utils.$$('navigation')),
-      prepClassList = utils.pApply(f, wrapper);
+      prepClassListNav = utils.pApply(f, utils.$$('navigation'));
       $wrapper = nW1.Publish().makepublisher(wrapper);
-      $wrapper.attach(prepClassList);
       $wrapper.attach(prepClassListNav);
 
   return {

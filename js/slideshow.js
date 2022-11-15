@@ -92,10 +92,7 @@ const utils = nW1.utils,
         const s = utils.$("slide"),
           b = utils.$("base");
         doPic(s, getImgSrc(b));
-        s.onload = (e) => {
-            updateBase(flag);
-        };
-        //b.onload = b.onload || doLoad;
+        s.onload = ptL(updateBase, flag);
         b.onload = doLoad;
       };
     const fade = {

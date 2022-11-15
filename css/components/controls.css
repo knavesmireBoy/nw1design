@@ -9,7 +9,7 @@
   border: solid 1px #999;
   overflow: hidden;
 }
-#navigation.portrait #slidepreview {
+#navigation.portrait #slidepreview, #navigation.portraity #slidepreview {
   width: 41.1%;
 }
 .portfolio #display {
