@@ -384,9 +384,9 @@
             /*also as it stands looper reverses the array when the back button is pressed
                       before counting forwards may have to fix that but at the moment this undoes that */
             j = looper.get("rev") ? l - i : j;
-            if (!$("base").onload || path.match(txt)) {
-              doSliders(j);
-            }
+          if (!$("slide").onload || path.match(txt)) {
+            doSliders(j);
+           }
           },
           fixInnerHTML = (el) =>
             compose(

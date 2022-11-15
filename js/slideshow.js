@@ -3,8 +3,9 @@
 if (!window.nW1) {
   window.nW1 = {};
 }
+
+
 const utils = nW1.utils,
-ops = nW1.ops,
   getTgt = (str) => utils.$(str),
   curry2 = utils.curryRight(2),
   curry22 = utils.curryRight(2, true),
@@ -22,7 +23,7 @@ ops = nW1.ops,
   },
   equals = (a, b) => a === b,
   getter = (o, p) => o[p],
-  gtThanEq = (a, b) => a >= b,
+  gtThan = (a, b) => a > b,
   setter = (o, k, v) => {
     getRes(o)[k] = v;
   },
@@ -53,10 +54,14 @@ ops = nW1.ops,
       .map((item) => getRes(item))
       .map(getprop),
   doPic = ptL(setterBridge, "src"),
+  machPortrait = (m) => {
+    utils.$('wrapper').classList[m]("portrait");
+   // nW1.$wrapper.notify(m === 'add' ? 'portrait' : '');
+  },
   displayInplay = ptL(invokeMethod, document.body.classList, "add"),
   doCompare = compose(
     ptL(eitherOr, "add", "remove"),
-    curry3(compare(gtThanEq))("naturalWidth")("naturalHeight")
+    curry3(compare(gtThan))("naturalWidth")("naturalHeight")
   ),
   onInplay = curry22(invoke)("inplay")(displayInplay),
   deferForward = deferPTL(invokeMethod, nW1.Looper, "forward", null),
@@ -82,13 +87,17 @@ ops = nW1.ops,
       mittel = utils.mittelFactory(),
       getImgSrc = curry2(mittel(invokeMethod, "getAttribute"))("src"),
       updateBase = curry2(utils.doWhenFactory())(advance),
+      //flag from $recur
       updateImages = (flag) => {
         const s = utils.$("slide"),
           b = utils.$("base");
         doPic(s, getImgSrc(b));
         s.onload = (e) => {
-            updateBase(flag);
-            ops.makePortrait.call(e.target);
+            let m = updateBase(flag);
+            if(m){
+              // machPortrait(m);
+            }
+          //nW1.ops.makePortrait.call(e.target);
         };
         //b.onload = b.onload || doLoad;
         b.onload = doLoad;

@@ -88,12 +88,12 @@ nW1.ops = (function () {
       curry2(getter)("nodeName"),
       getTarget
     ),
-    replacePath = (o, src, el = utils.$('wrapper')) => {
-      let obj = getRes(o),
-      f = ptL(utils.invokePair, obj, 'setAttribute', 'src'),
-      repl = obj.id === 'base' ? src : src.replace("thumbs", "fullsize").replace("tmb", "fs");
+    replacePath = (o, src, tgt = utils.$('wrapper')) => {
+      let el = getRes(o),
+      f = ptL(utils.invokePair, el, 'setAttribute', 'src'),
+      repl = el.id === 'base' ? src : src.replace("thumbs", "fullsize").replace("tmb", "fs");
       f(repl);
-      obj.onload = obj.onload || makePortrait.bind(obj, el);
+      el.onload = el.onload || makePortrait.bind(el, tgt);
     },
     hover = (e) => {
       const preview = utils.$Q("#slidepreview img");
