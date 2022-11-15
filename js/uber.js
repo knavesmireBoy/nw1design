@@ -27,6 +27,16 @@ function getNextElement(node, type = 1) {
   return null;
 }
 
+function getPrevElement(node, type = 1) {
+  if (node && node.nodeType === type) {
+    return node;
+  }
+  if (node && node.previousSibling) {
+    return getPrevElement(node.previousSibling);
+  }
+  return null;
+}
+
 function getTargetNode(node, reg, dir = "firstChild") {
   if (!node) {
     return null;
@@ -113,6 +123,7 @@ nW1.ops = (function () {
 
   return {
     getNextElement: getNextElement,
+    getPrevElement: getPrevElement,
     getTargetNode: getTargetNode,
     getTarget: getTarget,
     getRes: getRes,
