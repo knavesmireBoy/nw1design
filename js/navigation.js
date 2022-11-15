@@ -146,7 +146,7 @@
         if (img) {
           visit = true;
           nW1.Looper.find(img);
-          ops.getTargetNode(e.target, /li/i, 'parentNode').classList.add("active");
+          ops.doActive(ops.getTargetNode(e.target, /li/i, 'parentNode'));
           makePortrait.call(e.target);
         }
         if (visit) {
@@ -337,7 +337,7 @@
         ),
         previewer = ptL(replacePath, $$Q("#slidepreview img")),
         displayer = curryL2(replacePath)($$("base")),
-        thumbs = Finder.from($$Q("#navigation ul li", true)),
+        thumbs = Finder.from($Q("#navigation ul li", true)),
         addPlayClick = curry2(ptL(utils.lazyVal, "addEventListener", "click"))(
           routes.menu
         ).wrap(utils.pass),
