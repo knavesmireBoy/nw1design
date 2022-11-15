@@ -54,10 +54,6 @@ const utils = nW1.utils,
       .map((item) => getRes(item))
       .map(getprop),
   doPic = ptL(setterBridge, "src"),
-  machPortrait = (m) => {
-    utils.$('wrapper').classList[m]("portrait");
-   // nW1.$wrapper.notify(m === 'add' ? 'portrait' : '');
-  },
   displayInplay = ptL(invokeMethod, document.body.classList, "add"),
   doCompare = compose(
     ptL(eitherOr, "add", "remove"),
