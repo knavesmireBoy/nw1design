@@ -196,29 +196,30 @@ img#base,
   padding: 0;
 }
 
-#navigation ul {
+#navigation ul, .no-js aside label {
   padding: 0.5em;
 }
 
-#navigation .submenu ul li a {
+#navigation .submenu ul li a, .no-js aside a {
   background-color: hsl(190, 30%, 73%);
   padding: 0.25em;
   border: solid 1px black;
 }
 
-#navigation .submenu > a {
+#navigation .submenu > a, .no-js aside label {
   background-color: hsl(190, 30%, 73%);
   color: hsl(217, 50%, 40%);
   padding: 0.25em 0.6em;
   border: solid 1px #999;
   border-width: 1px 0;
   border-color: white white gray;
+  font-weight: bold;
 }
-#navigation .submenu > a.active {
+#navigation .submenu > a.active, .no-js aside input:checked + label {
   color: white;
 }
 
-#navigation .submenu > a:hover {
+#navigation .submenu > a:hover, .no-js aside label:hover {
   color: hsl(0, 60%, 50%);
   text-decoration: underline;
 }
@@ -246,13 +247,13 @@ img#base,
   background-color: white;
 }
 
-#navigation .submenu > a:after {
+#navigation .submenu > a:after, .no-js aside input + label:after {
   content: "+";
   color: white;
   float: right;
 }
 
-#navigation .submenu > a.active:after {
+#navigation .submenu > a.active:after,  .no-js aside input:checked + label:after{
   content: "-";
 }
 
@@ -391,6 +392,17 @@ html #wrapper {
   height: 3em;
   overflow: hidden;
 }
+.no-js aside input.reveal:checked ~ a:nth-of-type(1) {
+  /* using inline-block for no-js which has default LR margins, just need a top margin 
+  on those in first row and it is enough to put the margin on the first <a> element*/
+  margin: .4em 0 0;
+}
 .no-js aside input.reveal:checked ~ a img {
   height: 100%;
+}
+.no-js #display {
+  padding: 2em;
+}
+.no-js main > section:after {
+  content: "When javascript is enabled this area will reflect the selected image from the sidebar, and provide controls for navigating the gallery. Following the principles of graceful degradation the user can click on their choice of image to view the hi resolution version in a new window, deploying the trusty back button to return.";
 }
