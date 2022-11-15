@@ -136,16 +136,18 @@
         e.preventDefault();
         let img = ops.getImgPath(e),
           visit = false;
-        if (ops.matchLink(e)) {
           toArray($Q(".active", true)).forEach((el) =>
             el.classList.remove("active")
           );
+        if (ops.matchLink(e)) {
           headers.show(ops.getTarget(e), true);
           visit = true;
         }
         if (img) {
           visit = true;
           nW1.Looper.find(img);
+          ops.getTargetNode(e.target, /li/i, 'parentNode').classList.add("active");
+          makePortrait.call(e.target);
         }
         if (visit) {
           player = null;
