@@ -375,3 +375,22 @@ html #wrapper {
   visibility: visible;
   opacity: 1;
 }
+
+.no-js aside a, .no-js aside input {
+  display: none;
+}
+
+.no-js aside label {
+  display: block;
+}
+
+.no-js aside input.reveal:checked ~ a {
+  display: inline-block;
+  border: solid 1px blue;
+  width: 3em;
+  height: 3em;
+  overflow: hidden;
+}
+.no-js aside input.reveal:checked ~ a img {
+  height: 100%;
+}
