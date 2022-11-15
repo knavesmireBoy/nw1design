@@ -196,17 +196,17 @@ img#base,
   padding: 0;
 }
 
-#navigation ul, .no-js aside label {
+#navigation ul, .no-js #navigation label {
   padding: 0.5em;
 }
 
-#navigation .submenu ul li a, .no-js aside a {
+#navigation .submenu ul li a, .no-js #navigation a {
   background-color: hsl(190, 30%, 73%);
   padding: 0.25em;
   border: solid 1px black;
 }
 
-#navigation .submenu > a, .no-js aside label {
+#navigation .submenu > a, .no-js #navigation label {
   background-color: hsl(190, 30%, 73%);
   color: hsl(217, 50%, 40%);
   padding: 0.25em 0.6em;
@@ -215,11 +215,11 @@ img#base,
   border-color: white white gray;
   font-weight: bold;
 }
-#navigation .submenu > a.active, .no-js aside input:checked + label {
+#navigation .submenu > a.active, .no-js #navigation input:checked + label {
   color: white;
 }
 
-#navigation .submenu > a:hover, .no-js aside label:hover {
+#navigation .submenu > a:hover, .no-js #navigation label:hover {
   color: hsl(0, 60%, 50%);
   text-decoration: underline;
 }
@@ -247,13 +247,13 @@ img#base,
   background-color: white;
 }
 
-#navigation .submenu > a:after, .no-js aside input + label:after {
+#navigation .submenu > a:after, .no-js #navigation input + label:after {
   content: "+";
   color: white;
   float: right;
 }
 
-#navigation .submenu > a.active:after,  .no-js aside input:checked + label:after{
+#navigation .submenu > a.active:after,  .no-js #navigation input:checked + label:after{
   content: "-";
 }
 
@@ -321,6 +321,12 @@ main#content {
   #display .portrait {
     margin: 1vw 8vw;
   }
+  .no-js main > section {
+    display: none;
+  }
+  .no-js main aside {
+    display: block;
+  }
 }
 
 @media only screen and (max-width: 667px) {
@@ -377,28 +383,29 @@ html #wrapper {
   opacity: 1;
 }
 
-.no-js aside a, .no-js aside input {
+.no-js #navigation a, .no-js #navigation input {
   display: none;
 }
 
-.no-js aside label {
+.no-js #navigation label {
   display: block;
 }
 
-.no-js aside input.reveal:checked ~ a {
+.no-js #navigation input.reveal:checked ~ a {
   display: inline-block;
   border: solid 1px blue;
-  width: 3em;
-  height: 3em;
+  width: 4em;
+  height: 4em;
   overflow: hidden;
 }
-.no-js aside input.reveal:checked ~ a:nth-of-type(1) {
+.no-js #navigation input.reveal:checked ~ a:nth-of-type(1) {
   /* using inline-block for no-js which has default LR margins, just need a top margin 
   on those in first row and it is enough to put the margin on the first <a> element*/
   margin: .4em 0 0;
 }
-.no-js aside input.reveal:checked ~ a img {
-  height: 100%;
+.no-js #navigation input.reveal:checked ~ a img {
+  height:100%;
+  width: auto;
 }
 .no-js #display {
   padding: 2em;
