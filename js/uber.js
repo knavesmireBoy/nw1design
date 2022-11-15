@@ -8,15 +8,6 @@ if (!window.nW1) {
 
 let $wrapper = {};
 
-function makePortrait(el = nW1.utils.$('wrapper')) {
-  let kls = this.naturalHeight > this.naturalWidth ? 'portrait' : '';
-  $wrapper.notify(kls);
-  //https://stackoverflow.com/questions/49241330/javascript-domtokenlist-prototype
-  if(el === nW1.utils.$('wrapper')){
-    el.classList = kls;
-  }
-}
-
 function getNextElement(node, type = 1) {
   if (node && node.nodeType === type) {
     return node;
@@ -75,7 +66,6 @@ nW1.ops = (function () {
     getParent = curry2(getter)("parentNode"),
     getClassList = curry2(getter)("classList"),
     doTextNow = ptL(invokeMethod, document, "createTextNode"),
-    getAttribute = ptL(invokeMethodBridge, "getAttribute"),
     setAttribute = ptL(utils.lazyVal, "setAttribute"),
     setLink = curry2(setAttribute("href")),
     getImgSrc = curryL3(invokeMethodBridge)("getAttribute")("src"),
@@ -89,28 +79,6 @@ nW1.ops = (function () {
     modulo = (n, i) => i % n,
     increment = (i) => i + 1,
     doInc = (n) => compose(ptL(modulo, n), increment),
-    matchImg = compose(
-      curry3(invokeMethod)(/^img/i)("match"),
-      curry2(getter)("nodeName"),
-      getTarget
-    ),
-    replacePath = (o, src, tgt = utils.$('wrapper')) => {
-      let el = getRes(o),
-      f = ptL(utils.invokePair, el, 'setAttribute', 'src'),
-      repl = el.id === 'base' ? src : src.replace("thumbs", "fullsize").replace("tmb", "fs");
-      f(repl);
-      el.onload = el.onload || makePortrait.bind(el, tgt);
-    },
-    hover = (e) => {
-      const preview = utils.$Q("#slidepreview img");
-      preview.onload = null;
-      if(utils.$('slide').onload){
-        return;
-      }
-      if (matchImg(e) && e.target !== preview) {
-        replacePath(preview, getAttribute("src")(e.target), utils.$("navigation"));
-      }
-    },
     doPortrait = (m, o, v) => {
       return o.classList[m](v);
       },
@@ -148,9 +116,6 @@ nW1.ops = (function () {
       curryL3(invokeMethodBridge)("getAttribute")("href")
     ),
     getImgPath: compose(getImgSrc, getTarget),
-    addClickHover: curry2(ptL(utils.lazyVal, "addEventListener", "mouseover"))(
-      hover
-    ).wrap(pass),
     setId: curry2(setAttribute("id")),
     setKlas: curry2(setAttribute("class")),
     setSrc: curry2(setAttribute("src")),
@@ -171,8 +136,6 @@ nW1.ops = (function () {
     getZero: getZero,
     incrementer: compose(doInc, getLength),
     applyPortrait: curry3(doPortrait)('portrait'),
-    replacePath: replacePath,
-    makePortrait: makePortrait,
     doTest: function (x) {
       console.log(x);
       return x;

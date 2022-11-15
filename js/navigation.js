@@ -6,6 +6,9 @@
 
 (function (Mod, ipad) {
     "use strict";
+
+    let $wrapper = {};
+
     function getResult(o) {
       if (typeof o === "function") {
         return o();
@@ -54,6 +57,16 @@
       const i = getLinks(toArray(this.grp)).findIndex(this.finder);
       return this.show(this.grp[i]);
     }
+
+    function makePortrait(el = nW1.utils.$('wrapper')) {
+      let kls = this.naturalHeight > this.naturalWidth ? 'portrait' : '';
+      $wrapper.notify(kls);
+      //https://stackoverflow.com/questions/49241330/javascript-domtokenlist-prototype
+      if(el === nW1.utils.$('wrapper')){
+        el.classList = kls;
+      }
+    }
+
     let headers = {},
       $slider = null,
       sliderFactory = function (element) {
@@ -167,6 +180,7 @@
       pApply = utils.pApply,
       doMake = ops.doMake,
       getTgt = (str) => $(str),
+      getAttribute = ptL(invokeMethodBridge, "getAttribute"),
       getLinks = (grp) => {
         const get = curry3(ops.getTargetNode)("firstChild")(/^a$/i);
         return grp.map((lis) => compose(ops.getAttrs("href"), get)(lis));
@@ -177,6 +191,29 @@
         return lis.map(getLinks);
       },
       getHref = (a) => a.getAttribute("href"),
+      matchImg = compose(
+        curry3(invokeMethod)(/^img/i)("match"),
+        curry2(utils.getter)("nodeName"),
+        ops.getTarget
+      ),
+      replacePath = (o, src, tgt = utils.$('wrapper')) => {
+        let el = getResult(o),
+        f = ptL(utils.invokePair, el, 'setAttribute', 'src'),
+        repl = el.id === 'base' ? src : src.replace("thumbs", "fullsize").replace("tmb", "fs");
+        f(repl);
+        el.onload = el.onload || makePortrait.bind(el, tgt);
+      },
+      hover = (e) => {
+        const preview = utils.$Q("#slidepreview img");
+        preview.onload = null;
+        if(utils.$('slide').onload){
+          return;
+        }
+        if (matchImg(e) && e.target !== preview) {
+         replacePath(preview, getAttribute("src")(e.target), utils.$("navigation"));
+        }
+      },
+      addClickHover = curry2(ptL(utils.lazyVal, "addEventListener", "mouseover"))(hover),
       append = ops.append,
       prepend = ops.prepend,
       getParent = ops.getParent,
@@ -249,12 +286,20 @@
         return nW1.Publish().makepublisher(ret);
       },
       onDisplayUL = curry2(invoke)($Q("#display ul")),
+      m = utils.mittelFactory(),
+      f = m(utils.setter, 'classList'),
+      prepClassListNav = utils.pApply(f, utils.$$('navigation')),
       pg = window.web ? 27 : 52,
       gtThanEq = (a, b) => a >= b,
       loader = function () {
-        getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);  
+        getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
         //post creation of sidebar
         headers = Finder.from(headings());
+        $wrapper = nW1.Publish().makepublisher(utils.$$('wrapper'));
+        $wrapper.attach(prepClassListNav);
+
+        addClickPreview($('navigation'));
+        addClickHover($('navigation'));
 
         const getExtent = $$Q("#navigation ul li a", true),
           getMyLinks = compose(
@@ -280,8 +325,8 @@
             doImg,
             prepAttrs([setSrc, setAlt, setId], [src, "current", "slide"])
           ),
-          previewer = ptL(ops.replacePath, $$Q("#slidepreview img")),
-          displayer = curryL2(ops.replacePath)($$("base")),
+          previewer = ptL(replacePath, $$Q("#slidepreview img")),
+          displayer = curryL2(replacePath)($$("base")),
           thumbs = Finder.from($$Q("#navigation ul li", true)),
           addPlayClick = curry2(ptL(utils.lazyVal, "addEventListener", "click"))(
             routes.menu

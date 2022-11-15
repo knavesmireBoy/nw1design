@@ -114,7 +114,10 @@ nW1.utils = (function () {
           def: (fn) => (a) => () => fn(a)
         },
         twice = {
-          imm: (fn) => (b) => (a) => fn(a, b),
+          imm: (fn) => (b) => (a) => {
+           // console.log(fn,a,b)
+            return fn(a, b);
+          },
           def: (fn) => (b) => (a) => () => fn(a, b)
         },
         thrice = {
@@ -245,6 +248,7 @@ nW1.utils = (function () {
     toArray: toArray,
     doAlternate: doAlternate,
     driller: (o, p) =>  o[p] || o,
+    getter: (o, p) => getResult(o)[p],
     getTgt: (str) => byIdDefer(str),
     doTest: function (x) {
       console.log(x);
