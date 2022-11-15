@@ -93,11 +93,7 @@ const utils = nW1.utils,
           b = utils.$("base");
         doPic(s, getImgSrc(b));
         s.onload = (e) => {
-            let m = updateBase(flag);
-            if(m){
-              // machPortrait(m);
-            }
-          //nW1.ops.makePortrait.call(e.target);
+            updateBase(flag);
         };
         //b.onload = b.onload || doLoad;
         b.onload = doLoad;
@@ -168,6 +164,7 @@ nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
       const o = !isNaN(flag) ? 0.5 : 1;
       this.notify(o);
       window.cancelAnimationFrame(this.t);
+     // window.clearTimeout(this.t);
       this.t = flag; //either set to undefined(forward/back/exit) or null(pause)
       if (o === 1) {
         this.notify(null, "delete");
@@ -180,6 +177,7 @@ nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
     resume: function () {
       this.player.inc();
       this.t = window.requestAnimationFrame(this.play.bind(this));
+      //this.t = window.setTimeout(this.play.bind(this), 10);
     }
   };
   if (makePub) {

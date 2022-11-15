@@ -9,16 +9,8 @@ if (!window.nW1) {
 let $wrapper = {};
 
 function makePortrait(el = nW1.utils.$('wrapper')) {
-
-  if (this.naturalHeight && this.naturalHeight > this.naturalWidth) {
-    el.classList.add("portrait");
-    $wrapper.notify('portrait');
-    //nW1.utils.$("navigation").classList.add("portrait");
-  } else if (this.naturalHeight && this.naturalHeight < this.naturalWidth) {
-    el.classList.remove("portrait");
-    $wrapper.notify('');
-    //nW1.utils.$("navigation").classList.remove("portrait");
-  }
+  let kls = this.naturalHeight > this.naturalWidth ? 'portrait' : '';
+  $wrapper.notify(kls);
 }
 
 function getNextElement(node, type = 1) {
@@ -110,10 +102,13 @@ nW1.ops = (function () {
       },
       m = utils.mittelFactory(),
       f = m(utils.setter, 'classList'),
+      wrapper = utils.$$('wrapper'),
       //https://stackoverflow.com/questions/49241330/javascript-domtokenlist-prototype
-      prepClassList = utils.pApply(f, utils.$$('navigation'));
-      $wrapper = nW1.Publish().makepublisher(utils.$('wrapper'));
+      prepClassListNav = utils.pApply(f, utils.$$('navigation')),
+      prepClassList = utils.pApply(f, wrapper);
+      $wrapper = nW1.Publish().makepublisher(wrapper);
       $wrapper.attach(prepClassList);
+      $wrapper.attach(prepClassListNav);
 
   return {
     getNextElement: getNextElement,
