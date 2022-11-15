@@ -89,12 +89,11 @@ nW1.ops = (function () {
       getTarget
     ),
     replacePath = (o, src, el = utils.$('wrapper')) => {
-      let obj = getRes(o);
-      obj.setAttribute(
-        "src",
-        src.replace("thumbs", "fullsize").replace("tmb", "fs")
-      );
-    obj.onload = obj.onload || makePortrait.bind(obj, el);
+      let obj = getRes(o),
+      f = ptL(utils.invokePair, obj, 'setAttribute', 'src'),
+      repl = obj.id === 'base' ? src : src.replace("thumbs", "fullsize").replace("tmb", "fs");
+      f(repl);
+      obj.onload = obj.onload || makePortrait.bind(obj, el);
     },
     hover = (e) => {
       const preview = utils.$Q("#slidepreview img");
