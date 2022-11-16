@@ -55,6 +55,11 @@
   filter: contrast(1.5);
 }
 
+.no-js .lightbox:after {
+  content: "Please enable javascript for an enhanced viewing experience";
+  font-size: .8em;
+}
+
 @keyframes cap {
     from {
       margin: -3em 0 0;
