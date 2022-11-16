@@ -105,3 +105,57 @@
 #faux-gif:hover {
   animation-play-state: paused;
 }
+
+
+#exit {
+  width: 4em;
+height: 3.232em;
+margin: .5em 1em 5em;
+display: block;
+background-image: url("../../assets/bg/misc/underground_sprite.png");
+  background-repeat: no-repeat;
+background-position: 50% 0%;
+  position: relative;
+  -o-background-size: 100%;
+-moz-background-size: 100%;
+-ms-background-size: 100%;
+-webkit-background-size: 100%;
+  background-size: 100%;
+  left: 0;
+  float: right;
+  background-color: transparent;
+  z-index: 2;
+  text-indent: 100%;
+  overflow: hidden;
+}
+#exit:hover, #exit:focus {
+background-position: 50% 100%;
+}
+
+
+#intro {
+  background-color: #306;
+  background-color: rgba(116, 3, 7, 0.9);
+  position: absolute;
+  padding: 2em;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  box-shadow: 0px 20px 20px black;
+  font-family: Georgia, serif;
+}
+
+#intro p {
+  margin: .5em;
+  color: white;
+  text-shadow: none;
+  position: relative;
+  z-index: 1;
+}
+#intro p:after {
+  content: none;
+}
+#intro a {
+  color: white;
+  text-decoration: underline;
+}

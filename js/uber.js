@@ -125,6 +125,7 @@ nW1.ops = (function () {
     setMin: curry2(setAttribute("min")),
     setMax: curry2(setAttribute("max")),
     setType: curry2(setAttribute("type")),
+    setInnerHTML: utils.mittelFactory()(utils.setter, 'innerHTML'),
     clearInnerHTML: curry3(utils.setter)("")("innerHTML"),
     setNavId: curry2(setAttribute("id"))("navigation").wrap(pass),
     setHref: setLink(".").wrap(pass),

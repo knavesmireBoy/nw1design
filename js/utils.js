@@ -190,7 +190,8 @@ nW1.utils = (function () {
           console.log(er, o, m, v);
         }
       }
-    };
+    },
+    soInvoke = (o, m, ...rest) => o[m](...rest);
   return {
     $: byId,
     $$: byIdDefer,
@@ -204,6 +205,7 @@ nW1.utils = (function () {
     doWhenFactory: doWhenFactory,
     doPartial: doPartial,
     setter: (o, k, v) => {
+     // console.log(o,k,v)
       let obj = getResult(o);
       obj[k] = v;
     },
@@ -250,6 +252,7 @@ nW1.utils = (function () {
     driller: (o, p) =>  o[p] || o,
     getter: (o, p) => getResult(o)[p],
     getTgt: (str) => byIdDefer(str),
+    soInvoke: soInvoke,
     doTest: function (x) {
       console.log(x);
       return x;
