@@ -394,22 +394,20 @@ html #wrapper {
 .no-js #navigation input.reveal:checked ~ a {
   display: inline-block;
   border: solid 1px blue;
-  width: 4em;
-  height: 4em;
   overflow: hidden;
+}
+.no-js #navigation input.reveal:checked ~ a {
+margin: 0 -4px 0 4px;
 }
 .no-js #navigation input.reveal:checked ~ a:nth-of-type(1) {
   /* using inline-block for no-js which has default LR margins, just need a top margin 
   on those in first row and it is enough to put the margin on the first <a> element*/
-  margin: .4em 0 0;
+  margin: 4px -4px 0 4px;
 }
-.no-js #navigation input.reveal:checked ~ a img {
-  height:100%;
-  width: auto;
-}
+
 .no-js #display {
   padding: 2em;
 }
 .no-js main > section:after {
-  content: "When javascript is enabled this area will reflect the selected image from the sidebar, and provide controls for navigating the gallery. Following the principles of graceful degradation the user can click on their choice of image to view the hi resolution version in a new window, deploying the trusty back button to return.";
+  content: "When javascript is enabled this area will reflect the selected image from the sidebar, and provide controls for navigating the gallery. In the sidebar we present a pure css accordion providing access to each sub-gallery allowing the user the ability to view the hi-resolution images in a new browser window.";
 }
