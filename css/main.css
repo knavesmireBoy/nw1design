@@ -97,6 +97,7 @@ button {
 
 ol, ul, dl {
   list-style: none;
+  color: transparent;
 }
 
 body {
