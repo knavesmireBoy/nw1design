@@ -38,7 +38,7 @@ function getTargetNode(node, reg, dir = "firstChild") {
     mynode = mynode && getNextElement(mynode[dir]);
     return mynode && getTargetNode(mynode, reg, dir);
   }
-  return node;
+  return mynode;
 }
 
 nW1.ops = (function () {
@@ -99,6 +99,7 @@ nW1.ops = (function () {
     getParent2: compose(getParent, getParent),
     getText: curry2(getter)("innerHTML"),
     doMake: curryL33(invokeMethod)(document)("createElement"),
+    doMakeNow: curryL3(invokeMethod)(document)("createElement"),
     //doText: deferPTL(invokeMethod, document, "createTextNode"),
     doText: curryL33(invokeMethod)(document)("createTextNode"),
     doTextCBNow: curryL3(invokeMethod)(document)("createTextNode"),
@@ -124,6 +125,7 @@ nW1.ops = (function () {
     setMin: curry2(setAttribute("min")),
     setMax: curry2(setAttribute("max")),
     setType: curry2(setAttribute("type")),
+    setInnerHTML: utils.mittelFactory()(utils.setter, 'innerHTML'),
     clearInnerHTML: curry3(utils.setter)("")("innerHTML"),
     setNavId: curry2(setAttribute("id"))("navigation").wrap(pass),
     setHref: setLink(".").wrap(pass),
