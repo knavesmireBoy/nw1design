@@ -28,9 +28,10 @@ function getUrlParameter(sParam) {
 }
 
 const intro1 =
-    "My colleague, Lylaani Dixon, has very kindly allowed me to repurpose one of her old sites as a playground for learning React. The existing site - maintained  largely for sentimental reasons - deploys an <a href='https://www.projectseven.com/support/updatepages/ssm.htm'>ancient javascript library</a> on the portfolio pages to deliver a rather involved gallery/slideshow/accordion that would provide a challenge to recreate both in React and pure ES6. Lylaani had been a freelance designer for a number of years when she was selected by &ldquo;The Rory Peck Trust&rdquo; not only to design and maintain their website but also to produce various print items most notably the programme for the annual <a href='https://rorypecktrust.org/'>The Rory Peck Awards</a> which we had printed (and designed, sort of) for the previous two years. It was better for all concerned to have a bona fide, London based, designer to assemble the information and shape the design for publication and we would collaborate closely over the ensuing decade.",
-  intro2 =
-    "This site is the vanilla JS version. The experimental <a href='https://knavesmireboy.github.io/minchinhampton/'>React</a> version utilises the browsers' localStorage API and markdown-esque markup to perform the rudimentary editing of the main content, replicating the functionality of a full-blown CMS. I eschewed the use of create-react-app in order to gain some familiarity with webpack and by extension the modern JS ecosystem. I will continue to use the site to explore further features of the framework, and in due course integrate a proper back-end. Lylanni's moved on from NW1 and her current endeavours can be found <a href='https://parish-council.website'>here</a>.";
+    "My colleague, Lylaani Dixon, has very kindly allowed me to repurpose one of her old sites as a playground for learning React. The existing site - maintained  largely for sentimental reasons - deploys an <a href='https://www.projectseven.com/support/updatepages/ssm.htm'>ancient javascript library</a> on the portfolio pages to deliver a rather complex gallery/slideshow/accordion that would provide a challenge to recreate both in React and pure ES6.",
+    intro2 = "Lylaani had been a freelance designer for a number of years when she was selected by &ldquo;The Rory Peck Trust&rdquo; to not only design and maintain their website but also to produce various print items, most notably the programme for the annual <a href='https://rorypecktrust.org/'>The Rory Peck Awards</a> which we had printed (and designed, sort of) for the previous two years. It was better for all concerned to have a bona fide - and London based - designer to assemble the information and shape the design for publication and we would collaborate closely over the ensuing decade.",
+  intro3 =
+    "This site is the vanilla JS version. The experimental <a href='https://knavesmireboy.github.io/minchinhampton?cv/'>React</a> version utilises the browsers' localStorage API and markdown-esque markup to perform rudimentary editing of the main content, mimicking the functionality of a full-blown CMS. I eschewed the use of &ldquo;create-react-app&rdquo; in order to gain some exposure to webpack and the modern JS ecosystem. Due to its primary focus the site will not degrade well in older browsers, but I will continue to use the site to explore further features of the framework, and in due course integrate a proper back-end. Lylanni has moved on from NW1 and her most recent endeavours are <a href='https://parish-council.website'>located here</a>.";
 
 const urlParams = window.URLSearchParams
   ? new window.URLSearchParams(window.location.search)
@@ -50,10 +51,16 @@ if (urlParams.has("cv")) {
     //doParaText = ops.append(ops.doTextNow(intro)),
     doParaText = curry2(ops.setInnerHTML)(intro1),
     doParaText2 = curry2(ops.setInnerHTML)(intro2),
+    doParaText3 = curry2(ops.setInnerHTML)(intro3),
+    //need fresh refs to paras
     doPara = ops.append(ops.doMakeNow("p")),
     doPara2 = ops.append(ops.doMakeNow("p")),
+    doPara3 = ops.append(ops.doMakeNow("p")),
     doLink = U.compose(
-      doParaText2,
+        doParaText3,
+        doPara3,
+        ops.getParent,
+        doParaText2.wrap(U.pass),
       doPara2,
       ops.getParent,
       doParaText.wrap(U.pass),
