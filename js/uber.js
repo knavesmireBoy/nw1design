@@ -38,7 +38,7 @@ function getTargetNode(node, reg, dir = "firstChild") {
     mynode = mynode && getNextElement(mynode[dir]);
     return mynode && getTargetNode(mynode, reg, dir);
   }
-  return node;
+  return mynode;
 }
 
 nW1.ops = (function () {
@@ -99,6 +99,7 @@ nW1.ops = (function () {
     getParent2: compose(getParent, getParent),
     getText: curry2(getter)("innerHTML"),
     doMake: curryL33(invokeMethod)(document)("createElement"),
+    doMakeNow: curryL3(invokeMethod)(document)("createElement"),
     //doText: deferPTL(invokeMethod, document, "createTextNode"),
     doText: curryL33(invokeMethod)(document)("createTextNode"),
     doTextCBNow: curryL3(invokeMethod)(document)("createTextNode"),
