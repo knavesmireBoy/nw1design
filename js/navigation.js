@@ -203,7 +203,7 @@
       curry2(utils.getter)("nodeName"),
       ops.getTarget
     ),
-    replacePath = (o, src, tgt = utils.$("wrapper")) => {
+    resolvePath = (o, src, tgt = utils.$("wrapper")) => {
       let el = getResult(o),
         f = ptL(utils.invokePair, el, "setAttribute", "src"),
         repl =
@@ -211,7 +211,8 @@
             ? src
             : src.replace("thumbs", "fullsize").replace("tmb", "fs");
       f(repl);
-      el.onload = el.onload || makePortrait.bind(el, tgt);
+     el.onload = el.onload || makePortrait.bind(el, tgt);
+    // el.addEventListener('load', makePortrait.bind(el, tgt));
     },
     hover = (e) => {
       const preview = utils.$Q("#slidepreview img");
@@ -220,7 +221,7 @@
         return;
       }
       if (matchImg(e) && e.target !== preview) {
-        replacePath(
+        resolvePath(
           preview,
           getAttribute("src")(e.target),
           utils.$("navigation")
@@ -340,8 +341,9 @@
           doImg,
           prepAttrs([setSrc, setAlt, setId], [src, "current", "slide"])
         ),
-        previewer = ptL(replacePath, $$Q("#slidepreview img")),
-        displayer = curryL2(replacePath)($$("base")),
+        previewer = ptL(resolvePath, $$Q("#slidepreview img")),
+        displayer = curryL2(resolvePath)($$("base")),
+        //projector = curryL2(resolvePath)($$("slide")),
         thumbs = Finder.from($Q("#navigation ul li", true)),
         addPlayClick = curry2(ptL(utils.lazyVal, "addEventListener", "click"))(
           routes.menu
@@ -435,6 +437,7 @@
       broadcaster.notify(src);
       looper.build(getMyLinks(), ops.incrementer, []);
       looper.attach(displayer);
+      //looper.attach(projector);
       looper.attach(broadcaster.notify.bind(broadcaster));
       looper.attach(sliderBridge);
       $painter = painter(getTgt("slide"), getTgt("base"), document.body);
