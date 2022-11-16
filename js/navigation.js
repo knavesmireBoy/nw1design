@@ -53,9 +53,14 @@
         .findIndex((n) => n >= 0);
     return compose(this.notify.bind(this), this.show.bind(this))(this.grp[i]);
   }
+
   function thumbsSearch() {
-    const i = getLinks(toArray(this.grp)).findIndex(this.finder);
-    return this.show(this.grp[i]);
+    const paths = getLinks(toArray(this.grp)),
+    [first, second] = paths.filter(this.finder),
+    hi = paths.findIndex( cur => cur === second),
+    lo = paths.findIndex( cur => cur === first);
+    //img1.jpg would match the condition before img10.jpg, so use the second if > -1, ie exists;
+    return this.show(this.grp[Math.max(hi, lo)]);
   }
 
   function makePortrait(el = nW1.utils.$("wrapper")) {
