@@ -409,5 +409,5 @@ margin: 0 -4px 0 4px;
   padding: 2em;
 }
 .no-js main > section:after {
-  content: "When javascript is enabled this area will reflect the selected image from the sidebar, and provide controls for navigating the gallery. In the sidebar we present a pure css accordion providing access to each sub-gallery allowing the user the ability to view the hi-resolution images in a new browser window.";
+  content: "When javascript is enabled this area will reflect the selected image from the sidebar, and provide controls for navigating the gallery. In the sidebar we present a pure css accordion providing access to each sub-gallery allowing the user the ability to view the hi-resolution images, electing to have the image open in the same window inviting the user to deploy the back button to implement the most basic navigation.";
 }
