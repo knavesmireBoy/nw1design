@@ -501,6 +501,7 @@ header nav > ul > li ul li {
   }
   header nav {
     position: absolute;
+    z-index: 1;
   }
   header nav ul {
     background: hsla(255deg, 100%, 100%, 0.9);
@@ -534,8 +535,8 @@ header nav > ul > li ul li {
   header > nav ul li ul {
     border-width: 0;
     top: 1px;
-    padding: 0 0 0 10%;
-    margin: 0 0 0 calc(90% + 1em);
+    padding: 0;
+    margin: 0 0 0 100%;
     background-color: transparent;
     border-width: 0 !important;
     box-shadow: none;
@@ -544,22 +545,18 @@ header nav > ul > li ul li {
     width: auto;
     box-shadow: none;
     border-width: 0 !important;
-    background-color: rgb(244, 255, 255);
+    background-color: rgba(255, 255, 255, 0.99);
     padding: 0 1em;
   }
   .contact .inner {
     padding: 1em;
   }
-  #menu-toggle:checked ~ a + nav {
-    z-index: 2;
-    left: 8vw;
-  }
-  #menu-toggle ~ a + nav,
-main aside {
+  main aside, #menu-toggle ~ a + nav {
     display: none;
   }
   #nav li ul {
     width: calc(100% + 2em);
+    background-color: red;
   }
   header label {
     background: url("../assets/bg/misc/nw1_logo_sprite_alt.png") no-repeat center top/100%;
@@ -570,12 +567,12 @@ main aside {
   .contact form div:nth-child(4) {
     flex: 1 1 10%;
   }
+  #menu-toggle:checked ~ a + nav {
+    display: block;
+    left: 8vw;
+  }
 }
 @media only screen and (max-width: 668px) {
-  #menu-toggle:checked ~ a + nav {
-    left: 0;
-    display: block;
-  }
   footer span {
     display: block;
   }
