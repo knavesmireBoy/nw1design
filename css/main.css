@@ -620,9 +620,6 @@ header nav > ul > li ul li {
     margin: 0;
     padding: 0;
   }
-  #menu-toggle:checked ~ a + nav {
-    left: 0;
-  }
 }
 @media only screen and (max-width: 550px) {
   footer ul {
@@ -672,6 +669,9 @@ header nav > ul > li ul li {
   }
   footer p a:first-child:after {
     content: none;
+  }
+  #menu-toggle:checked ~ a + nav {
+    left: 0;
   }
 }
 
