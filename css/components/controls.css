@@ -133,12 +133,12 @@ img#base,
   height: 15px;
   width: 15px;
   border-radius: 8px;
-  background: hsl(190, 30%, 68%);
+  background: #569099;
   cursor: pointer;
 }
 
 #slidecontainer input::-moz-range-thumb {
-  background: hsl(190, 30%, 50%);
+  background: #569099;
   cursor: pointer;
 }
 
@@ -148,12 +148,12 @@ img#base,
 }
 
 #buttons a:link {
-  height: calc(21px + (9 * (100vw - 900px) / (1280 - 900)));
   margin: 0 5px 0 0;
-  flex: 1 1 22px;
   background-repeat: no-repeat;
   background-position: 50% 0%;
   background-size: 100%;
+  height: calc(21px + (9 * (100vw - 900px) / (1280 - 900)));
+  flex: 1 1 22px;
 }
 
 #buttons a:last-child {
@@ -225,8 +225,8 @@ img#base,
 }
 
 #navigation a img {
-  width: calc(18px + 17 * (100vw - 900px) / (1280 - 900));
-  height: calc(18px + 17 * (100vw - 900px) / (1280 - 900));
+  width: calc(12px + 18 * (100vw - 320px) / (1280 - 320));
+  height: calc(12px + 18 * (100vw - 320px) / (1280 - 320));
 }
 
 #navigation .submenu ul li {
@@ -243,8 +243,8 @@ img#base,
 }
 
 .portfolio main > aside {
-  flex: 1 2 10em;
   background-color: white;
+  flex: 1 2 10em;
 }
 
 #navigation .submenu > a:after, .no-js #navigation input + label:after {
@@ -276,8 +276,8 @@ main#content {
   list-style: none;
 }
 .no-js .portfolio main > section ul li {
-  flex: 1 1 10em;
   display: inline-block;
+  flex: 1 1 10em;
 }
 .no-js .portfolio main > section ul li a {
   display: block;
@@ -299,79 +299,6 @@ main#content {
     left: -9999px;
   }
 }
-
-@media only screen and (max-width: 900px) {
-  #buttons a:link {
-    height: calc(26px + 12 * (100vw - 667px) / (900 - 667));
-    margin: 0 9px 0 0;
-    border: solid 1px;
-  }
-  #slidecontainer p {
-    font-size: calc(12px + (2 * (100vw - 574px) / (900 - 574)));
-  }
-  input#myrange {
-    flex: 12 1 5em;
-  }
-  #slidecontainer input {
-    flex: 9 1 2em;
-  }
-  #slidecontainer {
-    flex: 2 1 5em;
-  }
-  #display .portrait {
-    margin: 1vw 8vw;
-  }
-  .no-js main > section {
-    display: none;
-  }
-  .no-js main aside {
-    display: block;
-  }
-}
-
-@media only screen and (max-width: 667px) {
-  #slidecontainer input {
-    position: absolute;
-    left: -9999px;
-  }
-  #buttons a:link {
-    height: calc(52px + 13 * (100vw - 574px) / (667 - 574));
-  }
-  #slidecontainer {
-    flex: 1 1 5em;
-  }
-  #buttons {
-    flex: 2 1 5em;
-  }
-  #slidecontainer p em:first-of-type {
-    position: relative;
-    left: 0;
-  }
-}
-
-@media only screen and (max-width: 573px) {
-  #buttons a:link {
-    height: calc(28px + 36 * (100vw - 320px) / (573 - 320));
-    margin: 0 2px 0 0;
-  }
-
-  #slideshow {
-    margin: 0;
-  }
-}
-@media only screen and (max-width: 413px) {
-  #buttons {
-    flex: 4 1 1em;
-  }
-  #buttons a:link {
-    border: solid 1px yellow;
-  }
-  #slideshow p em:first-child {
-    position: absolute;
-    left: -9999px;
-  }
-}
-
 #slidecontainer,
 #buttons,
 #buttons a:link,
@@ -382,7 +309,6 @@ html #wrapper {
   visibility: visible;
   opacity: 1;
 }
-
 .no-js #navigation a, .no-js #navigation input {
   display: none;
 }
@@ -410,4 +336,77 @@ margin: 0 -4px 0 4px;
 }
 .no-js main > section:after {
   content: "When javascript is enabled this area will reflect the selected image from the sidebar, and provide controls for navigating the gallery. In the sidebar we present a pure css accordion providing access to each sub-gallery allowing the user the ability to view the hi-resolution images, electing to have the image open in the same window inviting the user to deploy the back button to implement the most basic navigation.";
+}
+
+@media only screen and (max-width: 900px) {
+  #buttons a:link {
+    margin: 0 9px 0 0;
+    border: solid 0px;
+    height: calc(24px + 12 * (100vw - 667px) / (900 - 667));
+  }
+  #slidecontainer p {
+    font-size: calc(12px + (2 * (100vw - 574px) / (900 - 574)));
+  }
+  input#myrange {
+    flex: 12 1 5em;
+  }
+  #slidecontainer input {
+    flex: 9 1 2em;
+  }
+  #slidecontainer {
+    flex: 2 1 5em;
+  }
+  #display .portrait {
+    margin: 1vw 8vw;
+  }
+
+  .no-js main aside {
+    display: block;
+  }
+  .no-js main > section:after {
+    content: "Please enable javascript for enhanced viewing of gallery pictures";
+    color: rgb(210, 40, 0);
+  }
+}
+
+@media only screen and (max-width: 667px) {
+  #slidecontainer input {
+    position: absolute;
+    left: -9999px;
+  }
+  #buttons a:link {
+    height: calc(52px + 13 * (100vw - 574px) / (667 - 574));
+  }
+  #slidecontainer {
+    flex: 1 1 5em;
+  }
+  #buttons {
+    flex: 2 1 5em;
+  }
+  #slidecontainer p em:first-of-type {
+    position: relative;
+    left: 0;
+  }
+}
+
+@media only screen and (max-width: 573px) {
+  #buttons a:link {
+    margin: 0 2px 0 0;
+    height: calc(28px + 36 * (100vw - 320px) / (573 - 320));
+  }
+
+  #slideshow {
+    margin: 0;
+  }
+}
+@media only screen and (max-width: 413px) {
+  #buttons {
+    flex: 4 1 1em;
+  }
+  #buttons a:link {
+  }
+  #slideshow p em:first-child {
+    position: absolute;
+    left: -9999px;
+  }
 }

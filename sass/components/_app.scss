@@ -12,7 +12,7 @@ main > * {
 
 h1 {
   font: 900 1.6em Verdana, Arial, Helvetica, sans-serif;
-  color: hsl(0, 60%, 50%);
+  color: $col-hi;
 }
 
 a {
@@ -56,12 +56,12 @@ footer ul,
 footer p {
   margin: 1em auto 1em;
   text-align: center;
+  color: white;
 }
 
 footer {
   & p {
     margin: 0 0 1em;
-    color: white;
   }
   & li {
     display: inline-block;
@@ -69,13 +69,14 @@ footer {
       border: solid 1px;
       border-width: 0 1px 0 0;
       padding: 0 0.5em;
+      color: white;
     }
   }
   & a {
     font-weight: normal;
     color: white;
     &:hover {
-      color: hsl(0, 60%, 50%);
+      color: $col-hi;
       border-color: white;
     }
   }
@@ -84,6 +85,7 @@ footer {
   }
   & p a:link:after {
     content: " | ";
+    color: white;
   }
 }
 
@@ -119,7 +121,7 @@ main aside section {
   margin: 0 0 1.5em;
   background-image: linear-gradient(hsl(190, 30%, 74%), #fff 60%);
   & a {
-    color: hsl(0, 60%, 50%);
+    color: $col-hi;
     display: block;
   }
   & h2 {
@@ -141,7 +143,7 @@ main aside section {
 }
 
 header aside img {
-  border: 1px solid hsl(0, 60%, 50%);
+  border: 1px solid $col-hi;
   border-width: 0 0 0.75em 0;
   &:hover {
     filter: contrast(1.5);
@@ -195,7 +197,7 @@ header nav > ul {
       box-sizing: content-box;
     }
     & a:hover {
-      color: hsl(0, 60%, 50%);
+      color: $col-hi;
       background-image: linear-gradient(hsl(190, 30%, 68%), #fff);
     }
   }
@@ -205,8 +207,8 @@ main aside section h2:before {
   content: "";
   width: 1em;
   height: 1em;
-  color: hsl(0, 60%, 50%);
-  background-color: hsl(0, 60%, 50%);
+  color: $col-hi;
+  background-color: $col-hi;
   display: inline-block;
   vertical-align: top;
   margin: 0 0.3em 0 0.5em;

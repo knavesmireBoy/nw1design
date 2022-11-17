@@ -6,3 +6,37 @@
    position: absolute;
    left: -9999px;
 }
+
+@mixin flexy () {
+    display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+
+/// Mixin to prefix a property
+/// @author Kitty Giraudel
+/// @param {String} $property - Property name
+/// @param {*} $value - Property value
+/// @param {List} $prefixes (()) - List of prefixes to print
+@mixin prefix($property, $value, $prefixes: ()) {
+  @each $prefix in $prefixes {
+    #{'-' + $prefix + '-' + $property}: $value;
+  }
+  // Output standard non-prefixed declaration
+  #{$property}: $value;
+}
+
+//EXAMPLE USAGE
+/*.selector {
+  @include prefix(transform, rotate(45deg), webkit ms);
+}
+*/
+
+@mixin postfix($property, $value, $prefixes: ()) {
+  @each $prefix in $prefixes {
+    $property: #{'-' + $prefix + '-' + $value}
+  }
+  // Output standard non-prefixed declaration
+    $property: #{$value};
+}

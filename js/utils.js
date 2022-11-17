@@ -179,16 +179,10 @@ nW1.utils = (function () {
       };
     },
     invokeMethod = (o, m, v) => {
-      //issue with Object.keys
       try {
         return getResult(o)[m](v);
       } catch (e) {
-        try {
-          return o[m](v);
-        }
-        catch(er){
-          console.log(er, o, m, v);
-        }
+          return getResult(o)[m](getResult(v));
       }
     },
     soInvoke = (o, m, ...rest) => o[m](...rest);

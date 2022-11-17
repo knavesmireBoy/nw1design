@@ -57,6 +57,7 @@
 
 .no-js .lightbox:after {
   content: "Please enable javascript for an enhanced viewing experience";
+  color: rgb(204,0,0);
   font-size: .8em;
 }
 
