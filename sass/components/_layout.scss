@@ -182,7 +182,6 @@ header nav > ul {
 
   .contact form div:nth-child(4) {
     @include prefix(flex, 1 1 10%, webkit ms moz);
-
   }
   #menu-toggle:checked ~ a + nav {
     display: block;
@@ -202,7 +201,6 @@ header nav > ul {
 
   .contact form div:nth-child(even) {
     @include prefix(flex, 1 1 100%, webkit ms moz);
-
   }
 
   .contact form div:nth-child(odd) {
