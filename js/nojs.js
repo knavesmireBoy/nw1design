@@ -7,7 +7,7 @@ if (!window.nW1) {
 }
 
 let mymeta = nW1.meta,
-  ops = nW1.utils,
+  utils = nW1.utils,
   ULS = mymeta.$$Q("aside ul", 1),
   links = mymeta.toArray(mymeta.$Q("aside a", 1)),
   labels = mymeta.toArray(mymeta.$Q("aside label", 1)),
