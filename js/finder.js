@@ -18,13 +18,13 @@ nW1.getFinder = () => {
     hide(el, click) {
       if (el && el === this.current && click) {
         this.current = null;
-        return nW1.ops.undoActive(el);
+        return nW1.utils.undoActive(el);
       }
     }
     show(el, click) {
       if (el && !this.hide(el, click)) {
-        nW1.ops.undoActiveCB(this.grp);
-        this.current = nW1.ops.doActive(el);
+        nW1.utils.undoActiveCB(this.grp);
+        this.current = nW1.utils.doActive(el);
       }
       return this.current;
     }

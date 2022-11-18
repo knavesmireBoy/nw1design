@@ -102,5 +102,7 @@
      e.preventDefault();
      e.stopPropagation();
      document.body.scrollTop = document.documentElement.scrollTop = 0;
-     doGit(e);
+     if(e.target.src){
+        doGit(e);
+     }
  });

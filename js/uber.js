@@ -41,7 +41,7 @@ function getTargetNode(node, reg, dir = "firstChild") {
   return mynode;
 }
 
-nW1.ops = (function () {
+nW1.utils = (function () {
   const meta = nW1.meta,
     tagTester = meta.tagTester,
     isFunction = tagTester("Function"),

@@ -44,35 +44,35 @@ if (!urlParams.has) {
 
 if (urlParams.has("cv")) {
   let meta = nW1.meta,
-    ops = nW1.ops,
+    ops = nW1.utils,
     curry2 = meta.curryRight(2),
     curryL2 = meta.curryLeft(2),
     head = meta.$Q("header"),
     anc = meta.$Q("header a"),
-    //doParaText = ops.append(ops.doTextNow(intro)),
-    text1 = curry2(ops.setInnerHTML)(intro1),
-    text2 = curry2(ops.setInnerHTML)(intro2),
-    text3 = curry2(ops.setInnerHTML)(intro3),
-    //doMakePara = curry2(meta.invoke)(ops.doMake("p")),
+    //doParaText = utils.append(utils.doTextNow(intro)),
+    text1 = curry2(utils.setInnerHTML)(intro1),
+    text2 = curry2(utils.setInnerHTML)(intro2),
+    text3 = curry2(utils.setInnerHTML)(intro3),
+    //doMakePara = curry2(meta.invoke)(utils.doMake("p")),
     //need fresh refs to paras
-    para1 = meta.compose(ops.getParent, text1.wrap(meta.pass), ops.append(ops.doMakeNow("p"))),
-    para2 = meta.compose(ops.getParent, text2.wrap(meta.pass), ops.append(ops.doMakeNow("p"))),
-    para3 = meta.compose(text3, ops.append(ops.doMakeNow("p"))),
+    para1 = meta.compose(utils.getParent, text1.wrap(meta.pass), utils.append(utils.doMakeNow("p"))),
+    para2 = meta.compose(utils.getParent, text2.wrap(meta.pass), utils.append(utils.doMakeNow("p"))),
+    para3 = meta.compose(text3, utils.append(utils.doMakeNow("p"))),
     doLink = meta.compose(
       para3,
       para2,
       para1,
-      ops.getParent2,
-      ops.append(ops.doTextNow("close")),
-      ops.setHref,
-      ops.setId("exit").wrap(meta.pass),
-      ops.append(ops.doMakeNow("a"))
+      utils.getParent2,
+      utils.append(utils.doTextNow("close")),
+      utils.setHref,
+      utils.setId("exit").wrap(meta.pass),
+      utils.append(utils.doMakeNow("a"))
     ),
     ptl = meta.mittelFactory(false)(meta.invokePair, "insertBefore", anc);
   meta.compose(
     doLink,
-    ops.setId("intro").wrap(meta.pass),
+    utils.setId("intro").wrap(meta.pass),
     curryL2(ptl)(head),
-    ops.doMakeNow
+    utils.doMakeNow
   )("div");
 }

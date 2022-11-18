@@ -7,7 +7,7 @@ if (!window.nW1) {
 }
 
 let mymeta = nW1.meta,
-  ops = nW1.ops,
+  ops = nW1.utils,
   ULS = mymeta.$$Q("aside ul", 1),
   links = mymeta.toArray(mymeta.$Q("aside a", 1)),
   labels = mymeta.toArray(mymeta.$Q("aside label", 1)),
@@ -30,7 +30,7 @@ let mymeta = nW1.meta,
     }
   },
   toHead = (label) => {
-    let input = ops.getPrevElement(label.previousSibling),
+    let input = utils.getPrevElement(label.previousSibling),
       link = document.createElement("a"),
       list = document.createElement("ul"),
       div = label.parentNode;
@@ -55,7 +55,7 @@ labels.forEach(toHead);
 
 mymeta.toArray(ULS()).forEach((ul) => {
   let li;
-  while ((li = ops.getNextElement(ul.nextSibling))) {
+  while ((li = utils.getNextElement(ul.nextSibling))) {
     ul.appendChild(li);
   }
 });
