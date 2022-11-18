@@ -24,9 +24,9 @@ const meta = nW1.meta,
     }
     return arg;
   },
-  doReturn = (ptl, o) => {
+  pass = (ptl, o, b) => {
     ptl(o);
-    return o;
+    return getResult(o);
   },
   remove = function () {
     const tgt = this.parentNode;
@@ -79,10 +79,10 @@ const meta = nW1.meta,
   ]),
   zip = (m, funs, vals) => vals[m]((v, i) => funs[i](v)),
   sit = ptL(zip, "map", [setSrc, setAlt]),
-  enhance = compose(doOverlay, getClassList).wrap(doReturn),
+  enhance = compose(doOverlay, getClassList).wrap(pass),
   step = compose(enhance, getParent, curry2(append)(makeDiv)),
   fig = compose(
-    addListener.wrap(doReturn),
+    addListener.wrap(pass),
     getParent,
     getParent,
     doClose,
