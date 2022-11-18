@@ -63,11 +63,11 @@
     return this.show(this.grp[Math.max(hi, lo)]);
   }
 
-  function makePortrait(el = nW1.utils.$("wrapper")) {
+  function makePortrait(el = nW1.meta.$("wrapper")) {
     let kls = this.naturalHeight > this.naturalWidth ? "portrait" : "";
     $wrapper.notify(kls);
     //https://stackoverflow.com/questions/49241330/javascript-domtokenlist-prototype
-    if (el === nW1.utils.$("wrapper")) {
+    if (el === nW1.meta.$("wrapper")) {
       el.classList = kls;
     }
   }
@@ -90,26 +90,26 @@
   function router($recur) {
     let player = null;
     const playMaker = function () {
-        const func = utils.doAlternate(),
+        const func = meta.doAlternate(),
           displayPause = ptL(
-            utils.invokeMethodV,
+            meta.invokeMethodV,
             $$("slideshow"),
             "classList",
             "pause"
           ),
           exec = compose(
             displayPause,
-            utils.always("remove"),
+            meta.always("remove"),
             $recur.play.bind($recur, true)
           ),
           undo = compose(
             displayPause,
-            utils.always("add"),
+            meta.always("add"),
             $recur.suspend.bind($recur, null)
           );
         return func([exec, undo]);
       },
-      loop = deferPTL(utils.invokeMethodBind, nW1.Looper),
+      loop = deferPTL(meta.invokeMethodBind, nW1.Looper),
       set = loop("set"),
       routines = [
         set(false),
@@ -163,28 +163,28 @@
   } //router
   let $painter = null,
     throttlePause,
-    getDesktop = nW1.utils.pApply(Modernizr.mq, ipad);
-  const utils = nW1.utils,
+    getDesktop = nW1.meta.pApply(Modernizr.mq, ipad);
+  const meta = nW1.meta,
     Finder = nW1.getFinder(),
     ops = nW1.ops,
     broadcaster = Publisher.from(),
     looper = nW1.Looper,
-    $ = utils.$,
-    $$ = utils.$$,
-    $Q = utils.$Q,
-    $$Q = utils.$$Q,
-    compose = utils.compose,
-    curry2 = utils.curryRight(2),
-    curryL2 = utils.curryLeft(2),
-    curry3 = utils.curryRight(3),
-    curryL3 = utils.curryLeft(3),
-    curryL33 = utils.curryLeft(3, true),
-    invoke = utils.invoke,
-    invokeMethod = utils.invokeMethod,
-    invokeMethodBridge = utils.invokeMethodBridge,
-    ptL = utils.doPartial(),
-    deferPTL = utils.doPartial(true),
-    pApply = utils.pApply,
+    $ = meta.$,
+    $$ = meta.$$,
+    $Q = meta.$Q,
+    $$Q = meta.$$Q,
+    compose = meta.compose,
+    curry2 = meta.curryRight(2),
+    curryL2 = meta.curryLeft(2),
+    curry3 = meta.curryRight(3),
+    curryL3 = meta.curryLeft(3),
+    curryL33 = meta.curryLeft(3, true),
+    invoke = meta.invoke,
+    invokeMethod = meta.invokeMethod,
+    invokeMethodBridge = meta.invokeMethodBridge,
+    ptL = meta.doPartial(),
+    deferPTL = meta.doPartial(true),
+    pApply = meta.pApply,
     doMake = ops.doMake,
     getTgt = (str) => $(str),
     getAttribute = ptL(invokeMethodBridge, "getAttribute"),
@@ -194,18 +194,18 @@
     },
     getLinksDeep = (grp) => {
       const ul = grp.map(curry3(ops.getTargetNode)("nextSibling")(/ul/i)),
-        lis = ul.map(({ children }) => utils.toArray(children));
+        lis = ul.map(({ children }) => meta.toArray(children));
       return lis.map(getLinks);
     },
     getHref = (a) => a.getAttribute("href"),
     matchImg = compose(
       curry3(invokeMethod)(/^img/i)("match"),
-      curry2(utils.getter)("nodeName"),
+      curry2(meta.getter)("nodeName"),
       ops.getTarget
     ),
-    resolvePath = (o, src, tgt = utils.$("wrapper")) => {
+    resolvePath = (o, src, tgt = meta.$("wrapper")) => {
       let el = getResult(o),
-        f = ptL(utils.invokePair, el, "setAttribute", "src"),
+        f = ptL(meta.invokePair, el, "setAttribute", "src"),
         repl =
           el.id === "base"
             ? src
@@ -215,20 +215,20 @@
     // el.addEventListener('load', makePortrait.bind(el, tgt));
     },
     hover = (e) => {
-      const preview = utils.$Q("#slidepreview img");
+      const preview = meta.$Q("#slidepreview img");
       preview.onload = null;
-      if (utils.$("slide").onload) {
+      if (meta.$("slide").onload) {
         return;
       }
       if (matchImg(e) && e.target !== preview) {
         resolvePath(
           preview,
           getAttribute("src")(e.target),
-          utils.$("navigation")
+          meta.$("navigation")
         );
       }
     },
-    addClickHover = curry2(ptL(utils.lazyVal, "addEventListener", "mouseover"))(
+    addClickHover = curry2(ptL(meta.lazyVal, "addEventListener", "mouseover"))(
       hover
     ),
     append = ops.append,
@@ -237,23 +237,23 @@
     setId = ops.setId,
     setAlt = ops.setAlt,
     setSrc = ops.setSrc,
-    setter = utils.setter,
-    toArray = utils.toArray,
-    negate = utils.negate,
+    setter = meta.setter,
+    toArray = meta.toArray,
+    negate = meta.negate,
     abbr = (el, repl) => {
       let isEl = (node) => node.nodeType === 3,
         setText = (node, i) => (node.textContent = repl[i]);
-      return utils.toArray(getResult(el).childNodes).filter(isEl).map(setText);
+      return meta.toArray(getResult(el).childNodes).filter(isEl).map(setText);
     },
     negater = function (alternators) {
       if (!getDesktop()) {
         alternators.forEach((f) => f());
-        getDesktop = pApply(utils.negate, getDesktop);
+        getDesktop = pApply(meta.negate, getDesktop);
       }
     },
     $recur = nW1.recurMaker(300, 99, 1, true).init(),
     routes = router($recur),
-    prepAttrs = (keys, vals) => curryL33(utils.zip)("map")(keys)(vals),
+    prepAttrs = (keys, vals) => curryL33(meta.zip)("map")(keys)(vals),
     prep2Append = (doEl, doAttrs) =>
       compose(
         append,
@@ -274,11 +274,11 @@
     ),
     doSliderOutput = ptL(setter, $$("tracked"), "innerHTML"),
     doSliderInput = ptL(setter, $$("myrange"), "value"),
-    addClickPreview = curry2(ptL(utils.lazyVal, "addEventListener", "click"))(
+    addClickPreview = curry2(ptL(meta.lazyVal, "addEventListener", "click"))(
       routes.sidebar
-    ).wrap(utils.pass),
+    ).wrap(meta.pass),
     displayPause = ptL(
-      utils.invokeMethodV,
+      meta.invokeMethodV,
       $$("slideshow"),
       "classList",
       "pause"
@@ -302,16 +302,16 @@
       };
       return nW1.Publish().makepublisher(ret);
     },
-    m = utils.mittelFactory(),
-    f = m(utils.setter, "classList"),
-    prepClassListNav = utils.pApply(f, utils.$$("navigation")),
+    m = meta.mittelFactory(),
+    f = m(meta.setter, "classList"),
+    prepClassListNav = meta.pApply(f, meta.$$("navigation")),
     pg = window.web ? 27 : 52,
     gtThanEq = (a, b) => a >= b,
     loader = function () {
       getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
       //post creation of sidebar
       headers = Finder.from(headings());
-      $wrapper = nW1.Publish().makepublisher(utils.$$("wrapper"));
+      $wrapper = nW1.Publish().makepublisher(meta.$$("wrapper"));
       $wrapper.attach(prepClassListNav);
 
       addClickPreview($("navigation"));
@@ -345,9 +345,9 @@
         displayer = curryL2(resolvePath)($$("base")),
         //projector = curryL2(resolvePath)($$("slide")),
         thumbs = Finder.from($Q("#navigation ul li", true)),
-        addPlayClick = curry2(ptL(utils.lazyVal, "addEventListener", "click"))(
+        addPlayClick = curry2(ptL(meta.lazyVal, "addEventListener", "click"))(
           routes.menu
-        ).wrap(utils.pass),
+        ).wrap(meta.pass),
         buttontext = ["start", "back", "play", "forward", "end"].map(
           ops.doTextCBNow
         ),
@@ -360,7 +360,7 @@
         sliderOptions = Mod.mq(ipad)
           ? [sliderRestore, sliderReplace]
           : [sliderReplace, sliderRestore],
-        sliderActions = utils.doAlternate()(sliderOptions),
+        sliderActions = meta.doAlternate()(sliderOptions),
         sliderspans = [
           curry2(insertB4)($$("tracked")),
           curry2(insertB4)($$("max"))
@@ -389,16 +389,16 @@
           compose(
             ops.clearInnerHTML,
             ops.setHref,
-            setId(el.innerHTML).wrap(utils.pass)
+            setId(el.innerHTML).wrap(meta.pass)
           )(el),
         buttonEl = Mod.backgroundsize ? "a" : "button",
         buttons = compose(getParent, compose(prepend, doMake)(buttonEl)),
         buttonCb = Mod.backgroundsize ? fixInnerHTML : (arg) => arg,
         climb = compose(getParent, ops.getParent2, ops.getParent2),
-        setState = ptL(utils.eitherOr, "add", "remove"),
+        setState = ptL(meta.eitherOr, "add", "remove"),
         doCompare = compose(
           setState,
-          curry3(utils.compare(gtThanEq))("naturalWidth")("naturalHeight")
+          curry3(meta.compare(gtThanEq))("naturalWidth")("naturalHeight")
         );
       compose(
         getParent,
@@ -429,7 +429,7 @@
         .map(buttonCb);
       headers.search = headersSearch;
       thumbs.search = thumbsSearch;
-      utils.zip("forEach", sliderspans, slidertext);
+      meta.zip("forEach", sliderspans, slidertext);
       $slider = sliderFactory($$("myrange"));
       broadcaster.attach(headers.setFinder.bind(headers));
       broadcaster.attach(thumbs.setFinder.bind(thumbs));

@@ -6,11 +6,11 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 
-let myutils = nW1.utils,
+let mymeta = nW1.meta,
   ops = nW1.ops,
-  ULS = myutils.$$Q("aside ul", 1),
-  links = myutils.toArray(myutils.$Q("aside a", 1)),
-  labels = myutils.toArray(myutils.$Q("aside label", 1)),
+  ULS = mymeta.$$Q("aside ul", 1),
+  links = mymeta.toArray(mymeta.$Q("aside a", 1)),
+  labels = mymeta.toArray(mymeta.$Q("aside label", 1)),
   divs,
   toLis = (a, i) => {
     let li = document.createElement("li"),
@@ -20,9 +20,9 @@ let myutils = nW1.utils,
     li.appendChild(a);
     div.appendChild(li);
     if (!i) {
-      preview = myutils
+      preview = mymeta
         .$("navigation")
-        .insertBefore(preview, myutils.$Q(".submenu"));
+        .insertBefore(preview, mymeta.$Q(".submenu"));
       preview.setAttribute("id", "slidepreview");
       preview.appendChild(img);
       img.setAttribute("alt", "currentpicture");
@@ -43,8 +43,8 @@ let myutils = nW1.utils,
   },
   toFrag = (div, i) => {
     let frag = document.createDocumentFragment(),
-      nodes = myutils.toArray(div.children),
-      tgt = myutils.$Q(".submenu");
+      nodes = mymeta.toArray(div.children),
+      tgt = mymeta.$Q(".submenu");
     nodes.forEach((kid) => frag.appendChild(kid));
     tgt.appendChild(frag);
     div.parentNode.removeChild(div);
@@ -53,11 +53,11 @@ let myutils = nW1.utils,
 links.forEach(toLis);
 labels.forEach(toHead);
 
-myutils.toArray(ULS()).forEach((ul) => {
+mymeta.toArray(ULS()).forEach((ul) => {
   let li;
   while ((li = ops.getNextElement(ul.nextSibling))) {
     ul.appendChild(li);
   }
 });
-divs = myutils.toArray(myutils.$Q(".submenu > div", 1));
+divs = mymeta.toArray(mymeta.$Q(".submenu > div", 1));
 divs.forEach(toFrag);

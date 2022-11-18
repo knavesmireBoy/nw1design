@@ -15,7 +15,7 @@ if (typeof Function.prototype.wrap === "undefined") {
   };
 }
 
-nW1.utils = (function () {
+nW1.meta = (function () {
   "use strict";
 
   function pApply(fn, ...cache) {

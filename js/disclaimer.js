@@ -43,35 +43,35 @@ if (!urlParams.has) {
 }
 
 if (urlParams.has("cv")) {
-  let utils = nW1.utils,
+  let meta = nW1.meta,
     ops = nW1.ops,
-    curry2 = utils.curryRight(2),
-    curryL2 = utils.curryLeft(2),
-    head = utils.$Q("header"),
-    anc = utils.$Q("header a"),
+    curry2 = meta.curryRight(2),
+    curryL2 = meta.curryLeft(2),
+    head = meta.$Q("header"),
+    anc = meta.$Q("header a"),
     //doParaText = ops.append(ops.doTextNow(intro)),
     text1 = curry2(ops.setInnerHTML)(intro1),
     text2 = curry2(ops.setInnerHTML)(intro2),
     text3 = curry2(ops.setInnerHTML)(intro3),
-    //doMakePara = curry2(utils.invoke)(ops.doMake("p")),
+    //doMakePara = curry2(meta.invoke)(ops.doMake("p")),
     //need fresh refs to paras
-    para1 = utils.compose(ops.getParent, text1.wrap(utils.pass), ops.append(ops.doMakeNow("p"))),
-    para2 = utils.compose(ops.getParent, text2.wrap(utils.pass), ops.append(ops.doMakeNow("p"))),
-    para3 = utils.compose(text3, ops.append(ops.doMakeNow("p"))),
-    doLink = utils.compose(
+    para1 = meta.compose(ops.getParent, text1.wrap(meta.pass), ops.append(ops.doMakeNow("p"))),
+    para2 = meta.compose(ops.getParent, text2.wrap(meta.pass), ops.append(ops.doMakeNow("p"))),
+    para3 = meta.compose(text3, ops.append(ops.doMakeNow("p"))),
+    doLink = meta.compose(
       para3,
       para2,
       para1,
       ops.getParent2,
       ops.append(ops.doTextNow("close")),
       ops.setHref,
-      ops.setId("exit").wrap(utils.pass),
+      ops.setId("exit").wrap(meta.pass),
       ops.append(ops.doMakeNow("a"))
     ),
-    ptl = utils.mittelFactory(false)(utils.invokePair, "insertBefore", anc);
-  utils.compose(
+    ptl = meta.mittelFactory(false)(meta.invokePair, "insertBefore", anc);
+  meta.compose(
     doLink,
-    ops.setId("intro").wrap(utils.pass),
+    ops.setId("intro").wrap(meta.pass),
     curryL2(ptl)(head),
     ops.doMakeNow
   )("div");

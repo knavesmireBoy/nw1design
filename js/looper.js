@@ -21,15 +21,15 @@ nW1.Looper = (function () {
     return this.status();
   }
 
-  const utils = nW1.utils,
-    curry2 = utils.curryRight(2),
-    curry22 = utils.curryRight(2, true),
-    curryL3 = utils.curryLeft(3),
+  const meta = nW1.meta,
+    curry2 = meta.curryRight(2),
+    curry22 = meta.curryRight(2, true),
+    curryL3 = meta.curryLeft(3),
     getter = (o, p) => o[p],
-    compose = utils.compose,
-    ptL = utils.doPartial(),
-    isBoolean = utils.tagTester("Boolean"),
-    isFunction = utils.tagTester("Function"),
+    compose = meta.compose,
+    ptL = meta.doPartial(),
+    isBoolean = meta.tagTester("Boolean"),
+    isFunction = meta.tagTester("Function"),
     equals = (a, b) => a === b,
     modulo = (n, i) => i % n,
     increment = (i) => i + 1,
@@ -78,11 +78,11 @@ nW1.Looper = (function () {
     }
     find(tgt) {
       // return this.set(_.findIndex(this.group.members, _.partial(equals, tgt)));
-      const match = curryL3(utils.invokeMethodBridge)("match"),
+      const match = curryL3(meta.invokeMethodBridge)("match"),
         cb = compose(
           match,
           curry2(getter)(1),
-          ptL(utils.invokeMethod, /\/(\w+)_/, "exec")
+          ptL(meta.invokeMethod, /\/(\w+)_/, "exec")
         )(tgt);
       this.set(this.group.members.findIndex(cb));
       this.notify(this.get());
@@ -133,7 +133,7 @@ nW1.Looper = (function () {
       }
     }
     remove(value) {
-      this.members = this.members.filter(utils.negate(ptL(equals, value)));
+      this.members = this.members.filter(meta.negate(ptL(equals, value)));
     }
     has(value) {
       return this.members.includes(value);

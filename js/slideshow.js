@@ -5,16 +5,16 @@ if (!window.nW1) {
 }
 
 
-const utils = nW1.utils,
-  getTgt = (str) => utils.$(str),
-  curry2 = utils.curryRight(2),
-  curry22 = utils.curryRight(2, true),
-  curry3 = utils.curryRight(3),
-  compose = utils.compose,
-  $$ = utils.$$,
-  isFunction = utils.tagTester("Function"),
-  ptL = utils.doPartial(),
-  deferPTL = utils.doPartial(true),
+const meta = nW1.meta,
+  getTgt = (str) => meta.$(str),
+  curry2 = meta.curryRight(2),
+  curry22 = meta.curryRight(2, true),
+  curry3 = meta.curryRight(3),
+  compose = meta.compose,
+  $$ = meta.$$,
+  isFunction = meta.tagTester("Function"),
+  ptL = meta.doPartial(),
+  deferPTL = meta.doPartial(true),
   getRes = function (arg) {
     if (isFunction(arg)) {
       return arg();
@@ -32,8 +32,8 @@ const utils = nW1.utils,
     return getRes(o);
   },
   invoke = (f, v) => f(v),
-  invokeMethod = utils.invokeMethod,
-  isInplay = utils.$$Q(".inplay"),
+  invokeMethod = meta.invokeMethod,
+  isInplay = meta.$$Q(".inplay"),
   //getHeight = curry2(getter)('naturalHeight'),
   getHeight = (o) => {
     let h = o.naturalHeight;
@@ -77,16 +77,16 @@ const utils = nW1.utils,
     return !bool;
   },
   playMaker = function ($recur) {
-    const doLoad = curry22(utils.doWhenFactory())(
+    const doLoad = curry22(meta.doWhenFactory())(
         compose($recur.setPlayer.bind($recur), doSwap)
       )(isInplay),
-      mittel = utils.mittelFactory(),
+      mittel = meta.mittelFactory(),
       getImgSrc = curry2(mittel(invokeMethod, "getAttribute"))("src"),
-      updateBase = curry2(utils.doWhenFactory())(advance),
+      updateBase = curry2(meta.doWhenFactory())(advance),
       //flag from $recur
       updateImages = (flag) => {
-        const s = utils.$("slide"),
-          b = utils.$("base");
+        const s = meta.$("slide"),
+          b = meta.$("base");
         doPic(s, getImgSrc(b));
         s.onload = ptL(updateBase, flag);
         b.onload = doLoad;
@@ -124,7 +124,7 @@ const utils = nW1.utils,
           $recur.i += 1;
         },
         reset: function () {
-          doPic(utils.$("base"), nW1.Looper.forward().value);
+          doPic(meta.$("base"), nW1.Looper.forward().value);
         }
       },
       actions = [fadeIn, fadeOut];

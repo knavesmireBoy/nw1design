@@ -42,8 +42,8 @@ function getTargetNode(node, reg, dir = "firstChild") {
 }
 
 nW1.ops = (function () {
-  const utils = nW1.utils,
-    tagTester = utils.tagTester,
+  const meta = nW1.meta,
+    tagTester = meta.tagTester,
     isFunction = tagTester("Function"),
     getRes = function (arg) {
       if (isFunction(arg)) {
@@ -51,22 +51,22 @@ nW1.ops = (function () {
       }
       return arg;
     },
-    invokeMethod = utils.invokeMethod,
-    invokeMethodBridge = utils.invokeMethodBridge,
-    invokeMethodBridgeCB = utils.invokeMethodBridgeCB,
-    ptL = utils.doPartial(),
-    compose = utils.compose,
-    pass = utils.pass,
+    invokeMethod = meta.invokeMethod,
+    invokeMethodBridge = meta.invokeMethodBridge,
+    invokeMethodBridgeCB = meta.invokeMethodBridgeCB,
+    ptL = meta.doPartial(),
+    compose = meta.compose,
+    pass = meta.pass,
     getter = (o, p) => getRes(o)[p],
-    curry2 = utils.curryRight(2),
-    curry3 = utils.curryRight(3),
-    curryL3 = utils.curryLeft(3),
-    curryL33 = utils.curryLeft(3, true),
+    curry2 = meta.curryRight(2),
+    curry3 = meta.curryRight(3),
+    curryL3 = meta.curryLeft(3),
+    curryL33 = meta.curryLeft(3, true),
     getTarget = curry2(getter)("target"),
     getParent = curry2(getter)("parentNode"),
     getClassList = curry2(getter)("classList"),
     doTextNow = ptL(invokeMethod, document, "createTextNode"),
-    setAttribute = ptL(utils.lazyVal, "setAttribute"),
+    setAttribute = ptL(meta.lazyVal, "setAttribute"),
     setLink = curry2(setAttribute("href")),
     getImgSrc = curryL3(invokeMethodBridge)("getAttribute")("src"),
     addKlas = ptL(invokeMethodBridge, "add"),
@@ -82,10 +82,10 @@ nW1.ops = (function () {
     doPortrait = (m, o, v) => {
       return o.classList[m](v);
       },
-      m = utils.mittelFactory(),
-      f = m(utils.setter, 'classList'),
-      wrapper = utils.$$('wrapper'),
-      prepClassListNav = utils.pApply(f, utils.$$('navigation'));
+      m = meta.mittelFactory(),
+      f = m(meta.setter, 'classList'),
+      wrapper = meta.$$('wrapper'),
+      prepClassListNav = meta.pApply(f, meta.$$('navigation'));
       $wrapper = nW1.Publish().makepublisher(wrapper);
       $wrapper.attach(prepClassListNav);
 
@@ -125,8 +125,8 @@ nW1.ops = (function () {
     setMin: curry2(setAttribute("min")),
     setMax: curry2(setAttribute("max")),
     setType: curry2(setAttribute("type")),
-    setInnerHTML: utils.mittelFactory()(utils.setter, 'innerHTML'),
-    clearInnerHTML: curry3(utils.setter)("")("innerHTML"),
+    setInnerHTML: meta.mittelFactory()(meta.setter, 'innerHTML'),
+    clearInnerHTML: curry3(meta.setter)("")("innerHTML"),
     setNavId: curry2(setAttribute("id"))("navigation").wrap(pass),
     setHref: setLink(".").wrap(pass),
     doActive: compose(addKlas("active"), getClassList).wrap(pass),
