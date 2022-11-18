@@ -6,8 +6,6 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 
-let $wrapper = {};
-
 function getNextElement(node, type = 1) {
   if (node && node.nodeType === type) {
     return node;
@@ -78,16 +76,7 @@ nW1.utils = (function () {
     getKey = compose(getZero, curryL3(invokeMethod)(window.Object)("keys")),
     modulo = (n, i) => i % n,
     increment = (i) => i + 1,
-    doInc = (n) => compose(ptL(modulo, n), increment),
-    doPortrait = (m, o, v) => {
-      return o.classList[m](v);
-      },
-      m = meta.mittelFactory(),
-      f = m(meta.setter, 'classList'),
-      wrapper = meta.$$('wrapper'),
-      prepClassListNav = meta.pApply(f, meta.$$('navigation'));
-      $wrapper = nW1.Publish().makepublisher(wrapper);
-      $wrapper.attach(prepClassListNav);
+    doInc = (n) => compose(ptL(modulo, n), increment);
 
   return {
     getNextElement: getNextElement,
@@ -137,7 +126,7 @@ nW1.utils = (function () {
     getLast: (array) => array[array.length - 1],
     getZero: getZero,
     incrementer: compose(doInc, getLength),
-    applyPortrait: curry3(doPortrait)('portrait'),
+    applyPortrait: curry3((m, o, v) => o.classList[m](v))('portrait'),
     doTest: function (x) {
       console.log(x);
       return x;
