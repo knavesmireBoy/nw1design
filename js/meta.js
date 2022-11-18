@@ -195,7 +195,7 @@ nW1.meta = (function () {
       () =>
         byTag(str, flag),
     compose: compose,
-    tagTester,
+    tagTester: tagTester,
     doWhenFactory: doWhenFactory,
     doPartial: doPartial,
     setter: (o, k, v) => {
