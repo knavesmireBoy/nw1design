@@ -213,7 +213,7 @@ nW1.utils = (function () {
     curryRight: curryRight,
     curryLeft: curryLeft,
     mittelFactory: mittelFactory,
-    invoke: (f, v) => f(v),
+    invoke: (f, v) => f(getResult(v)),
     invokeMethod: invokeMethod,
     invokeMethodBind: (o, m, v) => {
       return getResult(o)[m].call(o, v);
