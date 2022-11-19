@@ -86,8 +86,6 @@
     }
   };
 
-  
-
   // Fake some of Object.create so we can force non test results to be non "own" properties.
   var Modernizr = function() {};
   Modernizr.prototype = ModernizrProto;
