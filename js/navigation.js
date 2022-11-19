@@ -352,7 +352,7 @@
         buttontext = ["start", "back", "play", "forward", "end"].map(
           utils.doTextCBNow
         ),
-        sliderTxtAlt = ["", "/"],
+        sliderTxtAlt = ["", " of "],
         sliderTxt = ["Image ", " of "],
         sliderLoad = Mod.mq(ipad) ? sliderTxt : sliderTxtAlt,
         slidertext = sliderLoad.map(utils.doTextCBNow),

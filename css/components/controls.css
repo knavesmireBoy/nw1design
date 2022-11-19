@@ -387,6 +387,9 @@ margin: 0 -4px 0 4px;
     position: relative;
     left: 0;
   }
+  #tracked:before {
+    content: "Image ";
+  }
 }
 
 @media only screen and (max-width: 573px) {
