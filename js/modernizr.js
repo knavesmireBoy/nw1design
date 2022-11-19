@@ -1,3 +1,11 @@
+/*jslint nomen: true */
+/* eslint-disable indent */
+/* eslint-disable max-len */
+/* eslint-disable wrap-iife */
+/* eslint-disable no-var */
+
+/*global module: false */
+
 /*!
  * modernizr v3.5.0
  * Build https://modernizr.com/download?-borderradius-cssremunit-cssvhunit-cssvmaxunit-cssvminunit-cssvwunit-bgpositionshorthand-boxshadow-hsla-rgba-textshadow-backgroundsize-cssanimations-cssgrid_cssgridlegacy-cssmask-devicemotion_deviceorientation-flexbox-flexboxlegacy-flexboxtweener-flexwrap-nthchild-opacity-requestanimationframe-svgasimg-svgfilters-addtest-atrule-domprefixes-hasevent-mq-prefixed-prefixedcss-prefixedcssvalue-prefixes-printshiv-setclasses-testallprops-testprop-teststyles-dontmin
