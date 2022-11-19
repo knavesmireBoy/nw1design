@@ -1,7 +1,13 @@
+/*jslint nomen: true */
+/* eslint-disable indent */
+
+/*global module: false */
+
+
 module.exports = {
   env: {
     browser: true,
-    es6: true,
+    es6: true
   },
   rules: {
     'no-console': 0,
@@ -81,7 +87,7 @@ module.exports = {
     'no-bitwise': 2,
 
     'no-trailing-spaces': 1,
-    'semi-spacing': 2,
+    'semi-spacing': 2
   },
   globals: {
     $: false,
@@ -99,6 +105,6 @@ module.exports = {
     ArrayBuffer: false,
     Uint32Array: false,
     WebSocket: false,
-    XMLHttpRequest: false,
-  },
+    XMLHttpRequest: false
+  }
 };
