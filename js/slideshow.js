@@ -4,7 +4,6 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 
-
 const meta = nW1.meta,
   getTgt = (str) => meta.$(str),
   curry2 = meta.curryRight(2),
@@ -34,12 +33,14 @@ const meta = nW1.meta,
   invoke = (f, v) => f(v),
   invokeMethod = meta.invokeMethod,
   isInplay = meta.$$Q(".inplay"),
-  //getHeight = curry2(getter)('naturalHeight'),
+  getHeight = curry2(getter)('naturalHeight'),
+  /*
   getHeight = (o) => {
     let h = o.naturalHeight;
     h = Math.floor(h / 10);
     return h * 10;
   },
+  */
   compare = (pred) => (p, a, b) => {
     return typeof p === "string"
       ? pred(a[p], b[p])

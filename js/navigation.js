@@ -4,7 +4,7 @@
 /*global nW1: false */
 /* eslint-disable indent */
 
-(function (Mod, ipad) {
+(function (Mod, ipad, mob) {
   "use strict";
 
   let $wrapper = {};
@@ -175,6 +175,7 @@
     $$Q = meta.$$Q,
     compose = meta.compose,
     curry2 = meta.curryRight(2),
+    curry22 = meta.curryRight(2, true),
     curryL2 = meta.curryLeft(2),
     curry3 = meta.curryRight(3),
     curryL3 = meta.curryLeft(3),
@@ -245,7 +246,7 @@
         setText = (node, i) => (node.textContent = repl[i]);
       return meta.toArray(getResult(el).childNodes).filter(isEl).map(setText);
     },
-    negater = function (alternators) {
+    isDesktop = function (alternators) {
       if (!getDesktop()) {
         alternators.forEach((f) => f());
         getDesktop = pApply(meta.negate, getDesktop);
@@ -355,8 +356,8 @@
         sliderTxt = ["Image ", " of "],
         sliderLoad = Mod.mq(ipad) ? sliderTxt : sliderTxtAlt,
         slidertext = sliderLoad.map(utils.doTextCBNow),
-        sliderRestore = pApply(abbr, $$("tracker"), sliderTxt),
-        sliderReplace = pApply(abbr, $$("tracker"), sliderTxtAlt),
+        sliderRestore = curry22(abbr)(sliderTxt)($$("tracker")),
+        sliderReplace = curry22(abbr)(sliderTxtAlt)($$("tracker")),
         sliderOptions = Mod.mq(ipad)
           ? [sliderRestore, sliderReplace]
           : [sliderReplace, sliderRestore],
@@ -446,18 +447,21 @@
       $slider.attach(looper.set.bind(looper));
       sliderActions();
       //$Q('.active').classList.remove('active');
+
       window.addEventListener(
         "resize",
-        pApply(throttle, pApply(negater, [sliderActions]), 222)
+        pApply(throttle, pApply(isDesktop, [sliderActions]), 222)
       );
+
       window.setTimeout(function () {
         compose(utils.applyPortrait($("wrapper")), doCompare)($("base"));
         compose(utils.applyPortrait($("navigation")), doCompare)($("base"));
       }, 666);
     };
   window.addEventListener("load", loader);
-}(Modernizr, "(min-width: 1024px)"));
+}(Modernizr, "(min-width: 1024px)", "(max-width: 667px)"));
 /*
+
   FOP : 17/12/14
   BENSON
   AFEN : 01/08/15
@@ -466,4 +470,18 @@
   UKOOA 15/10/13   23/12/15
   ORKNEY 26/04/10 08/10/20
   SAFARI 31/10/04 - 26/02/04  -22/03/04
+      getMobile = nW1.meta.pApply(Modernizr.mq, mob);
+        window.addEventListener(
+        "resize",
+        pApply(throttle, pApply(isMobile, [sliderActions]), 222)
+      );
+       sliderLoad = Mod.mq(ipad) || Mod.mq(mob) ? sliderTxt : sliderTxtAlt,
+       sliderOptions = Mod.mq(ipad) || Mod.mq(mob)
+       getMobile = Mod.mq(mob) ? getMobile : pApply(negate, getMobile);
+         isMobile = function (alternators) {
+      if (!getMobile()) {
+        alternators.forEach((f) => f());
+        getMobile = pApply(meta.negate, getMobile);
+      }
+    },
   */

@@ -166,12 +166,8 @@ nW1.meta = (function () {
         fun(champ, contender) ? champ : contender
       );
     },
-    alternate = (i, n) => {
-      return () => {
-        let j = (i + 1) % n;
-        return j;
-      };
-    },
+    //can't assign i to another variable
+    alternate = (i, n) => () => (i += 1) % n,
     doAlternate = () => {
       const f = alternate(0, 2);
       return (actions, ...args) => {

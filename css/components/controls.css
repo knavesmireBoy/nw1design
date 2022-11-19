@@ -403,10 +403,10 @@ margin: 0 -4px 0 4px;
   #buttons {
     flex: 4 1 1em;
   }
-  #buttons a:link {
-  }
+ 
   #slideshow p em:first-child {
     position: absolute;
     left: -9999px;
   }
 }
+

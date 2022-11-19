@@ -56,3 +56,20 @@ main > section {
     display: inline-block;
     vertical-align: text-top;
   }
+
+  @media only screen and (max-width: 480px) {
+    .contact main > section {
+      margin: 0;
+      padding: 0;
+      border-width: 0;
+      font-size: 0.6rem;
+    }
+  
+    .contact .inner > * {
+      margin: 0;
+    }
+  
+    .contact .inner {
+      border-width: 0;
+    }
+  }
