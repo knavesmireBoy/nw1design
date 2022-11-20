@@ -46,16 +46,16 @@
       curryL2 = meta.curryLeft(2),
       compose = meta.compose,
       append = utils.append,
-      doMakeNow = utils.doMakeNow,
+      doMake = utils.doMake,
       head = meta.$Q("header"),
       anc = meta.$Q("header a"),
       text1 = curry2(utils.setInnerHTML)(intro1),
       text2 = curry2(utils.setInnerHTML)(intro2),
       text3 = curry2(utils.setInnerHTML)(intro3),
       //need fresh refs to paras
-      para1 = compose(utils.getParent, text1.wrap(meta.pass), append(doMakeNow("p"))),
-      para2 = compose(utils.getParent, text2.wrap(meta.pass), append(doMakeNow("p"))),
-      para3 = compose(text3, append(doMakeNow("p"))),
+      para1 = compose(utils.getParent, text1.wrap(meta.pass), append(doMake("p"))),
+      para2 = compose(utils.getParent, text2.wrap(meta.pass), append(doMake("p"))),
+      para3 = compose(text3, append(doMake("p"))),
       doLink = compose(
         para3,
         para2,
@@ -64,13 +64,13 @@
         append(utils.doTextNow("close")),
         utils.setHref,
         utils.setId("exit").wrap(meta.pass),
-        append(doMakeNow("a"))
+        append(doMake("a"))
       ),
       ptl = meta.mittelFactory(false)(meta.invokePair, "insertBefore", anc);
     compose(
       doLink,
       utils.setId("intro").wrap(meta.pass),
       curryL2(ptl)(head),
-      doMakeNow
+      doMake
     )("div");
   }

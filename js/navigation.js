@@ -186,7 +186,7 @@
     ptL = meta.doPartial(),
     deferPTL = meta.doPartial(true),
     pApply = meta.pApply,
-    doMake = utils.doMake,
+    doMakeDefer = utils.doMakeDefer,
     getTgt = (str) => $(str),
     getAttribute = ptL(invokeMethodBridge, "getAttribute"),
     getLinks = (grp) => {
@@ -262,12 +262,12 @@
         ptL(doIterate, "forEach"),
         doAttrs
       )(),
-    doDiv = doMake("div"),
-    doImg = doMake("img"),
+    doDiv = doMakeDefer("div"),
+    doImg = doMakeDefer("img"),
     setInnerDiv = prep2Append(doDiv, prepAttrs([utils.setKlas], ["inner"])),
-    setPara = prep2Append(doMake("p"), prepAttrs([setId], ["tracker"])),
-    setSpan1 = prep2Append(doMake("span"), prepAttrs([setId], ["tracked"])),
-    setSpan2 = prep2Append(doMake("span"), prepAttrs([setId], ["max"])),
+    setPara = prep2Append(doMakeDefer("p"), prepAttrs([setId], ["tracker"])),
+    setSpan1 = prep2Append(doMakeDefer("span"), prepAttrs([setId], ["tracked"])),
+    setSpan2 = prep2Append(doMakeDefer("span"), prepAttrs([setId], ["max"])),
     //setButtonLinks = prep2Append(doImg, prepAttrs([setAlt], ['#'])),
     headings = compose(
       curry2(toArray)(curryL2(negate)(utils.matchPath)),
@@ -331,7 +331,7 @@
         machSlider = prep2Append(doDiv, prepAttrs([setId], ["slidecontainer"])),
         attrs = [utils.setType, utils.setMin, utils.setMax, utils.setVal, setId],
         machSliderInput = prep2Append(
-          doMake("input"),
+          doMakeDefer("input"),
           prepAttrs(attrs, ["range", 1, pg, 1, "myrange"])
         ),
         machBase = prep2Append(
@@ -393,7 +393,7 @@
             setId(el.innerHTML).wrap(meta.pass)
           )(el),
         buttonEl = Mod.backgroundsize ? "a" : "button",
-        buttons = compose(getParent, compose(prepend, doMake)(buttonEl)),
+        buttons = compose(getParent, compose(prepend, doMakeDefer)(buttonEl)),
         buttonCb = Mod.backgroundsize ? fixInnerHTML : (arg) => arg,
         climb = compose(getParent, utils.getParent2, utils.getParent2),
         setState = ptL(meta.eitherOr, "add", "remove"),
