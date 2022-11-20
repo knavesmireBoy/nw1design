@@ -18,12 +18,7 @@ if (typeof Function.prototype.wrap === "undefined") {
 const meta = nW1.meta,
   utils = nW1.utils,
   isFunction = meta.tagTester("Function"),
-  getResult = function (arg) {
-    if (isFunction(arg)) {
-      return arg();
-    }
-    return arg;
-  },
+  getResult = (arg) => isFunction(arg) ? arg() : arg,
   pass = meta.pass,
   remove = function () {
     const tgt = this.parentNode;
