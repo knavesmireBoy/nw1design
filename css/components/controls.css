@@ -30,9 +30,9 @@
 }
 
 /*.swap .portait #display .inner, */#display .inner {
-  margin: 1vw calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
   text-align: center;
   overflow: hidden;
+  margin: 1vw calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
   transition: margin 1s;
 }
 
@@ -58,7 +58,6 @@ body.swap img#slide {
   margin-left: 0;
 }
 /*
-
 .inplay img#slide {
   margin-left: -100%;
 }
@@ -77,32 +76,32 @@ img#base,
 */
 #controls {
   display: flex;
-  background-image: linear-gradient(transparent, hsl(190, 30%, 68%));
   align-content: center;
   padding: 1vw;
+  background-image: linear-gradient(transparent, hsl(190, 30%, 68%));
 }
 
 #buttons {
-  flex: 1 1 5em;
   padding: 0.25em;
-  display: flex;
   border: solid 1px yellow;
+  display: flex;
+  flex: 1 1 5em;
 }
 
 #slidecontainer {
-  flex: 3 1 5em;
-  display: flex;
   padding: 0 0.5em;
   border: solid 1px orange;
+  display: flex;
+  flex: 3 1 5em;
 }
 #slidecontainer p {
-  font-size: calc(10px + (4 * (100vw - 900px) / (1280 - 900)));
   margin: 0;
-  flex: 4 1 1em;
-  align-self: center;
   text-align: center;
   min-width: 30px;
   border: solid 1px khaki;
+  font-size: calc(10px + (4 * (100vw - 900px) / (1280 - 900)));
+  flex: 4 1 1em;
+  align-self: center;
 }
 #slidecontainer p span {
   font-weight: bold;
@@ -111,16 +110,17 @@ img#base,
   font-style: normal;
 }
 #slidecontainer input {
-  flex: 10 1 1em;
   margin: 0 1em 0 0;
   height: 1.5em;
   align-self: center;
   border: solid 1px;
-  -webkit-appearance: none;
   opacity: 0.7;
   -webkit-transition: 0.2s;
   transition: opacity 0.2s;
   border-radius: 8px;
+  flex: 10 1 1em;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 #slidecontainer input:hover {
@@ -128,12 +128,12 @@ img#base,
 }
 
 #slidecontainer input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
   height: 15px;
   width: 15px;
   border-radius: 8px;
   background: #569099;
+  appearance: none;
+  -webkit-appearance: none;
   cursor: pointer;
 }
 
@@ -412,4 +412,3 @@ margin: 0 -4px 0 4px;
     left: -9999px;
   }
 }
-

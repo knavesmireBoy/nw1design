@@ -390,15 +390,6 @@ main aside section:nth-child(n+2) {
   border-color: white;
 }
 
-/*
-main span {
-  background-color: yellow;
-}
-
-.foo {
-  background-color: orange;
-}
-*/
 main {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -410,9 +401,9 @@ header {
   padding: 0;
   margin: 1em 1.5em;
   border: 1em solid #fff;
-  background-image: linear-gradient(#fff, hsl(190deg, 30%, 68%));
   background-position: 2% 0, left top;
-  background-repeat: no-repeat, no-repeat;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(#fff, hsl(190deg, 30%, 68%));
 }
 header label {
   width: 7em;
@@ -424,15 +415,15 @@ header label {
 }
 header h1 {
   white-space: nowrap;
-  margin: 0.2em 0 0 calc(10px + 16 * (100vw - 320px) / 960);
-  background: transparent url("../assets/bg/misc/logo.png") no-repeat;
-  background-size: 98%;
   width: 10em;
   height: 0;
   padding: 0;
   /* reset */
   padding-top: 2.6em;
   overflow: hidden;
+  margin: 0.2em 0 0 calc(10px + 16 * (100vw - 320px) / 960);
+  background: transparent url("../assets/bg/misc/logo.png") no-repeat;
+  background-size: 98%;
 }
 header a {
   display: inline-block;
@@ -482,11 +473,11 @@ header nav > ul > li ul li {
 #wrapper {
   background-color: hsl(190deg, 30%, 68%);
   border: 1em solid #fff;
-  width: 80vw;
   margin: 0 auto;
   padding: 0;
   border: solid 1px #999;
   overflow: hidden;
+  width: 80vw;
   max-width: 1024px;
 }
 
@@ -530,10 +521,10 @@ header nav > ul > li ul li {
     border: 0 solid;
     text-align: left;
     line-height: 2;
-    margin: -1em 0 0 2vw;
     display: inline-block;
     padding: 0 1em;
     box-shadow: 1px 1px 2px #000;
+    margin: -1em 0 0 2vw;
   }
   header nav ul li {
     border: 1px solid #999;
@@ -613,9 +604,9 @@ header nav > ul > li ul li {
     margin: 0;
   }
   #wrapper {
-    width: 100vw;
     margin: 0;
     border: solid 0 #999;
+    width: 100vw;
   }
   html body {
     margin: 0;

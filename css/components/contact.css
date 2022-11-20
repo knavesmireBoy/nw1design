@@ -15,15 +15,13 @@ main > section {
     flex-wrap: wrap;
   }
   form div {
-    flex: 1 1 40%;
     padding: .5em 0;
+    flex: 1 1 40%;
   }
   form div:nth-child(odd) {
     margin: 0 1em 0 0;
   }
-  form div:nth-child(odd) label, form p:last-of-type {
-  color: black;
-  }
+ 
   form label {
     margin: 0 0 .25em;
     display: block;
@@ -35,13 +33,10 @@ main > section {
     font-size: 1.1em;
   }
   
-  div input[required], textarea {
+  div input[required], textarea, div > input, form div:nth-child(odd) label, form p:last-of-type {
     color: black;
   }
-  /*not on submit*/
-  div > input {
-    color: black;
-  }
+
   div input:focus, textarea:focus {
     background-color: rgba(255,255,255, .25);
   }

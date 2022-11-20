@@ -1,6 +1,5 @@
 /*jslint nomen: true */
 /* eslint-disable indent */
-
 /*global nW1: false */
 if (!window.nW1) {
   window.nW1 = {};

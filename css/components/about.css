@@ -23,8 +23,8 @@
   margin: 3em auto 0;
   padding: 1em 1em 0;
   background-color: #fff;
-  animation: fig 3s ease;
   box-shadow: 1px 1px 2px 2px black;
+  animation: fig 3s ease;
 }
 
 .overlay img {
