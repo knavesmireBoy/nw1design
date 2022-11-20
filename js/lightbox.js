@@ -24,28 +24,27 @@ const meta = nW1.meta,
     }
     return arg;
   },
-  pass = (ptl, o, b) => {
-    ptl(o);
-    return getResult(o);
-  },
+  pass = meta.pass,
   remove = function () {
     const tgt = this.parentNode;
     tgt.parentNode.removeChild(tgt);
   },
   ptL = meta.doPartial(),
-  //con = (v) => console.log(v),
+  //getResult = ptL(meta.best, isFunction, [x => x(), x => x]),
+  lightbox = document.querySelector(".lightbox"),
   compose = meta.compose,
   getter = meta.getter,
   curry2 = meta.curryRight(2),
-  lightbox = document.querySelector(".lightbox"),
-  invoke = (f, v) => f(v),
   invokeMethod = meta.invokeMethod,
-  lazyInvoke = (m, p, o, v) => o[m](p, v),
   invokeMethodBridge = meta.invokeMethodBridge,
+  prepend = utils.prepend,
+  append = utils.append,
   getParent = utils.getParent,
   doMakeDefer = utils.doMakeDefer,
   doMake = utils.doMake,
   doText = ptL(invokeMethod, document, "createTextNode"),
+  invoke = (f, v) => f(v),
+  lazyInvoke = (m, p, o, v) => o[m](p, v),
   getClassList = curry2(getter)("classList"),
   getAttribute = ptL(invokeMethodBridge, "getAttribute"),
   getParentAttribute = ptL(meta.invokeMethodBridgeCB(getParent), "getAttribute"),
@@ -56,8 +55,6 @@ const meta = nW1.meta,
   doOverlay = ptL(invokeMethodBridge, "add", "overlay"),
   doDiv = doMakeDefer("div"),
   doImg = doMakeDefer("img"),
-  prepend = utils.prepend,
-  append = utils.append,
   doClose = append(doText("CLOSE")),
   doRender = prepend(document.body),
   /*puzzled as to why figure was being created with an extra image on every click; the argument

@@ -1,6 +1,6 @@
 /*jslint nomen: true */
 /* eslint-disable indent */
-
+/* eslint-disable no-param-reassign */
 /*global nW1: false */
 if (!window.nW1) {
   window.nW1 = {};
@@ -162,7 +162,7 @@ nW1.meta = (function () {
     toArray = (coll, cb = () => true) =>
       Array.prototype.slice.call(coll).filter(cb),
     best = (fun, coll, arg) => {
-      return toArray(coll).reduce((champ, contender) =>
+      return coll.reduce((champ, contender) =>
         fun(champ, contender) ? champ : contender
       );
     },
@@ -182,7 +182,6 @@ nW1.meta = (function () {
       }
     },
     soInvoke = (o, m, ...rest) => o[m](...rest);
-    
   return {
     $: byId,
     $$: byIdDefer,
@@ -244,6 +243,7 @@ nW1.meta = (function () {
     getter: (o, p) => getResult(o)[p],
     getTgt: (str) => byIdDefer(str),
     soInvoke: soInvoke,
+    best: best,
     doTest: function (x) {
       console.log(x);
       return x;
