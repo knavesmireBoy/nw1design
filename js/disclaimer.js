@@ -44,6 +44,8 @@
       utils = nW1.utils,
       curry2 = meta.curryRight(2),
       curryL2 = meta.curryLeft(2),
+      compose = meta.compose,
+      append = utils.append,
       doMakeNow = utils.doMakeNow,
       head = meta.$Q("header"),
       anc = meta.$Q("header a"),
@@ -51,21 +53,21 @@
       text2 = curry2(utils.setInnerHTML)(intro2),
       text3 = curry2(utils.setInnerHTML)(intro3),
       //need fresh refs to paras
-      para1 = meta.compose(utils.getParent, text1.wrap(meta.pass), utils.append(doMakeNow("p"))),
-      para2 = meta.compose(utils.getParent, text2.wrap(meta.pass), utils.append(doMakeNow("p"))),
-      para3 = meta.compose(text3, utils.append(doMakeNow("p"))),
-      doLink = meta.compose(
+      para1 = compose(utils.getParent, text1.wrap(meta.pass), append(doMakeNow("p"))),
+      para2 = compose(utils.getParent, text2.wrap(meta.pass), append(doMakeNow("p"))),
+      para3 = compose(text3, append(doMakeNow("p"))),
+      doLink = compose(
         para3,
         para2,
         para1,
         utils.getParent2,
-        utils.append(utils.doTextNow("close")),
+        append(utils.doTextNow("close")),
         utils.setHref,
         utils.setId("exit").wrap(meta.pass),
-        utils.append(doMakeNow("a"))
+        append(doMakeNow("a"))
       ),
       ptl = meta.mittelFactory(false)(meta.invokePair, "insertBefore", anc);
-    meta.compose(
+    compose(
       doLink,
       utils.setId("intro").wrap(meta.pass),
       curryL2(ptl)(head),

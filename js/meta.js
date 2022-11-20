@@ -182,6 +182,7 @@ nW1.meta = (function () {
       }
     },
     soInvoke = (o, m, ...rest) => o[m](...rest);
+    
   return {
     $: byId,
     $$: byIdDefer,
