@@ -596,7 +596,7 @@ header nav > ul > li ul li {
     left: calc(8vw + 1px);
   }
 }
-@media only screen and (max-width: 668px) {
+@media only screen and (max-width: 667px) {
   footer span {
     display: block;
   }
@@ -620,6 +620,9 @@ header nav > ul > li ul li {
   html body {
     margin: 0;
     padding: 0;
+  }
+  header nav ul {
+    margin: -1em 0 0;
   }
   #menu-toggle:checked ~ a + nav {
     display: block;
