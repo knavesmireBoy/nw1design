@@ -695,5 +695,198 @@ header nav > ul > li ul li {
     left: 0;
   }
 }
+/* ABOUT */
+.about main aside section a:last-of-type {
+  padding: 1em 2em 0;
+}
+
+.about main aside section p {
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 1em 2em 0;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vw;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1;
+}
+
+.overlay figure {
+  width: 50%;
+  margin: 3em auto 0;
+  padding: 1em 1em 0;
+  background-color: #fff;
+  box-shadow: 1px 1px 2px 2px black;
+  -moz-animation: fig 3s ease;
+  -o-animation: fig 3s ease;
+  -webkit-animation: fig 3s ease;
+  animation: fig 3s ease;
+}
+
+.overlay img {
+  opacity: 0;
+  margin: 0 0 -3em;
+  position: relative;
+  -moz-animation: fade 0.5s ease 2s forwards;
+  -o-animation: fade 0.5s ease 2s forwards;
+  -webkit-animation: fade 0.5s ease 2s forwards;
+  animation: fade 0.5s ease 2s forwards;
+}
+
+.overlay figcaption {
+  background-color: #fff;
+  text-align: right;
+  padding: 1em;
+  cursor: pointer;
+  font-weight: 700;
+  color: #666;
+  margin: 0;
+  -moz-animation: fade 1s ease 4s backwards, cap 1s ease 3s forwards;
+  -o-animation: fade 1s ease 4s backwards, cap 1s ease 3s forwards;
+  -webkit-animation: fade 1s ease 4s backwards, cap 1s ease 3s forwards;
+  animation: fade 1s ease 4s backwards, cap 1s ease 3s forwards;
+}
+
+.overlay figcaption:after {
+  content: " X";
+  color: #000;
+  font-weight: 700;
+}
+
+.lightbox a:hover img {
+  filter: contrast(1.5);
+}
+
+.no-js .lightbox:after {
+  content: "Please enable javascript for an enhanced viewing experience";
+  color: rgb(204, 0, 0);
+  font-size: 0.8em;
+}
+
+@keyframes cap {
+  from {
+    margin: -3em 0 0;
+  }
+  to {
+    margin: 3em 0 0;
+  }
+}
+@-webkit-keyframes cap {
+  from {
+    margin: -3em 0 0;
+  }
+  to {
+    margin: 3em 0 0;
+  }
+}
+@-moz-keyframes cap {
+  from {
+    margin: -3em 0 0;
+  }
+  to {
+    margin: 3em 0 0;
+  }
+}
+@-o-keyframes cap {
+  from {
+    margin: -3em 0 0;
+  }
+  to {
+    margin: 3em 0 0;
+  }
+}
+@keyframes cap {
+  from {
+    margin: -3em 0 0;
+  }
+  to {
+    margin: 3em 0 0;
+  }
+}
+@keyframes fig {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@-webkit-keyframes fig {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@-moz-keyframes fig {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@-o-keyframes fig {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes fig {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-moz-keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-o-keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
 /*# sourceMappingURL=main.css.map */

@@ -24,8 +24,7 @@ header {
   overflow: hidden;
   $props: ("margin-left": "10px + 16 * (100vw - 320px) / (1280 - 320)");
   margin: .2em 0 0;
-  //margin-left: calc(10px + 16 * (100vw - 320px) / (1280 - 320));
-   @include docalc($props);
+  @include docalc($props);
   background: transparent url("../assets/bg/misc/logo.png") no-repeat;
   background-size: 98%;
 }
@@ -277,3 +276,119 @@ header nav > ul {
     left: 0;
   }
 }
+
+/* ABOUT */
+.about main aside section a:last-of-type {
+  padding: 1em 2em 0;
+}
+
+.about main aside section p {
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 1em 2em 0;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vw;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1;
+}
+
+.overlay figure {
+  width: 50%;
+  margin: 3em auto 0;
+  padding: 1em 1em 0;
+  background-color: #fff;
+  box-shadow: 1px 1px 2px 2px black;
+  @include prefix('animation', fig 3s ease, moz o webkit);
+}
+
+.overlay img {
+  opacity: 0;
+  margin: 0 0 -3em;
+  position: relative;
+  @include prefix('animation', fade 0.5s ease 2s forwards, moz o webkit);
+}
+
+.overlay figcaption {
+  background-color: #fff;
+  text-align: right;
+  padding: 1em;
+  cursor: pointer;
+  font-weight: 700;
+  color: #666;
+  margin: 0;
+  @include prefix('animation', (fade 1s ease 4s backwards, cap 1s ease 3s forwards), moz o webkit);
+}
+
+.overlay figcaption:after {
+  content: " X";
+  color: #000;
+  font-weight: 700;
+}
+
+.lightbox a:hover img {
+  filter: contrast(1.5);
+}
+
+.no-js .lightbox:after {
+  content: "Please enable javascript for an enhanced viewing experience";
+  color: rgb(204,0,0);
+  font-size: .8em;
+}
+//https://thoughtbot.com/blog/sasss-content-directive
+//https://gist.github.com/max-lizard/62e6e74bc3498fe17094f22b8ffb857c
+@keyframes cap {
+    from {
+      margin: -3em 0 0;
+    }
+    to {
+      margin: 3em 0 0;
+    }
+  }
+  @include keyframes(cap) {
+    from {
+      margin: -3em 0 0;
+    }
+    to {
+      margin: 3em 0 0;
+    }
+  }
+  
+
+  @keyframes fig {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @include keyframes(fig) {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @include keyframes(fade) {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
