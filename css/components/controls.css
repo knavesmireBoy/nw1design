@@ -1,7 +1,3 @@
-.portfolio main > section {
-  flex: 2 1 20em;
-}
-
 #slidepreview {
   width: 75%;
   padding: 1em;
@@ -9,7 +5,8 @@
   border: solid 1px #999;
   overflow: hidden;
 }
-#navigation.portrait #slidepreview, #navigation.portraity #slidepreview {
+#navigation.portrait #slidepreview,
+#navigation.portraity #slidepreview {
   width: 41.1%;
 }
 .portfolio #display {
@@ -29,7 +26,8 @@
   padding: 0 0 1vw;
 }
 
-/*.swap .portait #display .inner, */#display .inner {
+/*.swap .portait #display .inner, */
+#display .inner {
   text-align: center;
   overflow: hidden;
   margin: 1vw calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
@@ -74,34 +72,21 @@ img#base,
   margin-left: 0;
 }
 */
-#controls {
-  display: flex;
-  align-content: center;
-  padding: 1vw;
-  background-image: linear-gradient(transparent, hsl(190, 30%, 68%));
-}
 
 #buttons {
   padding: 0.25em;
   border: solid 1px yellow;
-  display: flex;
-  flex: 1 1 5em;
 }
 
 #slidecontainer {
   padding: 0 0.5em;
   border: solid 1px orange;
-  display: flex;
-  flex: 3 1 5em;
 }
 #slidecontainer p {
   margin: 0;
   text-align: center;
   min-width: 30px;
   border: solid 1px khaki;
-  font-size: calc(10px + (4 * (100vw - 900px) / (1280 - 900)));
-  flex: 4 1 1em;
-  align-self: center;
 }
 #slidecontainer p span {
   font-weight: bold;
@@ -112,15 +97,8 @@ img#base,
 #slidecontainer input {
   margin: 0 1em 0 0;
   height: 1.5em;
-  align-self: center;
   border: solid 1px;
   opacity: 0.7;
-  -webkit-transition: 0.2s;
-  transition: opacity 0.2s;
-  border-radius: 8px;
-  flex: 10 1 1em;
-  appearance: none;
-  -webkit-appearance: none;
 }
 
 #slidecontainer input:hover {
@@ -151,9 +129,6 @@ img#base,
   margin: 0 5px 0 0;
   background-repeat: no-repeat;
   background-position: 50% 0%;
-  background-size: 100%;
-  height: calc(21px + (9 * (100vw - 900px) / (1280 - 900)));
-  flex: 1 1 22px;
 }
 
 #buttons a:last-child {
@@ -196,17 +171,20 @@ img#base,
   padding: 0;
 }
 
-#navigation ul, .no-js #navigation label {
+#navigation ul,
+.no-js #navigation label {
   padding: 0.5em;
 }
 
-#navigation .submenu ul li a, .no-js #navigation a {
+#navigation .submenu ul li a,
+.no-js #navigation a {
   background-color: hsl(190, 30%, 73%);
   padding: 0.25em;
   border: solid 1px black;
 }
 
-#navigation .submenu > a, .no-js #navigation label {
+#navigation .submenu > a,
+.no-js #navigation label {
   background-color: hsl(190, 30%, 73%);
   color: hsl(217, 50%, 40%);
   padding: 0.25em 0.6em;
@@ -215,18 +193,15 @@ img#base,
   border-color: white white gray;
   font-weight: bold;
 }
-#navigation .submenu > a.active, .no-js #navigation input:checked + label {
+#navigation .submenu > a.active,
+.no-js #navigation input:checked + label {
   color: white;
 }
 
-#navigation .submenu > a:hover, .no-js #navigation label:hover {
+#navigation .submenu > a:hover,
+.no-js #navigation label:hover {
   color: hsl(0, 60%, 50%);
   text-decoration: underline;
-}
-
-#navigation a img {
-  width: calc(12px + 18 * (100vw - 320px) / (1280 - 320));
-  height: calc(12px + 18 * (100vw - 320px) / (1280 - 320));
 }
 
 #navigation .submenu ul li {
@@ -244,16 +219,17 @@ img#base,
 
 .portfolio main > aside {
   background-color: white;
-  flex: 1 2 10em;
 }
 
-#navigation .submenu > a:after, .no-js #navigation input + label:after {
+#navigation .submenu > a:after,
+.no-js #navigation input + label:after {
   content: "+";
   color: white;
   float: right;
 }
 
-#navigation .submenu > a.active:after,  .no-js #navigation input:checked + label:after{
+#navigation .submenu > a.active:after,
+.no-js #navigation input:checked + label:after {
   content: "-";
 }
 
@@ -277,7 +253,6 @@ main#content {
 }
 .no-js .portfolio main > section ul li {
   display: inline-block;
-  flex: 1 1 10em;
 }
 .no-js .portfolio main > section ul li a {
   display: block;
@@ -309,7 +284,8 @@ html #wrapper {
   visibility: visible;
   opacity: 1;
 }
-.no-js #navigation a, .no-js #navigation input {
+.no-js #navigation a,
+.no-js #navigation input {
   display: none;
 }
 
@@ -323,7 +299,7 @@ html #wrapper {
   overflow: hidden;
 }
 .no-js #navigation input.reveal:checked ~ a {
-margin: 0 -4px 0 4px;
+  margin: 0 -4px 0 4px;
 }
 .no-js #navigation input.reveal:checked ~ a:nth-of-type(1) {
   /* using inline-block for no-js which has default LR margins, just need a top margin 
@@ -342,20 +318,8 @@ margin: 0 -4px 0 4px;
   #buttons a:link {
     margin: 0 9px 0 0;
     border: solid 0px;
-    height: calc(24px + 12 * (100vw - 667px) / (900 - 667));
   }
-  #slidecontainer p {
-    font-size: calc(12px + (2 * (100vw - 574px) / (900 - 574)));
-  }
-  input#myrange {
-    flex: 12 1 5em;
-  }
-  #slidecontainer input {
-    flex: 9 1 2em;
-  }
-  #slidecontainer {
-    flex: 2 1 5em;
-  }
+
   #display .portrait {
     margin: 1vw 8vw;
   }
@@ -374,15 +338,7 @@ margin: 0 -4px 0 4px;
     position: absolute;
     left: -9999px;
   }
-  #buttons a:link {
-    height: calc(52px + 13 * (100vw - 574px) / (667 - 574));
-  }
-  #slidecontainer {
-    flex: 1 1 5em;
-  }
-  #buttons {
-    flex: 2 1 5em;
-  }
+
   #slidecontainer p em:first-of-type {
     position: relative;
     left: 0;
@@ -395,7 +351,6 @@ margin: 0 -4px 0 4px;
 @media only screen and (max-width: 573px) {
   #buttons a:link {
     margin: 0 2px 0 0;
-    height: calc(28px + 36 * (100vw - 320px) / (573 - 320));
   }
 
   #slideshow {
@@ -403,10 +358,6 @@ margin: 0 -4px 0 4px;
   }
 }
 @media only screen and (max-width: 413px) {
-  #buttons {
-    flex: 4 1 1em;
-  }
- 
   #slideshow p em:first-child {
     position: absolute;
     left: -9999px;

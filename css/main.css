@@ -929,4 +929,237 @@ header nav > ul > li ul li {
   background-size: cover;
 }
 
+/* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/
+.portfolio main > section {
+  -moz-flex: 2 1 20em;
+  -o-flex: 2 1 20em;
+  -webkit-flex: 2 1 20em;
+  -ms-flex: 2 1 20em;
+  flex: 2 1 20em;
+}
+
+#display .inner {
+  margin: 1vw;
+  margin-left: -moz-calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
+  margin-left: -o-calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
+  margin-left: -webkit-calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
+  margin-left: calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
+  margin-right: -moz-calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
+  margin-right: -o-calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
+  margin-right: -webkit-calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
+  margin-right: calc(4vw + (4 * (100vw - 900px) / (1280 - 900)));
+  -moz-transition: margin 1s;
+  -o-transition: margin 1s;
+  -webkit-transition: margin 1s;
+  transition: margin 1s;
+}
+
+#controls {
+  -webkit-display: flex;
+  -moz-display: flex;
+  -ms-display: flex;
+  -o-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox; /* ie 10 */
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-content: center;
+  align-content: center;
+  padding: 1vw;
+  background-image: -webkit-linear-gradient(top, transparent, hsl(190deg, 30%, 68%));
+  background-image: -moz-linear-gradient(top, transparent, hsl(190deg, 30%, 68%));
+  background-image: -o-linear-gradient(top, transparent, hsl(190deg, 30%, 68%));
+  background-image: linear-gradient(top, transparent, hsl(190deg, 30%, 68%));
+}
+
+#buttons {
+  -webkit-display: flex;
+  -moz-display: flex;
+  -ms-display: flex;
+  -o-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox; /* ie 10 */
+  display: -webkit-flex;
+  display: flex;
+  -moz-flex: 1 1 5em;
+  -o-flex: 1 1 5em;
+  -webkit-flex: 1 1 5em;
+  -ms-flex: 1 1 5em;
+  flex: 1 1 5em;
+}
+
+#slidecontainer {
+  -webkit-display: flex;
+  -moz-display: flex;
+  -ms-display: flex;
+  -o-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox; /* ie 10 */
+  display: -webkit-flex;
+  display: flex;
+  -moz-flex: 3 1 5em;
+  -o-flex: 3 1 5em;
+  -webkit-flex: 3 1 5em;
+  -ms-flex: 3 1 5em;
+  flex: 3 1 5em;
+}
+
+#slidecontainer p {
+  font-size: -moz-calc(10px + (4 * (100vw - 900px) / (1280 - 900)));
+  font-size: -o-calc(10px + (4 * (100vw - 900px) / (1280 - 900)));
+  font-size: -webkit-calc(10px + (4 * (100vw - 900px) / (1280 - 900)));
+  font-size: calc(10px + (4 * (100vw - 900px) / (1280 - 900)));
+  -moz-flex: 4 1 1em;
+  -o-flex: 4 1 1em;
+  -webkit-flex: 4 1 1em;
+  -ms-flex: 4 1 1em;
+  flex: 4 1 1em;
+  -webkit-align-self: center;
+  align-self: center;
+}
+
+#slidecontainer input {
+  -moz-border-radius: 8px;
+  -o-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  -moz-flex: 10 1 1em;
+  -o-flex: 10 1 1em;
+  -webkit-flex: 10 1 1em;
+  -ms-flex: 10 1 1em;
+  flex: 10 1 1em;
+  -webkit-align-self: center;
+  align-self: center;
+  -moz-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+#buttons a:link {
+  -moz-background-size: 100%;
+  -webkit-background-size: 100%;
+  background-size: 100%;
+  height: -moz-calc(21px + (9 * (100vw - 900px) / (1280 - 900)));
+  height: -o-calc(21px + (9 * (100vw - 900px) / (1280 - 900)));
+  height: -webkit-calc(21px + (9 * (100vw - 900px) / (1280 - 900)));
+  height: calc(21px + (9 * (100vw - 900px) / (1280 - 900)));
+  -moz-flex: 1 1 22px;
+  -o-flex: 1 1 22px;
+  -webkit-flex: 1 1 22px;
+  -ms-flex: 1 1 22px;
+  flex: 1 1 22px;
+}
+
+#navigation a img {
+  width: -moz-calc(12px + (18 * (100vw - 320px) / (1280 - 320)));
+  width: -o-calc(12px + (18 * (100vw - 320px) / (1280 - 320)));
+  width: -webkit-calc(12px + (18 * (100vw - 320px) / (1280 - 320)));
+  width: calc(12px + (18 * (100vw - 320px) / (1280 - 320)));
+  height: -moz-calc(12px + (18 * (100vw - 320px) / (1280 - 320)));
+  height: -o-calc(12px + (18 * (100vw - 320px) / (1280 - 320)));
+  height: -webkit-calc(12px + (18 * (100vw - 320px) / (1280 - 320)));
+  height: calc(12px + (18 * (100vw - 320px) / (1280 - 320)));
+}
+
+.portfolio main > aside {
+  -moz-flex: 1 2 10em;
+  -o-flex: 1 2 10em;
+  -webkit-flex: 1 2 10em;
+  -ms-flex: 1 2 10em;
+  flex: 1 2 10em;
+}
+
+.no-js .portfolio main > section ul li {
+  -moz-flex: 1 1 10em;
+  -o-flex: 1 1 10em;
+  -webkit-flex: 1 1 10em;
+  -ms-flex: 1 1 10em;
+  flex: 1 1 10em;
+}
+
+@media only screen and (max-width: 1200px) {
+  #slidecontainer input {
+    -moz-flex: 8 1 5em;
+    -o-flex: 8 1 5em;
+    -webkit-flex: 8 1 5em;
+    -ms-flex: 8 1 5em;
+    flex: 8 1 5em;
+  }
+}
+@media only screen and (max-width: 900px) {
+  #buttons a:link {
+    height: -moz-calc(24px + (12 * (100vw - 667px) / (1280 - 667)));
+    height: -o-calc(24px + (12 * (100vw - 667px) / (1280 - 667)));
+    height: -webkit-calc(24px + (12 * (100vw - 667px) / (1280 - 667)));
+    height: calc(24px + (12 * (100vw - 667px) / (1280 - 667)));
+  }
+  #slidecontainer p {
+    font-size: -moz-calc(12px + (2 * (100vw - 574px) / (900 - 574)));
+    font-size: -o-calc(12px + (2 * (100vw - 574px) / (900 - 574)));
+    font-size: -webkit-calc(12px + (2 * (100vw - 574px) / (900 - 574)));
+    font-size: calc(12px + (2 * (100vw - 574px) / (900 - 574)));
+  }
+  input#myrange {
+    -moz-flex: 12 1 5em;
+    -o-flex: 12 1 5em;
+    -webkit-flex: 12 1 5em;
+    -ms-flex: 12 1 5em;
+    flex: 12 1 5em;
+  }
+  #slidecontainer input {
+    -moz-flex: 9 1 2em;
+    -o-flex: 9 1 2em;
+    -webkit-flex: 9 1 2em;
+    -ms-flex: 9 1 2em;
+    flex: 9 1 2em;
+  }
+  #slidecontainer {
+    -moz-flex: 2 1 5em;
+    -o-flex: 2 1 5em;
+    -webkit-flex: 2 1 5em;
+    -ms-flex: 2 1 5em;
+    flex: 2 1 5em;
+  }
+}
+@media only screen and (max-width: 667px) {
+  #buttons a:link {
+    height: calc(52px + 13 * (100vw - 574px) / 93);
+  }
+  #slidecontainer {
+    -moz-flex: 1 1 5em;
+    -o-flex: 1 1 5em;
+    -webkit-flex: 1 1 5em;
+    -ms-flex: 1 1 5em;
+    flex: 1 1 5em;
+  }
+  #buttons {
+    -moz-flex: 2 1 5em;
+    -o-flex: 2 1 5em;
+    -webkit-flex: 2 1 5em;
+    -ms-flex: 2 1 5em;
+    flex: 2 1 5em;
+  }
+}
+@media only screen and (max-width: 573px) {
+  #buttons a:link {
+    height: -moz-calc(28px + (36 * (100vw - 320px) / (573 - 320)));
+    height: -o-calc(28px + (36 * (100vw - 320px) / (573 - 320)));
+    height: -webkit-calc(28px + (36 * (100vw - 320px) / (573 - 320)));
+    height: calc(28px + (36 * (100vw - 320px) / (573 - 320)));
+  }
+}
+@media only screen and (max-width: 413px) {
+  #buttons {
+    -moz-flex: 4 1 1em;
+    -o-flex: 4 1 1em;
+    -webkit-flex: 4 1 1em;
+    -ms-flex: 4 1 1em;
+    flex: 4 1 1em;
+  }
+}
+
 /*# sourceMappingURL=main.css.map */
