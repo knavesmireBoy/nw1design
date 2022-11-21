@@ -12,7 +12,6 @@
   position: relative;
   background-repeat: no-repeat;
   background-image: url(../../assets/bg/misc/phone.jpeg);
-  background-size: cover;
   text-shadow: 1px 1px 1px black;
 }
 #phoney:after {
@@ -47,7 +46,6 @@
   font-style: normal;
 }
 /*https://css-tricks.com/apply-a-filter-to-a-background-image/*/
-
 
 @keyframes giffy {
   0% {
@@ -118,7 +116,6 @@
   z-index: 4;
   top: 0;
   left: 0;
-  box-shadow: 0px 20px 20px black;
 }
 
 #intro p {

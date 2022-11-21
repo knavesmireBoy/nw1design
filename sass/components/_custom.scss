@@ -1,0 +1,217 @@
+/* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */
+
+.overlay figure {
+  @include prefix(box-shadow, 1px 1px 2px 2px black, moz webkit);
+  @include prefix("animation", fig 3s ease, moz webkit);
+}
+
+.overlay img {
+  @include prefix("animation", fade 0.5s ease 2s forwards, moz webkit);
+}
+
+.overlay figcaption {
+  @include prefix(
+    "animation",
+    (fade 1s ease 4s backwards, cap 1s ease 3s forwards),
+    moz webkit
+  );
+}
+
+.lightbox a:hover img {
+  -webkit-filter: contrast(1.5);
+  filter: contrast(1.5);
+}
+
+//https://thoughtbot.com/blog/sasss-content-directive
+//https://gist.github.com/max-lizard/62e6e74bc3498fe17094f22b8ffb857c
+
+@include keyframes(cap) {
+  from {
+    margin: -3em 0 0;
+  }
+  to {
+    margin: 3em 0 0;
+  }
+}
+
+@include keyframes(fig) {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@include keyframes(fade) {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* CONTACT*/ /* CONTACT*/ /* CONTACT*/ /* CONTACT*/ /* CONTACT*/ /* CONTACT*/ /* CONTACT*/
+//https://gist.github.com/Farmatique/d88491ca4a8c75f3b39df6c71852bf5a
+
+.contact form {
+  @include flexy();
+  @include prefix(flex-wrap, wrap, moz o webkit ms);
+}
+
+.contact form div {
+  @include prefix(flex, 1 1 40%, moz o webkit ms);
+}
+
+.contact form label:last-of-type,
+.contact textarea {
+  @include prefix(flex, 1 1 100%, moz o webkit ms);
+}
+/* HOME*/ /* HOME*/ /* HOME*/ /* HOME*/ /* HOME*/ /* HOME*/ /* HOME*/ /* HOME*/
+
+#exit {
+  @include prefix(background-size, 100%, ms o moz webkit);
+}
+
+#intro {
+  @include prefix(box-shadow, 0px 20px 20px black, moz webkit);
+}
+
+#phoney,
+#audit {
+  @include prefix(background-size, cover, ms o moz webkit);
+}
+#audit:hover,
+#phoney:hover {
+-webkit-filter: contrast(1.5);
+  filter: contrast(1.5);
+}
+/* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/
+.portfolio main > section {
+  @include prefix(flex, 2 1 20em, moz o webkit ms);
+}
+#display .inner {
+  margin: 1vw;
+  $props: (
+    "margin-left": "4vw + (4 * (100vw - 900px) / (1280 - 900))",
+    "margin-right": "4vw + (4 * (100vw - 900px) / (1280 - 900))",
+  );
+  @include docalc($props);
+  @include prefix(transition, margin 1s, moz o webkit);
+}
+
+#controls {
+  @include flexy();
+  -webkit-align-content: center;
+  align-content: center;
+  padding: 1vw;
+  @include gradient(top, (transparent, hsl(190, 30%, 68%)));
+}
+#buttons {
+  @include flexy();
+  @include prefix(flex, 1 1 5em, moz o webkit ms);
+}
+#slidecontainer {
+  @include flexy();
+  @include prefix(flex, 3 1 5em, moz o webkit ms);
+}
+
+#slidecontainer p {
+  $props: (
+    "font-size": "10px + (4 * (100vw - 900px) / (1280 - 900))",
+  );
+  @include docalc($props);
+  @include prefix(flex, 4 1 1em, moz o webkit ms);
+  -webkit-align-self: center;
+  align-self: center;
+}
+
+#slidecontainer input {
+  @include prefix(border-radius, 8px, moz o webkit);
+  @include prefix(flex, 10 1 1em, moz o webkit ms);
+  -webkit-align-self: center;
+  align-self: center;
+  @include prefix(transition, opacity 0.2s, moz o webkit);
+  @include prefix(appearance, none, moz webkit);
+}
+
+#buttons a:link {
+  @include prefix(background-size, 100%, moz webkit);
+  $props: (
+    "height": "21px + (9 * (100vw - 900px) / (1280 - 900))",
+  );
+  @include docalc($props);
+  @include prefix(flex, 1 1 22px, moz o webkit ms);
+}
+
+#navigation a img {
+  $props: (
+    "width": "12px + (18 * (100vw - 320px) / (1280 - 320))",
+    "height": "12px + (18 * (100vw - 320px) / (1280 - 320))",
+  );
+  @include docalc($props);
+}
+.portfolio main > aside {
+  @include prefix(flex, 1 2 10em, moz o webkit ms);
+}
+.no-js .portfolio main > section ul li {
+  @include prefix(flex, 1 1 10em, moz o webkit ms);
+}
+
+@media only screen and (max-width: 1200px) {
+  #slidecontainer input {
+    @include prefix(flex, 8 1 5em, moz o webkit ms);
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  #buttons a:link {
+    $props: (
+      "height": "24px + (12 * (100vw - 667px) / (1280 - 667))",
+    );
+    @include docalc($props);
+  }
+  #slidecontainer p {
+    $props: (
+      "font-size": "12px + (2 * (100vw - 574px) / (900 - 574))",
+    );
+    @include docalc($props);
+  }
+  input#myrange {
+    @include prefix(flex, 12 1 5em, moz o webkit ms);
+  }
+  #slidecontainer input {
+    @include prefix(flex, 9 1 2em, moz o webkit ms);
+  }
+  #slidecontainer {
+    @include prefix(flex, 2 1 5em, moz o webkit ms);
+  }
+}
+
+@media only screen and (max-width: 667px) {
+  #buttons a:link {
+    height: calc(52px + 13 * (100vw - 574px) / (667 - 574));
+  }
+  #slidecontainer {
+    @include prefix(flex, 1 1 5em, moz o webkit ms);
+  }
+  #buttons {
+    @include prefix(flex, 2 1 5em, moz o webkit ms);
+  }
+}
+
+@media only screen and (max-width: 573px) {
+  #buttons a:link {
+    $props: (
+      "height": "28px + (36 * (100vw - 320px) / (573 - 320))",
+    );
+    @include docalc($props);
+  }
+}
+
+@media only screen and (max-width: 413px) {
+  #buttons {
+    @include prefix(flex, 4 1 1em, moz o webkit ms);
+  }
+}

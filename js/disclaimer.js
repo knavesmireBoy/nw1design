@@ -27,7 +27,7 @@
     return false;
   }
   const intro1 =
-      "My colleague, Lylaani Dixon, has very kindly allowed me to repurpose one of her old sites as a playground for learning React. The existing site - maintained  largely for sentimental reasons - deploys an <a href='https://www.projectseven.com/support/updatepages/ssm.htm'>ancient javascript library</a> on the portfolio pages to deliver a rather complex gallery/slideshow/accordion that would provide a challenge to recreate both in React and pure ES6.",
+      "My colleague, Lylaani Dixon, has very kindly allowed me to repurpose one of her old sites as a playground for learning React. The existing site - maintained  largely for sentimental reasons - deploys an <a href='https://www.projectseven.com/support/updatepages/ssm.htm'>old dreamweaver javascript library</a> on the portfolio pages to deliver a rather complex gallery/slideshow/accordion that would provide a challenge to recreate both in React and pure ES6.",
     intro2 =
       "Lylaani had been a freelance designer for a number of years when she was approached by &ldquo;The Rory Peck Trust&rdquo; to not only design and maintain their website but also to produce various print items, most notably the programme for the annual <a href='https://rorypecktrust.org/'>The Rory Peck Awards</a> which we had printed (and designed, sort of) for the previous two years. It was better for all concerned to have a bona fide - and London based - designer to assemble the information and shape the design for publication and we would collaborate closely over the ensuing decade.",
     intro3 =
