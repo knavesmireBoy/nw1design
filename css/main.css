@@ -113,8 +113,8 @@ body {
 
 main > * {
   border: solid 1em #fff;
-  background-color: hsl(190deg, 30%, 92%);
   background-color: #e0ded7;
+  background-color: hsl(190deg, 30%, 92%);
 }
 
 h1 {
