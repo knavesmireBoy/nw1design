@@ -5,15 +5,15 @@
 #phoney,
 #audit {
   color: white;
-  text-shadow: 1px 1px 1px black;
   font: 2.7em bold, "Impact", sans-serif;
   text-align: left;
   padding: 0.7em;
   margin: 0.4em 0 0;
   position: relative;
+  background-repeat: no-repeat;
   background-image: url(../../assets/bg/misc/phone.jpeg);
   background-size: cover;
-  background-repeat: no-repeat;
+  text-shadow: 1px 1px 1px black;
 }
 #phoney:after {
   display: block;
@@ -46,32 +46,8 @@
   position: relative;
   font-style: normal;
 }
-/*https://css-tricks.com/apply-a-filter-to-a-background-image/
-#audit:before,
-#phoney:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url(../../assets/bg/misc/audit.jpeg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  filter: contrast(1);
-}
-#phoney:before {
-  background-image: url(../../assets/bg/misc/phone.jpeg);
-}
-#audit:hover:before,
-#phoney:hover:before {
-  filter: contrast(2);
-}
-*/
-#audit:hover,
-#phoney:hover {
-  filter: contrast(1.5);
-}
+/*https://css-tricks.com/apply-a-filter-to-a-background-image/*/
+
 
 @keyframes giffy {
   0% {
@@ -128,11 +104,6 @@
   background-image: url("../../assets/bg/misc/underground_sprite.png");
   background-repeat: no-repeat;
   background-position: 50% 0%;
-  -o-background-size: 100%;
-  -moz-background-size: 100%;
-  -ms-background-size: 100%;
-  -webkit-background-size: 100%;
-  background-size: 100%;
 }
 #exit:hover,
 #exit:focus {

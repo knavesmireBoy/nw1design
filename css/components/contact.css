@@ -1,70 +1,68 @@
 main > section {
-    margin: 1em 1.5em 1.5em;
-  }
-  
-  .inner {
-    padding: 2em 4em 1em;
-    border: solid 1px hsl(190, 30%, 61%);
-    font-family: Georgia, "Times New Roman", Times, serif;
-    font-weight: bold;
-    font-size: 1.2em;
-  }
-  
-  form {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  form div {
-    padding: .5em 0;
-    flex: 1 1 40%;
-  }
-  form div:nth-child(odd) {
-    margin: 0 1em 0 0;
-  }
- 
-  form label {
-    margin: 0 0 .25em;
-    display: block;
-  }
-  form label:last-of-type, textarea {
-    flex: 1 1 100%;
-  }
-  .dial {
-    font-size: 1.1em;
-  }
-  
-  div input[required], textarea, div > input, form div:nth-child(odd) label, form p:last-of-type {
-    color: black;
+  margin: 1em 1.5em 1.5em;
+}
+
+.inner {
+  padding: 2em 4em 1em;
+  border: solid 1px hsl(190, 30%, 61%);
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+form div {
+  padding: 0.5em 0;
+}
+form div:nth-child(odd) {
+  margin: 0 1em 0 0;
+}
+
+form label {
+  margin: 0 0 0.25em;
+  display: block;
+}
+
+.dial {
+  font-size: 1.1em;
+}
+
+div input[required],
+textarea,
+div > input,
+form div:nth-child(odd) label,
+form p:last-of-type {
+  color: black;
+}
+
+div input:focus,
+textarea:focus {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+textarea {
+  margin: 0 0 1em;
+}
+#submit {
+  margin-left: auto;
+}
+
+article form p {
+  display: inline-block;
+  vertical-align: text-top;
+}
+
+@media only screen and (max-width: 480px) {
+  .contact main > section {
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    font-size: 0.6rem;
   }
 
-  div input:focus, textarea:focus {
-    background-color: rgba(255,255,255, .25);
-  }
-  textarea {
-    margin: 0 0 1em;
-  }
-  #submit {
-    margin-left: auto;
+  .contact .inner > * {
+    margin: 0;
   }
 
-  article form p {
-    display: inline-block;
-    vertical-align: text-top;
+  .contact .inner {
+    border-width: 0;
   }
-
-  @media only screen and (max-width: 480px) {
-    .contact main > section {
-      margin: 0;
-      padding: 0;
-      border-width: 0;
-      font-size: 0.6rem;
-    }
-  
-    .contact .inner > * {
-      margin: 0;
-    }
-  
-    .contact .inner {
-      border-width: 0;
-    }
-  }
+}

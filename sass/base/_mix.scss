@@ -8,10 +8,14 @@
 }
 
 @mixin flexy () {
-  display: -webkit-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
+-webkit-display: flex;
+-moz-display: flex;
+-ms-display: flex;
+-o-display: flex;
+display: -webkit-box;
+display: -ms-flexbox; /* ie 10 */
+display: -webkit-flex;
+display: flex;
 }
 
 /// Mixin to prefix a property
@@ -73,3 +77,4 @@
     @content;
   }
 }
+

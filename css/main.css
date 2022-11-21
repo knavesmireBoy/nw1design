@@ -417,8 +417,12 @@ main aside section:nth-child(n+2) {
 }
 
 main {
+  -webkit-display: flex;
+  -moz-display: flex;
+  -ms-display: flex;
+  -o-display: flex;
   display: -webkit-box;
-  display: -ms-flexbox;
+  display: -ms-flexbox; /* ie 10 */
   display: -webkit-flex;
   display: flex;
 }
@@ -476,8 +480,12 @@ main > aside {
 }
 
 header nav > ul {
+  -webkit-display: flex;
+  -moz-display: flex;
+  -ms-display: flex;
+  -o-display: flex;
   display: -webkit-box;
-  display: -ms-flexbox;
+  display: -ms-flexbox; /* ie 10 */
   display: -webkit-flex;
   display: flex;
 }
@@ -695,7 +703,7 @@ header nav > ul > li ul li {
     left: 0;
   }
 }
-/* ABOUT */
+/* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */
 .about main aside section a:last-of-type {
   padding: 1em 2em 0;
 }
@@ -722,8 +730,10 @@ header nav > ul > li ul li {
   padding: 1em 1em 0;
   background-color: #fff;
   box-shadow: 1px 1px 2px 2px black;
+  -moz-box-shadow: 1px 1px 2px 2px black;
+  -webkit-box-shadow: 1px 1px 2px 2px black;
+  box-shadow: 1px 1px 2px 2px black;
   -moz-animation: fig 3s ease;
-  -o-animation: fig 3s ease;
   -webkit-animation: fig 3s ease;
   animation: fig 3s ease;
 }
@@ -733,7 +743,6 @@ header nav > ul > li ul li {
   margin: 0 0 -3em;
   position: relative;
   -moz-animation: fade 0.5s ease 2s forwards;
-  -o-animation: fade 0.5s ease 2s forwards;
   -webkit-animation: fade 0.5s ease 2s forwards;
   animation: fade 0.5s ease 2s forwards;
 }
@@ -747,7 +756,6 @@ header nav > ul > li ul li {
   color: #666;
   margin: 0;
   -moz-animation: fade 1s ease 4s backwards, cap 1s ease 3s forwards;
-  -o-animation: fade 1s ease 4s backwards, cap 1s ease 3s forwards;
   -webkit-animation: fade 1s ease 4s backwards, cap 1s ease 3s forwards;
   animation: fade 1s ease 4s backwards, cap 1s ease 3s forwards;
 }
@@ -768,14 +776,6 @@ header nav > ul > li ul li {
   font-size: 0.8em;
 }
 
-@keyframes cap {
-  from {
-    margin: -3em 0 0;
-  }
-  to {
-    margin: 3em 0 0;
-  }
-}
 @-webkit-keyframes cap {
   from {
     margin: -3em 0 0;
@@ -806,14 +806,6 @@ header nav > ul > li ul li {
   }
   to {
     margin: 3em 0 0;
-  }
-}
-@keyframes fig {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
   }
 }
 @-webkit-keyframes fig {
@@ -848,14 +840,6 @@ header nav > ul > li ul li {
     transform: scaleX(1);
   }
 }
-@keyframes fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
 @-webkit-keyframes fade {
   from {
     opacity: 0;
@@ -887,6 +871,62 @@ header nav > ul > li ul li {
   to {
     opacity: 1;
   }
+}
+/* CONTACT*/ /* CONTACT*/ /* CONTACT*/ /* CONTACT*/ /* CONTACT*/ /* CONTACT*/ /* CONTACT*/
+.contact form {
+  -webkit-display: flex;
+  -moz-display: flex;
+  -ms-display: flex;
+  -o-display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox; /* ie 10 */
+  display: -webkit-flex;
+  display: flex;
+  -moz-flex-wrap: wrap;
+  -o-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.contact form div {
+  -moz-flex: 1 1 40%;
+  -o-flex: 1 1 40%;
+  -webkit-flex: 1 1 40%;
+  -ms-flex: 1 1 40%;
+  flex: 1 1 40%;
+}
+
+.contact form label:last-of-type, .contact textarea {
+  -moz-flex: 1 1 100%;
+  -o-flex: 1 1 100%;
+  -webkit-flex: 1 1 100%;
+  -ms-flex: 1 1 100%;
+  flex: 1 1 100%;
+}
+
+/* HOME*/ /* HOME*/ /* HOME*/ /* HOME*/ /* HOME*/ /* HOME*/ /* HOME*/ /* HOME*/
+#exit {
+  -ms-background-size: 100%;
+  -o-background-size: 100%;
+  -moz-background-size: 100%;
+  -webkit-background-size: 100%;
+  background-size: 100%;
+}
+
+#intro {
+  -moz-box-shadow: 0px 20px 20px black;
+  -webkit-box-shadow: 0px 20px 20px black;
+  box-shadow: 0px 20px 20px black;
+}
+
+#phoney,
+#audit {
+  -ms-background-size: cover;
+  -o-background-size: cover;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  background-size: cover;
 }
 
 /*# sourceMappingURL=main.css.map */

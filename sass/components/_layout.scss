@@ -277,7 +277,7 @@ header nav > ul {
   }
 }
 
-/* ABOUT */
+/* ABOUT *//* ABOUT *//* ABOUT *//* ABOUT *//* ABOUT *//* ABOUT *//* ABOUT */
 .about main aside section a:last-of-type {
   padding: 1em 2em 0;
 }
@@ -304,14 +304,15 @@ header nav > ul {
   padding: 1em 1em 0;
   background-color: #fff;
   box-shadow: 1px 1px 2px 2px black;
-  @include prefix('animation', fig 3s ease, moz o webkit);
+  @include prefix(box-shadow, 1px 1px 2px 2px black, moz webkit);
+  @include prefix('animation', fig 3s ease, moz webkit);
 }
 
 .overlay img {
   opacity: 0;
   margin: 0 0 -3em;
   position: relative;
-  @include prefix('animation', fade 0.5s ease 2s forwards, moz o webkit);
+  @include prefix('animation', fade 0.5s ease 2s forwards, moz webkit);
 }
 
 .overlay figcaption {
@@ -322,7 +323,7 @@ header nav > ul {
   font-weight: 700;
   color: #666;
   margin: 0;
-  @include prefix('animation', (fade 1s ease 4s backwards, cap 1s ease 3s forwards), moz o webkit);
+  @include prefix('animation', (fade 1s ease 4s backwards, cap 1s ease 3s forwards), moz webkit);
 }
 
 .overlay figcaption:after {
@@ -342,14 +343,7 @@ header nav > ul {
 }
 //https://thoughtbot.com/blog/sasss-content-directive
 //https://gist.github.com/max-lizard/62e6e74bc3498fe17094f22b8ffb857c
-@keyframes cap {
-    from {
-      margin: -3em 0 0;
-    }
-    to {
-      margin: 3em 0 0;
-    }
-  }
+
   @include keyframes(cap) {
     from {
       margin: -3em 0 0;
@@ -359,15 +353,6 @@ header nav > ul {
     }
   }
   
-
-  @keyframes fig {
-    from {
-      transform: scaleX(0);
-    }
-    to {
-      transform: scaleX(1);
-    }
-  }
   @include keyframes(fig) {
     from {
       transform: scaleX(0);
@@ -376,14 +361,7 @@ header nav > ul {
       transform: scaleX(1);
     }
   }
-  @keyframes fade {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
+
   @include keyframes(fade) {
     from {
       opacity: 0;
@@ -392,3 +370,34 @@ header nav > ul {
       opacity: 1;
     }
   }
+
+  
+/* CONTACT*//* CONTACT*//* CONTACT*//* CONTACT*//* CONTACT*//* CONTACT*//* CONTACT*/
+//https://gist.github.com/Farmatique/d88491ca4a8c75f3b39df6c71852bf5a
+
+.contact form {
+  @include flexy();
+  @include prefix(flex-wrap, wrap, moz o webkit ms);
+}
+
+.contact form div {
+  @include prefix(flex, 1 1 40%, moz o webkit ms);
+}
+
+.contact form label:last-of-type, .contact textarea {
+  @include prefix(flex, 1 1 100%, moz o webkit ms);
+}
+/* HOME*//* HOME*//* HOME*//* HOME*//* HOME*//* HOME*//* HOME*//* HOME*/
+
+#exit {
+  @include prefix(background-size, 100%, ms o moz webkit);
+}
+
+#intro {
+  @include prefix(box-shadow, 0px 20px 20px black, moz webkit);
+}
+
+#phoney,
+#audit {
+  @include prefix(background-size, cover, ms o moz webkit);
+}
