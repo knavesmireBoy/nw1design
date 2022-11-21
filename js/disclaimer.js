@@ -3,10 +3,6 @@
 /* eslint-disable indent */
 /* eslint-disable max-len */
 
-/*
-  Lylaani, should you ever consent to allowing me to publish this to a waiting world I would need to provide some sort of disclaimer. Along these lines...
-  */
-
   if (!window.nW1) {
     window.nW1 = {};
   }
