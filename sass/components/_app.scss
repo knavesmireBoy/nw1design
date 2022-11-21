@@ -120,7 +120,7 @@ main aside section {
   padding: 0 0 1em;
   line-height: 1.4;
   margin: 0 0 1.5em;
-  background-image: linear-gradient(hsl(190, 30%, 74%), #fff 60%);
+  @include gradient(top, $sidebar-gradlist);
   & a {
     color: $col-hi;
     display: block;
@@ -161,8 +161,7 @@ header nav > ul {
   height: auto;
   border: 2px solid #fff;
   border-width: 3px 0;
-  background-image: linear-gradient(#fff, $col-bg);
-
+  @include gradient(#fff, $col-bg);
   & > li {
     border: solid 1px #999;
     border-width: 0 1px 1px 1px;
@@ -180,7 +179,7 @@ header nav > ul {
 
     & > a:hover {
       color: $col-hi;
-      background-image: linear-gradient($col-bg, #fff);
+      @include gradient($col-bg, #fff);
     }
 
     & > :nth-child(1) {
@@ -199,7 +198,7 @@ header nav > ul {
     }
     & a:hover {
       color: $col-hi;
-      background-image: linear-gradient(hsl(190, 30%, 68%), #fff);
+      @include gradient($col-bg, #fff);
     }
   }
 }
@@ -214,8 +213,8 @@ main aside section h2:before {
   vertical-align: top;
   margin: 0 0.3em 0 0.5em;
   text-transform: uppercase;
-  box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.6),
-    inset -1px -1px 2px rgba(0, 0, 0, 0.6);
+  @include prefix(box-shadow, inset 1px 1px 2px rgba(255, 255, 255, 0.6)
+  inset -1px -1px 2px rgba(0, 0, 0, 0.6), webkit moz);
 }
 
 input[type="submit"],
@@ -233,7 +232,6 @@ main aside section:nth-child(n + 2) {
 
 @for $i from 1 through length($navlist) {
   $l: nth($navlist, $i);
-
   #{$l} nav > ul > li:nth-child(#{$i}) > a,
   #{$l} footer > ul > li:nth-child(#{$i}) > a {
     color: $col-hi;
@@ -245,6 +243,7 @@ main aside section:nth-child(n + 2) {
 }
 
 .webdesign main > aside a:hover img {
+  -webkit-filter: contrast(1.5);
   filter: contrast(1.5);
 }
 
