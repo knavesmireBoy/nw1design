@@ -143,10 +143,18 @@ main aside section {
   }
 }
 
+header {
+  border: 1em solid #fff;
+  background-position: 2% 0, left top;
+  background-repeat: no-repeat;
+  @include gradient(top, $gradlist-rev);
+}
+
 header aside img {
   border: 1px solid $col-hi;
   border-width: 0 0 0.75em 0;
   &:hover {
+    -webkit-filter: contrast(1.5);
     filter: contrast(1.5);
   }
 }

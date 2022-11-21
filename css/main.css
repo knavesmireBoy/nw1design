@@ -224,10 +224,10 @@ main aside section {
   padding: 0 0 1em;
   line-height: 1.4;
   margin: 0 0 1.5em;
-  background: -webkit-linear-gradient(top, hsl(190deg, 30%, 74%), #fff 60%);
-  background: -moz-linear-gradient(top, hsl(190deg, 30%, 74%), #fff 60%);
-  background: -o-linear-gradient(top, hsl(190deg, 30%, 74%), #fff 60%);
-  background: linear-gradient(top, hsl(190deg, 30%, 74%), #fff 60%);
+  background-image: -webkit-linear-gradient(top, hsl(190deg, 30%, 74%), #fff 60%);
+  background-image: -moz-linear-gradient(top, hsl(190deg, 30%, 74%), #fff 60%);
+  background-image: -o-linear-gradient(top, hsl(190deg, 30%, 74%), #fff 60%);
+  background-image: linear-gradient(top, hsl(190deg, 30%, 74%), #fff 60%);
 }
 main aside section a {
   color: rgb(210, 40, 0);
@@ -250,11 +250,22 @@ main aside section h2 + a {
   margin: 2em 2em 1em;
 }
 
+header {
+  border: 1em solid #fff;
+  background-position: 2% 0, left top;
+  background-repeat: no-repeat;
+  background-image: -webkit-linear-gradient(top, #fff, #8cb8bf);
+  background-image: -moz-linear-gradient(top, #fff, #8cb8bf);
+  background-image: -o-linear-gradient(top, #fff, #8cb8bf);
+  background-image: linear-gradient(top, #fff, #8cb8bf);
+}
+
 header aside img {
   border: 1px solid rgb(210, 40, 0);
   border-width: 0 0 0.75em 0;
 }
 header aside img:hover {
+  -webkit-filter: contrast(1.5);
   filter: contrast(1.5);
 }
 
@@ -268,10 +279,10 @@ header nav > ul {
   height: auto;
   border: 2px solid #fff;
   border-width: 3px 0;
-  background: -webkit-linear-gradient(#fff, #8cb8bf);
-  background: -moz-linear-gradient(#fff, #8cb8bf);
-  background: -o-linear-gradient(#fff, #8cb8bf);
-  background: linear-gradient(#fff, #8cb8bf);
+  background-image: -webkit-linear-gradient(#fff, #8cb8bf);
+  background-image: -moz-linear-gradient(#fff, #8cb8bf);
+  background-image: -o-linear-gradient(#fff, #8cb8bf);
+  background-image: linear-gradient(#fff, #8cb8bf);
 }
 header nav > ul > li {
   border: solid 1px #999;
@@ -289,10 +300,10 @@ header nav > ul > li a {
 }
 header nav > ul > li > a:hover {
   color: rgb(210, 40, 0);
-  background: -webkit-linear-gradient(#8cb8bf, #fff);
-  background: -moz-linear-gradient(#8cb8bf, #fff);
-  background: -o-linear-gradient(#8cb8bf, #fff);
-  background: linear-gradient(#8cb8bf, #fff);
+  background-image: -webkit-linear-gradient(#8cb8bf, #fff);
+  background-image: -moz-linear-gradient(#8cb8bf, #fff);
+  background-image: -o-linear-gradient(#8cb8bf, #fff);
+  background-image: linear-gradient(#8cb8bf, #fff);
 }
 header nav > ul > li > :nth-child(1) {
   border-left: solid 0 #fff;
@@ -310,10 +321,10 @@ header nav > ul > li:hover ul {
 }
 header nav > ul > li a:hover {
   color: rgb(210, 40, 0);
-  background: -webkit-linear-gradient(#8cb8bf, #fff);
-  background: -moz-linear-gradient(#8cb8bf, #fff);
-  background: -o-linear-gradient(#8cb8bf, #fff);
-  background: linear-gradient(#8cb8bf, #fff);
+  background-image: -webkit-linear-gradient(#8cb8bf, #fff);
+  background-image: -moz-linear-gradient(#8cb8bf, #fff);
+  background-image: -o-linear-gradient(#8cb8bf, #fff);
+  background-image: linear-gradient(#8cb8bf, #fff);
 }
 
 main aside section h2:before {
@@ -415,10 +426,6 @@ main {
 header {
   padding: 0;
   margin: 1em 1.5em;
-  border: 1em solid #fff;
-  background-position: 2% 0, left top;
-  background-repeat: no-repeat;
-  background-image: linear-gradient(#fff, hsl(190deg, 30%, 68%));
 }
 header label {
   width: 7em;
@@ -426,7 +433,8 @@ header label {
   height: 4.9em;
   display: inline-block;
   vertical-align: top;
-  background: url("../assets/bg/misc/nw1_logo.png") no-repeat 3% 20%/cover;
+  background: url("../assets/bg/misc/nw1_logo.png") no-repeat 3% 20%;
+  background-size: cover;
 }
 header h1 {
   white-space: nowrap;
@@ -436,7 +444,11 @@ header h1 {
   /* reset */
   padding-top: 2.6em;
   overflow: hidden;
-  margin: 0.2em 0 0 calc(10px + 16 * (100vw - 320px) / 960);
+  margin: 0.2em 0 0;
+  margin-left: -moz-calc(10px + 16 * (100vw - 320px) / (1280 - 320));
+  margin-left: -o-calc(10px + 16 * (100vw - 320px) / (1280 - 320));
+  margin-left: -webkit-calc(10px + 16 * (100vw - 320px) / (1280 - 320));
+  margin-left: calc(10px + 16 * (100vw - 320px) / (1280 - 320));
   background: transparent url("../assets/bg/misc/logo.png") no-repeat;
   background-size: 98%;
 }
@@ -486,7 +498,7 @@ header nav > ul > li ul li {
 }
 
 #wrapper {
-  background-color: hsl(190deg, 30%, 68%);
+  background-color: #8cb8bf;
   border: 1em solid #fff;
   margin: 0 auto;
   padding: 0;
@@ -583,10 +595,14 @@ header nav > ul > li ul li {
     display: none;
   }
   #nav li ul {
+    width: -moz-calc(100% + 2em);
+    width: -o-calc(100% + 2em);
+    width: -webkit-calc(100% + 2em);
     width: calc(100% + 2em);
   }
   header label {
-    background: url("../assets/bg/misc/nw1_logo_sprite_alt.png") no-repeat center top/100%;
+    background: url("../assets/bg/misc/nw1_logo_sprite_alt.png") no-repeat center top;
+    background-size: 100%;
   }
   header label:hover {
     background-position: center 102%;
@@ -599,6 +615,9 @@ header nav > ul > li ul li {
   }
   #menu-toggle:checked ~ a + nav {
     display: block;
+    left: -moz-calc(8vw + 1px);
+    left: -o-calc(8vw + 1px);
+    left: -webkit-calc(8vw + 1px);
     left: calc(8vw + 1px);
   }
 }

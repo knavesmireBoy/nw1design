@@ -5,6 +5,7 @@ $col-bg: lighten($col-nav, 18%);
 $col-hi: rgb(210,40,0);
 $navlist: ('.home' '.about' '.webdesign' '.graphicdesign' '.portfolio' '.contact');
 $current: gold;
-$gradlist: $col-bg, #fff;
+$gradlist: $col-bg, #ffffff;
+$gradlist-rev:  #fff, $col-bg;
 $sidebar-gradlist: hsl(190, 30%, 74%), #fff 60%;
 $font-fam:  Verdana, Arial, Helvetica, sans-serif;

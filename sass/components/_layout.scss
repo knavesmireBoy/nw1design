@@ -5,17 +5,14 @@ main {
 header {
   padding: 0;
   margin: 1em 1.5em;
-  border: 1em solid #fff;
-  background-position: 2% 0, left top;
-  background-repeat: no-repeat;
-  background-image: linear-gradient(#fff, hsl(190, 30%, 68%));
   & label {
   width: 7em;
   margin: 0 0 0 3em;
   height: 4.9em;
   display: inline-block;
   vertical-align: top;
-  background: url("../assets/bg/misc/nw1_logo.png") no-repeat 3% 20% / cover;
+  background: url("../assets/bg/misc/nw1_logo.png") no-repeat 3% 20%;
+  background-size: cover;
 }
 & h1 {
   white-space: nowrap;
@@ -25,7 +22,10 @@ header {
   /* reset */
   padding-top: 2.6em;
   overflow: hidden;
-  margin: .2em 0 0 calc(10px + 16 * (100vw - 320px) / (1280 - 320));
+  $props: ("margin-left": "10px + 16 * (100vw - 320px) / (1280 - 320)");
+  margin: .2em 0 0;
+  //margin-left: calc(10px + 16 * (100vw - 320px) / (1280 - 320));
+   @include docalc($props);
   background: transparent url("../assets/bg/misc/logo.png") no-repeat;
   background-size: 98%;
 }
@@ -66,7 +66,7 @@ header nav > ul {
 }
 
 #wrapper {
-  background-color: hsl(190, 30%, 68%);
+  background-color: $col-bg;
   border: 1em solid #fff;
   margin: 0 auto;
   padding: 0;
@@ -170,11 +170,13 @@ header nav > ul {
   }
 
   #nav li ul {
-    width: calc(100% + 2em);
+    $props: ("width": "100% + 2em");
+    @include docalc($props);
   }
 
   header label {
-    background: url("../assets/bg/misc/nw1_logo_sprite_alt.png") no-repeat center top / 100%;
+    background: url("../assets/bg/misc/nw1_logo_sprite_alt.png") no-repeat center top;
+    background-size: 100%;
     &:hover {
       background-position: center 102%;
     }
@@ -185,7 +187,8 @@ header nav > ul {
   }
   #menu-toggle:checked ~ a + nav {
     display: block;
-    left: calc(8vw + 1px);
+    $props: ("left": "8vw + 1px");
+    @include docalc($props);
   }
 
 }

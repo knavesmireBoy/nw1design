@@ -42,8 +42,20 @@
 }
 //https://codepen.io/cathydutton/pen/dPPpWj
 @mixin gradient($direction, $list) { 
-  background: -webkit-linear-gradient($direction, $list);
-  background: -moz-linear-gradient($direction, $list);
-  background: -o-linear-gradient($direction, $list);
-  background: linear-gradient($direction, $list);  
+  background-image: -webkit-linear-gradient($direction, $list);
+  background-image: -moz-linear-gradient($direction, $list);
+  background-image: -o-linear-gradient($direction, $list);
+  background-image: linear-gradient($direction, $list);  
+}
+//https://stackoverflow.com/questions/45006416/scss-how-to-integrate-the-vendor-prefixes-for-the-calc-function
+@mixin docalc($props) {
+  $vendor-prefixes: ("moz", "o", "webkit");
+
+  @each $prop, $i in $props {
+    @each $prefix in $vendor-prefixes {
+      #{$prop}: -#{$prefix}-calc(#{$i});
+    }
+
+    #{$prop}: calc(#{$i});
+  } 
 }
