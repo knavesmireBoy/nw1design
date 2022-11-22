@@ -36,13 +36,7 @@ nW1.meta = (function () {
   }
 */
 
-  const getResult = (o) => {
-      if (typeof o === "function") {
-        return o();
-      }
-      return o;
-    },
-    def = (x) => typeof x !== "undefined",
+  const def = (x) => typeof x !== "undefined",
     tagTester = (name) => {
       const tag = "[object " + name + "]";
       return function (obj) {
@@ -50,6 +44,8 @@ nW1.meta = (function () {
       };
     },
     isBoolean = tagTester("Boolean"),
+    isFunction = tagTester("Function"),
+    getResult = o => isFunction(o) ? o() : o,
     byId = (str) => document.getElementById(str),
     byIdDefer = (str) => () => byId(str),
     byTag = (str, flag = false) => {
