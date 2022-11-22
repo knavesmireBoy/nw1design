@@ -93,6 +93,7 @@ nW1.utils = (function () {
     doTextCBNow: curryL3(invokeMethod)(document)("createTextNode"),
     prepend: curry2(ptL(invokeMethodBridgeCB(getRes), "appendChild")),
     append: ptL(invokeMethodBridgeCB(getRes), "appendChild"),
+    appendAlt: ptL(meta.mittelFactory()(invokeMethod, "appendChild")),
     appendCB: curryL3(invokeMethodBridgeCB(getRes))("appendChild"),
     getAttrs: curryL3(invokeMethodBridge)("getAttribute"),
     matchLink: compose(

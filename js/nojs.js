@@ -13,12 +13,9 @@ let mymeta = nW1.meta,
   labels = mymeta.toArray(mymeta.$Q("aside label", 1)),
   divs,
   toLis = (a, i) => {
-    let li = document.createElement("li"),
-      preview = document.createElement("div"),
-      img = document.createElement("img"),
+    let [li, preview, img] = ['li', 'div', 'img'].map( txt => document.createElement(txt)),
       div = a.parentNode;
-    li.appendChild(a);
-    div.appendChild(li);
+     mymeta.compose(utils.prepend(div), utils.getParent, utils.prepend(li))(a);
     if (!i) {
       preview = mymeta
         .$("navigation")
@@ -31,8 +28,7 @@ let mymeta = nW1.meta,
   },
   toHead = (label) => {
     let input = utils.getPrevElement(label.previousSibling),
-      link = document.createElement("a"),
-      list = document.createElement("ul"),
+      [link, list] = ['a', 'ul'].map( txt => document.createElement(txt)),
       div = label.parentNode;
     link.innerHTML = label.innerHTML;
     div.removeChild(input);

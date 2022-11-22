@@ -90,19 +90,26 @@ nW1.meta = (function () {
         all = [none, predi, act, both];
       return all[n] || none;
     },
-    mittelFactory = (flag) => {
-      if (flag) {
+    mittelFactory = (arg) => {
+      if (arg) {
         return (f, o, v = undefined) =>
           (m) =>
             f(o, m, v);
-      } else if (isBoolean(flag)) {
+      } else if (isBoolean(arg)) {
         return (f, m, v = undefined) =>
+        //optional key/value; dynamic key
           (o, k) =>
             def(v) ? f(o, m, k, v) : f(o, m, v);
       }
       return (f, m, k = undefined) =>
-        (o, v) =>
-          def(k) ? f(o, m, k, v) : f(o, m, v);
+      //optional key/value;dynamic value
+        (o, v) => {
+          //optional callback
+          if(isFunction(arg)){
+            return def(k) ? f(arg(o), m, k, v) : f(arg(o), m, v);
+          }
+          return def(k) ? f(o, m, k, v) : f(o, m, v);
+        };
     },
     curryRight = (i, defer = false) => {
       const once = {
