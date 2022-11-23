@@ -706,14 +706,19 @@ header nav > ul > li ul li {
 }
 #splat {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 6em;
-  height: 5.5em;
+  right: -2em;
+  bottom: -1.8em;
+  width: 9em;
+  height: 9em;
+  border: #000 solid 0px;
 }
 
 main > section {
   position: relative;
+}
+
+main > section > article p:nth-child(6) {
+  margin-right: 2em;
 }
 
 #splat:after {
@@ -722,7 +727,22 @@ main > section {
   height: 1.8em;
   display: block;
   background: url("../assets/img/splat.jpg") no-repeat center/cover;
-  margin: -4em 0 0 2em;
+  margin: -5.5em 0 0 3.3em;
+  z-index: 1;
+  position: relative;
+}
+
+.alt main > section {
+  display: none;
+}
+
+.alt main > aside {
+  display: block;
+}
+
+.alt main > aside {
+  margin: 0;
+  padding: 2em 4em 0;
 }
 
 /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */

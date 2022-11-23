@@ -13,9 +13,11 @@ let mymeta = nW1.meta,
   labels = mymeta.toArray(mymeta.$Q("aside label", 1)),
   divs,
   toLis = (a, i) => {
-    let [li, preview, img] = ['li', 'div', 'img'].map( txt => document.createElement(txt)),
+    let [li, preview, img] = ["li", "div", "img"].map((txt) =>
+        document.createElement(txt)
+      ),
       div = a.parentNode;
-     mymeta.compose(utils.prepend(div), utils.getParent, utils.prepend(li))(a);
+    mymeta.compose(utils.prepend(div), utils.getParent, utils.prepend(li))(a);
     if (!i) {
       preview = mymeta
         .$("navigation")
@@ -28,13 +30,13 @@ let mymeta = nW1.meta,
   },
   toHead = (label) => {
     let input = utils.getPrevElement(label.previousSibling),
-      [link, list] = ['a', 'ul'].map( txt => document.createElement(txt)),
+      [link, list] = ["a", "ul"].map((txt) => document.createElement(txt)),
       div = label.parentNode;
     link.innerHTML = label.innerHTML;
     div.removeChild(input);
     div.insertBefore(list, label);
     div.insertBefore(link, list);
-    link.setAttribute('href', '.');
+    link.setAttribute("href", ".");
     div.removeChild(label);
   },
   toFrag = (div, i) => {
@@ -57,3 +59,5 @@ mymeta.toArray(ULS()).forEach((ul) => {
 });
 divs = mymeta.toArray(mymeta.$Q(".submenu > div", 1));
 divs.forEach(toFrag);
+
+console.log(mymeta.$('splat'));
