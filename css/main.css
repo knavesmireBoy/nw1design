@@ -723,11 +723,11 @@ main > section > article p:nth-of-type(6) {
 
 #circle:after {
   content: "";
-  width: 2.5em;
-  height: 2.5em;
+  width: 3em;
+  height: 3em;
   display: block;
-  background: #569099 url("../assets/img/edit_img.png") no-repeat center/cover;
-  margin: -5em 0 0 5em;
+  background: #569099 url("../assets/img/misc/edit_img.png") no-repeat center/cover;
+  margin: -5.5em 0 0 4.5em;
   z-index: 1;
   position: relative;
 }
@@ -747,7 +747,7 @@ main > section > article p:nth-of-type(6) {
 }
 
 .alt #circle:after {
-  background: #569099 url("../assets/img/list.png") no-repeat center/cover;
+  background: #569099 url("../assets/img/misc/edit_pen.png") no-repeat center/cover;
 }
 
 .alt #audit {
@@ -765,7 +765,7 @@ main > section > article p:nth-of-type(6) {
 }
 
 #circle:hover:after {
-  background-color: blue;
+  background-color: #c30;
 }
 
 /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */

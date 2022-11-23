@@ -26,9 +26,7 @@ if (!window.nW1) {
   }
 
   function remove(el){
-    console.log(el)
     let elem = utils.getRes(el);
-    console.log(elem && elem.parentNode)
     elem && elem.parentNode.removeChild(elem);
   }
 
@@ -40,13 +38,12 @@ let meta = nW1.meta,
   pass = meta.pass,
   compose = meta.compose,
   curry4 = meta.curryRight(4),
-  curry3 = meta.curryRight(3),
   ptl = meta.doPartial(1),
   setAttrs = curry4(meta.invokePair),
   setId = setAttrs("circle")("id")("setAttribute"),
   setHref = setAttrs(".")("href")("setAttribute"),
   setAlt = setAttrs("")("alt")("setAttribute"),
-  setSrc = setAttrs("./assets/img/circle1.png")("src")("setAttribute"),
+  setSrc = setAttrs("./assets/img/misc/circle.png")("src")("setAttribute"),
   doAlt = meta.doAlternate(),
   anc = meta.$Q("main > section"),
   [img, link] = ["img", "a"].map((el) => document.createElement(el)),
@@ -57,9 +54,8 @@ let meta = nW1.meta,
   exec = compose(func("alt"), outbound),
   undo = compose(func(""), inbound),
   callback = function (e) {
-    console.log(this, e)
     e.preventDefault();
-    doAlt([exec, undo])(this);
+    doAlt([undo, exec])(this);
 },
 listen = curry4(meta.invokePair)(callback)('click')('addEventListener'),
   splat = compose(
