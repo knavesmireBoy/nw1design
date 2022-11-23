@@ -232,7 +232,9 @@ nW1.meta = (function () {
     invokeMethodV: (o, p, m, v) => {
       return getResult(o)[p][v](m);
     },
-    invokePair: (o, m, k, v) => getResult(o)[m](k, v),
+    invokePair: (o, m, k, v) => {
+      return getResult(o)[m](k, v);
+    },
     lazyVal: (m, p, o, v) => {
       return getResult(o)[m](p, v);
     },

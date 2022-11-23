@@ -27,21 +27,23 @@ if (!window.nW1) {
 
   function remove(el){
     let elem = utils.getRes(el);
-    elem && elem.parentNode.removeChild(elem);
+    if(elem){
+       elem.parentNode.removeChild(elem);
+       meta.$('innerwrap').classList = "";
+    }
   }
 
 let meta = nW1.meta,
   utils = nW1.utils,
   throttlePause,
   pApply = meta.pApply,
+  defer = meta.doPartial(true),
   getDesktop = pApply(Modernizr.mq, brk),
   pass = meta.pass,
   compose = meta.compose,
   curry4 = meta.curryRight(4),
-  curry44 = meta.curryRight(4, true),
   ptl = meta.doPartial(1),
   setAttrs = curry4(meta.invokePair),
-  setAttrsDefer = curry44(meta.invokePair),
   setId = setAttrs("circle")("id")("setAttribute"),
   setHref = setAttrs(".")("href")("setAttribute"),
   setAside = setAttrs("link to secondary content")("title")("setAttribute"),
@@ -57,10 +59,23 @@ let meta = nW1.meta,
   func = ptl(meta.setterBridge(), meta.$("innerwrap"), "classList"),
   exec = compose(setMain, meta.$$('circle'), func("alt"), outbound),
   undo = compose(setAside, meta.$$('circle'), func(""), inbound),
+  doAltCircle = meta.doAlternate(),
+  cb = doAltCircle([exec, undo]),
+  invokePairDefer = (o, m, k, v) => {
+    return utils.getRes(o)[m](k, utils.getRes(v));
+  },
+  callback2 = function () {
+    let f = doAltCircle([exec, undo]);
+    return function(e) {
+        e.preventDefault();
+        f(this);
+    };
+},
   callback = function (e) {
     e.preventDefault();
-    doAlt([undo, exec])(this);
+    cb(this);
 },
+
 listen = curry4(meta.invokePair)(callback)('click')('addEventListener'),
   splat = compose(
     utils.getParent,
@@ -76,18 +91,20 @@ listen = curry4(meta.invokePair)(callback)('click')('addEventListener'),
   doMakeSplat = pApply(splat, anc),
   isDesktop = function (alternators) {
     if (!getDesktop()) {
-     alternators.forEach((f) => f());
+        alternators.forEach((f) => f());
       getDesktop = pApply(meta.negate, getDesktop);
     }
   },
-  loaderOptions = Mod.mq(brk) ? [doRemove, doMakeSplat] : [doMakeSplat, doRemove],
-  loaderActions = doAlt(loaderOptions);
-  window.addEventListener(
-    "resize",
-    pApply(throttle, pApply(isDesktop, [loaderActions]), 222)
-  );
+  loaderActions = doAlt([doMakeSplat, doRemove]);
   window.addEventListener('load', function() {
     getDesktop = Mod.mq(brk) ? getDesktop : pApply(meta.negate, getDesktop);
-    loaderActions();
-  });
+    if(!Mod.mq(brk)) {
+        loaderActions();
+    }
+    });
+    window.addEventListener(
+        "resize",
+       pApply(throttle, compose(pApply(isDesktop, [loaderActions])), 222)
+      );
+
 }(Modernizr, "(min-width: 900px)"));
