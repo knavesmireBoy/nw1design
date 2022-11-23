@@ -570,6 +570,7 @@ header nav > ul > li ul li {
   }
   header label {
     margin: 0 0 0.6em 1.6em;
+    animation: logo 3s ease;
   }
   header > a {
     margin: 0 0 1em;
@@ -703,6 +704,31 @@ header nav > ul > li ul li {
     left: 0;
   }
 }
+#splat {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 6em;
+  height: 5.5em;
+}
+
+main > section {
+  position: relative;
+}
+
+#splat:after {
+  content: "";
+  width: 2em;
+  height: 1.8em;
+  display: block;
+  background: url("../assets/img/splat.jpg") no-repeat center/cover;
+  margin: -4em 0 0 2em;
+}
+
+main > aside {
+  padding: 0 7em;
+}
+
 /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */
 .overlay figure {
   -moz-box-shadow: 1px 1px 2px 2px black;
@@ -792,6 +818,50 @@ header nav > ul > li ul li {
   }
   to {
     transform: scaleX(1);
+  }
+}
+@-webkit-keyframes logo {
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@-moz-keyframes logo {
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@-o-keyframes logo {
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes logo {
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 @-webkit-keyframes fade {

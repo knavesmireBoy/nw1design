@@ -130,6 +130,7 @@ header nav > ul {
     }
   & label {
     margin: 0 0 0.6em 1.6em;
+    animation: logo 3s ease;
   }
   & > a {
     margin: 0 0 1em;
@@ -275,4 +276,28 @@ header nav > ul {
   #menu-toggle:checked ~ a + nav {
     left: 0;
   }
+}
+
+#splat {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 6em;
+  height: 5.5em;
+}
+main > section {
+position: relative;
+}
+
+#splat:after {
+  content: "";
+  width: 2em;
+  height: 1.8em;
+  display: block;
+  background: url("../assets/img/splat.jpg") no-repeat center / cover;
+  margin: -4em 0 0 2em;
+}
+
+main > aside {
+  padding: 0 7em;
 }
