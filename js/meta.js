@@ -173,8 +173,14 @@ nW1.meta = (function () {
     alternate = (i, n) => () => (i += 1) % n,
     doAlternate = () => {
       const f = alternate(0, 2);
-      return (actions, ...args) => {
-        return () => best(f, [actions[0], actions[1]])();
+      return (actions) => {
+        let [uno, duo] = actions;
+        return (arg) => {
+          if(arg){
+            return best(f, [pApply(uno, arg), pApply(duo, arg)])();
+          }
+          return best(f, [uno, duo])();
+        };
       };
     },
     invokeMethod = (o, m, v) => {
@@ -202,6 +208,12 @@ nW1.meta = (function () {
       let obj = getResult(o);
       obj[k] = v;
     },
+    setterBridge: (pre = getResult, post = getResult) => (o, k, v) => {
+      // console.log(o,k,v)
+       let obj = pre(o);
+       obj[k] = v;
+       return post(obj);
+     },
     pApply: pApply,
     pass: (ptl, o) => {
       ptl(getResult(o));

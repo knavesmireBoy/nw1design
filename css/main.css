@@ -570,7 +570,7 @@ header nav > ul > li ul li {
   }
   header label {
     margin: 0 0 0.6em 1.6em;
-    animation: logo 3s ease;
+    animation: logo 2s ease;
   }
   header > a {
     margin: 0 0 1em;
@@ -704,10 +704,10 @@ header nav > ul > li ul li {
     left: 0;
   }
 }
-#splat {
+#circle {
   position: absolute;
-  right: -2em;
-  bottom: -1.8em;
+  right: 0em;
+  bottom: 0;
   width: 9em;
   height: 9em;
   border: #000 solid 0px;
@@ -717,17 +717,17 @@ main > section {
   position: relative;
 }
 
-main > section > article p:nth-child(6) {
-  margin-right: 2em;
+main > section > article p:nth-of-type(6) {
+  margin-right: 6em;
 }
 
-#splat:after {
+#circle:after {
   content: "";
-  width: 2em;
-  height: 1.8em;
+  width: 2.5em;
+  height: 2.5em;
   display: block;
-  background: url("../assets/img/splat.jpg") no-repeat center/cover;
-  margin: -5.5em 0 0 3.3em;
+  background: #569099 url("../assets/img/edit_img.png") no-repeat center/cover;
+  margin: -5em 0 0 5em;
   z-index: 1;
   position: relative;
 }
@@ -738,11 +738,34 @@ main > section > article p:nth-child(6) {
 
 .alt main > aside {
   display: block;
+  position: relative;
 }
 
 .alt main > aside {
   margin: 0;
   padding: 2em 4em 0;
+}
+
+.alt #circle:after {
+  background: #569099 url("../assets/img/list.png") no-repeat center/cover;
+}
+
+.alt #audit {
+  display: none;
+}
+
+.alt main > aside h2 {
+  font-size: 2em;
+}
+
+.alt #phoney {
+  padding: 1em 2.5em;
+  font-size: 3.5em;
+  line-height: 1;
+}
+
+#circle:hover:after {
+  background-color: blue;
 }
 
 /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */ /* ABOUT */
