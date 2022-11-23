@@ -294,6 +294,11 @@ main > section > article p:nth-of-type(6){
   margin-right: 6em;
   }
 
+  main > section > article p:nth-of-type(7){
+    margin-right: 6em;
+    }
+  
+
 #circle:after {
   content: "";
   width: 3em;
@@ -324,12 +329,12 @@ main > section > article p:nth-of-type(6){
   display: none;
 }
 .alt main > aside h2 {
-  font-size: 2em;
+  font-size: 1.8em;
 }
 
 .alt #phoney {
-  padding: 1em 2.5em;
-  font-size: 3.5em;
+  padding: 1em 2em;
+  font-size: 2.5em;
   line-height: 1;
 }
 
