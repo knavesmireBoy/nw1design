@@ -230,8 +230,6 @@
   .graphicdesign main > section > article p:nth-of-type(n + 2) {
     margin-right: 12vw;
   }
-
-
   #circle:after {
     display: block;
     position: relative;
@@ -294,6 +292,10 @@
   }
   #buttons {
     @include prefix(flex, 2 1 5em, moz o webkit ms);
+  }
+
+  #about .overlay figure {
+    width: 90%;
   }
 }
 
