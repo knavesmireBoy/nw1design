@@ -103,4 +103,4 @@ listen = curry4(meta.invokePair)(callback)('click')('addEventListener'),
        pApply(throttle, compose(pApply(isDesktop, [loaderActions])), 222)
       );
 
-}(Modernizr, "(min-width: 900px)"));
+}(Modernizr, "(min-width: 821px)"));

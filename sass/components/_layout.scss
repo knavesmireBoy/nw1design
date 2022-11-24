@@ -37,14 +37,13 @@ header {
 main > section {
   margin: 0 1.5em;
   padding: 1em;
-  @include prefix(flex, 5 1 20em, webkit ms moz);
+  @include prefix(flex, 5 1 8em, webkit ms moz);
 }
 
 main > aside {
   background-color: white;
   margin: 0 1.5em 0 0;
-  @include prefix(flex, 1 1 20em, webkit ms moz);
-
+  @include prefix(flex, 1 1 8em, webkit ms moz);
 }
 
 header nav > ul {
@@ -86,7 +85,8 @@ header nav > ul {
   position: absolute;
   left: -9999px;
 }
-@media only screen and (max-width: 900px) {
+
+@media only screen and (max-width: 820px) {
   main {
     display: block;
   }
@@ -138,7 +138,7 @@ header nav > ul {
     }
   & label {
     margin: 0 0 0.6em 1.6em;
-    animation: logo 2s ease;
+    animation: logo 4s 1s ease;
   }
   & > a {
     margin: 0 0 1em;
@@ -243,17 +243,6 @@ header nav > ul {
     position: absolute;
     left: -9999px;
   }
-
-  header h1 {
-    width: 6.468em;
-    padding-top: 1.586em;
-  }
-
-  header label {
-    width: 4.62em;
-    margin: 0 0 0 1em;
-    height: 3.234em;
-  }
 }
 @media only screen and (max-width: 480px) {
 
@@ -284,4 +273,16 @@ header nav > ul {
   #menu-toggle:checked ~ a + nav {
     left: 0;
   }
+  header h1 {
+    margin-top: 4px;
+    width: 9em;
+    padding-top: 2.232em;
+  }
+
+  header label {
+    width: 6.37875em;
+    height: 4.424625em;
+    margin-bottom: 0.3em;
+  }
+
 }

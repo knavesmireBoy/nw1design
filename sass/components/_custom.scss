@@ -176,7 +176,7 @@
   }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 820px) {
   #buttons a:link {
     $props: (
       "height": "24px + (12 * (100vw - 667px) / (1280 - 667))",
@@ -259,15 +259,14 @@
     display: none;
   }
   .alt main > aside h2 {
-    font-size: 3.6vw;
     $props: (
-      "font-size": "18px + (18 * (100vw - 320px) / (900 - 320))",
+      "font-size": "18px + (10 * (100vw - 320px) / (900 - 320))",
     );
     @include docalc($props);
   }
 
   .alt #phoney {
-    padding: 7vw 12vw;
+    padding: 7vw 9vw;
     font-size: 3.6em;
     $props: (
       "font-size": "24px + (26 * (100vw - 320px) / (900 - 320))",

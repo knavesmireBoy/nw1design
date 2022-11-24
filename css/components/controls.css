@@ -314,7 +314,7 @@ html #wrapper {
   content: "When javascript is enabled this area will reflect the selected image from the sidebar, and provide controls for navigating the gallery. In the sidebar we present a pure css accordion providing access to each sub-gallery allowing the user the ability to view the hi-resolution images, electing to have the image open in the same window inviting the user to deploy the back button to implement the most basic navigation.";
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 820px) {
   #buttons a:link {
     margin: 0 9px 0 0;
     border: solid 0px;
