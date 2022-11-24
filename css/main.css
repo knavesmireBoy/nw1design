@@ -661,18 +661,21 @@ header nav > ul > li ul li {
     left: -webkit-calc(8vw + 1px);
     left: calc(8vw + 1px);
   }
-  header label:after {
-    display: block;
-    position: relative;
-    content: "";
-    width: 3.6vw;
-    height: 3.6vw;
-    background: transparent url("../assets/bg/misc/menu-icon.png") no-repeat center/cover;
-    z-index: 1;
-    margin: 0.7em 0 0 1.7em;
-    border: blue solid 0;
-    animation: fadeOut 5s ease forwards;
-  }
+  /*
+    header label:after {
+      display: block;
+      position: relative;
+      content: "";
+      width: 3.6vw;
+      height: 3.6vw;
+      background: transparent url("../assets/bg/misc/menu-icon.png") no-repeat center /
+        cover;
+      z-index: 1;
+      margin: .7em 0 0 1.7em;
+      border: blue solid 0;
+      animation: fadeOut 5s ease forwards;
+    }
+  */
 }
 @media only screen and (max-width: 667px) {
   footer span {

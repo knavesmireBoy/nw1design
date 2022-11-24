@@ -207,7 +207,7 @@ header nav > ul {
     $props: ("left": "8vw + 1px");
     @include docalc($props);
   }
-
+/*
   header label:after {
     display: block;
     position: relative;
@@ -221,7 +221,7 @@ header nav > ul {
     border: blue solid 0;
     animation: fadeOut 5s ease forwards;
   }
-
+*/
 }
 @media only screen and (max-width: 667px) {
   
