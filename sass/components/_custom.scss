@@ -211,7 +211,9 @@
     bottom: 0;
     width: 16vw;
     height: 16vw;
-    border: red solid 0;
+    width: 14vw;
+    height: 14vw;
+    border: red solid 1px;
   }
   main > section {
     position: relative;
@@ -239,6 +241,7 @@
     background: $col-nav url("../assets/img/misc/edit_img.png") no-repeat center /
       cover;
     margin: -10vw 0 0 8vw;
+    margin: -9vw 0 0 6.5vw;
     z-index: 1;
     border: blue solid 0;
   }

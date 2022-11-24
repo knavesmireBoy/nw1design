@@ -62,7 +62,7 @@ if (!window.nW1) {
     setMain = setAttrs("link to main content")("title")("setAttribute"),
     setAlt = setAttrs("")("alt")("setAttribute"),
     setSrc = (el) => {
-      let path = "assets/img/misc/circle.png",
+      let path = "assets/img/misc/circle_logo.png",
         pre = meta.$("home") ? "./" : "../";
       el.setAttribute("src", pre + path);
     },
