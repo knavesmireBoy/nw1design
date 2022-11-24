@@ -29,26 +29,56 @@ if (!window.nW1) {
     if(el){
         meta.$('innerwrap').classList = "";
         el.parentNode.removeChild(el);
+        cb = meta.doAlternate()([exec, undo]);
     }
   }
 
-let meta = nW1.meta,
+  function ImageExists(url) {
+   try {
+    let image = new Image();
+    image.src = url;
+    return image.height != 0;
+ } catch(e){
+    return false;
+ }
+}
+
+function UrlExists(url){
+    var http = new XMLHttpRequest();
+    http.open('HEAD', url, false);
+    http.send();
+    return http.status!=404;
+}
+const meta = nW1.meta,
   utils = nW1.utils,
-  throttlePause,
-  pApply = meta.pApply,
-  defer = meta.doPartial(true),
-  getDesktop = pApply(Modernizr.mq, brk),
-  pass = meta.pass,
+  pApply = meta.pApply;
+let getDesktop = pApply(Modernizr.mq, brk),
+throttlePause,
+cb = null;
+ const pass = meta.pass,
   compose = meta.compose,
   curry4 = meta.curryRight(4),
   ptl = meta.doPartial(1),
+  isDesktop = function (alternators) {
+    if (!getDesktop()) {
+        alternators.forEach( f => {
+            return f();
+        }
+            );
+      getDesktop = pApply(meta.negate, getDesktop);
+    }
+  },
   setAttrs = curry4(meta.invokePair),
   setId = setAttrs("circle")("id")("setAttribute"),
   setHref = setAttrs(".")("href")("setAttribute"),
   setAside = setAttrs("link to secondary content")("title")("setAttribute"),
   setMain = setAttrs("link to main content")("title")("setAttribute"),
   setAlt = setAttrs("")("alt")("setAttribute"),
-  setSrc = setAttrs("./assets/img/misc/circle.png")("src")("setAttribute"),
+  setSrc = (el) => {
+    let path = "assets/img/misc/circle.png",
+    pre = meta.$('home') ? "./" : "../";
+    el.setAttribute('src', pre+path);
+  },
   doAlt = meta.doAlternate(),
   anc = meta.$Q("main > section"),
   [img, link] = ["img", "a"].map((el) => document.createElement(el)),
@@ -57,15 +87,15 @@ let meta = nW1.meta,
   inbound = utils.prepend(anc),
   func = ptl(meta.setterBridge(), meta.$("innerwrap"), "classList"),
   exec = compose(setMain, meta.$$('circle'), func("alt"), outbound),
-  undo = compose(setAside, meta.$$('circle'), func(""), inbound),
-  doAltCircle = meta.doAlternate(),
-  cb = doAltCircle([exec, undo]),
-  callback = function (e) {
+  undo = compose(setAside, meta.$$('circle'), func(""), inbound);
+  cb = meta.doAlternate()([exec, undo]);
+
+const  callback = function (e) {
     e.preventDefault();
     cb(this);
 },
 listen = curry4(meta.invokePair)(callback)('click')('addEventListener'),
-  splat = compose(
+  sidebar = compose(
     utils.getParent,
     setSrc.wrap(pass),
     setAlt.wrap(pass),
@@ -77,17 +107,7 @@ listen = curry4(meta.invokePair)(callback)('click')('addEventListener'),
     utils.prepend(anc),
     utils.doMakeDefer('a')
   ),
-  doMakeSplat = pApply(splat),
-  isDesktop = function (alternators) {
-    if (!getDesktop()) {
-        alternators.forEach( f => {
-            return f();
-        }
-            );
-      getDesktop = pApply(meta.negate, getDesktop);
-    }
-  },
-  loaderActions = doAlt([doMakeSplat, doRemove]);
+  loaderActions = doAlt([pApply(sidebar), doRemove]);
   window.addEventListener('load', function() {
     getDesktop = Mod.mq(brk) ? getDesktop : pApply(meta.negate, getDesktop);
     if(!Mod.mq(brk)) {
