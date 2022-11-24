@@ -33,22 +33,6 @@ if (!window.nW1) {
     }
   }
 
-  function ImageExists(url) {
-   try {
-    let image = new Image();
-    image.src = url;
-    return image.height != 0;
- } catch(e){
-    return false;
- }
-}
-
-function UrlExists(url){
-    var http = new XMLHttpRequest();
-    http.open('HEAD', url, false);
-    http.send();
-    return http.status!=404;
-}
 const meta = nW1.meta,
   utils = nW1.utils,
   pApply = meta.pApply;

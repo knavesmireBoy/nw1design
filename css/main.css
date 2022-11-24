@@ -1141,10 +1141,16 @@ header nav > ul > li ul li {
   main > section {
     position: relative;
   }
-  main > section > article p:nth-of-type(6) {
+  main > section > article p:nth-of-type(n + 6) {
     margin-right: 12vw;
   }
-  main > section > article p:nth-of-type(7) {
+  .about main > section > article p:nth-of-type(n + 3) {
+    margin-right: 12vw;
+  }
+  .webdesign main > section > article p:nth-of-type(n + 5) {
+    margin-right: 12vw;
+  }
+  .graphicdesign main > section > article p:nth-of-type(n + 2) {
     margin-right: 12vw;
   }
   #circle:after {
