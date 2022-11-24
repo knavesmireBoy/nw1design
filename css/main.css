@@ -416,6 +416,38 @@ main aside section:nth-child(n+2) {
   border-color: white;
 }
 
+@-webkit-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@-moz-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@-o-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 main {
   -webkit-display: flex;
   -moz-display: flex;
@@ -629,6 +661,18 @@ header nav > ul > li ul li {
     left: -webkit-calc(8vw + 1px);
     left: calc(8vw + 1px);
   }
+  header label:after {
+    display: block;
+    position: relative;
+    content: "";
+    width: 3.6vw;
+    height: 3.6vw;
+    background: transparent url("../assets/bg/misc/menu-icon.png") no-repeat center/cover;
+    z-index: 1;
+    margin: 0.7em 0 0 1.7em;
+    border: blue solid 0;
+    animation: fadeOut 5s ease forwards;
+  }
 }
 @media only screen and (max-width: 667px) {
   footer span {
@@ -723,15 +767,15 @@ header nav > ul > li ul li {
 }
 
 .overlay img {
-  -moz-animation: fade 0.5s ease 2s forwards;
-  -webkit-animation: fade 0.5s ease 2s forwards;
-  animation: fade 0.5s ease 2s forwards;
+  -moz-animation: fadeIn 0.5s ease 2s forwards;
+  -webkit-animation: fadeIn 0.5s ease 2s forwards;
+  animation: fadeIn 0.5s ease 2s forwards;
 }
 
 .overlay figcaption {
-  -moz-animation: fade 1s ease 4s backwards, cap 1s ease 3s forwards;
-  -webkit-animation: fade 1s ease 4s backwards, cap 1s ease 3s forwards;
-  animation: fade 1s ease 4s backwards, cap 1s ease 3s forwards;
+  -moz-animation: fadeIn 1s ease 4s backwards, cap 1s ease 3s forwards;
+  -webkit-animation: fadeIn 1s ease 4s backwards, cap 1s ease 3s forwards;
+  animation: fadeIn 1s ease 4s backwards, cap 1s ease 3s forwards;
 }
 
 .lightbox a:hover img {
@@ -847,7 +891,7 @@ header nav > ul > li ul li {
     transform: scale(1);
   }
 }
-@-webkit-keyframes fade {
+@-webkit-keyframes fadeIn {
   from {
     opacity: 0;
   }
@@ -855,7 +899,7 @@ header nav > ul > li ul li {
     opacity: 1;
   }
 }
-@-moz-keyframes fade {
+@-moz-keyframes fadeIn {
   from {
     opacity: 0;
   }
@@ -863,7 +907,7 @@ header nav > ul > li ul li {
     opacity: 1;
   }
 }
-@-o-keyframes fade {
+@-o-keyframes fadeIn {
   from {
     opacity: 0;
   }
@@ -871,7 +915,7 @@ header nav > ul > li ul li {
     opacity: 1;
   }
 }
-@keyframes fade {
+@keyframes fadeIn {
   from {
     opacity: 0;
   }
@@ -1146,7 +1190,7 @@ header nav > ul > li ul li {
     height: 16vw;
     width: 14vw;
     height: 14vw;
-    border: red solid 1px;
+    border: red solid 0;
   }
   main > section {
     position: relative;
@@ -1171,7 +1215,7 @@ header nav > ul > li ul li {
     height: 6vw;
     background: #569099 url("../assets/img/misc/edit_img.png") no-repeat center/cover;
     margin: -10vw 0 0 8vw;
-    margin: -9vw 0 0 6.5vw;
+    margin: -9.5vw 0 0 7vw;
     z-index: 1;
     border: blue solid 0;
   }

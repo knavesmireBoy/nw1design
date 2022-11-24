@@ -13,13 +13,13 @@
 }
 
 .overlay img {
-  @include prefix("animation", fade 0.5s ease 2s forwards, moz webkit);
+  @include prefix("animation", fadeIn 0.5s ease 2s forwards, moz webkit);
 }
 
 .overlay figcaption {
   @include prefix(
     "animation",
-    (fade 1s ease 4s backwards, cap 1s ease 3s forwards),
+    (fadeIn 1s ease 4s backwards, cap 1s ease 3s forwards),
     moz webkit
   );
 }
@@ -61,7 +61,7 @@
   }
 }
 
-@include keyframes(fade) {
+@include keyframes(fadeIn) {
   from {
     opacity: 0;
   }
@@ -69,6 +69,7 @@
     opacity: 1;
   }
 }
+
 
 /* CONTACT*/ /* CONTACT*/ /* CONTACT*/ /* CONTACT*/ /* CONTACT*/ /* CONTACT*/ /* CONTACT*/
 //https://gist.github.com/Farmatique/d88491ca4a8c75f3b39df6c71852bf5a
@@ -213,7 +214,7 @@
     height: 16vw;
     width: 14vw;
     height: 14vw;
-    border: red solid 1px;
+    border: red solid 0;
   }
   main > section {
     position: relative;
@@ -241,7 +242,7 @@
     background: $col-nav url("../assets/img/misc/edit_img.png") no-repeat center /
       cover;
     margin: -10vw 0 0 8vw;
-    margin: -9vw 0 0 6.5vw;
+    margin: -9.5vw 0 0 7vw;
     z-index: 1;
     border: blue solid 0;
   }
