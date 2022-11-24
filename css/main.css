@@ -1142,7 +1142,7 @@ header nav > ul > li ul li {
   main > section {
     position: relative;
   }
-  main > section > article p:nth-of-type(n + 6) {
+  .home main > section > article p:nth-of-type(n + 6) {
     margin-right: 12vw;
   }
   .about main > section > article p:nth-of-type(n + 3) {
@@ -1226,6 +1226,11 @@ header nav > ul > li ul li {
     height: -o-calc(28px + (36 * (100vw - 320px) / (573 - 320)));
     height: -webkit-calc(28px + (36 * (100vw - 320px) / (573 - 320)));
     height: calc(28px + (36 * (100vw - 320px) / (573 - 320)));
+  }
+}
+@media only screen and (max-width: 470px) {
+  .graphicdesign main > section > article p:nth-of-type(2), .webdesign main > section > article p:nth-of-type(5), .about main > section > article p:nth-of-type(3), .home main > section > article p:nth-of-type(6) {
+    margin-right: 0;
   }
 }
 @media only screen and (max-width: 413px) {

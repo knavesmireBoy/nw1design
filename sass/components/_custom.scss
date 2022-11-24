@@ -209,7 +209,7 @@
   main > section {
     position: relative;
   }
-  main > section > article p:nth-of-type(n + 6) {
+  .home main > section > article p:nth-of-type(n + 6) {
     margin-right: 12vw;
   }
 
@@ -219,9 +219,11 @@
   .webdesign main > section > article p:nth-of-type(n + 5) {
     margin-right: 12vw;
   }
+
   .graphicdesign main > section > article p:nth-of-type(n + 2) {
     margin-right: 12vw;
   }
+
 
   #circle:after {
     display: block;
@@ -297,8 +299,17 @@
   }
 }
 
+@media only screen and (max-width: 470px) {
+  .graphicdesign main > section > article p:nth-of-type(2), .webdesign main > section > article p:nth-of-type(5), .about main > section > article p:nth-of-type(3),  .home main > section > article p:nth-of-type(6) {
+    margin-right: 0;
+  }
+}
+
 @media only screen and (max-width: 413px) {
   #buttons {
     @include prefix(flex, 4 1 1em, moz o webkit ms);
   }
+
 }
+
+
