@@ -26,10 +26,9 @@ if (!window.nW1) {
   }
 
   function remove(el){
-    let elem = utils.getRes(el);
-    if(elem){
-       elem.parentNode.removeChild(elem);
-       meta.$('innerwrap').classList = "";
+    if(el){
+        meta.$('innerwrap').classList = "";
+        el.parentNode.removeChild(el);
     }
   }
 
@@ -61,21 +60,10 @@ let meta = nW1.meta,
   undo = compose(setAside, meta.$$('circle'), func(""), inbound),
   doAltCircle = meta.doAlternate(),
   cb = doAltCircle([exec, undo]),
-  invokePairDefer = (o, m, k, v) => {
-    return utils.getRes(o)[m](k, utils.getRes(v));
-  },
-  callback2 = function () {
-    let f = doAltCircle([exec, undo]);
-    return function(e) {
-        e.preventDefault();
-        f(this);
-    };
-},
   callback = function (e) {
     e.preventDefault();
     cb(this);
 },
-
 listen = curry4(meta.invokePair)(callback)('click')('addEventListener'),
   splat = compose(
     utils.getParent,
@@ -86,12 +74,16 @@ listen = curry4(meta.invokePair)(callback)('click')('addEventListener'),
     setAside.wrap(pass),
     setHref.wrap(pass),
     setId.wrap(pass),
-    utils.append(link)
+    utils.prepend(anc),
+    utils.doMakeDefer('a')
   ),
-  doMakeSplat = pApply(splat, anc),
+  doMakeSplat = pApply(splat),
   isDesktop = function (alternators) {
     if (!getDesktop()) {
-        alternators.forEach((f) => f());
+        alternators.forEach( f => {
+            return f();
+        }
+            );
       getDesktop = pApply(meta.negate, getDesktop);
     }
   },

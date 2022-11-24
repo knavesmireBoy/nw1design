@@ -221,8 +221,12 @@ main aside section h2:before {
   vertical-align: top;
   margin: 0 0.3em 0 0.5em;
   text-transform: uppercase;
-  @include prefix(box-shadow, inset 1px 1px 2px rgba(255, 255, 255, 0.6)
-  inset -1px -1px 2px rgba(0, 0, 0, 0.6), webkit moz);
+  box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.6),
+  inset -1px -1px 2px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.6),
+  inset -1px -1px 2px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.6),
+  inset -1px -1px 2px rgba(0, 0, 0, 0.6);
 }
 
 input[type="submit"],
