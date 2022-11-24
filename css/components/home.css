@@ -5,10 +5,11 @@
 #phoney,
 #audit {
   color: white;
-  font: 2.7em bold,  "Impact", 'Abril Fatface', sans-serif;
+  font: 2.5em bold;
+  font-family:  "Alfa Slab One", "Impact", sans-serif;
   text-align: left;
   font-weight: 900;
-  padding: 0.7em;
+  padding: 1em .6em;
   margin: 0.4em 0 0;
   position: relative;
   background-repeat: no-repeat;
@@ -19,7 +20,6 @@
   display: block;
   text-align: right;
   content: "01453 298527";
-  font-size: 1.2em;
   color: rgba(244, 233, 111, 1);
   position: relative;
 }
