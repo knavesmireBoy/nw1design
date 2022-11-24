@@ -5,6 +5,13 @@
   @include prefix("animation", fig 3s ease, moz webkit);
 }
 
+#about .overlay figure {
+  $props: (
+    "width": "250px + (500 * (100vw - 320px) / (1280 - 320))",
+  );
+  @include docalc($props);
+}
+
 .overlay img {
   @include prefix("animation", fade 0.5s ease 2s forwards, moz webkit);
 }

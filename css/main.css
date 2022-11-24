@@ -715,6 +715,13 @@ header nav > ul > li ul li {
   animation: fig 3s ease;
 }
 
+#about .overlay figure {
+  width: -moz-calc(250px + (500 * (100vw - 320px) / (1280 - 320)));
+  width: -o-calc(250px + (500 * (100vw - 320px) / (1280 - 320)));
+  width: -webkit-calc(250px + (500 * (100vw - 320px) / (1280 - 320)));
+  width: calc(250px + (500 * (100vw - 320px) / (1280 - 320)));
+}
+
 .overlay img {
   -moz-animation: fade 0.5s ease 2s forwards;
   -webkit-animation: fade 0.5s ease 2s forwards;
