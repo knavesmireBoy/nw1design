@@ -282,9 +282,9 @@ header nav > ul {
   position: absolute;
   right: 0em;
   bottom: 0;
-  width: 9em;
-  height: 9em;
-  border: #000 solid 0px;
+  width: 22vw;
+  height: 22vw;
+  border: #000 solid 1px;
 }
 main > section {
 position: relative;
@@ -320,7 +320,7 @@ main > section > article p:nth-of-type(6){
 
 .alt main > aside {
   margin: 0;
-  padding: 2em 4em 0;
+  padding: 2em 2em 0;
 }
 .alt #circle:after {
   background: $col-nav url("../assets/img/misc/edit_pen.png") no-repeat center / cover;
@@ -329,13 +329,13 @@ main > section > article p:nth-of-type(6){
   display: none;
 }
 .alt main > aside h2 {
-  font-size: 1.8em;
+  font-size: 6vw;
 }
 
 .alt #phoney {
-  padding: 1em 2em;
-  font-size: 2.5em;
-  line-height: 1;
+  padding: 7vw 16vw;
+  font-size: 7vw;
+  line-height: 1.3;
 }
 
 #circle:hover:after {
