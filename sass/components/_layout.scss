@@ -37,7 +37,7 @@ header {
 main > section {
   margin: 0 1.5em;
   padding: 1em;
-  @include prefix(flex, 5 1 8em, webkit ms moz);
+  @include prefix(flex, 3 1 8em, webkit ms moz);
 }
 
 main > aside {
