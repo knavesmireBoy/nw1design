@@ -237,14 +237,13 @@
     display: block;
     position: relative;
     content: "";
-    width: 5vw;
-    height: 5vw;
-    background: $col-nav url("../assets/img/misc/edit_img.png") no-repeat center /
+    width: 8vw;
+    height: 8vw;
+    background: $col-nav url("../assets/bg/misc/edit_img_alt.png") no-repeat center /
       cover;
-    margin: -10vw 0 0 8vw;
-    margin: -8.8vw 0 0 7vw;
+    margin: -10.25vw 0 0 5.75vw;
     z-index: 1;
-    border: blue solid 0px;
+    border: $col-nav solid 1px;
     border-radius: 50%;
   }
 
@@ -261,7 +260,7 @@
     padding: 2em 2em 0;
   }
   .alt #circle:after {
-    background: $col-nav url("../assets/img/misc/edit_pen.png") no-repeat center /
+    background: $col-nav url("../assets/bg/misc/edit_pen_alt.png") no-repeat center /
       cover;
   }
   #circle:hover:after {

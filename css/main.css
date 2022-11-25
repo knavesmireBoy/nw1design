@@ -1214,13 +1214,12 @@ header nav > ul > li ul li {
     display: block;
     position: relative;
     content: "";
-    width: 5vw;
-    height: 5vw;
-    background: #569099 url("../assets/img/misc/edit_img.png") no-repeat center/cover;
-    margin: -10vw 0 0 8vw;
-    margin: -8.8vw 0 0 7vw;
+    width: 8vw;
+    height: 8vw;
+    background: #569099 url("../assets/bg/misc/edit_img_alt.png") no-repeat center/cover;
+    margin: -10.25vw 0 0 5.75vw;
     z-index: 1;
-    border: blue solid 0px;
+    border: #569099 solid 1px;
     border-radius: 50%;
   }
   .alt main > section {
@@ -1235,7 +1234,7 @@ header nav > ul > li ul li {
     padding: 2em 2em 0;
   }
   .alt #circle:after {
-    background: #569099 url("../assets/img/misc/edit_pen.png") no-repeat center/cover;
+    background: #569099 url("../assets/bg/misc/edit_pen_alt.png") no-repeat center/cover;
   }
   #circle:hover:after {
     background-color: #c30;
