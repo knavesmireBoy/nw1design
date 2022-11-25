@@ -171,11 +171,12 @@ nW1.meta = (function () {
     },
     //can't assign i to another variable
     alternate = (i, n) => () => (i += 1) % n,
-    doAlternate = () => {
-      const f = alternate(0, 2);
+    doAlternate = (j = 2) => {
+      const f = alternate(0, j);
       return (actions) => {
         let [uno, duo] = actions;
         return (arg) => {
+          //a more sophisticated version would examine type of arg and apply to actions/predicate accordingly
           if(arg){
             return best(f, [pApply(uno, arg), pApply(duo, arg)])();
           }

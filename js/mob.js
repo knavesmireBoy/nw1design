@@ -31,8 +31,9 @@ if (!window.nW1) {
       el.parentNode.removeChild(el);
       //needs to be created on exit before loading again
       //don't forget the first call to doAlternate, creates the predicate
-      //which alternates returning true/false so failure to supply a fresh predicate
+      //which alternates returning true/false so failure to supply a fresh predicate on entry
       //will throw things outta sync
+      //STATE PATTERN
       cb = meta.doAlternate()([exec, undo]);
     }
   }
@@ -62,7 +63,7 @@ if (!window.nW1) {
     setMain = setAttrs("link to main content")("title")("setAttribute"),
     setAlt = setAttrs("")("alt")("setAttribute"),
     setSrc = (el) => {
-      let path = "assets/img/misc/circle_logo.png",
+      let path = "assets/img/misc/circle.png",
         pre = meta.$("home") ? "./" : "../";
       el.setAttribute("src", pre + path);
     },

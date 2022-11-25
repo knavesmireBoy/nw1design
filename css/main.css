@@ -1214,13 +1214,14 @@ header nav > ul > li ul li {
     display: block;
     position: relative;
     content: "";
-    width: 6vw;
-    height: 6vw;
+    width: 5vw;
+    height: 5vw;
     background: #569099 url("../assets/img/misc/edit_img.png") no-repeat center/cover;
     margin: -10vw 0 0 8vw;
-    margin: -9.5vw 0 0 7vw;
+    margin: -8.8vw 0 0 7vw;
     z-index: 1;
-    border: blue solid 0;
+    border: blue solid 0px;
+    border-radius: 50%;
   }
   .alt main > section {
     display: none;
