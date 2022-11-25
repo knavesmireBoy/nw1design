@@ -101,15 +101,16 @@ nW1.meta = (function () {
           (o, k) =>
             def(v) ? f(o, m, k, v) : f(o, m, v);
       }
-      return (f, m, k = undefined) =>
+      return (f, m, k = undefined) => {
       //optional key/value;dynamic value
-        (o, v) => {
+        return (o, v) => {
           //optional callback
           if(isFunction(arg)){
             return def(k) ? f(arg(o), m, k, v) : f(arg(o), m, v);
           }
           return def(k) ? f(o, m, k, v) : f(o, m, v);
         };
+      };
     },
     curryRight = (i, defer = false) => {
       const once = {

@@ -5,7 +5,7 @@
 if (!window.nW1) {
   window.nW1 = {};
 }
-(function (Mod, brk) {
+(function (Mod, brk, path) {
   "use strict";
 
   //https://webdesign.tutsplus.com/tutorials/javascript-debounce-and-throttle--cms-36783
@@ -46,6 +46,7 @@ if (!window.nW1) {
     cb = null;
   const pass = meta.pass,
     compose = meta.compose,
+    curry2 = meta.curryRight(2),
     curry4 = meta.curryRight(4),
     defer = meta.doPartial(1),
     isDesktop = function (alternators) {
@@ -56,17 +57,15 @@ if (!window.nW1) {
         getDesktop = pApply(meta.negate, getDesktop);
       }
     },
-    setAttrs = curry4(meta.invokePair),
-    setId = setAttrs("circle")("id")("setAttribute"),
-    setHref = setAttrs(".")("href")("setAttribute"),
-    setAside = setAttrs("link to secondary content")("title")("setAttribute"),
-    setMain = setAttrs("link to main content")("title")("setAttribute"),
-    setAlt = setAttrs("")("alt")("setAttribute"),
-    setSrc = (el) => {
-      let path = "assets/img/misc/circle.png",
-        pre = meta.$("home") ? "./" : "../";
-      el.setAttribute("src", pre + path);
-    },
+    preMethod = meta.mittelFactory(),
+    mypath = meta.$("home") ? "./" : "../",
+    setAttr = meta.pApply(preMethod, meta.invokePair, 'setAttribute'),
+    setId = curry2(setAttr('id'))('circle'),
+    setHref = curry2(setAttr('href'))('.'),
+    setAlt = curry2(setAttr('alt'))('icon'),
+    setSrc = curry2(setAttr('src'))(mypath + path),
+    setAside = curry2(setAttr('title'))("link to secondary content"),
+    setMain = curry2(setAttr('title'))("link to main content"),
     doAlt = meta.doAlternate(),
     anc = meta.$Q("main > section"),
     //link was(is) a reference to an element that had an event listener attached
@@ -113,4 +112,4 @@ if (!window.nW1) {
       pApply(throttle, compose(pApply(isDesktop, [loaderActions])), 222)
     );
   });
-}(Modernizr, "(min-width: 821px)"));
+}(Modernizr, "(min-width: 821px)", "assets/img/misc/circle.png"));
