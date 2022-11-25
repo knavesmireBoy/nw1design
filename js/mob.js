@@ -68,9 +68,9 @@ if (!window.nW1) {
     },
     doAlt = meta.doAlternate(),
     anc = meta.$Q("main > section"),
-    //link was/is a reference to an element that had an event listener attached
-  //so despite removing the element on resize it remained in memory.
-  //SO make sure the element is created on the fly: utils.doMakeDefer('a')
+    //link was(is) a reference to an element that had an event listener attached
+    //so despite removing the element on resize it remained in memory.
+    //SO make sure the element is created on the fly: utils.doMakeDefer('a'), keep forgetting this
     [img, link] = ["img", "a"].map((el) => document.createElement(el)),
     doExitMobile = compose(exitMobile, meta.$$("circle")),
     outbound = utils.prepend(meta.$Q("main > aside")),
@@ -79,35 +79,37 @@ if (!window.nW1) {
     exec = compose(setMain, meta.$$("circle"), func("alt"), outbound),
     undo = compose(setAside, meta.$$("circle"), func(""), inbound);
 
-    cb = meta.doAlternate()([exec, undo]);
-
-  const callback = function (e) {
-      e.preventDefault();
-      cb(this);
-    },
-    listen = curry4(meta.invokePair)(callback)("click")("addEventListener"),
-    sidebar = compose(
-      utils.getParent,
-      setSrc.wrap(pass),
-      setAlt.wrap(pass),
-      utils.append(img),
-      listen.wrap(pass),
-      setAside.wrap(pass),
-      setHref.wrap(pass),
-      setId.wrap(pass),
-      utils.prepend(anc),
-      //MUST be created on-the-fly, no reference
-      utils.doMakeDefer("a")
-    ),
-    loaderActions = doAlt([pApply(sidebar), doExitMobile]);
   window.addEventListener("load", function () {
     getDesktop = Mod.mq(brk) ? getDesktop : pApply(meta.negate, getDesktop);
+
+    cb = meta.doAlternate()([exec, undo]);
+
+    const callback = function (e) {
+        e.preventDefault();
+        cb(this);
+      },
+      listen = curry4(meta.invokePair)(callback)("click")("addEventListener"),
+      sidebar = compose(
+        utils.getParent,
+        setSrc.wrap(pass),
+        setAlt.wrap(pass),
+        utils.append(img),
+        listen.wrap(pass),
+        setAside.wrap(pass),
+        setHref.wrap(pass),
+        setId.wrap(pass),
+        utils.prepend(anc),
+        //MUST be created on-the-fly, no reference
+        utils.doMakeDefer("a")
+      ),
+      loaderActions = doAlt([pApply(sidebar), doExitMobile]);
+
     if (!Mod.mq(brk)) {
       loaderActions();
     }
+    window.addEventListener(
+      "resize",
+      pApply(throttle, compose(pApply(isDesktop, [loaderActions])), 222)
+    );
   });
-  window.addEventListener(
-    "resize",
-    pApply(throttle, compose(pApply(isDesktop, [loaderActions])), 222)
-  );
 }(Modernizr, "(min-width: 821px)"));
