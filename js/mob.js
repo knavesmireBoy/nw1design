@@ -71,7 +71,7 @@ if (!window.nW1) {
     //link was(is) a reference to an element that had an event listener attached
     //so despite removing the element on resize it remained in memory.
     //SO make sure the element is created on the fly: utils.doMakeDefer('a'), keep forgetting this
-    [img, link] = ["img", "a"].map((el) => document.createElement(el)),
+    [img/*, link*/] = ["img", "a"].map((el) => document.createElement(el)),
     doExitMobile = compose(exitMobile, meta.$$("circle")),
     outbound = utils.prepend(meta.$Q("main > aside")),
     inbound = utils.prepend(anc),
