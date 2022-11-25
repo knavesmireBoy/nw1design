@@ -25,7 +25,7 @@ if (!window.nW1) {
     }, time);
   }
 
-  function remove(el) {
+  function exitMobile(el) {
     if (el) {
       meta.$("innerwrap").classList = "";
       el.parentNode.removeChild(el);
@@ -46,7 +46,7 @@ if (!window.nW1) {
   const pass = meta.pass,
     compose = meta.compose,
     curry4 = meta.curryRight(4),
-    ptl = meta.doPartial(1),
+    defer = meta.doPartial(1),
     isDesktop = function (alternators) {
       if (!getDesktop()) {
         alternators.forEach((f) => {
@@ -72,10 +72,10 @@ if (!window.nW1) {
   //so despite removing the element on resize it remained in memory.
   //SO make sure the element is created on the fly: utils.doMakeDefer('a')
     [img, link] = ["img", "a"].map((el) => document.createElement(el)),
-    doRemove = compose(remove, meta.$$("circle")),
+    doExitMobile = compose(exitMobile, meta.$$("circle")),
     outbound = utils.prepend(meta.$Q("main > aside")),
     inbound = utils.prepend(anc),
-    func = ptl(meta.setterBridge(), meta.$("innerwrap"), "classList"),
+    func = defer(meta.setterBridge(), meta.$("innerwrap"), "classList"),
     exec = compose(setMain, meta.$$("circle"), func("alt"), outbound),
     undo = compose(setAside, meta.$$("circle"), func(""), inbound);
 
@@ -99,7 +99,7 @@ if (!window.nW1) {
       //MUST be created on-the-fly, no reference
       utils.doMakeDefer("a")
     ),
-    loaderActions = doAlt([pApply(sidebar), doRemove]);
+    loaderActions = doAlt([pApply(sidebar), doExitMobile]);
   window.addEventListener("load", function () {
     getDesktop = Mod.mq(brk) ? getDesktop : pApply(meta.negate, getDesktop);
     if (!Mod.mq(brk)) {
