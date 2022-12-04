@@ -133,6 +133,134 @@
 #benami.pause img {
   opacity: 0.5 !important;
 }
+
+/* GRAPHIC *//* GRAPHIC *//* GRAPHIC *//* GRAPHIC *//* GRAPHIC *//* GRAPHIC *//* GRAPHIC */
+//https://www.w3.org/Style/Examples/007/slideshow.en.html
+@keyframes autoplay6 {
+  0% {
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  33.33% {
+    opacity: 1;
+  }
+  37.33% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes traffic {
+  0% {
+    background-color: #c30;
+  }
+  90% {
+    background-color: #c30;
+  }
+  100% {
+    background-color: rgb(255, 196, 0);
+  }
+}
+.graphicdesign #ani > * {
+  animation: 12s autoplay6 1s infinite linear;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+.graphicdesign #ani {
+
+  $props: (
+    "height": "10.5em + (66 * (100vw - 820px) / (1280 - 820))"
+  );
+  @include docalc($props);
+  position: relative;
+}
+
+.graphicdesign #ani > *:nth-child(1) {
+  animation-delay: 0s;
+}
+.graphicdesign #ani > *:nth-child(2) {
+  animation-delay: 4s;
+}
+.graphicdesign #ani > *:nth-child(3) {
+  animation-delay: 7s;
+}
+.graphicdesign #ani > *:nth-child(4) {
+  animation-delay: 9s;
+}
+
+.graphicdesign main > aside section:first-child h2:before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  color: transparent;
+  background-color: transparent;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 0.3em 0 0.5em;
+  box-shadow: none;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+ 
+}
+.graphicdesign main > aside label {
+  width: 1em;
+  height: 1em;
+  background-color: $col-hi;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 0.3em 0 0.5em;
+  text-transform: uppercase;
+  box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.6),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.6),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.6),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.6);
+  position: relative;
+  z-index: 1;
+  margin: 0 0 0 .5em;
+  $props: (
+    "margin-top": "-1.8em + ( 1 * (100vw - 820px) / (1280 - 820))",
+    "font-size": "1em + (3 * (100vw - 820px) / (1280 - 820))"
+  );
+  @include docalc($props);
+  left: -46%;
+  animation: rotate 1s 1s ease 1;
+}
+
+#pause1:checked ~ label {
+  background-color: rgb(255, 196, 0);
+}
+
+#pause1 + label {
+  animation: traffic 12s 1s ease infinite;
+}
+
+.graphicdesign main > aside #pause1 + label:hover {
+  background-color: rgb(0, 128, 75);
+  animation: none;
+}
+#pause1:checked ~ #ani > * {
+  animation-play-state: paused;
+}
+#pause1:checked ~ #ani img:last-child {
+  opacity: 1;
+}
+#pause1 {
+  display: none;
+}
 /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/
 .portfolio main > section {
   @include prefix(flex, 2 1 20em, moz o webkit ms);
