@@ -11,31 +11,39 @@ let anim = (function () {
     function exit() {
         window.clearTimeout(timer);
         timer = null;
-        exit.opacity = Math.min(fadeEl.style.opacity, .45);
-        $('benami').classList.remove('inplay');
-        $('benami').classList.add('pause');
+       exit.opacity = Math.min(fadeEl.style.opacity, .45);
+       toggle('inplay', 'pause');
     }
 
     function enter(x) {
         timer = 1;
         doFade(exit.opacity || x);
-        $('benami').classList.add('inplay');
+        toggle('pause', 'inplay');
+    }
+
+    function getNext(el) {
+        return nW1.utils.getNextElement(el) || nW1.utils.getPrevElement(el);
+    }
+
+    function toggle(a, b) {
+        $('benami').classList.remove(a);
+        $('benami').classList.add(b);
     }
 
 let fadeEl = null;
 
 const meta = nW1.meta,
-getNext = nW1.utils.getNextElement,
+
 $ = meta.$,
 defer = (fun) => (arg) => () => fun(arg),
 shuffle = (el) => {
-    el.insertBefore(fadeEl, el.firstChild);
+    el.insertBefore(fadeEl, getNext(el.firstChild));
 },
 doFade = (i = 101) => {
     fadeEl.style.opacity = i/100;
     return setTimeout(defer(fader)(i), 7);
 },
-doAlt = meta.doAlternate(0)([exit, enter]),
+doAlt = meta.doAlternate()([enter, exit]),
 fader = function (i) {
     i -= 1;
     if (timer) {
@@ -51,7 +59,7 @@ fader = function (i) {
     }
 };
 return (e) => {
-    fadeEl = e.currentTarget.lastChild;
+    fadeEl = getNext(e.currentTarget.lastChild);
     doAlt(101);
 };
 }());
