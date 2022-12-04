@@ -30,11 +30,13 @@ let anim = (function () {
         $('benami').classList.add(b);
     }
 
-let fadeEl = null;
+let fadeEl = null,
+j = 0;
 
 const meta = nW1.meta,
-
 $ = meta.$,
+paths = [4,3,2,1].map( n => '../assets/img/misc/bensondesign'+n+'_fs.jpg'),
+getNextNum = (n) => n % paths.length,
 defer = (fun) => (arg) => () => fun(arg),
 shuffle = (el) => {
     el.insertBefore(fadeEl, getNext(el.firstChild));
@@ -54,6 +56,8 @@ fader = function (i) {
         fadeEl.style.opacity = 1;
         //outgoing element sent to bottom of pile, but will need to be 100% opacity when it becomes base element
         fadeEl = getNext($('benami').lastChild);
+        //getNext($('benami').firstChild).src = paths[getNextNum(j)];
+      //  console.log(paths[getNextNum(j++)]);
         setTimeout(defer(fader)(101), 2222);
         }
     }
