@@ -15,6 +15,7 @@ function getNextElement(node, type = 1) {
   return null;
 }
 
+
 function getPrevElement(node, type = 1) {
   if (node && node.nodeType === type) {
     return node;

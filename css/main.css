@@ -990,6 +990,38 @@ header nav > ul > li ul li {
   filter: contrast(1.5);
 }
 
+#benami img {
+  float: left;
+  display: none;
+  cursor: pointer;
+}
+
+#benami {
+  margin: 1em 1em 0.5em;
+  overflow: hidden;
+  background: url(./assets/bg/misc/play.png) no-repeat center/30%;
+  background: url(../assets/bg/misc/play.png) no-repeat right top/5%;
+}
+
+#benami img:nth-child(n+3) {
+  display: block;
+  opacity: 0;
+}
+
+#benami img:last-child {
+  margin-left: -100%;
+  display: block;
+  opacity: 0.85;
+}
+
+#benami.inplay img {
+  opacity: 1;
+}
+
+#benami.pause img {
+  opacity: 0.5 !important;
+}
+
 /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/
 .portfolio main > section {
   -moz-flex: 2 1 20em;

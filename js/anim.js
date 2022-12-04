@@ -1,34 +1,41 @@
-import { findDOMNode } from "react-dom";
-import { $, doAlternateInvoke, getNextElement} from "./helpers.js";
+/*jslint nomen: true */
+/*global nW1: false */
+/* eslint-disable indent */
+/* eslint-disable max-len */
+/* eslint-disable no-param-reassign */
 
 
-const animator = (function () {
+let anim = (function () {
     let timer;
 
     function exit() {
         window.clearTimeout(timer);
         timer = null;
-        exit.opacity = Math.min(fade_el.style.opacity, .45);
-        $('benami').classList = 'pause';
+        exit.opacity = Math.min(fadeEl.style.opacity, .45);
+        $('benami').classList.remove('inplay');
+        $('benami').classList.add('pause');
     }
-    
+
     function enter(x) {
         timer = 1;
         doFade(exit.opacity || x);
-        $('benami').classList = 'inplay';
+        $('benami').classList.add('inplay');
     }
 
-let fade_el = null;
+let fadeEl = null;
 
-const defer = (fun) => (arg) => () => fun(arg),
+const meta = nW1.meta,
+getNext = nW1.utils.getNextElement,
+$ = meta.$,
+defer = (fun) => (arg) => () => fun(arg),
 shuffle = (el) => {
-    el.insertBefore(fade_el, getNextElement(el.firstChild));
+    el.insertBefore(fadeEl, el.firstChild);
 },
 doFade = (i = 101) => {
-    fade_el.style.opacity = i/100;
+    fadeEl.style.opacity = i/100;
     return setTimeout(defer(fader)(i), 7);
 },
-doAlt = doAlternateInvoke(0)([enter, exit]),
+doAlt = meta.doAlternate(0)([exit, enter]),
 fader = function (i) {
     i -= 1;
     if (timer) {
@@ -36,17 +43,17 @@ fader = function (i) {
             timer = doFade(i);
         } else {
         shuffle($('benami'));
+        fadeEl.style.opacity = 1;
         //outgoing element sent to bottom of pile, but will need to be 100% opacity when it becomes base element
-        fade_el.style.opacity = 1;
-        fade_el = getNextElement($('benami').lastChild);
+        fadeEl = getNext($('benami').lastChild);
         setTimeout(defer(fader)(101), 2222);
         }
     }
 };
 return (e) => {
-    fade_el = getNextElement(e.currentTarget.lastChild);
+    fadeEl = e.currentTarget.lastChild;
     doAlt(101);
 };
 }());
 
-export default animator;
+nW1.meta.$('benami').addEventListener('click', anim);
