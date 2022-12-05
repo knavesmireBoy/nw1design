@@ -117,10 +117,12 @@
   background: url(./assets/bg/misc/play.png) no-repeat center / 30%;
   background: url(../assets/bg/misc/play.png) no-repeat right top / 5%;
 }
+#benami img {
+  //to see play button
+  opacity: .1;
+}
 #benami img:first-child {
   display: none;
-  //to see play button
-  opacity: 0;
 }
 #benami img:last-child {
   margin-left: -100%;

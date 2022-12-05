@@ -192,6 +192,7 @@ nW1.meta = (function () {
           return getResult(o)[m](getResult(v));
       }
     },
+    invoke = (f, v) => f(getResult(v)),
     soInvoke = (o, m, ...rest) => o[m](...rest);
   return {
     $: byId,
@@ -226,7 +227,8 @@ nW1.meta = (function () {
     curryRight: curryRight,
     curryLeft: curryLeft,
     mittelFactory: mittelFactory,
-    invoke: (f, v) => f(getResult(v)),
+    invoke: invoke,
+    invoker: curryRight(2)(invoke),
     invokeMethod: invokeMethod,
     invokeMethodBind: (o, m, v) => {
       return getResult(o)[m].call(o, v);
@@ -238,7 +240,7 @@ nW1.meta = (function () {
       return getResult(o)[m](k, v);
     },
     lazyVal: (m, p, o, v) => {
-      return getResult(o)[m](p, v);
+     return getResult(o)[m](p, v);
     },
     invokeMethodBridge: (m, v, o) => invokeMethod(o, m, v),
     invokeMethodBridgeCB: (cb) => (m, v, o) => {

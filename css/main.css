@@ -1003,9 +1003,12 @@ header nav > ul > li ul li {
   background: url(../assets/bg/misc/play.png) no-repeat right top/5%;
 }
 
+#benami img {
+  opacity: 0.1;
+}
+
 #benami img:first-child {
   display: none;
-  opacity: 0;
 }
 
 #benami img:last-child {

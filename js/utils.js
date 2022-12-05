@@ -128,6 +128,13 @@ nW1.utils = (function () {
     getZero: getZero,
     incrementer: compose(doInc, getLength),
     applyPortrait: curry3((m, o, v) => o.classList[m](v))('portrait'),
+    insertNeu: (el, after) => {
+      let p = el.parentNode,
+      get = getNextElement,
+      first = get(p.firstChild),
+      node = after ? get(first.nextSibling) : first;
+      return p.insertBefore(el, node);
+    },
     doTest: function (x) {
       console.log(x);
       return x;
