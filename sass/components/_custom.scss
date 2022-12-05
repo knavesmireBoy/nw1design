@@ -138,7 +138,7 @@
 
 /* GRAPHIC *//* GRAPHIC *//* GRAPHIC *//* GRAPHIC *//* GRAPHIC *//* GRAPHIC *//* GRAPHIC */
 //https://www.w3.org/Style/Examples/007/slideshow.en.html
-@keyframes autoplay6 {
+@include keyframes(autoplay6) {
   0% {
     opacity: 0;
   }
@@ -156,7 +156,7 @@
   }
 }
 
-@keyframes traffic {
+@include keyframes(traffic) {
   0% {
     background-color: #c30;
   }
@@ -168,7 +168,8 @@
   }
 }
 .traffic #ani > * {
-  animation: 12s autoplay6 1s infinite linear;
+//  animation: 12s autoplay6 1s infinite linear;
+  @include prefix("animation", autoplay6 infinite linear 12s 1s, moz webkit);
   position: absolute;
   top: 0;
   left: 0;
@@ -190,16 +191,16 @@
 }
 
 .traffic #ani > *:nth-child(1) {
-  animation-delay: 0s;
+  @include prefix("animation-delay", 0s, moz webkit);
 }
 .traffic #ani > *:nth-child(2) {
-  animation-delay: 4s;
+  @include prefix("animation-delay", 3s, moz webkit);
 }
 .traffic #ani > *:nth-child(3) {
-  animation-delay: 7s;
+  @include prefix("animation-delay", 6s, moz webkit);
 }
 .traffic #ani > *:nth-child(4) {
-  animation-delay: 9s;
+  @include prefix("animation-delay", 9s, moz webkit);
 }
 
 .traffic h2:before {
@@ -213,7 +214,8 @@
   margin: 0 0.3em 0 0.5em;
   box-shadow: none;
 }
-@keyframes rotate {
+
+@include keyframes(rotate) {
   from {
     transform: rotate(0deg);
   }
@@ -245,23 +247,24 @@
   );
   @include docalc($props);
   left: -46%;
-  animation: rotate 1s 1s ease 1;
+  @include prefix("animation", rotate 1s 1s ease 1, moz webkit);
 }
 
 #pause1:checked ~ label {
   background-color: rgb(255, 196, 0);
+  @include prefix("animation", none, moz webkit);
 }
 
 #pause1 + label {
-  animation: traffic 12s 1s ease infinite;
+  @include prefix("animation", traffic 12s 1s ease infinite, moz webkit);
 }
 
 .traffic #pause1 + label:hover {
   background-color: rgb(0, 128, 75);
-  animation: none;
+  @include prefix("animation", none, moz webkit);
 }
 #pause1:checked ~ #ani > * {
-  animation-play-state: paused;
+  @include prefix("animation-play-state", paused, moz webkit);
 }
 #pause1:checked ~ #ani img:last-child {
   opacity: 1;

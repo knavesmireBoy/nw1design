@@ -1026,6 +1026,57 @@ header nav > ul > li ul li {
 }
 
 /* GRAPHIC */ /* GRAPHIC */ /* GRAPHIC */ /* GRAPHIC */ /* GRAPHIC */ /* GRAPHIC */ /* GRAPHIC */
+@-webkit-keyframes autoplay6 {
+  0% {
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  33.33% {
+    opacity: 1;
+  }
+  37.33% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-moz-keyframes autoplay6 {
+  0% {
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  33.33% {
+    opacity: 1;
+  }
+  37.33% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-o-keyframes autoplay6 {
+  0% {
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  33.33% {
+    opacity: 1;
+  }
+  37.33% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 @keyframes autoplay6 {
   0% {
     opacity: 0;
@@ -1043,6 +1094,39 @@ header nav > ul > li ul li {
     opacity: 0;
   }
 }
+@-webkit-keyframes traffic {
+  0% {
+    background-color: #c30;
+  }
+  90% {
+    background-color: #c30;
+  }
+  100% {
+    background-color: rgb(255, 196, 0);
+  }
+}
+@-moz-keyframes traffic {
+  0% {
+    background-color: #c30;
+  }
+  90% {
+    background-color: #c30;
+  }
+  100% {
+    background-color: rgb(255, 196, 0);
+  }
+}
+@-o-keyframes traffic {
+  0% {
+    background-color: #c30;
+  }
+  90% {
+    background-color: #c30;
+  }
+  100% {
+    background-color: rgb(255, 196, 0);
+  }
+}
 @keyframes traffic {
   0% {
     background-color: #c30;
@@ -1055,7 +1139,9 @@ header nav > ul > li ul li {
   }
 }
 .traffic #ani > * {
-  animation: 12s autoplay6 1s infinite linear;
+  -moz-animation: autoplay6 infinite linear 12s 1s;
+  -webkit-animation: autoplay6 infinite linear 12s 1s;
+  animation: autoplay6 infinite linear 12s 1s;
   position: absolute;
   top: 0;
   left: 0;
@@ -1079,18 +1165,26 @@ header nav > ul > li ul li {
 }
 
 .traffic #ani > *:nth-child(1) {
+  -moz-animation-delay: 0s;
+  -webkit-animation-delay: 0s;
   animation-delay: 0s;
 }
 
 .traffic #ani > *:nth-child(2) {
-  animation-delay: 4s;
+  -moz-animation-delay: 3s;
+  -webkit-animation-delay: 3s;
+  animation-delay: 3s;
 }
 
 .traffic #ani > *:nth-child(3) {
-  animation-delay: 7s;
+  -moz-animation-delay: 6s;
+  -webkit-animation-delay: 6s;
+  animation-delay: 6s;
 }
 
 .traffic #ani > *:nth-child(4) {
+  -moz-animation-delay: 9s;
+  -webkit-animation-delay: 9s;
   animation-delay: 9s;
 }
 
@@ -1106,6 +1200,30 @@ header nav > ul > li ul li {
   box-shadow: none;
 }
 
+@-webkit-keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 @keyframes rotate {
   from {
     transform: rotate(0deg);
@@ -1137,23 +1255,34 @@ header nav > ul > li ul li {
   font-size: -webkit-calc(1em + (3 * (100vw - 820px) / (1280 - 820)));
   font-size: calc(1em + (3 * (100vw - 820px) / (1280 - 820)));
   left: -46%;
+  -moz-animation: rotate 1s 1s ease 1;
+  -webkit-animation: rotate 1s 1s ease 1;
   animation: rotate 1s 1s ease 1;
 }
 
 #pause1:checked ~ label {
   background-color: rgb(255, 196, 0);
+  -moz-animation: none;
+  -webkit-animation: none;
+  animation: none;
 }
 
 #pause1 + label {
+  -moz-animation: traffic 12s 1s ease infinite;
+  -webkit-animation: traffic 12s 1s ease infinite;
   animation: traffic 12s 1s ease infinite;
 }
 
 .traffic #pause1 + label:hover {
   background-color: rgb(0, 128, 75);
+  -moz-animation: none;
+  -webkit-animation: none;
   animation: none;
 }
 
 #pause1:checked ~ #ani > * {
+  -moz-animation-play-state: paused;
+  -webkit-animation-play-state: paused;
   animation-play-state: paused;
 }
 
