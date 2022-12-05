@@ -4,6 +4,47 @@
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 
+/*
+elected not to use this in favour of css animation
+however, this is a slight improvement on previous attempts where we set the src attribute of the image
+on both the fading element and the base element
+in this version we shuffle 3 images
+when the top image has faded to zero opacity we move it to the bottom of the dom stack and start fading the new top image, the just faded element src attribute gets set to the next element in an array of paths. Using a third element helps because the delay caused by setting the path is concealed, experimented with the 2 image approach but this offered no advantage to the swapping method used before. To be fair the first experiment with this "shuffle" approach had 4 images and it was hardly worth while just using 3 as with 4 no src setting is required, we just shuffle and fade
+and so I would say it only becomes worthwhile with 5 plus images, but keeping this for reference
+
+here's the css, using a background image for the play button and fading top image slightly (.85) on load, so we can just make it out on load
+
+#container img {
+  float: left;
+  cursor: pointer;
+}
+#container {
+  margin: 1em 1em .5em;
+  position: relative;
+  overflow: hidden;
+  background: url(./assets/bg/misc/play.png) no-repeat center / 30%;
+  background: url(../assets/bg/misc/play.png) no-repeat right top / 5%;
+}
+//middle image
+#container img {
+  //allows us to view the play button on load
+  opacity: .1;
+}
+#container img:first-child {
+  display: none;
+}
+#container img:last-child {
+  margin-left: -100%;
+  display: block;
+  opacity: .85;
+}
+#container.inplay img {
+  opacity: 1;
+}
+#container.pause img {
+  opacity: 0.5 !important;
+}
+*/
 let anim = (function () {
   let timer;
 
@@ -50,12 +91,12 @@ let anim = (function () {
     cb = (path, i, grp) => {
       if (grp[i + 1]) {
         return meta.compose(
-        makeDiv,
+          makeDiv,
           utils.setSrc(path).wrap(pass),
           utils.doMake
         )("img");
       }
-        return meta.$('benami');
+      return meta.$("benami");
     },
     [container] = paths.map(cb).reverse(),
     getNextNum = (n) => n % paths.length,
@@ -89,4 +130,4 @@ let anim = (function () {
   };
 }());
 
-nW1.meta.$('benami').addEventListener("click", anim);
+nW1.meta.$("benami").addEventListener("click", anim);

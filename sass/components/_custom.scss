@@ -167,36 +167,42 @@
     background-color: rgb(255, 196, 0);
   }
 }
-.graphicdesign #ani > * {
+.traffic #ani > * {
   animation: 12s autoplay6 1s infinite linear;
   position: absolute;
   top: 0;
   left: 0;
   opacity: 0;
 }
-.graphicdesign #ani {
-
+.traffic #ani {
+  position: relative;
   $props: (
     "height": "10.5em + (66 * (100vw - 820px) / (1280 - 820))"
   );
   @include docalc($props);
+}
+.home #ani {
   position: relative;
+  $props: (
+    "height": "8em + (66 * (100vw - 820px) / (1280 - 820))"
+  );
+  @include docalc($props);
 }
 
-.graphicdesign #ani > *:nth-child(1) {
+.traffic #ani > *:nth-child(1) {
   animation-delay: 0s;
 }
-.graphicdesign #ani > *:nth-child(2) {
+.traffic #ani > *:nth-child(2) {
   animation-delay: 4s;
 }
-.graphicdesign #ani > *:nth-child(3) {
+.traffic #ani > *:nth-child(3) {
   animation-delay: 7s;
 }
-.graphicdesign #ani > *:nth-child(4) {
+.traffic #ani > *:nth-child(4) {
   animation-delay: 9s;
 }
 
-.graphicdesign main > aside section:first-child h2:before {
+.traffic h2:before {
   content: "";
   width: 1em;
   height: 1em;
@@ -216,7 +222,7 @@
   }
  
 }
-.graphicdesign main > aside label {
+.traffic label {
   width: 1em;
   height: 1em;
   background-color: $col-hi;
@@ -250,7 +256,7 @@
   animation: traffic 12s 1s ease infinite;
 }
 
-.graphicdesign main > aside #pause1 + label:hover {
+.traffic #pause1 + label:hover {
   background-color: rgb(0, 128, 75);
   animation: none;
 }
@@ -262,6 +268,9 @@
 }
 #pause1 {
   display: none;
+}
+.home #ani {
+  margin: 0 1em;
 }
 /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/
 .portfolio main > section {

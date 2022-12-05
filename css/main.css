@@ -1054,7 +1054,7 @@ header nav > ul > li ul li {
     background-color: rgb(255, 196, 0);
   }
 }
-.graphicdesign #ani > * {
+.traffic #ani > * {
   animation: 12s autoplay6 1s infinite linear;
   position: absolute;
   top: 0;
@@ -1062,31 +1062,39 @@ header nav > ul > li ul li {
   opacity: 0;
 }
 
-.graphicdesign #ani {
+.traffic #ani {
+  position: relative;
   height: -moz-calc(10.5em + (66 * (100vw - 820px) / (1280 - 820)));
   height: -o-calc(10.5em + (66 * (100vw - 820px) / (1280 - 820)));
   height: -webkit-calc(10.5em + (66 * (100vw - 820px) / (1280 - 820)));
   height: calc(10.5em + (66 * (100vw - 820px) / (1280 - 820)));
-  position: relative;
 }
 
-.graphicdesign #ani > *:nth-child(1) {
+.home #ani {
+  position: relative;
+  height: -moz-calc(8em + (66 * (100vw - 820px) / (1280 - 820)));
+  height: -o-calc(8em + (66 * (100vw - 820px) / (1280 - 820)));
+  height: -webkit-calc(8em + (66 * (100vw - 820px) / (1280 - 820)));
+  height: calc(8em + (66 * (100vw - 820px) / (1280 - 820)));
+}
+
+.traffic #ani > *:nth-child(1) {
   animation-delay: 0s;
 }
 
-.graphicdesign #ani > *:nth-child(2) {
+.traffic #ani > *:nth-child(2) {
   animation-delay: 4s;
 }
 
-.graphicdesign #ani > *:nth-child(3) {
+.traffic #ani > *:nth-child(3) {
   animation-delay: 7s;
 }
 
-.graphicdesign #ani > *:nth-child(4) {
+.traffic #ani > *:nth-child(4) {
   animation-delay: 9s;
 }
 
-.graphicdesign main > aside section:first-child h2:before {
+.traffic h2:before {
   content: "";
   width: 1em;
   height: 1em;
@@ -1106,7 +1114,7 @@ header nav > ul > li ul li {
     transform: rotate(360deg);
   }
 }
-.graphicdesign main > aside label {
+.traffic label {
   width: 1em;
   height: 1em;
   background-color: rgb(210, 40, 0);
@@ -1140,7 +1148,7 @@ header nav > ul > li ul li {
   animation: traffic 12s 1s ease infinite;
 }
 
-.graphicdesign main > aside #pause1 + label:hover {
+.traffic #pause1 + label:hover {
   background-color: rgb(0, 128, 75);
   animation: none;
 }
@@ -1155,6 +1163,10 @@ header nav > ul > li ul li {
 
 #pause1 {
   display: none;
+}
+
+.home #ani {
+  margin: 0 1em;
 }
 
 /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/ /* CONTROLS*/
