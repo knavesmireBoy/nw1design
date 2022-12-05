@@ -34,7 +34,7 @@ header {
   $props: ("margin-left": "10px + 16 * (100vw - 320px) / (1280 - 320)");
   margin: .2em 0 0;
   @include docalc($props);
-  background: transparent url("../assets/bg/misc/logo.png") no-repeat;
+  background: transparent url("../assets/bg/misc/nW1logo.png") no-repeat;
   background-size: 98%;
 }
 & a {

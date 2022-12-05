@@ -485,7 +485,7 @@ header h1 {
   margin-left: -o-calc(10px + 16 * (100vw - 320px) / (1280 - 320));
   margin-left: -webkit-calc(10px + 16 * (100vw - 320px) / (1280 - 320));
   margin-left: calc(10px + 16 * (100vw - 320px) / (1280 - 320));
-  background: transparent url("../assets/bg/misc/logo.png") no-repeat;
+  background: transparent url("../assets/bg/misc/nW1logo.png") no-repeat;
   background-size: 98%;
 }
 header a {
