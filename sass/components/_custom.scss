@@ -108,17 +108,17 @@
 }
 #benami img {
   float: left;
-  display: none;
   cursor: pointer;
 }
 #benami {
   margin: 1em 1em .5em;
+  position: relative;
   overflow: hidden;
   background: url(./assets/bg/misc/play.png) no-repeat center / 30%;
   background: url(../assets/bg/misc/play.png) no-repeat right top / 5%;
 }
-#benami img:nth-child(n + 3) {
-  display: block;
+#benami img:first-child {
+  display: none;
   //to see play button
   opacity: 0;
 }
