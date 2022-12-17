@@ -27,7 +27,8 @@
     intro2 =
       "Lylaani had been a freelance designer for a number of years when she was approached by &ldquo;The Rory Peck Trust&rdquo; to not only design and maintain their website but also to produce various print items, most notably the programme for the annual <a href='https://rorypecktrust.org/'>The Rory Peck Awards</a> which we had printed (and designed, sort of) for the previous two years. It was better for all concerned to have a bona fide - and London based - designer to assemble the information and shape the design for publication and we would collaborate closely over the ensuing decade.",
     intro3 =
-      "This site is the pure JS version and my first written entirely with ES6 which I was keen to explore further as a prelude to attempting the <a href='https://knavesmireboy.github.io/nw1design-react'>React</a> version. The chief difference is that the React version utilises the browsers' localStorage API and markdown-esque markup to perform rudimentary editing of the main content, mimicking the functionality of a full-blown CMS. I eschewed the use of &ldquo;create-react-app&rdquo; in order to gain some exposure to webpack and the modern JS ecosystem. Due to its primary focus the site will not currently degrade so well in older browsers. I will continue to use the site to explore further features of the framework. Lylanni has moved on from NW1 and her most recent endeavours can be <a href='https://parish-council.website'>found here</a>.";
+      "This site is the pure JS version and my first written entirely with ES6 which I was keen to explore further as a prelude to attempting the <a href='https://knavesmireboy.github.io/nw1design-react'>React</a> version. The chief difference is that the React version utilises the browsers' localStorage API and markdown-esque markup to perform rudimentary editing of the main content, mimicking the functionality of a full-blown CMS. I eschewed the use of &ldquo;create-react-app&rdquo; in order to gain some exposure to webpack and the modern JS ecosystem. Due to its primary focus the site will not currently degrade so well in older browsers. I will continue to use the site to explore further features of the framework.",
+      intro4 = "Lylanni has moved on from NW1 and her most recent endeavours can be <a href='https://parish-council.website'>found here</a>.";
 
   const urlParams = window.URLSearchParams
     ? new window.URLSearchParams(window.location.search)
@@ -48,11 +49,14 @@
       text1 = curry2(utils.setInnerHTML)(intro1),
       text2 = curry2(utils.setInnerHTML)(intro2),
       text3 = curry2(utils.setInnerHTML)(intro3),
+      text4 = curry2(utils.setInnerHTML)(intro4),
       //need fresh refs to paras
       para1 = compose(utils.getParent, text1.wrap(meta.pass), append(doMake("p"))),
       para2 = compose(utils.getParent, text2.wrap(meta.pass), append(doMake("p"))),
-      para3 = compose(text3, append(doMake("p"))),
+      para3 = compose(utils.getParent, text3.wrap(meta.pass), append(doMake("p"))),
+      para4 = compose(text4, append(doMake("p"))),
       doLink = compose(
+        para4,
         para3,
         para2,
         para1,
