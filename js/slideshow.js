@@ -85,6 +85,9 @@ const meta = nW1.meta,
       getImgSrc = curry2(mittel(invokeMethod, "getAttribute"))("src"),
       updateBase = curry2(meta.doWhenFactory())(advance),
       //flag from $recur
+      previewUpdate = (src) => {
+        $recur.notify(src, "swap");
+      },
       updateImages = (flag) => {
         const s = meta.$("slide"),
           b = meta.$("base");
@@ -92,7 +95,9 @@ const meta = nW1.meta,
         s.onload = (e) => {
           updateBase(flag);
         if(!flag){
-            $recur.notify(e.target.getAttribute('src'), "swap");
+          //delay don't seem to work??
+         //setTimeout(ptL(previewUpdate, e.target.getAttribute('src')), 44444);
+         previewUpdate(e.target.getAttribute('src'));
          }
         };
         b.onload = doLoad;
@@ -155,13 +160,13 @@ nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
       if (this.player.validate()) {
         this.player.reset();
       } else {
-        this.notify(this.i / this.wait);
+        this.notify(this.i / this.wait, 'opacity');
         this.resume();
       }
     },
     suspend: function (flag) {
       const o = !isNaN(flag) ? 0.5 : 1;
-      this.notify(o);
+      this.notify(o, 'opacity');
       window.cancelAnimationFrame(this.t);
      // window.clearTimeout(this.t);
       this.t = flag; //either set to undefined(forward/back/exit) or null(pause)

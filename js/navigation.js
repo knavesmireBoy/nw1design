@@ -343,8 +343,8 @@
           prepAttrs([setSrc, setAlt, setId], [src, "current", "slide"])
         ),
         previewer = ptL(resolvePath, $$Q("#slidepreview img")),
-        force = (data) => {
-          meta.$Q("#slidepreview img").setAttribute('src',  data);
+        previewUpdate = (data) => {
+          meta.$Q("#slidepreview img").setAttribute('src', data);
         },
         displayer = curryL2(resolvePath)($$("base")),
         //projector = curryL2(resolvePath)($$("slide")),
@@ -445,9 +445,9 @@
       looper.attach(broadcaster.notify.bind(broadcaster));
       looper.attach(sliderBridge);
       $painter = painter(getTgt("slide"), getTgt("base"), document.body);
-      $recur.attach($painter.doOpacity.bind($painter));
+      $recur.attach($painter.doOpacity.bind($painter), "opacity");
       $recur.attach($painter.cleanup.bind($painter), "delete");
-      $recur.attach(force, "swap");
+      $recur.attach(previewUpdate, "swap");
       $slider.attach(looper.set.bind(looper));
       sliderActions();
       //$Q('.active').classList.remove('active');
