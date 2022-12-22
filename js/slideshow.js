@@ -89,7 +89,12 @@ const meta = nW1.meta,
         const s = meta.$("slide"),
           b = meta.$("base");
         doPic(s, getImgSrc(b));
-        s.onload = ptL(updateBase, flag);
+        s.onload = (e) => {
+          updateBase(flag);
+        if(!flag){
+            $recur.notify(e.target.getAttribute('src'), "swap");
+         }
+        };
         b.onload = doLoad;
       };
     const fade = {
