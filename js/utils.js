@@ -5,6 +5,47 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 
+(function( window ) {
+  'use strict';
+  let lastTime = 0,
+      prefixes = 'webkit moz ms o'.split(' '),
+      requestAnimationFrame = window.requestAnimationFrame,//get unprefixed rAF and cAF, if present
+      cancelAnimationFrame = window.cancelAnimationFrame,
+      prefix,
+      i;
+  // loop through vendor prefixes and get prefixed rAF and cAF
+  for( i = 0; i < prefixes.length; i++ ) {
+    if ( requestAnimationFrame && cancelAnimationFrame ) {
+      break;
+    }
+    prefix = prefixes[i];
+    requestAnimationFrame = requestAnimationFrame || window[ prefix + 'RequestAnimationFrame' ];
+    cancelAnimationFrame  = cancelAnimationFrame  || window[ prefix + 'CancelAnimationFrame' ] ||
+                              window[ prefix + 'CancelRequestAnimationFrame' ];
+  }
+
+  // fallback to setTimeout and clearTimeout if either request/cancel is not supported
+  if ( !requestAnimationFrame || !cancelAnimationFrame ) {
+      requestAnimationFrame = function( callback, element ) {
+      let currTime = new Date().getTime(),
+          timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) ),
+          id = window.setTimeout( function() {
+        callback( currTime + timeToCall );
+      }, timeToCall );
+      lastTime = currTime + timeToCall;
+      return id;
+    };
+
+    cancelAnimationFrame = function( id ) {
+      window.clearTimeout( id );
+    };
+  }
+  // put in global namespace
+  window.requestAnimationFrame = requestAnimationFrame;
+  window.cancelAnimationFrame = cancelAnimationFrame;
+}( window ));
+
+
 function getNextElement(node, type = 1) {
   if (node && node.nodeType === type) {
     return node;

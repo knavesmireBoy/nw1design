@@ -383,7 +383,7 @@
             txt = utils.getLast($("slide").src.split("/"));
           //looper members zero indexed...
           /*also as it stands looper reverses the array when the back button is pressed
-                      before counting forwards may have to fix that but at the moment this undoes that */
+                      before counting forwards. may have to fix that but at the moment this undoes that */
           j = looper.get("rev") ? l - i : j;
           if (!$("slide").onload || path.match(txt)) {
             doSliders(j);
@@ -441,17 +441,18 @@
       broadcaster.notify(src);
       looper.build(getMyLinks(), utils.incrementer, []);
       looper.attach(displayer);
-      //looper.attach(projector);
       looper.attach(broadcaster.notify.bind(broadcaster));
       looper.attach(sliderBridge);
       $painter = painter(getTgt("slide"), getTgt("base"), document.body);
       $recur.attach($painter.doOpacity.bind($painter), "opacity");
       $recur.attach($painter.cleanup.bind($painter), "delete");
+      //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
       $recur.attach(previewUpdate, "swap");
+      $recur.attach(thumbs.setFinder.bind(thumbs), "swap");
+      $recur.attach(headers.setFinder.bind(headers), "swap");
+      $recur.attach(sliderBridge, "swap");
       $slider.attach(looper.set.bind(looper));
       sliderActions();
-      //$Q('.active').classList.remove('active');
-
       window.addEventListener(
         "resize",
         pApply(throttle, pApply(isDesktop, [sliderActions]), 222)

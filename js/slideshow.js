@@ -43,30 +43,32 @@ const meta = nW1.meta,
   */
   compare = (pred) => (p, a, b) => {
     return typeof p === "string"
+    //compare common property of two objects
       ? pred(a[p], b[p])
       : p
+      //compare two properties of one object
       ? pred(p[a], p[b])
       : pred(a, b);
   },
-  eitherOr = (a, b, pred) => (pred ? a : b),
+  ternary = (a, b, pred) => (pred ? a : b),
   testProp = (a, b, getprop) =>
     [a, b]
       .map(getTgt)
       .map((item) => getRes(item))
       .map(getprop),
-  doPic = ptL(setterBridge, "src"),
+  setImgSrc = ptL(setterBridge, "src"),
   displayInplay = ptL(invokeMethod, document.body.classList, "add"),
-  doCompare = compose(
-    ptL(eitherOr, "add", "remove"),
+  check4Portrait = compose(
+    ptL(ternary, "add", "remove"),
     curry3(compare(gtThan))("naturalWidth")("naturalHeight")
   ),
   onInplay = curry22(invoke)("inplay")(displayInplay),
   deferForward = deferPTL(invokeMethod, nW1.Looper, "forward", null),
   advance = compose(
-    doCompare,
+    check4Portrait,
     $$("slide"),
     onInplay,
-    doPic($$("base")),
+    setImgSrc($$("base")),
     curry2(getter)("value"),
     deferForward
   ),
@@ -91,7 +93,7 @@ const meta = nW1.meta,
       updateImages = (flag) => {
         const s = meta.$("slide"),
           b = meta.$("base");
-        doPic(s, getImgSrc(b));
+        setImgSrc(s, getImgSrc(b));
         s.onload = (e) => {
           updateBase(flag);
         if(!flag){
@@ -135,7 +137,7 @@ const meta = nW1.meta,
           $recur.i += 1;
         },
         reset: function () {
-          doPic(meta.$("base"), nW1.Looper.forward().value);
+          setImgSrc(meta.$("base"), nW1.Looper.forward().value);
         }
       },
       actions = [fadeIn, fadeOut];
@@ -167,8 +169,8 @@ nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
     suspend: function (flag) {
       const o = !isNaN(flag) ? 0.5 : 1;
       this.notify(o, 'opacity');
-      window.cancelAnimationFrame(this.t);
-     // window.clearTimeout(this.t);
+     window.cancelAnimationFrame(this.t);
+      //window.clearTimeout(this.t);
       this.t = flag; //either set to undefined(forward/back/exit) or null(pause)
       if (o === 1) {
         this.notify(null, "delete");
@@ -181,7 +183,7 @@ nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
     resume: function () {
       this.player.inc();
       this.t = window.requestAnimationFrame(this.play.bind(this));
-      //this.t = window.setTimeout(this.play.bind(this), 10);
+      //this.t = window.setTimeout(this.play.bind(this), wait);
     }
   };
   if (makePub) {
