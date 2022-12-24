@@ -79,7 +79,7 @@ const meta = nW1.meta,
     displaySwap(bool ? "remove" : "add"); //paint
     return !bool;
   },
-  playMaker = function ($recur, $looper, $baseImg) {
+  playMaker = function ($recur, $looper) {
     const doLoad = curry22(meta.doWhenFactory())(
         compose($recur.setPlayer.bind($recur), doSwap)
       )(isInplay),
@@ -137,7 +137,8 @@ const meta = nW1.meta,
           $recur.i += 1;
         },
         reset: function () {
-          setImgSrc(meta.$("base"), nW1.Looper.forward().value);
+          //ensure implements...
+          setImgSrc(meta.$("base"), $looper.forward().value);
         }
       },
       actions = [fadeIn, fadeOut];
@@ -149,7 +150,7 @@ const meta = nW1.meta,
 nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
   let ret = {
     init: function () {
-      this.nextplayer = playMaker(this, nW1.Looper, meta.$("base"));
+      this.nextplayer = playMaker(this, nW1.Looper);
       this.player = this.nextplayer();
       this.dur = duration;
       this.wait = wait;

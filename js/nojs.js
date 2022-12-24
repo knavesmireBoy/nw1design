@@ -59,5 +59,3 @@ mymeta.toArray(ULS()).forEach((ul) => {
 });
 divs = mymeta.toArray(mymeta.$Q(".submenu > div", 1));
 divs.forEach(toFrag);
-
-console.log(mymeta.$('splat'));
