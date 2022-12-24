@@ -137,7 +137,7 @@ const meta = nW1.meta,
           $recur.i += 1;
         },
         reset: function () {
-          setImgSrc($baseImg, $looper.forward().value);
+          setImgSrc(meta.$("base"), nW1.Looper.forward().value);
         }
       },
       actions = [fadeIn, fadeOut];
