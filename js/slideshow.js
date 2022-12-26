@@ -63,23 +63,22 @@ const meta = nW1.meta,
     curry3(compare(gtThan))("naturalWidth")("naturalHeight")
   ),
   onInplay = curry22(invoke)("inplay")(displayInplay),
-  deferForward = deferPTL(invokeMethod, nW1.Looper, "forward", null),
+  deferForward = compose(curry2(getter)("value"), deferPTL(invokeMethod, nW1.Looper, "forward", null)),
   advance = compose(
     check4Portrait,
     $$("slide"),
     onInplay,
     setImgSrc($$("base")),
-    curry2(getter)("value"),
     deferForward
   ),
   reducer = curry3(invokeMethod)(equals)("reduce"),
+  displaySwap = curry2(ptL(invokeMethod, document.body.classList))("swap"),
   doSwap = function () {
-    let bool = compose(reducer)(testProp("base", "slide", getHeight)),
-      displaySwap = curry2(ptL(invokeMethod, document.body.classList))("swap");
+    let bool = compose(reducer)(testProp("base", "slide", getHeight));
     displaySwap(bool ? "remove" : "add"); //paint
     return !bool;
   },
-  playMaker = function ($recur, $looper) {
+  playMaker = function ($recur, cb) {
     const doLoad = curry22(meta.doWhenFactory())(
         compose($recur.setPlayer.bind($recur), doSwap)
       )(isInplay),
@@ -93,12 +92,11 @@ const meta = nW1.meta,
       updateImages = (flag) => {
         const s = meta.$("slide"),
           b = meta.$("base");
-        setImgSrc(s, getImgSrc(b));
+        //setImgSrc(s, getImgSrc(b));
+        setImgSrc(s, nW1.Looper.get());
         s.onload = (e) => {
           updateBase(flag);
         if(!flag){
-          //delay don't seem to work??
-         //setTimeout(ptL(previewUpdate, e.target.getAttribute('src')), 44444);
          previewUpdate(e.target.getAttribute('src'));
          }
         };
@@ -138,7 +136,7 @@ const meta = nW1.meta,
         },
         reset: function () {
           //ensure implements...
-          setImgSrc(meta.$("base"), $looper.forward().value);
+         $recur.notify(cb(), "path");
         }
       },
       actions = [fadeIn, fadeOut];
@@ -150,7 +148,7 @@ const meta = nW1.meta,
 nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
   let ret = {
     init: function () {
-      this.nextplayer = playMaker(this, nW1.Looper);
+      this.nextplayer = playMaker(this, deferForward);
       this.player = this.nextplayer();
       this.dur = duration;
       this.wait = wait;
