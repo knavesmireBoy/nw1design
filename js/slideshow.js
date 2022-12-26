@@ -41,16 +41,6 @@ const meta = nW1.meta,
     return h * 10;
   },
   */
-  compare = (pred) => (p, a, b) => {
-    return typeof p === "string"
-    //compare common property of two objects
-      ? pred(a[p], b[p])
-      : p
-      //compare two properties of one object
-      ? pred(p[a], p[b])
-      : pred(a, b);
-  },
-  ternary = (a, b, pred) => (pred ? a : b),
   testProp = (a, b, getprop) =>
     [a, b]
       .map(getTgt)
@@ -58,16 +48,11 @@ const meta = nW1.meta,
       .map(getprop),
   setImgSrc = ptL(setterBridge, "src"),
   displayInplay = ptL(invokeMethod, document.body.classList, "add"),
-  check4Portrait = compose(
-    ptL(ternary, "add", "remove"),
-    curry3(compare(gtThan))("naturalWidth")("naturalHeight")
-  ),
+
   onInplay = curry22(invoke)("inplay")(displayInplay),
   deferForward = compose(curry2(getter)("value"), deferPTL(invokeMethod, nW1.Looper, "forward", null)),
   deferCurrent = deferPTL(invokeMethod, nW1.Looper, "get", "value"),
   advance = compose(
-    check4Portrait,
-    $$("slide"),
     onInplay,
     setImgSrc($$("base")),
     deferForward

@@ -45,6 +45,7 @@ nW1.meta = (function () {
     },
     isBoolean = tagTester("Boolean"),
     isFunction = tagTester("Function"),
+    isArray = tagTester("Array"),
     getResult = o => isFunction(o) ? o() : o,
     byId = (str) => document.getElementById(str),
     byIdDefer = (str) => () => byId(str),
@@ -193,6 +194,7 @@ nW1.meta = (function () {
       }
     },
     invoke = (f, v) => f(getResult(v)),
+    invokePair = (o, m, k, v) => getResult(o)[m](k, v),
     soInvoke = (o, m, ...rest) => o[m](...rest);
   return {
     $: byId,
@@ -236,13 +238,14 @@ nW1.meta = (function () {
     invokeMethodV: (o, p, m, v) => {
       return getResult(o)[p][v](m);
     },
-    invokePair: (o, m, k, v) => {
-      return getResult(o)[m](k, v);
-    },
+    invokePair: invokePair,
     lazyVal: (m, p, o, v) => {
      return getResult(o)[m](p, v);
     },
-    invokeMethodBridge: (m, v, o) => invokeMethod(o, m, v),
+    ///invokeMethodBridge: (m, v, o) => invokeMethod(o, m, v),
+    invokeMethodBridge: (m, v, o) => {
+      return isArray(v) ? invokePair(o, m, v[0], v[1]) : invokeMethod(o, m, v);
+    },
     invokeMethodBridgeCB: (cb) => (m, v, o) => {
       //console.log(cb(o), m, v);
       return invokeMethod(cb(o), m, v);
@@ -253,8 +256,10 @@ nW1.meta = (function () {
     eitherOr: (a, b, pred) => (pred ? a : b),
     compare: (pred) => (p, a, b) => {
       return typeof p === "string"
+      //compare common property of two objects
         ? pred(a[p], b[p])
         : p
+        //compare two properties of one object
         ? pred(p[a], p[b])
         : pred(a, b);
     },
