@@ -64,6 +64,7 @@ const meta = nW1.meta,
   ),
   onInplay = curry22(invoke)("inplay")(displayInplay),
   deferForward = compose(curry2(getter)("value"), deferPTL(invokeMethod, nW1.Looper, "forward", null)),
+  deferCurrent = deferPTL(invokeMethod, nW1.Looper, "get", "value"),
   advance = compose(
     check4Portrait,
     $$("slide"),
@@ -78,12 +79,15 @@ const meta = nW1.meta,
     displaySwap(bool ? "remove" : "add"); //paint
     return !bool;
   },
-  playMaker = function ($recur, cb) {
+  playMaker = function ($recur, getCurrent, getNext) {
     const doLoad = curry22(meta.doWhenFactory())(
         compose($recur.setPlayer.bind($recur), doSwap)
       )(isInplay),
-      mittel = meta.mittelFactory(),
+      /*
+            mittel = meta.mittelFactory(),
       getImgSrc = curry2(mittel(invokeMethod, "getAttribute"))("src"),
+      */
+
       updateBase = curry2(meta.doWhenFactory())(advance),
       //flag from $recur
       previewUpdate = (src) => {
@@ -92,8 +96,9 @@ const meta = nW1.meta,
       updateImages = (flag) => {
         const s = meta.$("slide"),
           b = meta.$("base");
-        //setImgSrc(s, getImgSrc(b));
-        setImgSrc(s, nW1.Looper.get());
+       // setImgSrc(s, getImgSrc(b));
+        $recur.notify(getCurrent(), "slide");
+       // setImgSrc(s, nW1.Looper.get());
         s.onload = (e) => {
           updateBase(flag);
         if(!flag){
@@ -136,7 +141,7 @@ const meta = nW1.meta,
         },
         reset: function () {
           //ensure implements...
-         $recur.notify(cb(), "path");
+         $recur.notify(getNext(), "base");
         }
       },
       actions = [fadeIn, fadeOut];
@@ -148,7 +153,7 @@ const meta = nW1.meta,
 nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
   let ret = {
     init: function () {
-      this.nextplayer = playMaker(this, deferForward);
+      this.nextplayer = playMaker(this, deferCurrent, deferForward);
       this.player = this.nextplayer();
       this.dur = duration;
       this.wait = wait;

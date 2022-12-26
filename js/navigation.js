@@ -293,8 +293,9 @@
           let el = getResult(slide);
           el.style.opacity = o;
         },
-        doPath: function (data) {
-          meta.invokePair(base, "setAttribute", "src", data);
+        doPath: function (data, type) {
+          let el = (type === 'slide') ? getResult(slide) : getResult(base);
+          meta.invokePair(el, "setAttribute", "src", data);
         },
         cleanup: function () {
           queryInplay("remove");
@@ -449,7 +450,8 @@
       $painter = painter(getTgt("slide"), getTgt("base"), document.body);
       $recur.attach($painter.doOpacity.bind($painter), "opacity");
       $recur.attach($painter.cleanup.bind($painter), "delete");
-      $recur.attach($painter.doPath.bind($painter), "path");
+      $recur.attach($painter.doPath.bind($painter), "base");
+      $recur.attach($painter.doPath.bind($painter), "slide");
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
       $recur.attach(previewUpdate, "swap");
       $recur.attach(thumbs.setFinder.bind(thumbs), "swap");
