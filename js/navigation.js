@@ -188,6 +188,7 @@
     pApply = meta.pApply,
     doMakeDefer = utils.doMakeDefer,
     getTgt = (str) => $(str),
+    equals = (a, b) => a === b,
     getAttribute = ptL(invokeMethodBridge, "getAttribute"),
     getLinks = (grp) => {
       const get = curry3(utils.getTargetNode)("firstChild")(/^a$/i);
@@ -288,6 +289,11 @@
     displaySwap = bodyKlas("swap"),
     queryInplay = bodyKlas("inplay"),
     painter = function (slide, base) {
+      function testHeights() {
+        let getprop = curry2(meta.getter)('naturalHeight'),
+        dims = [slide, base].map((item) => getResult(item)).map(getprop).reduce(equals);
+        console.log(1, dims);
+      }
       let ret = {
         doOpacity: function (o) {
           let el = getResult(slide);
@@ -296,6 +302,14 @@
         doPath: function (data, type) {
           let el = (type === 'slide') ? getResult(slide) : getResult(base);
           meta.invokePair(el, "setAttribute", "src", data);
+        },
+        doTest: function() {
+          if(getResult(base).addEventListener('load', testHeights)){
+            displaySwap("remove");
+          }
+          else {
+            displaySwap("add");
+          }
         },
         cleanup: function () {
           queryInplay("remove");
@@ -452,6 +466,7 @@
       $recur.attach($painter.cleanup.bind($painter), "delete");
       $recur.attach($painter.doPath.bind($painter), "base");
       $recur.attach($painter.doPath.bind($painter), "slide");
+      //$recur.attach($painter.doTest.bind($painter), "slide");
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
       $recur.attach(previewUpdate, "swap");
       $recur.attach(thumbs.setFinder.bind(thumbs), "swap");

@@ -56,10 +56,10 @@ const meta = nW1.meta,
     setImgSrc($$("base")),
     deferForward
   ),
-  reducer = curry3(invokeMethod)(equals)("reduce"),
   displaySwap = curry2(ptL(invokeMethod, document.body.classList))("swap"),
   doSwap = function () {
-    let bool = compose(reducer)(testProp("base", "slide", getHeight));
+    let heights = testProp("base", "slide", getHeight),
+    bool = heights.reduce(equals);
     displaySwap(bool ? "remove" : "add"); //paint
     return !bool;
   },
