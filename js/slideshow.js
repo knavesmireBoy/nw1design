@@ -23,14 +23,14 @@ const meta = nW1.meta,
   getter = (o, p) => o[p],
   invoke = (f, v) => f(v),
   invokeMethod = meta.invokeMethod,
-  getHeight = curry2(getter)("naturalHeight"),
-  /*
+    /*
   getHeight = (o) => {
     let h = o.naturalHeight;
     h = Math.floor(h / 10);
     return h * 10;
   },
   */
+  getHeight = curry2(getter)("naturalHeight"),
   testProp = (a, b, getprop) =>
     [a, b]
       .map(getById)
