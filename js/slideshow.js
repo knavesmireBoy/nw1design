@@ -10,7 +10,6 @@ const meta = nW1.meta,
   curry22 = meta.curryRight(2, true),
   curry3 = meta.curryRight(3),
   compose = meta.compose,
-  $$ = meta.$$,
   isFunction = meta.tagTester("Function"),
   ptL = meta.doPartial(),
   deferPTL = meta.doPartial(true),
@@ -22,16 +21,8 @@ const meta = nW1.meta,
   },
   equals = (a, b) => a === b,
   getter = (o, p) => o[p],
-  setter = (o, k, v) => {
-    getRes(o)[k] = v;
-  },
-  setterBridge = (k, o, v) => {
-    setter(o, k, v);
-    return getRes(o);
-  },
   invoke = (f, v) => f(v),
   invokeMethod = meta.invokeMethod,
-  isInplay = meta.$$Q(".inplay"),
   getHeight = curry2(getter)("naturalHeight"),
   /*
   getHeight = (o) => {
@@ -67,9 +58,9 @@ const meta = nW1.meta,
         $recur.notify(src, "swap");
       },
       updateImages = (flag) => {
-        const s = meta.$("slide"),
-          b = meta.$("base");
         $recur.notify(getCurrent, "slide");
+        const s = meta.$("slide"),
+        b = meta.$("base");
         s.onload = (e) => {
           if (flag) {
             $recur.notify(deferForward, "base");
@@ -90,7 +81,7 @@ const meta = nW1.meta,
         reset: function (arg) {
           $recur.i = $recur.dur;
           updateImages(true);
-        },
+        }
       },
       fadeOut = {
         validate: function () {
@@ -103,7 +94,7 @@ const meta = nW1.meta,
           updateImages();
           //ensure fadeIn will follow
           $recur.setPlayer(true);
-        },
+        }
       },
       fadeIn = {
         validate: function () {
@@ -115,7 +106,7 @@ const meta = nW1.meta,
         reset: function () {
           //ensure implements...
           $recur.notify(getNext, "base");
-        },
+        }
       },
       actions = [fadeIn, fadeOut];
 
@@ -161,7 +152,7 @@ nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
       this.player.inc();
       this.t = window.requestAnimationFrame(this.play.bind(this));
       //this.t = window.setTimeout(this.play.bind(this), wait);
-    },
+    }
   };
   if (makePub) {
     return nW1.Publish().makepublisher(ret);
