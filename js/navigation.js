@@ -215,7 +215,6 @@
             : src;
       f(repl);
       el.onload = el.onload || makePortrait.bind(el, tgt);
-      // el.addEventListener('load', makePortrait.bind(el, tgt));
     },
     hover = (e) => {
       const preview = meta.$Q("#slidepreview img");
