@@ -56,9 +56,9 @@
 
   function thumbsSearch() {
     const paths = getLinks(toArray(this.grp)),
-    [first, second] = paths.filter(this.finder),
-    hi = paths.findIndex( cur => cur === second),
-    lo = paths.findIndex( cur => cur === first);
+      [first, second] = paths.filter(this.finder),
+      hi = paths.findIndex((cur) => cur === second),
+      lo = paths.findIndex((cur) => cur === first);
     //img1.jpg would match the condition before img10.jpg, so use the second if > -1, ie exists;
     return this.show(this.grp[Math.max(hi, lo)]);
   }
@@ -141,9 +141,9 @@
         e.preventDefault();
         let img = utils.getImgPath(e),
           visit = false;
-          toArray($Q(".active", true)).forEach((el) =>
-            el.classList.remove("active")
-          );
+        toArray($Q(".active", true)).forEach((el) =>
+          el.classList.remove("active")
+        );
         if (utils.matchLink(e)) {
           headers.show(utils.getTarget(e), true);
           visit = true;
@@ -151,7 +151,7 @@
         if (img) {
           visit = true;
           nW1.Looper.find(img);
-          utils.doActive(utils.getTargetNode(e.target, /li/i, 'parentNode'));
+          utils.doActive(utils.getTargetNode(e.target, /li/i, "parentNode"));
           makePortrait.call(e.target);
         }
         if (visit) {
@@ -173,6 +173,7 @@
     $$ = meta.$$,
     $Q = meta.$Q,
     $$Q = meta.$$Q,
+    getById = (str) => $(str),
     compose = meta.compose,
     curry2 = meta.curryRight(2),
     curry22 = meta.curryRight(2, true),
@@ -213,8 +214,8 @@
             ? src.replace("thumbs", "fullsize").replace("tmb", "fs")
             : src;
       f(repl);
-     el.onload = el.onload || makePortrait.bind(el, tgt);
-    // el.addEventListener('load', makePortrait.bind(el, tgt));
+      el.onload = el.onload || makePortrait.bind(el, tgt);
+      // el.addEventListener('load', makePortrait.bind(el, tgt));
     },
     hover = (e) => {
       const preview = meta.$Q("#slidepreview img");
@@ -267,7 +268,10 @@
     doImg = doMakeDefer("img"),
     setInnerDiv = prep2Append(doDiv, prepAttrs([utils.setKlas], ["inner"])),
     setPara = prep2Append(doMakeDefer("p"), prepAttrs([setId], ["tracker"])),
-    setSpan1 = prep2Append(doMakeDefer("span"), prepAttrs([setId], ["tracked"])),
+    setSpan1 = prep2Append(
+      doMakeDefer("span"),
+      prepAttrs([setId], ["tracked"])
+    ),
     setSpan2 = prep2Append(doMakeDefer("span"), prepAttrs([setId], ["max"])),
     //setButtonLinks = prep2Append(doImg, prepAttrs([setAlt], ['#'])),
     headings = compose(
@@ -289,27 +293,36 @@
     displaySwap = bodyKlas("swap"),
     queryInplay = bodyKlas("inplay"),
     painter = function (slide, base) {
-      function testHeights() {
-        let getprop = curry2(meta.getter)('naturalHeight'),
-        dims = [slide, base].map((item) => getResult(item)).map(getprop).reduce(equals);
-        console.log(1, dims);
-      }
+      const getHeight = curry2(meta.getter)("naturalHeight"),
+        testProp = (a, b, getprop) =>
+          [a, b]
+            .map(getById)
+            .map((item) => getResult(item))
+            .map(getprop),
+        displayInplay = ptL(invokeMethod, document.body.classList, "add"),
+        onInplay = curry22(invoke)("inplay")(displayInplay),
+        deferForward = compose(
+          curry2(meta.getter)("value"),
+          deferPTL(invokeMethod, nW1.Looper, "forward", null)
+        ),
+        deferCurrent = deferPTL(invokeMethod, nW1.Looper, "get", "value"),
+        reducer = curry3(invokeMethod)(meta.negator(equals))("reduce"),
+        doSwap = function () {
+          let bool = reducer(testProp("base", "slide", getHeight));
+          compose(displaySwap, ptL(meta.eitherOr, "add", "remove"))(bool);
+          return bool;
+        },
+        doload = compose($recur.setPlayer.bind($recur), doSwap);
+
       let ret = {
         doOpacity: function (o) {
           let el = getResult(slide);
           el.style.opacity = o;
         },
         doPath: function (data, type) {
-          if(data){
-            let el = (type === 'slide') ? getResult(slide) : getResult(base);
+          if (data) {
+            let el = type === "slide" ? getResult(slide) : getResult(base);
             meta.invokePair(el, "setAttribute", "src", getResult(data));
-          }
-        },
-        doTest: function() {
-          if(getResult(base).addEventListener('load', testHeights)){
-            displaySwap("remove");
-          } else {
-            displaySwap("add");
           }
         },
         cleanup: function () {
@@ -318,6 +331,21 @@
           displaySwap("remove");
           base.onload = null;
           slide.onload = null;
+        },
+        update: (flag) => {
+          //flag from $recur
+          $recur.notify(deferCurrent, "slide");
+          const s = meta.$("slide"),
+            b = meta.$("base");
+          s.onload = (e) => {
+            if (flag) {
+              $recur.notify(deferForward, "base");
+              onInplay();
+            } else {
+              $recur.notify(e.target.getAttribute("src"), "swap");
+            }
+          };
+          b.onload = doload;
         }
       };
       return nW1.Publish().makepublisher(ret);
@@ -348,7 +376,13 @@
         machControls = prep2Append(doDiv, prepAttrs([setId], ["controls"])),
         machButtons = prep2Append(doDiv, prepAttrs([setId], ["buttons"])), //container for buttons
         machSlider = prep2Append(doDiv, prepAttrs([setId], ["slidecontainer"])),
-        attrs = [utils.setType, utils.setMin, utils.setMax, utils.setVal, setId],
+        attrs = [
+          utils.setType,
+          utils.setMin,
+          utils.setMax,
+          utils.setVal,
+          setId
+        ],
         machSliderInput = prep2Append(
           doMakeDefer("input"),
           prepAttrs(attrs, ["range", 1, pg, 1, "myrange"])
@@ -363,7 +397,7 @@
         ),
         previewer = ptL(resolvePath, $$Q("#slidepreview img")),
         previewUpdate = (data) => {
-          meta.$Q("#slidepreview img").setAttribute('src', getResult(data));
+          meta.$Q("#slidepreview img").setAttribute("src", getResult(data));
         },
         displayer = curryL2(resolvePath)($$("base")),
         //projector = curryL2(resolvePath)($$("slide")),
@@ -394,7 +428,7 @@
         },
         sliderBridge = function (path) {
           let mypath = getResult(path),
-          members = looper.get("members"),
+            members = looper.get("members"),
             i = members.findIndex(curry2((a, b) => a === b)(mypath)),
             l = members.length,
             member = members[i],
@@ -468,6 +502,7 @@
       $recur.attach($painter.cleanup.bind($painter), "delete");
       $recur.attach($painter.doPath.bind($painter), "base");
       $recur.attach($painter.doPath.bind($painter), "slide");
+      $recur.attach($painter.update.bind($painter), "update");
       //$recur.attach($painter.doTest.bind($painter), "slide");
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
       $recur.attach(previewUpdate, "swap");

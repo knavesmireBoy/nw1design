@@ -30,44 +30,11 @@ const meta = nW1.meta,
     return h * 10;
   },
   */
-  getHeight = curry2(getter)("naturalHeight"),
-  testProp = (a, b, getprop) =>
-    [a, b]
-      .map(getById)
-      .map((item) => getRes(item))
-      .map(getprop),
-  displayInplay = ptL(invokeMethod, document.body.classList, "add"),
-  onInplay = curry22(invoke)("inplay")(displayInplay),
   deferForward = compose(
     curry2(getter)("value"),
     deferPTL(invokeMethod, nW1.Looper, "forward", null)
   ),
-  deferCurrent = deferPTL(invokeMethod, nW1.Looper, "get", "value"),
-  displaySwap = curry2(ptL(invokeMethod, document.body.classList))("swap"),
-  reducer = curry3(invokeMethod)(meta.negator(equals))("reduce"),
-  doSwap = function () {
-    let bool = reducer(testProp("base", "slide", getHeight));
-    compose(displaySwap, ptL(meta.eitherOr, "add", "remove"))(bool);
-    return bool;
-  },
-  playMaker = function ($recur, getCurrent, getNext) {
-    //note getCurrent, getNext are functions invoked by subscribers
-    const doload = compose($recur.setPlayer.bind($recur), doSwap),
-      //flag from $recur
-      updateImages = (flag) => {
-        $recur.notify(getCurrent, "slide");
-        const s = meta.$("slide"),
-        b = meta.$("base");
-        s.onload = (e) => {
-          if (flag) {
-            $recur.notify(deferForward, "base");
-            onInplay();
-          } else {
-            $recur.notify(e.target.getAttribute("src"), "swap");
-          }
-        };
-        b.onload = doload;
-      };
+  playMaker = function ($recur, getNext) {
     const fade = {
         validate: function () {
           return $recur.i <= -1;
@@ -77,7 +44,8 @@ const meta = nW1.meta,
         },
         reset: function (arg) {
           $recur.i = $recur.dur;
-          updateImages(true);
+         // updateImages(true);
+          $recur.notify(true, "update");
         }
       },
       fadeOut = {
@@ -88,7 +56,8 @@ const meta = nW1.meta,
           $recur.i -= 1;
         },
         reset: function () {
-          updateImages();
+          //updateImages();
+          $recur.notify(false, "update");
           //ensure fadeIn will follow
           $recur.setPlayer(true);
         }
@@ -114,7 +83,7 @@ const meta = nW1.meta,
 nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
   let ret = {
     init: function () {
-      this.nextplayer = playMaker(this, deferCurrent, deferForward);
+      this.nextplayer = playMaker(this, deferForward);
       this.player = this.nextplayer();
       this.dur = duration;
       this.wait = wait;
