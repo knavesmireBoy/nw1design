@@ -5,23 +5,10 @@ if (!window.nW1) {
 }
 
 const meta = nW1.meta,
-  getById = (str) => meta.$(str),
   curry2 = meta.curryRight(2),
-  curry22 = meta.curryRight(2, true),
-  curry3 = meta.curryRight(3),
   compose = meta.compose,
-  isFunction = meta.tagTester("Function"),
-  ptL = meta.doPartial(),
   deferPTL = meta.doPartial(true),
-  getRes = function (arg) {
-    if (isFunction(arg)) {
-      return arg();
-    }
-    return arg;
-  },
-  equals = (a, b) => a === b,
   getter = (o, p) => o[p],
-  invoke = (f, v) => f(v),
   invokeMethod = meta.invokeMethod,
     /*
   getHeight = (o) => {
@@ -44,7 +31,6 @@ const meta = nW1.meta,
         },
         reset: function (arg) {
           $recur.i = $recur.dur;
-         // updateImages(true);
           $recur.notify(true, "update");
         }
       },
@@ -56,7 +42,6 @@ const meta = nW1.meta,
           $recur.i -= 1;
         },
         reset: function () {
-          //updateImages();
           $recur.notify(false, "update");
           //ensure fadeIn will follow
           $recur.setPlayer(true);
@@ -70,7 +55,6 @@ const meta = nW1.meta,
           $recur.i += 1;
         },
         reset: function () {
-          //ensure implements...
           $recur.notify(getNext, "base");
         }
       },
