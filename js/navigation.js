@@ -464,10 +464,8 @@
         machBase,
         setInnerDiv,
         climb,
-        append(utils.doTextNow(pg)),
         setSpan2,
         utils.getParent2,
-        append(utils.doTextNow(1)),
         setSpan1,
         setPara,
         getParent,
@@ -477,7 +475,9 @@
         getParent,
         machButtons,
         machControls,
-        machDiv
+        machDiv,
+        append(utils.doTextNow(1)),
+        append(utils.doTextNow(pg))
       )($("display"));
       buttontext
         .map(buttons)
@@ -502,7 +502,6 @@
       $recur.attach($painter.doPath.bind($painter), "base");
       $recur.attach($painter.doPath.bind($painter), "slide");
       $recur.attach($painter.update.bind($painter), "update");
-      //$recur.attach($painter.doTest.bind($painter), "slide");
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
       $recur.attach(previewUpdate, "swap");
       $recur.attach(thumbs.setFinder.bind(thumbs), "swap");
