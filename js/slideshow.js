@@ -59,15 +59,18 @@ const meta = nW1.meta,
   displaySwap = curry2(ptL(invokeMethod, document.body.classList))("swap"),
   doSwap = function () {
     let heights = testProp("base", "slide", getHeight),
-    bool = heights.reduce(equals);
-    displaySwap(bool ? "remove" : "add"); //paint
-    return !bool;
+    bool = heights.reduce(meta.negator(equals));
+    displaySwap(bool ?  "add" : "remove"); //paint
+    return bool;
   },
+  //predicate expects no arguments
+  thunk = meta.doWhenFactory(),
   playMaker = function ($recur, getCurrent, getNext) {
-    const doLoad = curry22(meta.doWhenFactory())(
-        compose($recur.setPlayer.bind($recur), doSwap)
+    const soload = compose($recur.setPlayer.bind($recur), doSwap),
+    doLoad = curry22(thunk)(
+        soload
       )(isInplay),
-      updateBase = curry2(meta.doWhenFactory())(advance),
+      updateBase = curry2(thunk)(advance),
       //flag from $recur
       previewUpdate = (src) => {
         $recur.notify(src, "swap");
@@ -82,7 +85,7 @@ const meta = nW1.meta,
          previewUpdate(e.target.getAttribute('src'));
          }
         };
-        b.onload = doLoad;
+        b.onload = soload;
       };
     const fade = {
         validate: function () {

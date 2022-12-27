@@ -252,6 +252,7 @@ nW1.meta = (function () {
     },
     invokeClass: (o, s, m, v) => getResult(o)[s][m](v),
     negate: (f, ...args) => !f(...args),
+    negator: (f, ...args) => (...rest) => !f(...args, ...rest),
     zip: (m, funs, vals) => vals[m]((v, i) => funs[i](v)),
     eitherOr: (a, b, pred) => (pred ? a : b),
     compare: (pred) => (p, a, b) => {
