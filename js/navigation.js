@@ -300,8 +300,10 @@
           el.style.opacity = o;
         },
         doPath: function (data, type) {
-          let el = (type === 'slide') ? getResult(slide) : getResult(base);
-          meta.invokePair(el, "setAttribute", "src", data);
+          if(data){
+            let el = (type === 'slide') ? getResult(slide) : getResult(base);
+            meta.invokePair(el, "setAttribute", "src", getResult(data));
+          }
         },
         doTest: function() {
           if(getResult(base).addEventListener('load', testHeights)){
@@ -362,7 +364,7 @@
         ),
         previewer = ptL(resolvePath, $$Q("#slidepreview img")),
         previewUpdate = (data) => {
-          meta.$Q("#slidepreview img").setAttribute('src', data);
+          meta.$Q("#slidepreview img").setAttribute('src', getResult(data));
         },
         displayer = curryL2(resolvePath)($$("base")),
         //projector = curryL2(resolvePath)($$("slide")),

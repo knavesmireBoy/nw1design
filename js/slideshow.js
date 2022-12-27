@@ -32,7 +32,7 @@ const meta = nW1.meta,
   invoke = (f, v) => f(v),
   invokeMethod = meta.invokeMethod,
   isInplay = meta.$$Q(".inplay"),
-  getHeight = curry2(getter)('naturalHeight'),
+  getHeight = curry2(getter)("naturalHeight"),
   /*
   getHeight = (o) => {
     let h = o.naturalHeight;
@@ -45,32 +45,23 @@ const meta = nW1.meta,
       .map(getById)
       .map((item) => getRes(item))
       .map(getprop),
-  setImgSrc = ptL(setterBridge, "src"),
   displayInplay = ptL(invokeMethod, document.body.classList, "add"),
-
   onInplay = curry22(invoke)("inplay")(displayInplay),
-  deferForward = compose(curry2(getter)("value"), deferPTL(invokeMethod, nW1.Looper, "forward", null)),
-  deferCurrent = deferPTL(invokeMethod, nW1.Looper, "get", "value"),
-  advance = compose(
-    onInplay,
-    setImgSrc($$("base")),
-    deferForward
+  deferForward = compose(
+    curry2(getter)("value"),
+    deferPTL(invokeMethod, nW1.Looper, "forward", null)
   ),
+  deferCurrent = deferPTL(invokeMethod, nW1.Looper, "get", "value"),
   displaySwap = curry2(ptL(invokeMethod, document.body.classList))("swap"),
+  reducer = curry3(invokeMethod)(meta.negator(equals))("reduce"),
   doSwap = function () {
-    let heights = testProp("base", "slide", getHeight),
-    bool = heights.reduce(meta.negator(equals));
-    displaySwap(bool ?  "add" : "remove"); //paint
+    let bool = reducer(testProp("base", "slide", getHeight));
+    compose(displaySwap, ptL(meta.eitherOr, "add", "remove"))(bool);
     return bool;
   },
-  //predicate expects no arguments
-  thunk = meta.doWhenFactory(),
   playMaker = function ($recur, getCurrent, getNext) {
-    const soload = compose($recur.setPlayer.bind($recur), doSwap),
-    doLoad = curry22(thunk)(
-        soload
-      )(isInplay),
-      updateBase = curry2(thunk)(advance),
+    //note getCurrent, getNext are functions invoked by subscribers
+    const doload = compose($recur.setPlayer.bind($recur), doSwap),
       //flag from $recur
       previewUpdate = (src) => {
         $recur.notify(src, "swap");
@@ -78,14 +69,16 @@ const meta = nW1.meta,
       updateImages = (flag) => {
         const s = meta.$("slide"),
           b = meta.$("base");
-        $recur.notify(getCurrent(), "slide");
+        $recur.notify(getCurrent, "slide");
         s.onload = (e) => {
-          updateBase(flag);
-        if(!flag){
-         previewUpdate(e.target.getAttribute('src'));
-         }
+          if (flag) {
+            $recur.notify(deferForward, "base");
+            onInplay();
+          } else {
+            previewUpdate(e.target.getAttribute("src"));
+          }
         };
-        b.onload = soload;
+        b.onload = doload;
       };
     const fade = {
         validate: function () {
@@ -97,7 +90,7 @@ const meta = nW1.meta,
         reset: function (arg) {
           $recur.i = $recur.dur;
           updateImages(true);
-        }
+        },
       },
       fadeOut = {
         validate: function () {
@@ -110,7 +103,7 @@ const meta = nW1.meta,
           updateImages();
           //ensure fadeIn will follow
           $recur.setPlayer(true);
-        }
+        },
       },
       fadeIn = {
         validate: function () {
@@ -121,8 +114,8 @@ const meta = nW1.meta,
         },
         reset: function () {
           //ensure implements...
-         $recur.notify(getNext(), "base");
-        }
+          $recur.notify(getNext, "base");
+        },
       },
       actions = [fadeIn, fadeOut];
 
@@ -146,14 +139,14 @@ nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
       if (this.player.validate()) {
         this.player.reset();
       } else {
-        this.notify(this.i / this.wait, 'opacity');
+        this.notify(this.i / this.wait, "opacity");
         this.resume();
       }
     },
     suspend: function (flag) {
       const o = !isNaN(flag) ? 0.5 : 1;
-      this.notify(o, 'opacity');
-     window.cancelAnimationFrame(this.t);
+      this.notify(o, "opacity");
+      window.cancelAnimationFrame(this.t);
       //window.clearTimeout(this.t);
       this.t = flag; //either set to undefined(forward/back/exit) or null(pause)
       if (o === 1) {
@@ -168,7 +161,7 @@ nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
       this.player.inc();
       this.t = window.requestAnimationFrame(this.play.bind(this));
       //this.t = window.setTimeout(this.play.bind(this), wait);
-    }
+    },
   };
   if (makePub) {
     return nW1.Publish().makepublisher(ret);
