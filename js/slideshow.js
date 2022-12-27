@@ -5,7 +5,7 @@ if (!window.nW1) {
 }
 
 const meta = nW1.meta,
-  getTgt = (str) => meta.$(str),
+  getById = (str) => meta.$(str),
   curry2 = meta.curryRight(2),
   curry22 = meta.curryRight(2, true),
   curry3 = meta.curryRight(3),
@@ -22,7 +22,6 @@ const meta = nW1.meta,
   },
   equals = (a, b) => a === b,
   getter = (o, p) => o[p],
-  gtThan = (a, b) => a > b,
   setter = (o, k, v) => {
     getRes(o)[k] = v;
   },
@@ -43,7 +42,7 @@ const meta = nW1.meta,
   */
   testProp = (a, b, getprop) =>
     [a, b]
-      .map(getTgt)
+      .map(getById)
       .map((item) => getRes(item))
       .map(getprop),
   setImgSrc = ptL(setterBridge, "src"),
@@ -68,11 +67,6 @@ const meta = nW1.meta,
     const doLoad = curry22(meta.doWhenFactory())(
         compose($recur.setPlayer.bind($recur), doSwap)
       )(isInplay),
-      /*
-            mittel = meta.mittelFactory(),
-      getImgSrc = curry2(mittel(invokeMethod, "getAttribute"))("src"),
-      */
-
       updateBase = curry2(meta.doWhenFactory())(advance),
       //flag from $recur
       previewUpdate = (src) => {
@@ -81,9 +75,7 @@ const meta = nW1.meta,
       updateImages = (flag) => {
         const s = meta.$("slide"),
           b = meta.$("base");
-       // setImgSrc(s, getImgSrc(b));
         $recur.notify(getCurrent(), "slide");
-       // setImgSrc(s, nW1.Looper.get());
         s.onload = (e) => {
           updateBase(flag);
         if(!flag){
