@@ -523,28 +523,3 @@
     };
   window.addEventListener("load", loader);
 }(Modernizr, "(min-width: 1024px)", "(max-width: 667px)"));
-/*
-
-  FOP : 17/12/14
-  BENSON
-  AFEN : 01/08/15
-  DIS HOUSE 30/04/16
-  BP 11/06/12
-  UKOOA 15/10/13   23/12/15
-  ORKNEY 26/04/10 08/10/20
-  SAFARI 31/10/04 - 26/02/04  -22/03/04
-      getMobile = nW1.meta.pApply(Modernizr.mq, mob);
-        window.addEventListener(
-        "resize",
-        pApply(throttle, pApply(isMobile, [sliderActions]), 222)
-      );
-       sliderLoad = Mod.mq(ipad) || Mod.mq(mob) ? sliderTxt : sliderTxtAlt,
-       sliderOptions = Mod.mq(ipad) || Mod.mq(mob)
-       getMobile = Mod.mq(mob) ? getMobile : pApply(negate, getMobile);
-         isMobile = function (alternators) {
-      if (!getMobile()) {
-        alternators.forEach((f) => f());
-        getMobile = pApply(meta.negate, getMobile);
-      }
-    },
-  */
