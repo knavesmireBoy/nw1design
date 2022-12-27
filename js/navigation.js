@@ -209,9 +209,9 @@
       let el = getResult(o),
         f = ptL(meta.invokePair, el, "setAttribute", "src"),
         repl =
-          el.id === "base"
-            ? src
-            : src.replace("thumbs", "fullsize").replace("tmb", "fs");
+          el.alt === "currentpicture"
+            ? src.replace("thumbs", "fullsize").replace("tmb", "fs")
+            : src;
       f(repl);
      el.onload = el.onload || makePortrait.bind(el, tgt);
     // el.addEventListener('load', makePortrait.bind(el, tgt));
@@ -308,8 +308,7 @@
         doTest: function() {
           if(getResult(base).addEventListener('load', testHeights)){
             displaySwap("remove");
-          }
-          else {
+          } else {
             displaySwap("add");
           }
         },
@@ -394,8 +393,9 @@
           doSliderOutput(i);
         },
         sliderBridge = function (path) {
-          let members = looper.get("members"),
-            i = members.findIndex(curry2((a, b) => a === b)(path)),
+          let mypath = getResult(path),
+          members = looper.get("members"),
+            i = members.findIndex(curry2((a, b) => a === b)(mypath)),
             l = members.length,
             member = members[i],
             //reached end
@@ -405,7 +405,7 @@
           /*also as it stands looper reverses the array when the back button is pressed
                       before counting forwards. may have to fix that but at the moment this undoes that */
           j = looper.get("rev") ? l - i : j;
-          if (!$("slide").onload || path.match(txt)) {
+          if (!$("slide").onload || mypath.match(txt)) {
             doSliders(j);
           }
         },

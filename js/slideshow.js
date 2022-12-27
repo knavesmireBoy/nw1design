@@ -54,9 +54,6 @@ const meta = nW1.meta,
     //note getCurrent, getNext are functions invoked by subscribers
     const doload = compose($recur.setPlayer.bind($recur), doSwap),
       //flag from $recur
-      previewUpdate = (src) => {
-        $recur.notify(src, "swap");
-      },
       updateImages = (flag) => {
         $recur.notify(getCurrent, "slide");
         const s = meta.$("slide"),
@@ -66,7 +63,7 @@ const meta = nW1.meta,
             $recur.notify(deferForward, "base");
             onInplay();
           } else {
-            previewUpdate(e.target.getAttribute("src"));
+            $recur.notify(e.target.getAttribute("src"), "swap");
           }
         };
         b.onload = doload;
