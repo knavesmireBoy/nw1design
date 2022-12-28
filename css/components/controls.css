@@ -37,6 +37,7 @@
   margin: 1vw 10vw;
 }
 
+/*class of inplay required for styling*/
 .inplay #display img {
   float: left;
 }
