@@ -25,6 +25,41 @@ nW1.meta = (function () {
     };
   }
 
+  function doBest(coll, pred, arg) {
+    /*if we want to return the invocation of the "best" function on supplying the final argument
+  we need curry NOT curryDefer when mapping
+  ALSO assumes a single argument is, potentially, missing
+  if we want ...args we have to create different levels of currying because partial application gets tricky in callbacks
+  */
+    let group = coll, //could be a group of primitives, objects, functions...
+      domap = (fn, ag) => (isFunction(fn) ? curryDefer(fn)(ag) : fn),
+      func = pred;
+    if (typeof arg !== "undefined") {
+      if (isArray(arg)) {
+        //map args to specific functions
+        if (arg[1] && isArray(arg[1])) {
+          group = coll.map((item, i) => domap(item, arg[i]));
+        } else {
+          //arg[1] for group
+          //could be one arg for group and predicate, or separate, arg[1] conditionally exists
+          group = coll.map((item) => domap(item, arg[1] || arg[0]));
+        }
+        //arg[0] for predicate
+        func = curryDefer(pred)(arg[0]);
+      } else if (isFunction(arg)) {
+        //if function assumes arg is for group only
+        group = coll.map((item) => domap(item, arg()));
+      } else {
+        //assumes arg is for predicate only
+        group = coll;
+        func = curryDefer(pred)(arg);
+      }
+    }
+    return group.reduce((champ, contender) =>
+      func(champ, contender) ? champ : contender
+    );
+  }
+
   /*
   function composeVerbose (...fns) {
     return fns.reduce((f, g) => {
@@ -53,6 +88,7 @@ nW1.meta = (function () {
       const m = flag ? "querySelectorAll" : "querySelector";
       return document[m](str);
     },
+    curryDefer = (fun) => (a) => () => fun(a),
     doPartial = (flag) => {
       return function p(f, ...args) {
         if (f.length === args.length) {
@@ -193,6 +229,9 @@ nW1.meta = (function () {
           return getResult(o)[m](getResult(v));
       }
     },
+    invokePropertyMethod = (o, p, m, k, v) => {
+      return getResult(o)[p][m](k, v);
+    },
     invoke = (f, v) => f(getResult(v)),
     invokePair = (o, m, k, v) => getResult(o)[m](k, v),
     soInvoke = (o, m, ...rest) => o[m](...rest);
@@ -207,6 +246,7 @@ nW1.meta = (function () {
     compose: compose,
     tagTester: tagTester,
     doWhenFactory: doWhenFactory,
+    doBest: doBest,
     doPartial: doPartial,
     setter: (o, k, v) => {
      // console.log(o,k,v)
@@ -238,6 +278,7 @@ nW1.meta = (function () {
     invokeMethodV: (o, p, m, v) => {
       return getResult(o)[p][v](m);
     },
+    invokePropertyMethod: invokePropertyMethod,
     invokePair: invokePair,
     lazyVal: (m, p, o, v) => {
      return getResult(o)[m](p, v);

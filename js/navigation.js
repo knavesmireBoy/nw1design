@@ -99,12 +99,12 @@
           ),
           exec = compose(
             displayPause,
-            meta.always("remove"),
+            always("remove"),
             $recur.play.bind($recur, true)
           ),
           undo = compose(
             displayPause,
-            meta.always("add"),
+            always("add"),
             $recur.suspend.bind($recur, null)
           );
         return func([exec, undo]);
@@ -181,6 +181,7 @@
     curry3 = meta.curryRight(3),
     curryL3 = meta.curryLeft(3),
     curryL33 = meta.curryLeft(3, true),
+    always = meta.always,
     invoke = meta.invoke,
     invokeMethod = meta.invokeMethod,
     invokeMethodBridge = meta.invokeMethodBridge,
@@ -292,7 +293,15 @@
     displaySwap = bodyKlas("swap"),
     queryInplay = bodyKlas("inplay"),
     painter = function (slide, base) {
-      const getHeight = curry2(meta.getter)("naturalHeight"),
+      const getStyle = curry2(meta.getter)('style'),
+      setProperty = meta.pApply(meta.mittelFactory(), meta.invokePair, 'setProperty'),
+      setMargin = setProperty('margin-left'),
+      setDisplay = setProperty('display'),
+      setInplayMargin = compose(curry2(setMargin)('-100%'), getStyle),
+      setSwap = compose(curry2(setDisplay)('none'), getStyle),
+      unSetSwap = compose(curry2(setDisplay)('block'), getStyle),
+      unSetInplayMargin = compose(curry2(setMargin)(0), getStyle),
+      getHeight = curry2(meta.getter)("naturalHeight"),
         testProp = (a, b, getprop) =>
           [a, b]
             .map(getById)
@@ -304,11 +313,14 @@
           curry2(meta.getter)("value"),
           deferPTL(invokeMethod, nW1.Looper, "forward", null)
         ),
+
         deferCurrent = deferPTL(invokeMethod, nW1.Looper, "get", "value"),
         reducer = curry3(invokeMethod)(meta.negator(equals))("reduce"),
+        swap = compose(unSetInplayMargin, always(slide), setSwap),
+        unswap = compose(setInplayMargin, always(slide), unSetSwap),
         doSwap = function () {
           let bool = reducer(testProp("base", "slide", getHeight));
-          compose(displaySwap, ptL(meta.eitherOr, "add", "remove"))(bool);
+          meta.doBest([swap, unswap], always(bool), always(base))();
           return bool;
         },
         doload = compose($recur.setPlayer.bind($recur), doSwap);
@@ -328,6 +340,8 @@
           queryInplay("remove");
           displayPause("remove");
           displaySwap("remove");
+          unSetSwap(base);
+          unSetInplayMargin(slide);
           base.onload = null;
           slide.onload = null;
         },
