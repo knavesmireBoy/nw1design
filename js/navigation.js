@@ -192,6 +192,15 @@
     getTgt = (str) => $(str),
     equals = (a, b) => a === b,
     getAttribute = ptL(invokeMethodBridge, "getAttribute"),
+    getStyle = curry2(meta.getter)("style"),
+    setProperty = meta.pApply(
+      meta.mittelFactory(),
+      meta.invokePair,
+      "setProperty"
+    ),
+    setDisplay = setProperty("display"),
+    hide = compose(curry2(setDisplay)("none"), getStyle),
+    show = compose(curry2(setDisplay)("block"), getStyle),
     getLinks = (grp) => {
       const get = curry3(utils.getTargetNode)("firstChild")(/^a$/i);
       return grp.map((lis) => compose(utils.getAttrs("href"), get)(lis));
@@ -290,18 +299,13 @@
       "pause"
     ),
     bodyKlas = curry2(ptL(invokeMethod, document.body.classList)),
-    displaySwap = bodyKlas("swap"),
+
     queryInplay = bodyKlas("inplay"),
     painter = function (slide, base) {
-      const getStyle = curry2(meta.getter)('style'),
-      setProperty = meta.pApply(meta.mittelFactory(), meta.invokePair, 'setProperty'),
-      setMargin = setProperty('margin-left'),
-      setDisplay = setProperty('display'),
-      setInplayMargin = compose(curry2(setMargin)('-100%'), getStyle),
-      setSwap = compose(curry2(setDisplay)('none'), getStyle),
-      unSetSwap = compose(curry2(setDisplay)('block'), getStyle),
-      unSetInplayMargin = compose(curry2(setMargin)(0), getStyle),
-      getHeight = curry2(meta.getter)("naturalHeight"),
+      const setMargin = setProperty("margin-left"),
+        setInplayMargin = compose(curry2(setMargin)("-100%"), getStyle),
+        unSetInplayMargin = compose(curry2(setMargin)(0), getStyle),
+        getHeight = curry2(meta.getter)("naturalHeight"),
         testProp = (a, b, getprop) =>
           [a, b]
             .map(getById)
@@ -313,11 +317,10 @@
           curry2(meta.getter)("value"),
           deferPTL(invokeMethod, nW1.Looper, "forward", null)
         ),
-
         deferCurrent = deferPTL(invokeMethod, nW1.Looper, "get", "value"),
         reducer = curry3(invokeMethod)(meta.negator(equals))("reduce"),
-        swap = compose(unSetInplayMargin, always(slide), setSwap),
-        unswap = compose(setInplayMargin, always(slide), unSetSwap),
+        swap = compose(unSetInplayMargin, always(slide), hide),
+        unswap = compose(setInplayMargin, always(slide), show),
         doSwap = function () {
           let bool = reducer(testProp("base", "slide", getHeight));
           meta.doBest([swap, unswap], always(bool), always(base))();
@@ -328,6 +331,7 @@
       let ret = {
         doOpacity: function (o) {
           let el = getResult(slide);
+          show(el);
           el.style.opacity = o;
         },
         doPath: function (data, type) {
@@ -339,9 +343,9 @@
         cleanup: function () {
           queryInplay("remove");
           displayPause("remove");
-          displaySwap("remove");
-          unSetSwap(base);
+          show(base);
           unSetInplayMargin(slide);
+          hide(slide);
           base.onload = null;
           slide.onload = null;
         },
@@ -374,7 +378,6 @@
       headers = Finder.from(headings());
       $wrapper = nW1.Publish().makepublisher(meta.$$("wrapper"));
       $wrapper.attach(prepClassListNav);
-
       addClickPreview($("navigation"));
       addClickHover($("navigation"));
 
@@ -533,6 +536,7 @@
         compose(utils.applyPortrait($("wrapper")), doCompare)($("base"));
         compose(utils.applyPortrait($("navigation")), doCompare)($("base"));
       }, 666);
+      hide(meta.$("slide"));
     };
   window.addEventListener("load", loader);
 }(Modernizr, "(min-width: 1024px)", "(max-width: 667px)"));
