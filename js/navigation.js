@@ -219,12 +219,11 @@
     ),
     resolvePath = (o, src, tgt = meta.$("wrapper")) => {
       let el = getResult(o),
-        f = ptL(meta.invokePair, el, "setAttribute", "src"),
         repl =
           el.alt === "currentpicture"
             ? src.replace("thumbs", "fullsize").replace("tmb", "fs")
             : src;
-      f(repl);
+         setSrc(repl)(el);
       el.onload = el.onload || makePortrait.bind(el, tgt);
     },
     hover = (e) => {
@@ -236,7 +235,7 @@
       if (matchImg(e) && e.target !== preview) {
         resolvePath(
           preview,
-          getAttribute("src")(e.target),
+          utils.getImgPath(e),
           meta.$("navigation")
         );
       }
@@ -300,7 +299,6 @@
       "pause"
     ),
     bodyKlas = curry2(ptL(invokeMethod, document.body.classList)),
-
     queryInplay = bodyKlas("inplay"),
     painter = function (slide, base) {
       const setMargin = setProperty("margin-left"),
@@ -341,7 +339,7 @@
         doPath: function (data, type) {
           if (data) {
             let el = type === "slide" ? getResult(slide) : getResult(base);
-            meta.invokePair(el, "setAttribute", "src", getResult(data));
+            setSrc(getResult(data))(el);
           }
         },
         cleanup: function () {
@@ -363,7 +361,7 @@
               $recur.notify(deferForward, "base");
               onInplay();
             } else {
-              $recur.notify(e.target.getAttribute("src"), "swap");
+              $recur.notify(utils.getImgPath(e), "swap");
             }
           };
           b.onload = doload;
@@ -417,7 +415,7 @@
         ),
         previewer = ptL(resolvePath, $$Q("#slidepreview img")),
         previewUpdate = (data) => {
-          meta.$Q("#slidepreview img").setAttribute("src", getResult(data));
+          setSrc(getResult(data))(meta.$Q("#slidepreview img"));
         },
         displayer = curryL2(resolvePath)($$("base")),
         //projector = curryL2(resolvePath)($$("slide")),
