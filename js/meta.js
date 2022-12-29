@@ -127,21 +127,24 @@ nW1.meta = (function () {
         all = [none, predi, act, both];
       return all[n] || none;
     },
+    //for signatures resistant to straightforward partial application or currying
     mittelFactory = (arg) => {
-      if (arg) {
+      if (isBoolean(arg)) {
         return (f, o, v = undefined) =>
+        //dynamic method (add/remove etc)
           (m) =>
             f(o, m, v);
-      } else if (isBoolean(arg)) {
+      } else if (!arg && isBoolean(arg)) {
         return (f, m, v = undefined) =>
         //optional key/value; dynamic key
           (o, k) =>
             def(v) ? f(o, m, k, v) : f(o, m, v);
       }
+      //typical use park STATIC values
       return (f, m, k = undefined) => {
       //optional key/value;dynamic value
         return (o, v) => {
-          //optional callback
+          //optional callback;typically get sub property, or getResult
           if(isFunction(arg)){
             return def(k) ? f(arg(o), m, k, v) : f(arg(o), m, v);
           }
@@ -233,7 +236,10 @@ nW1.meta = (function () {
       return getResult(o)[p][m](k, v);
     },
     invoke = (f, v) => f(getResult(v)),
-    invokePair = (o, m, k, v) => getResult(o)[m](k, v),
+    invokePair = (o, m, k, v) => {
+     // console.log(o,m,k,v);
+      return getResult(o)[m](k, v);
+    },
     soInvoke = (o, m, ...rest) => o[m](...rest);
   return {
     $: byId,

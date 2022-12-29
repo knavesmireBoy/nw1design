@@ -194,13 +194,14 @@
     getAttribute = ptL(invokeMethodBridge, "getAttribute"),
     getStyle = curry2(meta.getter)("style"),
     setProperty = meta.pApply(
-      meta.mittelFactory(),
+      meta.mittelFactory(getStyle),
       meta.invokePair,
       "setProperty"
     ),
     setDisplay = setProperty("display"),
-    hide = compose(curry2(setDisplay)("none"), getStyle),
-    show = compose(curry2(setDisplay)("block"), getStyle),
+    setOpacity = setProperty("opacity"),
+    hide = compose(curry2(setDisplay)("none")),
+    show = compose(curry2(setDisplay)("block")),
     getLinks = (grp) => {
       const get = curry3(utils.getTargetNode)("firstChild")(/^a$/i);
       return grp.map((lis) => compose(utils.getAttrs("href"), get)(lis));
@@ -303,8 +304,8 @@
     queryInplay = bodyKlas("inplay"),
     painter = function (slide, base) {
       const setMargin = setProperty("margin-left"),
-        setInplayMargin = compose(curry2(setMargin)("-100%"), getStyle),
-        unSetInplayMargin = compose(curry2(setMargin)(0), getStyle),
+        setInplayMargin = curry2(setMargin)("-100%"),
+        unSetInplayMargin = curry2(setMargin)(0),
         getHeight = curry2(meta.getter)("naturalHeight"),
         testProp = (a, b, getprop) =>
           [a, b]
@@ -331,8 +332,11 @@
       let ret = {
         doOpacity: function (o) {
           let el = getResult(slide);
-          show(el);
-          el.style.opacity = o;
+          if(!el.onload){
+            show(el);
+          }
+         setOpacity(el, o);
+          //el.style.opacity = o;
         },
         doPath: function (data, type) {
           if (data) {
