@@ -191,7 +191,6 @@
     doMakeDefer = utils.doMakeDefer,
     getTgt = (str) => $(str),
     equals = (a, b) => a === b,
-    getAttribute = ptL(invokeMethodBridge, "getAttribute"),
     getStyle = curry2(meta.getter)("style"),
     setProperty = meta.pApply(
       meta.mittelFactory(getStyle),
@@ -300,11 +299,16 @@
     ),
     bodyKlas = curry2(ptL(invokeMethod, document.body.classList)),
     queryInplay = bodyKlas("inplay"),
+    setMargin = setProperty("margin-left"),
+    setInplayMargin = curry2(setMargin)("-100%"),
+    unSetInplayMargin = curry2(setMargin)(0),
+    postQueryHeight = (flag, base, slide) => {
+      const swap = compose(unSetInplayMargin, always(slide), hide),
+      unswap = compose(setInplayMargin, always(slide), show);
+      meta.doBest([swap, unswap], always(flag), always(base))();
+    },
     painter = function (slide, base) {
-      const setMargin = setProperty("margin-left"),
-        setInplayMargin = curry2(setMargin)("-100%"),
-        unSetInplayMargin = curry2(setMargin)(0),
-        getHeight = curry2(meta.getter)("naturalHeight"),
+      const getHeight = curry2(meta.getter)("naturalHeight"),
         testProp = (a, b, getprop) =>
           [a, b]
             .map(getById)
@@ -318,14 +322,12 @@
         ),
         deferCurrent = deferPTL(invokeMethod, nW1.Looper, "get", "value"),
         reducer = curry3(invokeMethod)(meta.negator(equals))("reduce"),
-        swap = compose(unSetInplayMargin, always(slide), hide),
-        unswap = compose(setInplayMargin, always(slide), show),
-        doSwap = function () {
+        queryHeight = function () {
           let bool = reducer(testProp("base", "slide", getHeight));
-          meta.doBest([swap, unswap], always(bool), always(base))();
+          postQueryHeight(bool, base, slide);
           return bool;
         },
-        doload = compose($recur.setPlayer.bind($recur), doSwap);
+        doload = compose($recur.setPlayer.bind($recur), queryHeight);
 
       let ret = {
         doOpacity: function (o) {
@@ -334,9 +336,8 @@
             show(el);
           }
          setOpacity(el, o);
-          //el.style.opacity = o;
         },
-        doPath: function (data, type) {
+        updatePath: function (data, type) {
           if (data) {
             let el = type === "slide" ? getResult(slide) : getResult(base);
             setSrc(getResult(data))(el);
@@ -346,17 +347,15 @@
           queryInplay("remove");
           displayPause("remove");
           show(base);
-          unSetInplayMargin(slide);
           hide(slide);
+          unSetInplayMargin(slide);
           base.onload = null;
           slide.onload = null;
         },
         update: (flag) => {
           //flag from $recur
           $recur.notify(deferCurrent, "slide");
-          const s = meta.$("slide"),
-            b = meta.$("base");
-          s.onload = (e) => {
+          slide.onload = (e) => {
             if (flag) {
               $recur.notify(deferForward, "base");
               onInplay();
@@ -364,7 +363,7 @@
               $recur.notify(utils.getImgPath(e), "swap");
             }
           };
-          b.onload = doload;
+          base.onload = doload;
         }
       };
       return nW1.Publish().makepublisher(ret);
@@ -518,8 +517,8 @@
       $painter = painter(getTgt("slide"), getTgt("base"), document.body);
       $recur.attach($painter.doOpacity.bind($painter), "opacity");
       $recur.attach($painter.cleanup.bind($painter), "delete");
-      $recur.attach($painter.doPath.bind($painter), "base");
-      $recur.attach($painter.doPath.bind($painter), "slide");
+      $recur.attach($painter.updatePath.bind($painter), "base");
+      $recur.attach($painter.updatePath.bind($painter), "slide");
       $recur.attach($painter.update.bind($painter), "update");
       //$recur.attach($painter.doTest.bind($painter), "slide");
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
