@@ -35,7 +35,6 @@ window.nW1.Publish = (function () {
                 any: []
             },
             attach: function (fn, type = 'any') {
-
                 if (!this.subscribers[type]) {
                     this.subscribers[type] = this.subscribers.set(type).get(type);
                 }
