@@ -68,7 +68,7 @@ window.nW1.Publish = (function () {
     };
 }());
 
-window.nW1.Publish.attach = function(observer, subscriber, pairs, all) {
+window.nW1.Publish.attachAll = function(observer, subscriber, pairs, all) {
     pairs.forEach((pair) => {
         const [method, mytype] = pair,
         cb = subscriber ? subscriber[method] : method,

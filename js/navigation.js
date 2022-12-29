@@ -257,7 +257,7 @@
         getDesktop = pApply(meta.negate, getDesktop);
       }
     },
-    attach = window.nW1.Publish.attach,
+    attach = window.nW1.Publish.attachAll,
     $recur = nW1.recurMaker(300, 99, 1, true).init(),
     routes = router($recur),
     prepAttrs = (keys, vals) => curryL33(meta.zip)("map")(keys)(vals),
