@@ -15,17 +15,6 @@
     }
     return o;
   }
-  function attach(observer, subscriber, pairs, all) {
-    pairs.forEach((pair) => {
-      const [method, mytype] = pair,
-        //subscriber null if method is bound; check implements attach
-        cb = subscriber ? subscriber[method] : method,
-        type = mytype || all;
-      if (meta.isFunction(cb)) {
-        return observer["attach"](cb, type);
-      }
-    });
-  }
   //https://webdesign.tutsplus.com/tutorials/javascript-debounce-and-throttle--cms-36783
   //initialize throttlePause variable outside throttle function
   function throttle(callback, time) {
@@ -268,6 +257,7 @@
         getDesktop = pApply(meta.negate, getDesktop);
       }
     },
+    attach = window.nW1.Publish.attach,
     $recur = nW1.recurMaker(300, 99, 1, true).init(),
     routes = router($recur),
     prepAttrs = (keys, vals) => curryL33(meta.zip)("map")(keys)(vals),
