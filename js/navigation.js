@@ -470,28 +470,28 @@
           setState,
           curry3(meta.compare(gtThanEq))("naturalWidth")("naturalHeight")
         );
-      compose(
-        getParent,
-        machSlide,
-        getParent,
-        machBase,
-        setInnerDiv,
-        climb,
-        setSpan2,
-        utils.getParent2,
-        setSpan1,
-        setPara,
-        getParent,
-        machSliderInput,
-        machSlider,
-        addPlayClick,
-        getParent,
-        machButtons,
-        machControls,
-        machDiv,
-        append(utils.doTextNow(1)),
-        append(utils.doTextNow(pg))
-      )($("display"));
+        compose(
+          getParent,
+          machSlide,
+          getParent,
+          machBase,
+          setInnerDiv,
+          climb,
+          append(utils.doTextNow(pg)),
+          setSpan2,
+          utils.getParent2,
+          append(utils.doTextNow(1)),
+          setSpan1,
+          setPara,
+          getParent,
+          machSliderInput,
+          machSlider,
+          addPlayClick,
+          getParent,
+          machButtons,
+          machControls,
+          machDiv
+        )($("display"));
       buttontext
         .map(buttons)
         .map(utils.appendCB)
