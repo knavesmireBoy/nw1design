@@ -173,7 +173,6 @@
     $$ = meta.$$,
     $Q = meta.$Q,
     $$Q = meta.$$Q,
-    getById = (str) => $(str),
     compose = meta.compose,
     curry2 = meta.curryRight(2),
     curry22 = meta.curryRight(2, true),
@@ -189,7 +188,7 @@
     deferPTL = meta.doPartial(true),
     pApply = meta.pApply,
     doMakeDefer = utils.doMakeDefer,
-    getTgt = (str) => $(str),
+    getById = (str) => $(str),
     equals = (a, b) => a === b,
     getStyle = curry2(meta.getter)("style"),
     setProperty = meta.pApply(
@@ -301,9 +300,9 @@
     queryInplay = bodyKlas("inplay"),
     setMargin = setProperty("margin-left"),
     setInplayMargin = curry2(setMargin)("-100%"),
-    unSetInplayMargin = curry2(setMargin)(0),
+    resetMargin = curry2(setMargin)(0),
     postQueryHeight = (flag, base, slide) => {
-      const swap = compose(unSetInplayMargin, always(slide), hide),
+      const swap = compose(resetMargin, always(slide), hide),
       unswap = compose(setInplayMargin, always(slide), show);
       meta.doBest([swap, unswap], always(flag), always(base))();
     },
@@ -361,7 +360,7 @@
           displayPause("remove");
           show(base);
           hide(slide);
-          unSetInplayMargin(slide);
+          resetMargin(slide);
           base.onload = null;
           slide.onload = null;
         }
@@ -381,7 +380,6 @@
       $wrapper.attach(prepClassListNav);
       addClickPreview($("navigation"));
       addClickHover($("navigation"));
-
       const getExtent = $$Q("#navigation ul li a", true),
         getMyLinks = compose(
           curryL3(invokeMethodBridge)("map")(getHref),
@@ -514,13 +512,12 @@
       looper.attach(displayer);
       looper.attach(broadcaster.notify.bind(broadcaster));
       looper.attach(sliderBridge);
-      $painter = painter(getTgt("slide"), getTgt("base"), document.body);
-      $recur.attach($painter.updateOpacity.bind($painter), "opacity");
-      $recur.attach($painter.cleanup.bind($painter), "delete");
-      $recur.attach($painter.updatePath.bind($painter), "base");
-      $recur.attach($painter.updatePath.bind($painter), "slide");
-      $recur.attach($painter.update.bind($painter), "update");
-      //$recur.attach($painter.doTest.bind($painter), "slide");
+      $painter = painter(getById("slide"), getById("base"), document.body);
+      $recur.attach($painter.updateOpacity, "opacity");
+      $recur.attach($painter.cleanup, "delete");
+      $recur.attach($painter.updatePath, "base");
+      $recur.attach($painter.updatePath, "slide");
+      $recur.attach($painter.update, "update");
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
       $recur.attach(previewUpdate, "swap");
       $recur.attach(thumbs.setFinder.bind(thumbs), "swap");
