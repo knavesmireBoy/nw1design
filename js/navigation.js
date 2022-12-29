@@ -15,9 +15,16 @@
     }
     return o;
   }
-
-  function attach(observer, subscriber, pairs) {
-    pairs.forEach((pair) => observer["attach"](subscriber[pair[0]], pair[1]));
+  function attach(observer, subscriber, pairs, all) {
+    pairs.forEach((pair) => {
+      const [method, mytype] = pair,
+      //subscriber null if method is bound; check implements attach
+      cb = subscriber ? subscriber[method] : method,
+      type = mytype || all;
+      if(meta.isFunction(cb)){
+        return observer["attach"](cb, type);
+      }
+    });
   }
   //https://webdesign.tutsplus.com/tutorials/javascript-debounce-and-throttle--cms-36783
   //initialize throttlePause variable outside throttle function
@@ -513,7 +520,6 @@
       looper.attach(broadcaster.notify.bind(broadcaster));
       looper.attach(sliderBridge);
       $painter = painter(getById("slide"), getById("base"), document.body);
-      $recur.attach(sliderBridge, "swap");
       attach($recur, $painter, [
         ["updateOpacity", "opacity"],
         ["updatePath", "base"],
@@ -522,9 +528,8 @@
         ["cleanup", "delete"]
       ]);
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
-      $recur.attach(previewUpdate, "swap");
-      $recur.attach(thumbs.setFinder.bind(thumbs), "swap");
-      $recur.attach(headers.setFinder.bind(headers), "swap");
+      attach($recur, null, [[previewUpdate], [sliderBridge],[thumbs.setFinder.bind(thumbs)], [headers.setFinder.bind(headers)]], "swap");
+
       $slider.attach(looper.set.bind(looper));
       sliderActions();
       window.addEventListener(

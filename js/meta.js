@@ -272,6 +272,7 @@ nW1.meta = (function () {
     },
     always: (a) => () => a,
     identity: (a) => a,
+    isFunction: isFunction,
     curryRight: curryRight,
     curryLeft: curryLeft,
     mittelFactory: mittelFactory,
