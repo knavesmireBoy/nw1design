@@ -26,7 +26,6 @@
   padding: 0 0 1vw;
 }
 
-/*.swap .portait #display .inner, */
 #display .inner {
   text-align: center;
   overflow: hidden;
@@ -38,40 +37,10 @@
   margin: 1vw 10vw;
 }
 
-#display img {
+/*class of inplay required for styling*/
+.inplay #display img {
   float: left;
 }
-
-img#slide,
-body.swap img#base {
-  display: none;
-}
-
-.inplay img#slide {
-  display: block;
-  margin-left: -100%;
-}
-
-body.swap img#slide {
-  margin-left: 0;
-}
-/*
-.inplay img#slide {
-  margin-left: -100%;
-}
-
-.inplay img#base {
-  display: block;
-}
-img#base,
-.static img#base {
-  display: none;
-}
-
-.static img#slide {
-  margin-left: 0;
-}
-*/
 
 #buttons {
   padding: 0.25em;

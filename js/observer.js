@@ -1,3 +1,7 @@
+/*jslint nomen: true */
+/*global nW1: false */
+/* eslint-disable indent */
+
 if (!window.nW1) {
     window.nW1 = {};
 }
@@ -35,7 +39,6 @@ window.nW1.Publish = (function () {
                 any: []
             },
             attach: function (fn, type = 'any') {
-
                 if (!this.subscribers[type]) {
                     this.subscribers[type] = this.subscribers.set(type).get(type);
                 }
@@ -64,3 +67,14 @@ window.nW1.Publish = (function () {
         return ret;
     };
 }());
+
+window.nW1.Publish.attachAll = function(observer, subscriber, pairs, all) {
+    pairs.forEach((pair) => {
+        const [method, mytype] = pair,
+        cb = subscriber ? subscriber[method] : method,
+        type = mytype || all;
+        if (nW1.meta.isFunction(cb)) {
+            return observer["attach"](cb, type);
+        }
+    });
+};

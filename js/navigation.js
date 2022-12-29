@@ -99,12 +99,12 @@
           ),
           exec = compose(
             displayPause,
-            meta.always("remove"),
+            always("remove"),
             $recur.play.bind($recur, true)
           ),
           undo = compose(
             displayPause,
-            meta.always("add"),
+            always("add"),
             $recur.suspend.bind($recur, null)
           );
         return func([exec, undo]);
@@ -173,7 +173,6 @@
     $$ = meta.$$,
     $Q = meta.$Q,
     $$Q = meta.$$Q,
-    getById = (str) => $(str),
     compose = meta.compose,
     curry2 = meta.curryRight(2),
     curry22 = meta.curryRight(2, true),
@@ -181,6 +180,7 @@
     curry3 = meta.curryRight(3),
     curryL3 = meta.curryLeft(3),
     curryL33 = meta.curryLeft(3, true),
+    always = meta.always,
     invoke = meta.invoke,
     invokeMethod = meta.invokeMethod,
     invokeMethodBridge = meta.invokeMethodBridge,
@@ -188,9 +188,18 @@
     deferPTL = meta.doPartial(true),
     pApply = meta.pApply,
     doMakeDefer = utils.doMakeDefer,
-    getTgt = (str) => $(str),
+    getById = (str) => $(str),
     equals = (a, b) => a === b,
-    getAttribute = ptL(invokeMethodBridge, "getAttribute"),
+    getStyle = curry2(meta.getter)("style"),
+    setProperty = meta.pApply(
+      meta.mittelFactory(getStyle),
+      meta.invokePair,
+      "setProperty"
+    ),
+    setDisplay = setProperty("display"),
+    setOpacity = setProperty("opacity"),
+    hide = compose(curry2(setDisplay)("none")),
+    show = compose(curry2(setDisplay)("block")),
     getLinks = (grp) => {
       const get = curry3(utils.getTargetNode)("firstChild")(/^a$/i);
       return grp.map((lis) => compose(utils.getAttrs("href"), get)(lis));
@@ -208,12 +217,11 @@
     ),
     resolvePath = (o, src, tgt = meta.$("wrapper")) => {
       let el = getResult(o),
-        f = ptL(meta.invokePair, el, "setAttribute", "src"),
         repl =
           el.alt === "currentpicture"
             ? src.replace("thumbs", "fullsize").replace("tmb", "fs")
             : src;
-      f(repl);
+      setSrc(repl)(el);
       el.onload = el.onload || makePortrait.bind(el, tgt);
     },
     hover = (e) => {
@@ -223,11 +231,7 @@
         return;
       }
       if (matchImg(e) && e.target !== preview) {
-        resolvePath(
-          preview,
-          getAttribute("src")(e.target),
-          meta.$("navigation")
-        );
+        resolvePath(preview, utils.getImgPath(e), meta.$("navigation"));
       }
     },
     addClickHover = curry2(ptL(meta.lazyVal, "addEventListener", "mouseover"))(
@@ -253,6 +257,7 @@
         getDesktop = pApply(meta.negate, getDesktop);
       }
     },
+    attach = window.nW1.Publish.attachAll,
     $recur = nW1.recurMaker(300, 99, 1, true).init(),
     routes = router($recur),
     prepAttrs = (keys, vals) => curryL33(meta.zip)("map")(keys)(vals),
@@ -289,8 +294,15 @@
       "pause"
     ),
     bodyKlas = curry2(ptL(invokeMethod, document.body.classList)),
-    displaySwap = bodyKlas("swap"),
     queryInplay = bodyKlas("inplay"),
+    setMargin = setProperty("margin-left"),
+    setInplayMargin = curry2(setMargin)("-100%"),
+    resetMargin = curry2(setMargin)(0),
+    postQueryHeight = (flag, base, slide) => {
+      const swap = compose(resetMargin, always(slide), hide),
+        unswap = compose(setInplayMargin, always(slide), show);
+      meta.doBest([swap, unswap], always(flag), always(base))();
+    },
     painter = function (slide, base) {
       const getHeight = curry2(meta.getter)("naturalHeight"),
         testProp = (a, b, getprop) =>
@@ -306,45 +318,48 @@
         ),
         deferCurrent = deferPTL(invokeMethod, nW1.Looper, "get", "value"),
         reducer = curry3(invokeMethod)(meta.negator(equals))("reduce"),
-        doSwap = function () {
+        queryHeight = function () {
           let bool = reducer(testProp("base", "slide", getHeight));
-          compose(displaySwap, ptL(meta.eitherOr, "add", "remove"))(bool);
+          postQueryHeight(bool, base, slide);
           return bool;
         },
-        doload = compose($recur.setPlayer.bind($recur), doSwap);
+        doload = compose($recur.setPlayer.bind($recur), queryHeight);
 
       let ret = {
-        doOpacity: function (o) {
+        updateOpacity: function (o) {
           let el = getResult(slide);
-          el.style.opacity = o;
+          if (!el.onload) {
+            show(el);
+          }
+          setOpacity(el, o);
         },
-        doPath: function (data, type) {
+        updatePath: function (data, type) {
           if (data) {
             let el = type === "slide" ? getResult(slide) : getResult(base);
-            meta.invokePair(el, "setAttribute", "src", getResult(data));
+            setSrc(getResult(data))(el);
           }
-        },
-        cleanup: function () {
-          queryInplay("remove");
-          displayPause("remove");
-          displaySwap("remove");
-          base.onload = null;
-          slide.onload = null;
         },
         update: (flag) => {
           //flag from $recur
           $recur.notify(deferCurrent, "slide");
-          const s = meta.$("slide"),
-            b = meta.$("base");
-          s.onload = (e) => {
+          slide.onload = (e) => {
             if (flag) {
               $recur.notify(deferForward, "base");
               onInplay();
             } else {
-              $recur.notify(e.target.getAttribute("src"), "swap");
+              $recur.notify(utils.getImgPath(e), "swap");
             }
           };
-          b.onload = doload;
+          base.onload = doload;
+        },
+        cleanup: function () {
+          queryInplay("remove");
+          displayPause("remove");
+          show(base);
+          hide(slide);
+          resetMargin(slide);
+          base.onload = null;
+          slide.onload = null;
         }
       };
       return nW1.Publish().makepublisher(ret);
@@ -360,10 +375,8 @@
       headers = Finder.from(headings());
       $wrapper = nW1.Publish().makepublisher(meta.$$("wrapper"));
       $wrapper.attach(prepClassListNav);
-
       addClickPreview($("navigation"));
       addClickHover($("navigation"));
-
       const getExtent = $$Q("#navigation ul li a", true),
         getMyLinks = compose(
           curryL3(invokeMethodBridge)("map")(getHref),
@@ -396,7 +409,7 @@
         ),
         previewer = ptL(resolvePath, $$Q("#slidepreview img")),
         previewUpdate = (data) => {
-          meta.$Q("#slidepreview img").setAttribute("src", getResult(data));
+          setSrc(getResult(data))(meta.$Q("#slidepreview img"));
         },
         displayer = curryL2(resolvePath)($$("base")),
         //projector = curryL2(resolvePath)($$("slide")),
@@ -488,25 +501,39 @@
       thumbs.search = thumbsSearch;
       meta.zip("forEach", sliderspans, slidertext);
       $slider = sliderFactory($$("myrange"));
-      broadcaster.attach(headers.setFinder.bind(headers));
-      broadcaster.attach(thumbs.setFinder.bind(thumbs));
-      broadcaster.attach(previewer);
+      attach(broadcaster, null, [
+        [headers.setFinder.bind(headers)],
+        [thumbs.setFinder.bind(thumbs)],
+        [previewer]
+      ]);
       broadcaster.notify(src);
       looper.build(getMyLinks(), utils.incrementer, []);
-      looper.attach(displayer);
-      looper.attach(broadcaster.notify.bind(broadcaster));
-      looper.attach(sliderBridge);
-      $painter = painter(getTgt("slide"), getTgt("base"), document.body);
-      $recur.attach($painter.doOpacity.bind($painter), "opacity");
-      $recur.attach($painter.cleanup.bind($painter), "delete");
-      $recur.attach($painter.doPath.bind($painter), "base");
-      $recur.attach($painter.doPath.bind($painter), "slide");
-      $recur.attach($painter.update.bind($painter), "update");
+      attach(looper, null, [
+        [displayer],
+        [broadcaster.notify.bind(broadcaster)],
+        [sliderBridge]
+      ]);
+      $painter = painter(getById("slide"), getById("base"), document.body);
+      attach($recur, $painter, [
+        ["updateOpacity", "opacity"],
+        ["updatePath", "base"],
+        ["updatePath", "slide"],
+        ["update", "update"],
+        ["cleanup", "delete"]
+      ]);
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
-      $recur.attach(previewUpdate, "swap");
-      $recur.attach(thumbs.setFinder.bind(thumbs), "swap");
-      $recur.attach(headers.setFinder.bind(headers), "swap");
-      $recur.attach(sliderBridge, "swap");
+      attach(
+        $recur,
+        null,
+        [
+          [previewUpdate],
+          [sliderBridge],
+          [thumbs.setFinder.bind(thumbs)],
+          [headers.setFinder.bind(headers)]
+        ],
+        "swap"
+      );
+
       $slider.attach(looper.set.bind(looper));
       sliderActions();
       window.addEventListener(
@@ -518,6 +545,7 @@
         compose(utils.applyPortrait($("wrapper")), doCompare)($("base"));
         compose(utils.applyPortrait($("navigation")), doCompare)($("base"));
       }, 666);
+      hide(meta.$("slide"));
     };
   window.addEventListener("load", loader);
 }(Modernizr, "(min-width: 1024px)", "(max-width: 667px)"));
