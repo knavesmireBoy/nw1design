@@ -330,7 +330,7 @@
         doload = compose($recur.setPlayer.bind($recur), queryHeight);
 
       let ret = {
-        doOpacity: function (o) {
+        updateOpacity: function (o) {
           let el = getResult(slide);
           if(!el.onload){
             show(el);
@@ -515,7 +515,7 @@
       looper.attach(broadcaster.notify.bind(broadcaster));
       looper.attach(sliderBridge);
       $painter = painter(getTgt("slide"), getTgt("base"), document.body);
-      $recur.attach($painter.doOpacity.bind($painter), "opacity");
+      $recur.attach($painter.updateOpacity.bind($painter), "opacity");
       $recur.attach($painter.cleanup.bind($painter), "delete");
       $recur.attach($painter.updatePath.bind($painter), "base");
       $recur.attach($painter.updatePath.bind($painter), "slide");
