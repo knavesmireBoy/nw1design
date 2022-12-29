@@ -17,7 +17,7 @@
   }
 
   function attach(observer, subscriber, pairs) {
-    pairs.forEach( (pair) => observer['attach'](subscriber[pair[0]], pair[1]));
+    pairs.forEach((pair) => observer["attach"](subscriber[pair[0]], pair[1]));
   }
   //https://webdesign.tutsplus.com/tutorials/javascript-debounce-and-throttle--cms-36783
   //initialize throttlePause variable outside throttle function
@@ -225,7 +225,7 @@
           el.alt === "currentpicture"
             ? src.replace("thumbs", "fullsize").replace("tmb", "fs")
             : src;
-         setSrc(repl)(el);
+      setSrc(repl)(el);
       el.onload = el.onload || makePortrait.bind(el, tgt);
     },
     hover = (e) => {
@@ -235,11 +235,7 @@
         return;
       }
       if (matchImg(e) && e.target !== preview) {
-        resolvePath(
-          preview,
-          utils.getImgPath(e),
-          meta.$("navigation")
-        );
+        resolvePath(preview, utils.getImgPath(e), meta.$("navigation"));
       }
     },
     addClickHover = curry2(ptL(meta.lazyVal, "addEventListener", "mouseover"))(
@@ -307,7 +303,7 @@
     resetMargin = curry2(setMargin)(0),
     postQueryHeight = (flag, base, slide) => {
       const swap = compose(resetMargin, always(slide), hide),
-      unswap = compose(setInplayMargin, always(slide), show);
+        unswap = compose(setInplayMargin, always(slide), show);
       meta.doBest([swap, unswap], always(flag), always(base))();
     },
     painter = function (slide, base) {
@@ -335,10 +331,10 @@
       let ret = {
         updateOpacity: function (o) {
           let el = getResult(slide);
-          if(!el.onload){
+          if (!el.onload) {
             show(el);
           }
-         setOpacity(el, o);
+          setOpacity(el, o);
         },
         updatePath: function (data, type) {
           if (data) {
@@ -518,7 +514,13 @@
       looper.attach(sliderBridge);
       $painter = painter(getById("slide"), getById("base"), document.body);
       $recur.attach(sliderBridge, "swap");
-      attach($recur, $painter, [['updateOpacity', 'opacity'], ['updatePath', 'base'], ['updatePath', 'slide'], ['update', 'update'], ['cleanup', 'delete']]);
+      attach($recur, $painter, [
+        ["updateOpacity", "opacity"],
+        ["updatePath", "base"],
+        ["updatePath", "slide"],
+        ["update", "update"],
+        ["cleanup", "delete"]
+      ]);
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
       $recur.attach(previewUpdate, "swap");
       $recur.attach(thumbs.setFinder.bind(thumbs), "swap");
