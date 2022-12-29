@@ -343,15 +343,6 @@
             setSrc(getResult(data))(el);
           }
         },
-        cleanup: function () {
-          queryInplay("remove");
-          displayPause("remove");
-          show(base);
-          hide(slide);
-          unSetInplayMargin(slide);
-          base.onload = null;
-          slide.onload = null;
-        },
         update: (flag) => {
           //flag from $recur
           $recur.notify(deferCurrent, "slide");
@@ -364,6 +355,15 @@
             }
           };
           base.onload = doload;
+        },
+        cleanup: function () {
+          queryInplay("remove");
+          displayPause("remove");
+          show(base);
+          hide(slide);
+          unSetInplayMargin(slide);
+          base.onload = null;
+          slide.onload = null;
         }
       };
       return nW1.Publish().makepublisher(ret);
