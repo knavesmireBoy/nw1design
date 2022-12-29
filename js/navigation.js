@@ -18,10 +18,10 @@
   function attach(observer, subscriber, pairs, all) {
     pairs.forEach((pair) => {
       const [method, mytype] = pair,
-      //subscriber null if method is bound; check implements attach
-      cb = subscriber ? subscriber[method] : method,
-      type = mytype || all;
-      if(meta.isFunction(cb)){
+        //subscriber null if method is bound; check implements attach
+        cb = subscriber ? subscriber[method] : method,
+        type = mytype || all;
+      if (meta.isFunction(cb)) {
         return observer["attach"](cb, type);
       }
     });
@@ -511,14 +511,18 @@
       thumbs.search = thumbsSearch;
       meta.zip("forEach", sliderspans, slidertext);
       $slider = sliderFactory($$("myrange"));
-      broadcaster.attach(headers.setFinder.bind(headers));
-      broadcaster.attach(thumbs.setFinder.bind(thumbs));
-      broadcaster.attach(previewer);
+      attach(broadcaster, null, [
+        [headers.setFinder.bind(headers)],
+        [thumbs.setFinder.bind(thumbs)],
+        [previewer]
+      ]);
       broadcaster.notify(src);
       looper.build(getMyLinks(), utils.incrementer, []);
-      looper.attach(displayer);
-      looper.attach(broadcaster.notify.bind(broadcaster));
-      looper.attach(sliderBridge);
+      attach(looper, null, [
+        [displayer],
+        [broadcaster.notify.bind(broadcaster)],
+        [sliderBridge]
+      ]);
       $painter = painter(getById("slide"), getById("base"), document.body);
       attach($recur, $painter, [
         ["updateOpacity", "opacity"],
@@ -528,7 +532,17 @@
         ["cleanup", "delete"]
       ]);
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
-      attach($recur, null, [[previewUpdate], [sliderBridge],[thumbs.setFinder.bind(thumbs)], [headers.setFinder.bind(headers)]], "swap");
+      attach(
+        $recur,
+        null,
+        [
+          [previewUpdate],
+          [sliderBridge],
+          [thumbs.setFinder.bind(thumbs)],
+          [headers.setFinder.bind(headers)]
+        ],
+        "swap"
+      );
 
       $slider.attach(looper.set.bind(looper));
       sliderActions();
