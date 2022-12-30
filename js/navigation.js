@@ -199,7 +199,6 @@
       prepAttrs([setId], ["tracked"])
     ),
     setSpan2 = prep2Append(doMakeDefer("span"), prepAttrs([setId], ["max"])),
-    //setButtonLinks = prep2Append(doImg, prepAttrs([setAlt], ['#'])),
     headings = compose(
       curry2(toArray)(curryL2(negate)(utils.matchPath)),
       $$Q("#navigation a", true)
