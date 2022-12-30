@@ -1,6 +1,5 @@
 /*jslint nomen: true */
 /*global Modernizr: false */
-/*global Publisher: false */
 /*global nW1: false */
 /* eslint-disable indent */
 
@@ -35,7 +34,6 @@
             return bool;
           },
           doload = compose($recur.setPlayer.bind($recur), queryHeight);
-  
         let ret = {
           updateOpacity: function (o) {
             let el = getResult(slide);

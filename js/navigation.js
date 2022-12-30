@@ -4,7 +4,7 @@
 /*global nW1: false */
 /* eslint-disable indent */
 
-(function (Mod, ipad, mob) {
+(function (Mod, ipad) {
   "use strict";
 
   let $wrapper = {};
@@ -107,16 +107,13 @@
     curry3 = meta.curryRight(3),
     curryL3 = meta.curryLeft(3),
     curryL33 = meta.curryLeft(3, true),
-    always = meta.always,
     invoke = meta.invoke,
     invokeMethod = meta.invokeMethod,
     invokeMethodBridge = meta.invokeMethodBridge,
     ptL = meta.doPartial(),
-    deferPTL = meta.doPartial(true),
     pApply = meta.pApply,
     doMakeDefer = utils.doMakeDefer,
     getById = (str) => $(str),
-    equals = (a, b) => a === b,
     getStyle = curry2(meta.getter)("style"),
     setProperty = meta.pApply(
       meta.mittelFactory(getStyle),
@@ -124,9 +121,7 @@
       "setProperty"
     ),
     setDisplay = setProperty("display"),
-    setOpacity = setProperty("opacity"),
     hide = compose(curry2(setDisplay)("none")),
-    show = compose(curry2(setDisplay)("block")),
     getLinks = (grp) => {
       const get = curry3(utils.getTargetNode)("firstChild")(/^a$/i);
       return grp.map((lis) => compose(utils.getAttrs("href"), get)(lis));
@@ -214,22 +209,6 @@
     addClickPreview = curry2(ptL(meta.lazyVal, "addEventListener", "click"))(
       routes.sidebar
     ).wrap(meta.pass),
-    displayPause = ptL(
-      meta.invokeMethodV,
-      $$("slideshow"),
-      "classList",
-      "pause"
-    ),
-    bodyKlas = curry2(ptL(invokeMethod, document.body.classList)),
-    queryInplay = bodyKlas("inplay"),
-    setMargin = setProperty("margin-left"),
-    setInplayMargin = curry2(setMargin)("-100%"),
-    resetMargin = curry2(setMargin)(0),
-    postQueryHeight = (flag, base, slide) => {
-      const swap = compose(resetMargin, always(slide), hide),
-        unswap = compose(setInplayMargin, always(slide), show);
-      meta.doBest([swap, unswap], always(flag), always(base))();
-    },
     m = meta.mittelFactory(),
     f = m(meta.setter, "classList"),
     prepClassListNav = meta.pApply(f, meta.$$("navigation")),
@@ -414,4 +393,4 @@
       hide(meta.$("slide"));
     };
   window.addEventListener("load", loader);
-}(Modernizr, "(min-width: 1024px)", "(max-width: 667px)"));
+}(Modernizr, "(min-width: 1024px)"));
