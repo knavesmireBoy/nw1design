@@ -1,9 +1,8 @@
 /*jslint nomen: true */
-/*global Modernizr: false */
 /*global nW1: false */
 /* eslint-disable indent */
 
-(function (Mod, ipad, mob) {
+(function () {
     "use strict";
 
     function getResult(o) {
@@ -119,4 +118,4 @@
 
   nW1.painter = painter;
 
-  }(Modernizr, "(min-width: 1024px)", "(max-width: 667px)"));
+  }());
