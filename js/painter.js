@@ -14,7 +14,7 @@
         return o;
       }
 
-   function painter (slide, base) {
+   function painter (slide, base, $recur) {
         const getHeight = curry2(meta.getter)("naturalHeight"),
           testProp = (a, b, getprop) =>
             [a, b]
@@ -77,32 +77,18 @@
       };
 
   const meta = nW1.meta,
-  Finder = nW1.getFinder(),
   utils = nW1.utils,
-  broadcaster = Publisher.from(),
-  looper = nW1.Looper,
   $ = meta.$,
   $$ = meta.$$,
-  $Q = meta.$Q,
-  $$Q = meta.$$Q,
   compose = meta.compose,
   curry2 = meta.curryRight(2),
   curry22 = meta.curryRight(2, true),
-  curryL2 = meta.curryLeft(2),
   curry3 = meta.curryRight(3),
-  curryL3 = meta.curryLeft(3),
-  curryL33 = meta.curryLeft(3, true),
   always = meta.always,
   invoke = meta.invoke,
   invokeMethod = meta.invokeMethod,
-  invokeMethodBridge = meta.invokeMethodBridge,
   ptL = meta.doPartial(),
   deferPTL = meta.doPartial(true),
-  pApply = meta.pApply,
-  doMakeDefer = utils.doMakeDefer,
-  toArray = meta.toArray,
-  negate = meta.negate,
-  $recur = nW1.recurMaker(300, 99, 1, true).init(),
   setSrc = utils.setSrc,
   getById = (str) => $(str),
   equals = (a, b) => a === b,
