@@ -86,84 +86,11 @@
       Slider.prototype = new Publisher();
       Slider.prototype.constructor = Slider;
       return new Slider(element);
-    };
-  function router($recur) {
-    let player = null;
-    const playMaker = function () {
-        const func = meta.doAlternate(),
-          displayPause = ptL(
-            meta.invokeMethodV,
-            $$("slideshow"),
-            "classList",
-            "pause"
-          ),
-          exec = compose(
-            displayPause,
-            always("remove"),
-            $recur.play.bind($recur, true)
-          ),
-          undo = compose(
-            displayPause,
-            always("add"),
-            $recur.suspend.bind($recur, null)
-          );
-        return func([exec, undo]);
-      },
-      loop = deferPTL(meta.invokeMethodBind, nW1.Looper),
-      set = loop("set"),
-      routines = [
-        set(false),
-        loop("back", null),
-        loop("forward", null),
-        set(true)
-      ];
-    return {
-      menu: function (e) {
-        e.preventDefault();
-        const cb = Mod.backgroundsize ? utils.getAttrs("id") : utils.getText,
-          found = compose(cb, utils.getTarget)(e),
-          which = curry2(ptL(invokeMethodBridge, "match"))(found),
-          i = [/^start$/, /^back$/, /^forward$/, /^end$/].findIndex(which);
-        player = player || playMaker();
-        if (found.match(/^p/i)) {
-          nW1.Looper.setStrategy(true);
-          player();
-        } else {
-          player = null;
-          nW1.Looper.setStrategy();
-          $recur.suspend();
-          if (routines[i]) {
-            routines[i]();
-          }
-        }
-      },
-      sidebar: function (e) {
-        e.preventDefault();
-        let img = utils.getImgPath(e),
-          visit = false;
-        toArray($Q(".active", true)).forEach((el) =>
-          el.classList.remove("active")
-        );
-        if (utils.matchLink(e)) {
-          headers.show(utils.getTarget(e), true);
-          visit = true;
-        }
-        if (img) {
-          visit = true;
-          nW1.Looper.find(img);
-          utils.doActive(utils.getTargetNode(e.target, /li/i, "parentNode"));
-          makePortrait.call(e.target);
-        }
-        if (visit) {
-          player = null;
-          $recur.suspend();
-        }
-      }
-    };
-  } //router
-  let $painter = null,
+    },
+    $painter = null,
     throttlePause,
     getDesktop = nW1.meta.pApply(Modernizr.mq, ipad);
+
   const meta = nW1.meta,
     Finder = nW1.getFinder(),
     utils = nW1.utils,
@@ -259,7 +186,7 @@
     },
     attach = window.nW1.Publish.attachAll,
     $recur = nW1.recurMaker(300, 99, 1, true).init(),
-    routes = router($recur),
+    routes = nW1.router($recur),
     prepAttrs = (keys, vals) => curryL33(meta.zip)("map")(keys)(vals),
     prep2Append = (doEl, doAttrs) =>
       compose(
