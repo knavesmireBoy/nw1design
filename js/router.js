@@ -1,5 +1,6 @@
 /*jslint nomen: true */
 /*global Modernizr: false */
+/*global Header: false */
 /*global nW1: false */
 /* eslint-disable indent */
 
@@ -93,7 +94,6 @@
   } //router
 
   const meta = nW1.meta,
-    Finder = nW1.getFinder(),
     utils = nW1.utils,
     $$ = meta.$$,
     $Q = meta.$Q,
@@ -112,7 +112,7 @@
       $$Q("#navigation a", true)
     );
 
-  headers = Finder.from(headings());
+  headers = Header.from(headings());
 
   nW1.router = router;
 }(Modernizr));

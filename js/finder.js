@@ -72,14 +72,30 @@ class Finder extends Publisher {
     }
   };
 
-/*
+
 class Header extends Finder {
   search() {
-    const links = getLinksDeep(toArray(this.grp)),
+    const links = getLinksDeep(nW1.meta.toArray(this.grp)),
       i = links
         .map((strs) => strs.findIndex(this.finder))
         .findIndex((n) => n >= 0);
-    return compose(this.notify.bind(this), this.show.bind(this))(this.grp[i]);
+    return nW1.meta.compose(this.notify.bind(this), this.show.bind(this))(this.grp[i]);
+  }
+  static from(grp, kls = "active") {
+    return new Header(grp, kls);
   }
 }
-*/
+
+class Thumbs extends Finder {
+  search() {
+    const paths = getLinks(nW1.meta.toArray(this.grp)),
+    [first, second] = paths.filter(this.finder),
+    hi = paths.findIndex((cur) => cur === second),
+    lo = paths.findIndex((cur) => cur === first);
+  //img1.jpg would match the condition before img10.jpg, so use the second if > -1, ie exists;
+  return this.show(this.grp[Math.max(hi, lo)]);
+  }
+  static from(grp, kls = "active") {
+    return new Thumbs(grp, kls);
+  }
+}

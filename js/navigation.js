@@ -1,6 +1,9 @@
 /*jslint nomen: true */
 /*global Modernizr: false */
 /*global Publisher: false */
+/*global Finder: false */
+/*global Header: false */
+/*global Thumbs: false */
 /*global Slider: false */
 /*global nW1: false */
 /* eslint-disable indent */
@@ -47,23 +50,6 @@
       return o;
     };
   }
-  function headersSearch() {
-    const links = getLinksDeep(toArray(this.grp)),
-      i = links
-        .map((strs) => strs.findIndex(this.finder))
-        .findIndex((n) => n >= 0);
-    return compose(this.notify.bind(this), this.show.bind(this))(this.grp[i]);
-  }
-
-  function thumbsSearch() {
-    const paths = getLinks(toArray(this.grp)),
-      [first, second] = paths.filter(this.finder),
-      hi = paths.findIndex((cur) => cur === second),
-      lo = paths.findIndex((cur) => cur === first);
-    //img1.jpg would match the condition before img10.jpg, so use the second if > -1, ie exists;
-    return this.show(this.grp[Math.max(hi, lo)]);
-  }
-
   function makePortrait(el = nW1.meta.$("wrapper")) {
     let kls = this.naturalHeight > this.naturalWidth ? "portrait" : "";
     $wrapper.notify(kls);
@@ -73,8 +59,7 @@
     }
   }
 
-  let headers = {},
-    $slider = null,
+  let $slider = null,
     sliderFactory = function (element) {
       return new Slider(element);
     },
@@ -83,7 +68,6 @@
     getDesktop = nW1.meta.pApply(Modernizr.mq, ipad);
 
   const meta = nW1.meta,
-    //Finder = nW1.getFinder(),
     utils = nW1.utils,
     broadcaster = Publisher.from(),
     looper = nW1.Looper,
@@ -113,15 +97,6 @@
     ),
     setDisplay = setProperty("display"),
     hide = compose(curry2(setDisplay)("none")),
-    getLinks = (grp) => {
-      const get = curry3(utils.getTargetNode)("firstChild")(/^a$/i);
-      return grp.map((lis) => compose(utils.getAttrs("href"), get)(lis));
-    },
-    getLinksDeep = (grp) => {
-      const ul = grp.map(curry3(utils.getTargetNode)("nextSibling")(/ul/i)),
-        lis = ul.map(({ children }) => meta.toArray(children));
-      return lis.map(getLinks);
-    },
     getHref = (a) => a.getAttribute("href"),
     matchImg = compose(
       curry3(invokeMethod)(/^img/i)("match"),
@@ -207,12 +182,13 @@
     loader = function () {
       getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
       //post creation of sidebar
-      headers = Finder.from(headings());
+      
       $wrapper = nW1.Publish().makepublisher(meta.$$("wrapper"));
       $wrapper.attach(prepClassListNav);
       addClickPreview($("navigation"));
       addClickHover($("navigation"));
-      const getExtent = $$Q("#navigation ul li a", true),
+      const $headers = Header.from(headings()),
+      getExtent = $$Q("#navigation ul li a", true),
         getMyLinks = compose(
           curryL3(invokeMethodBridge)("map")(getHref),
           toArray,
@@ -248,7 +224,7 @@
         },
         displayer = curryL2(resolvePath)($$("base")),
         //projector = curryL2(resolvePath)($$("slide")),
-        thumbs = Finder.from($Q("#navigation ul li", true)),
+        $thumbs = Thumbs.from($Q("#navigation ul li", true)),
         addPlayClick = curry2(ptL(meta.lazyVal, "addEventListener", "click"))(
           routes.menu
         ).wrap(meta.pass),
@@ -332,13 +308,11 @@
         .map(utils.appendCB)
         .map(curry2(invoke)($("buttons")))
         .map(buttonCb);
-      headers.search = headersSearch;
-      thumbs.search = thumbsSearch;
       meta.zip("forEach", sliderspans, slidertext);
       $slider = sliderFactory($$("myrange"));
       attach(broadcaster, null, [
-        [headers.setFinder.bind(headers)],
-        [thumbs.setFinder.bind(thumbs)],
+        [$headers.setFinder.bind($headers)],
+        [$thumbs.setFinder.bind($thumbs)],
         [previewer]
       ]);
       broadcaster.notify(src);
@@ -363,8 +337,8 @@
         [
           [previewUpdate],
           [sliderBridge],
-          [thumbs.setFinder.bind(thumbs)],
-          [headers.setFinder.bind(headers)]
+          [$thumbs.setFinder.bind($thumbs)],
+          [$headers.setFinder.bind($headers)]
         ],
         "swap"
       );
