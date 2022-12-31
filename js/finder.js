@@ -7,8 +7,18 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 
-nW1.getFinder = () => {
-  return class Finder extends Publisher {
+const curry3 = nW1.meta.curryRight(3),
+  getLinks = (grp) => {
+    const get = curry3(nW1.utils.getTargetNode)("firstChild")(/^a$/i);
+    return grp.map((lis) => nW1.meta.compose(nW1.utils.getAttrs("href"), get)(lis));
+  },
+  getLinksDeep = (grp) => {
+    const ul = grp.map(curry3(nW1.utils.getTargetNode)("nextSibling")(/ul/i)),
+      lis = ul.map(({ children }) => nW1.meta.toArray(children));
+    return lis.map(getLinks);
+  };
+
+class Finder extends Publisher {
     constructor(grp = [], kls = "active", h = []) {
       super(h);
       this.grp = grp;
@@ -55,10 +65,21 @@ nW1.getFinder = () => {
           res = reg2.exec(cur)[1];
           return res && str.match(res);
         } catch (e) {
-            res = reg1.exec(cur)[1];
-            return str.match(res);
-          }
+          res = reg1.exec(cur)[1];
+          return str.match(res);
+        }
       };
     }
   };
-};
+
+/*
+class Header extends Finder {
+  search() {
+    const links = getLinksDeep(toArray(this.grp)),
+      i = links
+        .map((strs) => strs.findIndex(this.finder))
+        .findIndex((n) => n >= 0);
+    return compose(this.notify.bind(this), this.show.bind(this))(this.grp[i]);
+  }
+}
+*/

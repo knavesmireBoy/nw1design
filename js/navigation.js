@@ -83,7 +83,7 @@
     getDesktop = nW1.meta.pApply(Modernizr.mq, ipad);
 
   const meta = nW1.meta,
-    Finder = nW1.getFinder(),
+    //Finder = nW1.getFinder(),
     utils = nW1.utils,
     broadcaster = Publisher.from(),
     looper = nW1.Looper,
