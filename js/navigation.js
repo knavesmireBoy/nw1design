@@ -1,6 +1,7 @@
 /*jslint nomen: true */
 /*global Modernizr: false */
 /*global Publisher: false */
+/*global Slider: false */
 /*global nW1: false */
 /* eslint-disable indent */
 
@@ -75,16 +76,6 @@
   let headers = {},
     $slider = null,
     sliderFactory = function (element) {
-      function Slider(el) {
-        this.el = getResult(el);
-        this.handlers = [];
-        const that = this;
-        this.el.oninput = function () {
-          that.notify(this.value, true);
-        };
-      }
-      Slider.prototype = new Publisher();
-      Slider.prototype.constructor = Slider;
       return new Slider(element);
     },
     $painter = null,
