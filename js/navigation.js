@@ -1,7 +1,6 @@
 /*jslint nomen: true */
 /*global Modernizr: false */
 /*global Publisher: false */
-/*global Finder: false */
 /*global Header: false */
 /*global Thumbs: false */
 /*global Slider: false */
@@ -11,14 +10,6 @@
 (function (Mod, ipad) {
   "use strict";
 
-  let $wrapper = {};
-
-  function getResult(o) {
-    if (typeof o === "function") {
-      return o();
-    }
-    return o;
-  }
   //https://webdesign.tutsplus.com/tutorials/javascript-debounce-and-throttle--cms-36783
   //initialize throttlePause variable outside throttle function
   function throttle(callback, time) {
@@ -35,35 +26,10 @@
       throttlePause = false;
     }, time);
   }
-  function insertB4(neu, elm) {
-    const el = getResult(elm),
-      p = el.parentNode;
-    return p.insertBefore(getResult(neu), el);
-  }
-  function doIterate(m, funs) {
-    return function (o) {
-      if (funs) {
-        let obj = getResult(o);
-        funs[m]((f) => f(obj));
-        return obj;
-      }
-      return o;
-    };
-  }
-  function makePortrait(el = nW1.meta.$("wrapper")) {
-    let kls = this.naturalHeight > this.naturalWidth ? "portrait" : "";
-    $wrapper.notify(kls);
-    //https://stackoverflow.com/questions/49241330/javascript-domtokenlist-prototype
-    if (el === nW1.meta.$("wrapper")) {
-      el.classList = kls;
-    }
-  }
 
-  let $slider = null,
-    sliderFactory = function (element) {
-      return new Slider(element);
-    },
-    $painter = null,
+  let $wrapper = {}, //await domContent...
+    $slider = {},
+    $painter = {},
     throttlePause,
     getDesktop = nW1.meta.pApply(Modernizr.mq, ipad);
 
@@ -76,6 +42,7 @@
     $Q = meta.$Q,
     $$Q = meta.$$Q,
     compose = meta.compose,
+    getResult = meta.getResult,
     curry2 = meta.curryRight(2),
     curry22 = meta.curryRight(2, true),
     curryL2 = meta.curryLeft(2),
@@ -95,6 +62,9 @@
       meta.invokePair,
       "setProperty"
     ),
+    sliderFactory = function (element) {
+      return new Slider(element);
+    },
     setDisplay = setProperty("display"),
     hide = compose(curry2(setDisplay)("none")),
     getHref = (a) => a.getAttribute("href"),
@@ -103,6 +73,14 @@
       curry2(meta.getter)("nodeName"),
       utils.getTarget
     ),
+    makePortrait = function (el = nW1.meta.$("wrapper")) {
+      let kls = this.naturalHeight > this.naturalWidth ? "portrait" : "";
+      $wrapper.notify(kls);
+      //https://stackoverflow.com/questions/49241330/javascript-domtokenlist-prototype
+      if (el === $("wrapper")) {
+        el.classList = kls;
+      }
+    },
     resolvePath = (o, src, tgt = meta.$("wrapper")) => {
       let el = getResult(o),
         repl =
@@ -145,6 +123,16 @@
         getDesktop = pApply(meta.negate, getDesktop);
       }
     },
+    doIterate = (m, funs) => {
+      return (o) => {
+        if (funs) {
+          let obj = getResult(o);
+          funs[m]((f) => f(obj));
+          return obj;
+        }
+        return o;
+      };
+    },
     attach = window.nW1.Publish.attachAll,
     $recur = nW1.recurMaker(300, 99, 1, true).init(),
     routes = nW1.router($recur),
@@ -179,21 +167,27 @@
     prepClassListNav = meta.pApply(f, meta.$$("navigation")),
     pg = window.web ? 27 : 52,
     gtThanEq = (a, b) => a >= b,
+    /////LOADER//////////LOADER//////////LOADER//////////LOADER//////////LOADER/////
     loader = function () {
       getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
       //post creation of sidebar
-      
       $wrapper = nW1.Publish().makepublisher(meta.$$("wrapper"));
       $wrapper.attach(prepClassListNav);
       addClickPreview($("navigation"));
       addClickHover($("navigation"));
+
       const $headers = Header.from(headings()),
-      getExtent = $$Q("#navigation ul li a", true),
+        getExtent = $$Q("#navigation ul li a", true),
         getMyLinks = compose(
           curryL3(invokeMethodBridge)("map")(getHref),
           toArray,
           getExtent
         ),
+        insertB4 = (neu, elm) => {
+          const el = getResult(elm),
+            p = el.parentNode;
+          return p.insertBefore(getResult(neu), el);
+        },
         src = compose(utils.getAttrs("href"), utils.getZero, getExtent)(),
         machDiv = prep2Append(doDiv, prepAttrs([setId], ["slideshow"])),
         machControls = prep2Append(doDiv, prepAttrs([setId], ["controls"])),
@@ -281,35 +275,37 @@
           setState,
           curry3(meta.compare(gtThanEq))("naturalWidth")("naturalHeight")
         );
-        compose(
-          getParent,
-          machSlide,
-          getParent,
-          machBase,
-          setInnerDiv,
-          climb,
-          append(utils.doTextNow(pg)),
-          setSpan2,
-          utils.getParent2,
-          append(utils.doTextNow(1)),
-          setSpan1,
-          setPara,
-          getParent,
-          machSliderInput,
-          machSlider,
-          addPlayClick,
-          getParent,
-          machButtons,
-          machControls,
-          machDiv
-        )($("display"));
+      compose(
+        getParent,
+        machSlide,
+        getParent,
+        machBase,
+        setInnerDiv,
+        climb,
+        append(utils.doTextNow(pg)),
+        setSpan2,
+        utils.getParent2,
+        append(utils.doTextNow(1)),
+        setSpan1,
+        setPara,
+        getParent,
+        machSliderInput,
+        machSlider,
+        addPlayClick,
+        getParent,
+        machButtons,
+        machControls,
+        machDiv
+      )($("display"));
       buttontext
         .map(buttons)
         .map(utils.appendCB)
         .map(curry2(invoke)($("buttons")))
         .map(buttonCb);
       meta.zip("forEach", sliderspans, slidertext);
+
       $slider = sliderFactory($$("myrange"));
+
       attach(broadcaster, null, [
         [$headers.setFinder.bind($headers)],
         [$thumbs.setFinder.bind($thumbs)],

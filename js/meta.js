@@ -250,6 +250,7 @@ nW1.meta = (function () {
       () =>
         byTag(str, flag),
     compose: compose,
+    getResult: getResult,
     tagTester: tagTester,
     doWhenFactory: doWhenFactory,
     doBest: doBest,
