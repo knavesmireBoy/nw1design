@@ -38,7 +38,7 @@ const playMaker = function ($recur) {
         $recur.i += 1;
       },
       reset: function () {
-        $recur.notify("base");
+        $recur.notify(null, "base");
       }
     },
     actions = [fadeIn, fadeOut];

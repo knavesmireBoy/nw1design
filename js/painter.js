@@ -49,10 +49,10 @@
           },
           update: (flag) => {
             //flag from $recur
-            $recur.notify(deferCurrent, "slide");
             slide.onload = (e) => {
               if (flag) {
-                $recur.notify(deferForward, "base");
+               $recur.notify(deferForward, "base");
+            //nW1.painter.updatePath(deferForward, "base");
                 onInplay();
               } else {
                 $recur.notify(utils.getImgPath(e), "swap");
