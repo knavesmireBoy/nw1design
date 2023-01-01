@@ -329,8 +329,8 @@
         ["update", "update"],
         ["cleanup", "delete"]
       ]);
-      attach($recur, $mediator, [
-        [$mediator.next.bind($mediator)]
+      attach($recur, null, [
+        ["base", $mediator.next.bind($mediator)]
       ]);
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
       attach(
