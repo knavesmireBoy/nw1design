@@ -5,7 +5,7 @@ if (!window.nW1) {
 }
 (function () {
   "use strict";
-  
+
   nW1.Mediator = class {
     constructor(looper, painter) {
       this.looper = looper;
@@ -15,7 +15,6 @@ if (!window.nW1) {
       this.painter(this.looper.forward(), type);
     }
     static from(...args) {
-     // console.log(this)
       return new this(...args);
     }
   };
