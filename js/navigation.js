@@ -30,6 +30,7 @@
   let $wrapper = {}, //await domContent...
     $slider = {},
     $painter = {},
+    $mediator = {},
     throttlePause,
     getDesktop = nW1.meta.pApply(Modernizr.mq, ipad);
 
@@ -73,6 +74,7 @@
       curry2(meta.getter)("nodeName"),
       utils.getTarget
     ),
+    //ES5; need access to this
     makePortrait = function (el = nW1.meta.$("wrapper")) {
       let kls = this.naturalHeight > this.naturalWidth ? "portrait" : "";
       $wrapper.notify(kls);
@@ -319,12 +321,16 @@
         [sliderBridge]
       ]);
       $painter = nW1.painter(getById("slide"), getById("base"), $recur);
+      $mediator = nW1.Mediator.from(looper, $painter),
       attach($recur, $painter, [
         ["updateOpacity", "opacity"],
         ["updatePath", "base"],
         ["updatePath", "slide"],
         ["update", "update"],
         ["cleanup", "delete"]
+      ]);
+      attach($recur, $mediator, [
+        [$mediator.next.bind($mediator)]
       ]);
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
       attach(
@@ -345,6 +351,7 @@
         "resize",
         pApply(throttle, pApply(isDesktop, [sliderActions]), 222)
       );
+
 
       window.setTimeout(function () {
         compose(utils.applyPortrait($("wrapper")), doCompare)($("base"));
