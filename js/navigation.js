@@ -320,14 +320,14 @@
         [broadcaster.notify.bind(broadcaster)],
         [sliderBridge]
       ]);
-      $painter = nW1.painter(getById("slide"), getById("base"), $recur);
+      $painter = nW1.Painter.from(getById("slide"), getById("base"), $recur);
       $mediator = nW1.Mediator.from(looper, $painter, $recur),
       attach($recur, $painter, [
         ["updateOpacity", "opacity"],
         ["updatePath", "base"],
         ["updatePath", "slide"],
-        ["update", "update"],
-        ["cleanup", "delete"]
+        ["cleanup", "delete"],
+        ["update", "update"]
       ]);
 
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
