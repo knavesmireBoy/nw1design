@@ -95,10 +95,12 @@
       const that = this;
       this.slide.onload = (e) => {
         if (flag) {
-          that.updatePath(deferForward, "base");
+         // that.updatePath(deferForward, "base");
+          that.recur.notify(deferForward, "base");
           onInplay();
         } else {
-          that.updatePath(utils.getImgPath(e), "swap");
+          //that.updatePath(utils.getImgPath(e), "swap");
+         // that.recur.notify(utils.getImgPath(e), "swap");
         }
       };
       this.base.onload = () => {
