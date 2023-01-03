@@ -12,11 +12,14 @@ if (!window.nW1) {
   best = (coll, fun) => () => coll.reduce((a, b) => fun(a, b) ? a : b ),
   invoke = (f) => f(),
   invokeMethod = meta.invokeMethod,
-  displayInplay = ptL(invokeMethod, document.body.classList, "add"),
+  displayInplay = ptL(invokeMethod, document.body.classList),
+  exec = displayInplay("add"),
+  undo = displayInplay("remove"),
+  onEnter = curry22(meta.invoke)("inplay")(exec),
+  onExit = curry22(meta.invoke)("inplay")(undo),
   noOp = () => undefined,
-  onInplay = curry22(meta.invoke)("inplay")(displayInplay),
-  defer = best([noOp, onInplay], meta.$$Q('.inplay')),
-  doInPlay = meta.compose(invoke, defer);
+  defer = best([noOp, onEnter], meta.$$Q('.inplay')),
+  setPlayStatus = meta.compose(invoke, defer);
 
   nW1.Mediator = class {
     constructor(looper, painter, player) {
@@ -28,9 +31,12 @@ if (!window.nW1) {
       this.painter.updatePath(this.looper.forward().value, type);
     }
     update(flag, type) {
-      doInPlay();
+      setPlayStatus();
       this.painter.updatePath(this.looper.get(), 'slide');
       this.painter.update(flag, type);
+    }
+    exit() {
+      onExit();
     }
     static from(...args) {
       return new nW1.Mediator(...args);

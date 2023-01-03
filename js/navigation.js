@@ -324,13 +324,12 @@
       $mediator = nW1.Mediator.from(looper, $painter, $recur),
       attach($recur, $painter, [
         ["updateOpacity", "opacity"],
-       // ["updatePath", "base"],
         ["cleanup", "delete"]
       ]);
 
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
       attach(
-        $recur,
+        $painter,
         null,
         [
           [previewUpdate],
@@ -346,12 +345,13 @@
       ]);
 
       $slider.attach(looper.set.bind(looper));
+      $painter.attach($recur.setPlayer.bind($recur), "query");
+      $recur.attach($mediator.exit, "delete");
       sliderActions();
       window.addEventListener(
         "resize",
         pApply(throttle, pApply(isDesktop, [sliderActions]), 222)
       );
-
 
       window.setTimeout(function () {
         compose(utils.applyPortrait($("wrapper")), doCompare)($("base"));

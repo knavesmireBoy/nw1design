@@ -1,4 +1,5 @@
 /*jslint nomen: true */
+/*global Publisher: false */
 /*global nW1: false */
 /* eslint-disable indent */
 
@@ -18,10 +19,8 @@
     $$ = meta.$$,
     compose = meta.compose,
     curry2 = meta.curryRight(2),
-    curry22 = meta.curryRight(2, true),
     curry3 = meta.curryRight(3),
     always = meta.always,
-    invoke = meta.invoke,
     invokeMethod = meta.invokeMethod,
     ptL = meta.doPartial(),
     deferPTL = meta.doPartial(true),
@@ -44,8 +43,6 @@
       "classList",
       "pause"
     ),
-    bodyKlas = curry2(ptL(invokeMethod, document.body.classList)),
-    queryInplay = bodyKlas("inplay"),
     setMargin = setProperty("margin-left"),
     setInplayMargin = curry2(setMargin)("-100%"),
     resetMargin = curry2(setMargin)(0),
@@ -60,8 +57,6 @@
         .map(getById)
         .map((item) => getResult(item))
         .map(getprop),
-    displayInplay = ptL(invokeMethod, document.body.classList, "add"),
-    onInplay = curry22(invoke)("inplay")(displayInplay),
     deferForward = compose(
       curry2(meta.getter)("value"),
       deferPTL(invokeMethod, nW1.Looper, "forward", null)
@@ -72,16 +67,15 @@
       postQueryHeight(bool, base, slide);
       return bool;
     };
-  nW1.Painter = class {
-    constructor(slide, base, $recur) {
+  nW1.Painter = class extends Publisher {
+    constructor(slide, base) {
+      super();
       this.slide = getResult(slide);
       this.base = getResult(base);
-      this.recur = $recur;
     }
     updateOpacity(o) {
       if (!this.slide.onload) {
         show(this.slide);
-       // this.update(true);
       }
       setOpacity(this.slide, o);
     }
@@ -98,17 +92,15 @@
         if (flag) {
          that.updatePath(deferForward, "base");
         } else {
-          //inform preview pic only
-          that.recur.notify(utils.getImgPath(e), "swap");
+          //inform preview pic etc..
+          that.notify(utils.getImgPath(e), "swap");
         }
       };
       this.base.onload = () => {
-        let bool = queryHeight(that.base, that.slide);
-        that.recur.setPlayer(bool);
+        that.notify(queryHeight(that.base, that.slide), "query");
       };
     }
     cleanup() {
-      queryInplay("remove");
       displayPause("remove");
       show(this.base);
       hide(this.slide);

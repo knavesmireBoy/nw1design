@@ -1,14 +1,21 @@
 class Publisher {
-    constructor(h = []) {
-        this.handlers = h;
+    constructor() {
+        this.handlers = {"any": []};
     }
-    notify(...args) {
-        this.handlers.forEach((handler) => handler(...args));
+    notify(data, type = "any") {
+        this.handlers[type].forEach((handler) => handler(data));
     }
-    attach(handler, v) {
-        this.handlers = [...this.handlers, handler];
+    attach(handler, type = "any") {
+
+        if(this.handlers[type]){
+            this.handlers[type].push(handler);
+        } else {
+            this.handlers[type] = [];
+            this.handlers[type].push(handler);
+        }
+        //this.handlers[type] = [...this.handlers[type], handler];
     }
-    static from(h = []) {
-        return new Publisher(h);
+    static from() {
+        return new Publisher();
     }
 }
