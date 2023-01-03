@@ -7,13 +7,11 @@ class Publisher {
     }
     attach(handler, type = "any") {
 
-        if(this.handlers[type]){
-            this.handlers[type].push(handler);
+        if(this.handlers[type]) {
+            this.handlers[type] = [...this.handlers[type], handler];
         } else {
-            this.handlers[type] = [];
-            this.handlers[type].push(handler);
+            this.handlers[type] = [handler];
         }
-        //this.handlers[type] = [...this.handlers[type], handler];
     }
     static from() {
         return new Publisher();
