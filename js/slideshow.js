@@ -4,53 +4,70 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 
-const playMaker = function ($recur) {
-  const fade = {
-      validate: function () {
-        return $recur.i <= -1;
+const meta = nW1.meta,
+  curry2 = meta.curryRight(2),
+  compose = meta.compose,
+  deferPTL = meta.doPartial(true),
+  getter = (o, p) => o[p],
+  invokeMethod = meta.invokeMethod,
+    /*
+  getHeight = (o) => {
+    let h = o.naturalHeight;
+    h = Math.floor(h / 10);
+    return h * 10;
+  },
+  */
+  deferForward = compose(
+    curry2(getter)("value"),
+    deferPTL(invokeMethod, nW1.Looper, "forward", null)
+  ),
+  playMaker = function ($recur, getNext) {
+    const fade = {
+        validate: function () {
+          return $recur.i <= -1;
+        },
+        inc: function () {
+          $recur.i -= 1;
+        },
+        reset: function (arg) {
+          $recur.i = $recur.dur;
+          $recur.notify(true, "update");
+        }
       },
-      inc: function () {
-        $recur.i -= 1;
+      fadeOut = {
+        validate: function () {
+          return $recur.i <= -0.1;
+        },
+        inc: function () {
+          $recur.i -= 1;
+        },
+        reset: function () {
+          $recur.notify(false, "update");
+          //ensure fadeIn will follow
+          $recur.setPlayer(true);
+        }
       },
-      reset: function (arg) {
-        $recur.i = $recur.dur;
-        $recur.notify(true, "update");
-      }
-    },
-    fadeOut = {
-      validate: function () {
-        return $recur.i <= -0.1;
+      fadeIn = {
+        validate: function () {
+          return $recur.i >= 222;
+        },
+        inc: function () {
+          $recur.i += 1;
+        },
+        reset: function () {
+          $recur.notify(getNext, "base");
+        }
       },
-      inc: function () {
-        $recur.i -= 1;
-      },
-      reset: function () {
-        $recur.notify(false, "update");
-        //ensure fadeIn will follow
-        $recur.setPlayer(true);
-      }
-    },
-    fadeIn = {
-      validate: function () {
-        return $recur.i >= 222;
-      },
-      inc: function () {
-        $recur.i += 1;
-      },
-      reset: function () {
-        $recur.notify("base");
-      }
-    },
-    actions = [fadeIn, fadeOut];
+      actions = [fadeIn, fadeOut];
 
-  return function (flag) {
-    return flag ? actions.reverse()[0] : fade;
+    return function (flag) {
+      return flag ? actions.reverse()[0] : fade;
+    };
   };
-};
 nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
   let ret = {
     init: function () {
-      this.nextplayer = playMaker(this);
+      this.nextplayer = playMaker(this, deferForward);
       this.player = this.nextplayer();
       this.dur = duration;
       this.wait = wait;
@@ -117,10 +134,4 @@ nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
         getMobile = pApply(meta.negate, getMobile);
       }
     },
-
-  getHeight = (o) => {
-    let h = o.naturalHeight;
-    h = Math.floor(h / 10);
-    return h * 10;
-  }
   */
