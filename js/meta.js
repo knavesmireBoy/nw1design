@@ -80,6 +80,7 @@ nW1.meta = (function () {
     },
     isBoolean = tagTester("Boolean"),
     isFunction = tagTester("Function"),
+    isString = tagTester("String"),
     isArray = tagTester("Array"),
     getResult = o => isFunction(o) ? o() : o,
     byId = (str) => document.getElementById(str),
@@ -301,6 +302,7 @@ nW1.meta = (function () {
       return invokeMethod(cb(o), m, v);
     },
     invokeClass: (o, s, m, v) => getResult(o)[s][m](v),
+    isString: isString,
     negate: (f, ...args) => !f(...args),
     negator: (f, ...args) => (...rest) => !f(...args, ...rest),
     zip: (m, funs, vals) => vals[m]((v, i) => funs[i](v)),

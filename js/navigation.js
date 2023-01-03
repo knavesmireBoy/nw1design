@@ -64,7 +64,9 @@
       "setProperty"
     ),
     sliderFactory = function (element) {
-      return new Slider(element);
+      let $s = new Slider();
+      $s.init(element);
+      return $s;
     },
     setDisplay = setProperty("display"),
     hide = compose(curry2(setDisplay)("none")),
@@ -345,6 +347,7 @@
       ]);
 
       $slider.attach(looper.set.bind(looper));
+
       $painter.attach($recur.setPlayer.bind($recur), "query");
       $recur.attach($mediator.exit, "delete");
       sliderActions();
