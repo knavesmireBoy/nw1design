@@ -324,11 +324,8 @@
       $mediator = nW1.Mediator.from(looper, $painter, $recur),
       attach($recur, $painter, [
         ["updateOpacity", "opacity"],
-        ["updatePath", "base"],
-        ["cleanup", "delete"]/*
-               ["updatePath", "slide"],
-        ["update", "update"]
-        */
+       // ["updatePath", "base"],
+        ["cleanup", "delete"]
       ]);
 
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image

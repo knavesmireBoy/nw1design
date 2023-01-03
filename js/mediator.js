@@ -9,13 +9,15 @@ if (!window.nW1) {
   const meta = nW1.meta,
   ptL = meta.doPartial(),
   curry22 = meta.curryRight(2, true),
-  invoke = meta.invoke,
+  best = (coll, fun) => () => coll.reduce((a, b) => fun(a, b) ? a : b ),
+  invoke = (f) => f(),
   invokeMethod = meta.invokeMethod,
   displayInplay = ptL(invokeMethod, document.body.classList, "add"),
   noOp = () => undefined,
-  onInplay = curry22(invoke)("inplay")(displayInplay),
-  doBuz = curry22(invoke)("buzz")(displayInplay),
-  doInPlay = meta.best(meta.$$Q('.inplay'), [doBuz, onInplay]);
+  onInplay = curry22(meta.invoke)("inplay")(displayInplay),
+  defer = best([noOp, onInplay], meta.$$Q('.inplay')),
+  doInPlay = meta.compose(invoke, defer);
+
   nW1.Mediator = class {
     constructor(looper, painter, player) {
       this.looper = looper;
