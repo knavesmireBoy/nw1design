@@ -325,9 +325,10 @@
       attach($recur, $painter, [
         ["updateOpacity", "opacity"],
         ["updatePath", "base"],
-        ["updatePath", "slide"],
-        ["cleanup", "delete"],
+        ["cleanup", "delete"]/*
+               ["updatePath", "slide"],
         ["update", "update"]
+        */
       ]);
 
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image

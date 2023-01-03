@@ -205,7 +205,7 @@ nW1.meta = (function () {
     },
     toArray = (coll, cb = () => true) =>
       Array.prototype.slice.call(coll).filter(cb),
-    best = (fun, coll, arg) => {
+    best = (fun, coll) => {
       return coll.reduce((champ, contender) =>
         fun(champ, contender) ? champ : contender
       );
@@ -240,7 +240,8 @@ nW1.meta = (function () {
      // console.log(o,m,k,v);
       return getResult(o)[m](k, v);
     },
-    soInvoke = (o, m, ...rest) => o[m](...rest);
+    soInvoke = (o, m, ...rest) => o[m](...rest),
+    nOp = () => undefined;
   return {
     $: byId,
     $$: byIdDefer,

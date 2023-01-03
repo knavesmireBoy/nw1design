@@ -81,6 +81,7 @@
     updateOpacity(o) {
       if (!this.slide.onload) {
         show(this.slide);
+       // this.update(true);
       }
       setOpacity(this.slide, o);
     }
@@ -94,13 +95,14 @@
       //flag from $recur
       const that = this;
       this.slide.onload = (e) => {
+        console.log(that, flag);
+
         if (flag) {
-         // that.updatePath(deferForward, "base");
-          that.recur.notify(deferForward, "base");
-          onInplay();
+         that.updatePath(deferForward, "base");
+         // that.recur.notify(deferForward, "base");
         } else {
           //that.updatePath(utils.getImgPath(e), "swap");
-         // that.recur.notify(utils.getImgPath(e), "swap");
+        that.recur.notify(utils.getImgPath(e), "swap");
         }
       };
       this.base.onload = () => {
