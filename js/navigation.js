@@ -26,7 +26,7 @@
       throttlePause = false;
     }, time);
   }
-//await domContent...
+  //await domContent...
   let $wrapper = Publisher.from(),
     $slider = {},
     $painter = {},
@@ -284,7 +284,6 @@
         .map(curry2(invoke)($("buttons")))
         .map(buttonCb);
       meta.zip("forEach", sliderspans, slidertext);
-
       $slider = sliderFactory($$("myrange"));
 
       attach($broadcaster, null, [
@@ -293,7 +292,7 @@
         [previewer]
       ]);
       $broadcaster.notify(src);
-    //
+      //
       looper.build(getMyLinks(), utils.incrementer, []);
       $painter = nW1.Painter.from(getById("slide"), getById("base"), $player);
       $mediator = nW1.Mediator.from(looper, $painter, $player);
