@@ -60,7 +60,7 @@ nW1.playerMaker = function (duration = 100, wait = 50, i = 1) {
       this.t = null;
       return this;
     }
-    play(){
+    play() {
       if (this.player.validate()) {
         this.player.reset();
       } else {
@@ -69,20 +69,22 @@ nW1.playerMaker = function (duration = 100, wait = 50, i = 1) {
       }
     }
     suspend(flag) {
-      const o = !isNaN(flag) ? 0.5 : 1;
-      this.notify(o, "opacity");
-      window.cancelAnimationFrame(this.t);
-      //window.clearTimeout(this.t);
-      this.t = flag; //either set to undefined(forward/back/exit) or null(pause)
-      if (o === 1) {
-        this.notify(null, "delete");
+     if (this.t) {
+        const o = !isNaN(flag) ? 0.5 : 1;
+        this.notify(o, "opacity");
+        window.cancelAnimationFrame(this.t);
+        //window.clearTimeout(this.t);
+        this.t = flag; //either set to undefined(forward/back/exit) or null(pause)
+        if (o === 1) {
+          this.notify(null, "delete");
+        }
       }
     }
     setPlayer(arg) {
       this.player = this.nextplayer(arg);
       this.play();
     }
-    resume () {
+    resume() {
       this.player.inc();
       this.t = window.requestAnimationFrame(this.play.bind(this));
       //this.t = window.setTimeout(this.play.bind(this), wait);
@@ -90,7 +92,7 @@ nW1.playerMaker = function (duration = 100, wait = 50, i = 1) {
     static from(...args) {
       return new Player(...args);
     }
-  };
+  }
   return Player.from();
 };
 

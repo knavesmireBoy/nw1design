@@ -76,6 +76,7 @@
     updateOpacity(o) {
       if (!this.slide.onload) {
         show(this.slide);
+        this.notify(null, "init");
       }
       setOpacity(this.slide, o);
     }

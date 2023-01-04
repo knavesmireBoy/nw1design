@@ -10,7 +10,7 @@ class Publisher {
     notify(data, type) {
         let mytype = nW1.meta.isString(type) ? type : 'any';
         if(this.handlers[mytype]){
-            this.handlers[mytype].forEach((handler) => handler(data));
+            this.handlers[mytype].forEach((handler) => handler(data, type));
         }
     }
     attach(handler, type) {

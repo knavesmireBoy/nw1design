@@ -27,7 +27,7 @@
     }, time);
   }
 //await domContent...
-  let $wrapper = Publisher.from(), 
+  let $wrapper = Publisher.from(),
     $slider = {},
     $painter = {},
     $mediator = {},
@@ -113,7 +113,6 @@
     setId = utils.setId,
     setAlt = utils.setAlt,
     setSrc = utils.setSrc,
-    setter = meta.setter,
     toArray = meta.toArray,
     negate = meta.negate,
     abbr = (el, repl) => {
@@ -161,8 +160,6 @@
       curry2(toArray)(curryL2(negate)(utils.matchPath)),
       $$Q("#navigation a", true)
     ),
-    doSliderOutput = ptL(setter, $$("tracked"), "innerHTML"),
-    doSliderInput = ptL(setter, $$("myrange"), "value"),
     addClickPreview = curry2(ptL(meta.lazyVal, "addEventListener", "click"))(
       routes.sidebar
     ).wrap(meta.pass),
@@ -242,44 +239,6 @@
           curry2(insertB4)($$("tracked")),
           curry2(insertB4)($$("max"))
         ],
-        doSliders = (i) => {
-          doSliderInput(i);
-          doSliderOutput(i + 1);
-        },
-        getCurrentIndex = (path) => {
-          let mypath = getResult(path),
-          members = looper.get("members"),
-          i = members.findIndex(curry2((a, b) => a === b)(mypath)),
-          l = members.length - 1,
-          member = members[i],
-          //reached end
-          j = !member ? 0 : i;
-           //looper members zero indexed...
-          /*also as it stands looper reverses the array when the back button is pressed
-           before counting forwards. may have to fix that but at the moment this undoes that */
-         console.log(looper.get("rev"), j, i);
-          return looper.get("rev") ? l - i : j;
-        },
-        sliderBridge = function (path) {
-          let mypath = getResult(path),
-          i = getCurrentIndex(path),
-          txt = utils.getLast($("slide").src.split("/"));
-          if (!$("slide").onload || mypath.match(txt)) {
-            doSliders(i);
-          }
-        },
-        staticSlider = function(path) {
-          const i = getCurrentIndex(path);
-          doSliders(i + 1);
-        },
-        inPlaySlider = function(path) {
-          const mypath = getResult(path),
-          i = getCurrentIndex(path),
-          txt = utils.getLast($("slide").src.split("/"));
-          if(mypath.match(txt)){
-            doSliders(i + 1);
-          }
-        },
         fixInnerHTML = (el) =>
           compose(
             utils.clearInnerHTML,
@@ -334,13 +293,14 @@
       ]);
       $broadcaster.notify(src);
       looper.build(getMyLinks(), utils.incrementer, []);
+      $painter = nW1.Painter.from(getById("slide"), getById("base"), $player);
+      $mediator = nW1.Mediator.from(looper, $painter, $player);
+
       attach(looper, null, [
         [displayer],
         [$broadcaster.notify.bind($broadcaster)],
-        [sliderBridge]
+        [$mediator.advance.bind($mediator)]
       ]);
-      $painter = nW1.Painter.from(getById("slide"), getById("base"), $player);
-      $mediator = nW1.Mediator.from(looper, $painter, $player),
       attach($player, $painter, [
         ["updateOpacity", "opacity"],
         ["cleanup", "delete"]
@@ -352,21 +312,20 @@
         null,
         [
           [previewUpdate],
-          [sliderBridge],
+          [$mediator.advance.bind($mediator)],
           [$thumbs.setFinder.bind($thumbs)],
           [$headers.setFinder.bind($headers)]
         ],
         "swap"
       );
-      attach($player, null, [
-        [$mediator.next.bind($mediator), "base"],
-        [$mediator.update.bind($mediator), "update"]
+      attach($player, $mediator, [
+        ["exit", "delete"],
+        ["next", "base"],
+        ["update", "update"]
       ]);
-
-      $slider.attach(looper.set.bind(looper));
-
+      $slider.attach(looper.set.bind(looper), "input");
       $painter.attach($player.setPlayer.bind($player), "query");
-      $player.attach($mediator.exit, "delete");
+      $painter.attach($mediator.init.bind($mediator), "init");
       sliderActions();
       window.addEventListener(
         "resize",
