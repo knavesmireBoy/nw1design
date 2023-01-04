@@ -167,7 +167,7 @@
     m = meta.mittelFactory(),
     f = m(meta.setter, "classList"),
     prepClassListNav = meta.pApply(f, meta.$$("navigation")),
-    pg = window.web ? 26 : 51,
+    pg = window.web ? 27 : 52,
     gtThanEq = (a, b) => a >= b,
     /////LOADER//////////LOADER//////////LOADER//////////LOADER//////////LOADER/////
     loader = function () {
@@ -203,7 +203,7 @@
         ],
         machSliderInput = prep2Append(
           doMakeDefer("input"),
-          prepAttrs(attrs, ["range", 0, pg, 0, "myrange"])
+          prepAttrs(attrs, ["range", 1, pg, 1, "myrange"])
         ),
         machBase = prep2Append(
           doImg,
@@ -263,7 +263,7 @@
         setInnerDiv,
         climb,
         //required for read out Image x of last
-        append(utils.doTextNow(pg + 1)),
+        append(utils.doTextNow(pg)),
         setSpan2,
         utils.getParent2,
         append(utils.doTextNow(1)),
