@@ -30,6 +30,7 @@
   let $wrapper = {}, //await domContent...
     $slider = {},
     $painter = {},
+    $mediator = {},
     throttlePause,
     getDesktop = nW1.meta.pApply(Modernizr.mq, ipad);
 
@@ -63,7 +64,9 @@
       "setProperty"
     ),
     sliderFactory = function (element) {
-      return new Slider(element);
+      let $s = new Slider();
+      $s.init(element);
+      return $s;
     },
     setDisplay = setProperty("display"),
     hide = compose(curry2(setDisplay)("none")),
@@ -318,17 +321,15 @@
         [broadcaster.notify.bind(broadcaster)],
         [sliderBridge]
       ]);
-      $painter = nW1.painter(getById("slide"), getById("base"), $recur);
+      $painter = nW1.Painter.from(getById("slide"), getById("base"));
+      $mediator = nW1.Mediator.from(looper, $painter, $recur),
       attach($recur, $painter, [
         ["updateOpacity", "opacity"],
-        ["updatePath", "base"],
-        ["updatePath", "slide"],
-        ["update", "update"],
         ["cleanup", "delete"]
       ]);
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
       attach(
-        $recur,
+        $painter,
         null,
         [
           [previewUpdate],
@@ -338,8 +339,15 @@
         ],
         "swap"
       );
+      attach($recur, null, [
+        [$mediator.next.bind($mediator), "base"],
+        [$mediator.update.bind($mediator), "update"]
+      ]);
 
       $slider.attach(looper.set.bind(looper));
+
+      $painter.attach($recur.setPlayer.bind($recur), "query");
+      $recur.attach($mediator.exit, "delete");
       sliderActions();
       window.addEventListener(
         "resize",

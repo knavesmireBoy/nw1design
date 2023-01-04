@@ -71,7 +71,7 @@ window.nW1.Publish = (function () {
 window.nW1.Publish.attachAll = function(observer, subscriber, pairs, all) {
     pairs.forEach((pair) => {
         const [method, mytype] = pair,
-        cb = subscriber ? subscriber[method] : method,
+        cb = subscriber ? subscriber[method].bind(subscriber) : method,
         type = mytype || all;
         if (nW1.meta.isFunction(cb)) {
             return observer["attach"](cb, type);

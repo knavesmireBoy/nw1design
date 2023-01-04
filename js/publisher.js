@@ -1,14 +1,28 @@
+/*jslint nomen: true */
+/*global Publisher: false */
+/*global nW1: false */
+/* eslint-disable indent */
+
+
 class Publisher {
-    constructor(h = []) {
-        this.handlers = h;
+    constructor() {
+        this.handlers = {"any": []};
     }
-    notify(...args) {
-        this.handlers.forEach((handler) => handler(...args));
+    notify(data, type) {
+        let mytype = nW1.meta.isString(type) ? type : 'any';
+        if(this.handlers[mytype]){
+            this.handlers[mytype].forEach((handler) => handler(data));
+        }
     }
-    attach(handler, v) {
-        this.handlers = [...this.handlers, handler];
+    attach(handler, type) {
+        let mytype = nW1.meta.isString(type) ? type : 'any';
+        if(this.handlers[mytype]) {
+            this.handlers[mytype] = [...this.handlers[mytype], handler];
+        } else {
+            this.handlers[mytype] = [handler];
+        }
     }
-    static from(h = []) {
-        return new Publisher(h);
+    static from() {
+        return new Publisher();
     }
 }

@@ -36,6 +36,12 @@
 .portrait #display .inner {
   margin: 1vw 10vw;
 }
+body.inplay {
+  background: red;
+}
+body.buzz {
+  background: violet;
+}
 
 /*class of inplay required for styling*/
 .inplay #display img {

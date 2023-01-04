@@ -80,6 +80,7 @@ nW1.meta = (function () {
     },
     isBoolean = tagTester("Boolean"),
     isFunction = tagTester("Function"),
+    isString = tagTester("String"),
     isArray = tagTester("Array"),
     getResult = o => isFunction(o) ? o() : o,
     byId = (str) => document.getElementById(str),
@@ -205,7 +206,7 @@ nW1.meta = (function () {
     },
     toArray = (coll, cb = () => true) =>
       Array.prototype.slice.call(coll).filter(cb),
-    best = (fun, coll, arg) => {
+    best = (fun, coll) => {
       return coll.reduce((champ, contender) =>
         fun(champ, contender) ? champ : contender
       );
@@ -240,7 +241,8 @@ nW1.meta = (function () {
      // console.log(o,m,k,v);
       return getResult(o)[m](k, v);
     },
-    soInvoke = (o, m, ...rest) => o[m](...rest);
+    soInvoke = (o, m, ...rest) => o[m](...rest),
+    nOp = () => undefined;
   return {
     $: byId,
     $$: byIdDefer,
@@ -300,6 +302,7 @@ nW1.meta = (function () {
       return invokeMethod(cb(o), m, v);
     },
     invokeClass: (o, s, m, v) => getResult(o)[s][m](v),
+    isString: isString,
     negate: (f, ...args) => !f(...args),
     negator: (f, ...args) => (...rest) => !f(...args, ...rest),
     zip: (m, funs, vals) => vals[m]((v, i) => funs[i](v)),

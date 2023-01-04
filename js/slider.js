@@ -10,13 +10,14 @@ function getResult(o) {
   }
 
 class Slider extends Publisher {
-        constructor(el) {
+        constructor() {
             super();
-            this.el = getResult(el);
-            this.handlers = [];
-            const that = this;
-            this.el.oninput = function () {
-              that.notify(this.value, true);
-        };
+    }
+    init(el) {
+      this.el = getResult(el);
+      const that = this;
+       this.el.oninput = function () {
+         that.notify(this.value, true);
+   };
     }
 }

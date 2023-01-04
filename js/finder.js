@@ -19,8 +19,8 @@ const curry3 = nW1.meta.curryRight(3),
   };
 
 class Finder extends Publisher {
-    constructor(grp = [], kls = "active", h = []) {
-      super(h);
+    constructor(grp = [], kls = "active") {
+      super();
       this.grp = grp;
       this.current = null;
       this.finder = () => null;
