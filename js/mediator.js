@@ -18,7 +18,7 @@ if (!window.nW1) {
     doSliderOutput = ptL(setter, meta.$$("tracked"), "innerHTML"),
     doSliderInput = ptL(setter, meta.$$("myrange"), "value"),
     doSliders = (i) => {
-      doSliderInput(i);
+      doSliderInput(i + 1);
       doSliderOutput(i + 1);
     },
     getCurrentIndex = (path) => {
