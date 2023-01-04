@@ -1,13 +1,17 @@
 /*jslint nomen: true */
 /*global Modernizr: false */
+/*global Publisher: false */
 /*global Header: false */
 /*global nW1: false */
 /* eslint-disable indent */
 
 (function (Mod) {
   "use strict";
-  let $wrapper = {},
-    headers = {};
+  let $wrapper = Publisher.from(),
+    headers = {},
+    m = nW1.meta.mittelFactory(),
+    f = m(nW1.meta.setter, "classList"),
+    prepClassListNav = nW1.meta.pApply(f, nW1.meta.$$("navigation"));
 
   function makePortrait(el = nW1.meta.$("wrapper")) {
     let kls = this.naturalHeight > this.naturalWidth ? "portrait" : "";
@@ -18,7 +22,7 @@
     }
   }
 
-  function router($recur) {
+  function router($player) {
     let player = null;
     const playMaker = function () {
         const func = meta.doAlternate(),
@@ -31,12 +35,12 @@
           exec = compose(
             displayPause,
             always("remove"),
-            $recur.play.bind($recur, true)
+            $player.play.bind($player, true)
           ),
           undo = compose(
             displayPause,
             always("add"),
-            $recur.suspend.bind($recur, null)
+            $player.suspend.bind($player, null)
           );
         return func([exec, undo]);
       },
@@ -62,7 +66,7 @@
         } else {
           player = null;
           nW1.Looper.setStrategy();
-          $recur.suspend();
+          $player.suspend();
           if (routines[i]) {
             routines[i]();
           }
@@ -87,7 +91,7 @@
         }
         if (visit) {
           player = null;
-          $recur.suspend();
+          $player.suspend();
         }
       }
     };
@@ -113,6 +117,7 @@
     );
 
   headers = Header.from(headings());
+  $wrapper.attach(prepClassListNav);
 
   nW1.router = router;
 }(Modernizr));

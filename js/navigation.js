@@ -287,11 +287,12 @@
       $slider = sliderFactory($$("myrange"));
 
       attach($broadcaster, null, [
+        [previewer],
         [$headers.setFinder.bind($headers)],
-        [$thumbs.setFinder.bind($thumbs)],
-        [previewer]
+        [$thumbs.setFinder.bind($thumbs)]
       ]);
       $broadcaster.notify(src);
+    //
       looper.build(getMyLinks(), utils.incrementer, []);
       $painter = nW1.Painter.from(getById("slide"), getById("base"), $player);
       $mediator = nW1.Mediator.from(looper, $painter, $player);
@@ -305,7 +306,6 @@
         ["updateOpacity", "opacity"],
         ["cleanup", "delete"]
       ]);
-
       //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
       attach(
         $painter,

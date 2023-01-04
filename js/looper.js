@@ -59,7 +59,7 @@ nW1.Looper = (function () {
     };
 
   class LoopIterator extends Publisher {
-    constructor(group = [], advancer = () => 1, handlers = [], flag = false) {
+    constructor(group = [], advancer = () => 1, flag = false) {
       super();
       this.group = group;
       this.position = 0;
