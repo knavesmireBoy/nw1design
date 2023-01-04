@@ -26,8 +26,8 @@
       throttlePause = false;
     }, time);
   }
-
-  let $wrapper = {}, //await domContent...
+//await domContent...
+  let $wrapper = Publisher.from(), 
     $slider = {},
     $painter = {},
     $mediator = {},
@@ -36,7 +36,7 @@
 
   const meta = nW1.meta,
     utils = nW1.utils,
-    broadcaster = Publisher.from(),
+    $broadcaster = Publisher.from(),
     looper = nW1.Looper,
     $ = meta.$,
     $$ = meta.$$,
@@ -137,7 +137,7 @@
         return o;
       };
     },
-    attach = window.nW1.Publish.attachAll,
+    attach = Publisher.attachAll,
     $recur = nW1.recurMaker(300, 99, 1, true).init(),
     routes = nW1.router($recur),
     prepAttrs = (keys, vals) => curryL33(meta.zip)("map")(keys)(vals),
@@ -175,7 +175,7 @@
     loader = function () {
       getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
       //post creation of sidebar
-      $wrapper = nW1.Publish().makepublisher(meta.$$("wrapper"));
+      //$wrapper = nW1.Publish().makepublisher(meta.$$("wrapper"));
       $wrapper.attach(prepClassListNav);
       addClickPreview($("navigation"));
       addClickHover($("navigation"));
@@ -310,16 +310,16 @@
 
       $slider = sliderFactory($$("myrange"));
 
-      attach(broadcaster, null, [
+      attach($broadcaster, null, [
         [$headers.setFinder.bind($headers)],
         [$thumbs.setFinder.bind($thumbs)],
         [previewer]
       ]);
-      broadcaster.notify(src);
+      $broadcaster.notify(src);
       looper.build(getMyLinks(), utils.incrementer, []);
       attach(looper, null, [
         [displayer],
-        [broadcaster.notify.bind(broadcaster)],
+        [$broadcaster.notify.bind($broadcaster)],
         [sliderBridge]
       ]);
       $painter = nW1.Painter.from(getById("slide"), getById("base"), $recur);

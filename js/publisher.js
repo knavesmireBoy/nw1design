@@ -1,5 +1,4 @@
 /*jslint nomen: true */
-/*global Publisher: false */
 /*global nW1: false */
 /* eslint-disable indent */
 
@@ -24,5 +23,15 @@ class Publisher {
     }
     static from() {
         return new Publisher();
+    }
+    static attachAll(observer, subscriber, pairs, all) {
+        pairs.forEach((pair) => {
+            const [method, mytype] = pair,
+            cb = subscriber ? subscriber[method].bind(subscriber) : method,
+            type = mytype || all;
+            if (nW1.meta.isFunction(cb)) {
+                return observer["attach"](cb, type);
+            }
+        });
     }
 }
