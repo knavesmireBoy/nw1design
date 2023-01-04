@@ -5,14 +5,6 @@
 
 (function () {
   "use strict";
-
-  function getResult(o) {
-    if (typeof o === "function") {
-      return o();
-    }
-    return o;
-  }
-
   const meta = nW1.meta,
     utils = nW1.utils,
     $ = meta.$,
@@ -20,6 +12,7 @@
     compose = meta.compose,
     curry2 = meta.curryRight(2),
     curry3 = meta.curryRight(3),
+    getResult = meta.getResult,
     always = meta.always,
     invokeMethod = meta.invokeMethod,
     ptL = meta.doPartial(),
