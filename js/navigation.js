@@ -92,6 +92,7 @@
             ? src.replace("thumbs", "fullsize").replace("tmb", "fs")
             : src;
       setSrc(repl)(el);
+      //preview pic ensures makePortrait runs on slideshow
       el.onload = el.onload || makePortrait.bind(el, tgt);
     },
     hover = (e) => {
@@ -212,7 +213,9 @@
           doImg,
           prepAttrs([setSrc, setAlt, setId], [src, "current", "slide"])
         ),
-        previewer = ptL(resolvePath, $$Q("#slidepreview img")),
+        previewer = (data) => {
+          return resolvePath($$Q("#slidepreview img"), data);
+        },
         previewUpdate = (data) => {
           setSrc(getResult(data))(meta.$Q("#slidepreview img"));
         },
@@ -287,9 +290,9 @@
       $slider = sliderFactory($$("myrange"));
 
       attach($broadcaster, null, [
-        [previewer],
         [$headers.setFinder.bind($headers)],
-        [$thumbs.setFinder.bind($thumbs)]
+        [$thumbs.setFinder.bind($thumbs)],
+        [previewer]
       ]);
       $broadcaster.notify(src);
     //
