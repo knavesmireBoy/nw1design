@@ -169,7 +169,7 @@
     m = meta.mittelFactory(),
     f = m(meta.setter, "classList"),
     prepClassListNav = meta.pApply(f, meta.$$("navigation")),
-    pg = window.web ? 27 : 52,
+    pg = window.web ? 26 : 51,
     gtThanEq = (a, b) => a >= b,
     /////LOADER//////////LOADER//////////LOADER//////////LOADER//////////LOADER/////
     loader = function () {
@@ -205,7 +205,7 @@
         ],
         machSliderInput = prep2Append(
           doMakeDefer("input"),
-          prepAttrs(attrs, ["range", 1, pg, 1, "myrange"])
+          prepAttrs(attrs, ["range", 0, pg, 0, "myrange"])
         ),
         machBase = prep2Append(
           doImg,
@@ -244,23 +244,40 @@
         ],
         doSliders = (i) => {
           doSliderInput(i);
-          doSliderOutput(i);
+          doSliderOutput(i + 1);
+        },
+        getCurrentIndex = (path) => {
+          let mypath = getResult(path),
+          members = looper.get("members"),
+          i = members.findIndex(curry2((a, b) => a === b)(mypath)),
+          l = members.length - 1,
+          member = members[i],
+          //reached end
+          j = !member ? 0 : i;
+           //looper members zero indexed...
+          /*also as it stands looper reverses the array when the back button is pressed
+           before counting forwards. may have to fix that but at the moment this undoes that */
+         console.log(looper.get("rev"), j, i);
+          return looper.get("rev") ? l - i : j;
         },
         sliderBridge = function (path) {
           let mypath = getResult(path),
-            members = looper.get("members"),
-            i = members.findIndex(curry2((a, b) => a === b)(mypath)),
-            l = members.length,
-            member = members[i],
-            //reached end
-            j = !member ? 1 : i + 1,
-            txt = utils.getLast($("slide").src.split("/"));
-          //looper members zero indexed...
-          /*also as it stands looper reverses the array when the back button is pressed
-                      before counting forwards. may have to fix that but at the moment this undoes that */
-          j = looper.get("rev") ? l - i : j;
+          i = getCurrentIndex(path),
+          txt = utils.getLast($("slide").src.split("/"));
           if (!$("slide").onload || mypath.match(txt)) {
-            doSliders(j);
+            doSliders(i);
+          }
+        },
+        staticSlider = function(path) {
+          const i = getCurrentIndex(path);
+          doSliders(i + 1);
+        },
+        inPlaySlider = function(path) {
+          const mypath = getResult(path),
+          i = getCurrentIndex(path),
+          txt = utils.getLast($("slide").src.split("/"));
+          if(mypath.match(txt)){
+            doSliders(i + 1);
           }
         },
         fixInnerHTML = (el) =>
@@ -285,7 +302,8 @@
         machBase,
         setInnerDiv,
         climb,
-        append(utils.doTextNow(pg)),
+        //required for read out Image x of last
+        append(utils.doTextNow(pg + 1)),
         setSpan2,
         utils.getParent2,
         append(utils.doTextNow(1)),
