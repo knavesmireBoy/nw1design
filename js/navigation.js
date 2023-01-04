@@ -138,8 +138,8 @@
       };
     },
     attach = Publisher.attachAll,
-    $recur = nW1.recurMaker(300, 99, 1, true),
-    routes = nW1.router($recur),
+    $player = nW1.playerMaker(300, 99, 1, true),
+    routes = nW1.router($player),
     prepAttrs = (keys, vals) => curryL33(meta.zip)("map")(keys)(vals),
     prep2Append = (doEl, doAttrs) =>
       compose(
@@ -321,9 +321,9 @@
         [$broadcaster.notify.bind($broadcaster)],
         [sliderBridge]
       ]);
-      $painter = nW1.Painter.from(getById("slide"), getById("base"), $recur);
-      $mediator = nW1.Mediator.from(looper, $painter, $recur),
-      attach($recur, $painter, [
+      $painter = nW1.Painter.from(getById("slide"), getById("base"), $player);
+      $mediator = nW1.Mediator.from(looper, $painter, $player),
+      attach($player, $painter, [
         ["updateOpacity", "opacity"],
         ["cleanup", "delete"]
       ]);
@@ -340,15 +340,15 @@
         ],
         "swap"
       );
-      attach($recur, null, [
+      attach($player, null, [
         [$mediator.next.bind($mediator), "base"],
         [$mediator.update.bind($mediator), "update"]
       ]);
 
       $slider.attach(looper.set.bind(looper));
 
-      $painter.attach($recur.setPlayer.bind($recur), "query");
-      $recur.attach($mediator.exit, "delete");
+      $painter.attach($player.setPlayer.bind($player), "query");
+      $player.attach($mediator.exit, "delete");
       sliderActions();
       window.addEventListener(
         "resize",

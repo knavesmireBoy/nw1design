@@ -5,41 +5,41 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 
-const playMaker = function ($recur) {
+const stateFactory = function ($context) {
   const fade = {
       validate: function () {
-        return $recur.i <= -1;
+        return $context.i <= -1;
       },
       inc: function () {
-        $recur.i -= 1;
+        $context.i -= 1;
       },
       reset: function (arg) {
-        $recur.i = $recur.dur;
-        $recur.notify(true, "update");
+        $context.i = $context.dur;
+        $context.notify(true, "update");
       }
     },
     fadeOut = {
       validate: function () {
-        return $recur.i <= -0.1;
+        return $context.i <= -0.1;
       },
       inc: function () {
-        $recur.i -= 1;
+        $context.i -= 1;
       },
       reset: function () {
-        $recur.notify(false, "update");
+        $context.notify(false, "update");
         //ensure fadeIn will follow
-        $recur.setPlayer(true);
+        $context.setPlayer(true);
       }
     },
     fadeIn = {
       validate: function () {
-        return $recur.i >= 222;
+        return $context.i >= 222;
       },
       inc: function () {
-        $recur.i += 1;
+        $context.i += 1;
       },
       reset: function () {
-        $recur.notify(null, "base");
+        $context.notify(null, "base");
       }
     },
     actions = [fadeIn, fadeOut];
@@ -48,17 +48,16 @@ const playMaker = function ($recur) {
     return flag ? actions.reverse()[0] : fade;
   };
 };
-nW1.recurMaker = function (duration = 100, wait = 50, i = 1) {
+nW1.playerMaker = function (duration = 100, wait = 50, i = 1) {
   class Player extends Publisher {
     constructor() {
       super();
-      this.nextplayer = playMaker(this);
+      this.nextplayer = stateFactory(this);
       this.player = this.nextplayer();
       this.dur = duration;
       this.wait = wait;
       this.i = i;
       this.t = null;
-      //this.handlers = [];
       return this;
     }
     play(){
