@@ -213,9 +213,7 @@
           doImg,
           prepAttrs([setSrc, setAlt, setId], [src, "current", "slide"])
         ),
-        previewer = (data) => {
-          return resolvePath($$Q("#slidepreview img"), data);
-        },
+        previewer = pApply(resolvePath, $$Q("#slidepreview img")),
         previewUpdate = (data) => {
           setSrc(getResult(data))(meta.$Q("#slidepreview img"));
         },
