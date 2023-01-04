@@ -1,4 +1,5 @@
 /* eslint-disable indent */
+/*global Publisher: false */
 /*global nW1: false */
 if (!window.nW1) {
   window.nW1 = {};
@@ -47,27 +48,28 @@ const playMaker = function ($recur) {
     return flag ? actions.reverse()[0] : fade;
   };
 };
-nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
-  let ret = {
-    init: function () {
+nW1.recurMaker = function (duration = 100, wait = 50, i = 1) {
+  class Player extends Publisher {
+    constructor() {
+      super();
       this.nextplayer = playMaker(this);
       this.player = this.nextplayer();
       this.dur = duration;
       this.wait = wait;
       this.i = i;
       this.t = null;
-      this.handlers = [];
+      //this.handlers = [];
       return this;
-    },
-    play: function () {
+    }
+    play(){
       if (this.player.validate()) {
         this.player.reset();
       } else {
         this.notify(this.i / this.wait, "opacity");
         this.resume();
       }
-    },
-    suspend: function (flag) {
+    }
+    suspend(flag) {
       const o = !isNaN(flag) ? 0.5 : 1;
       this.notify(o, "opacity");
       window.cancelAnimationFrame(this.t);
@@ -76,21 +78,21 @@ nW1.recurMaker = function (duration = 100, wait = 50, i = 1, makePub = false) {
       if (o === 1) {
         this.notify(null, "delete");
       }
-    },
-    setPlayer: function (arg) {
+    }
+    setPlayer(arg) {
       this.player = this.nextplayer(arg);
       this.play();
-    },
-    resume: function () {
+    }
+    resume () {
       this.player.inc();
       this.t = window.requestAnimationFrame(this.play.bind(this));
       //this.t = window.setTimeout(this.play.bind(this), wait);
     }
+    static from(...args) {
+      return new Player(...args);
+    }
   };
-  if (makePub) {
-    return nW1.Publish().makepublisher(ret);
-  }
-  return ret;
+  return Player.from();
 };
 
 /*

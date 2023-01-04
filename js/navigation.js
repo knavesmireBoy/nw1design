@@ -138,7 +138,7 @@
       };
     },
     attach = Publisher.attachAll,
-    $recur = nW1.recurMaker(300, 99, 1, true).init(),
+    $recur = nW1.recurMaker(300, 99, 1, true),
     routes = nW1.router($recur),
     prepAttrs = (keys, vals) => curryL33(meta.zip)("map")(keys)(vals),
     prep2Append = (doEl, doAttrs) =>
@@ -175,7 +175,6 @@
     loader = function () {
       getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
       //post creation of sidebar
-      //$wrapper = nW1.Publish().makepublisher(meta.$$("wrapper"));
       $wrapper.attach(prepClassListNav);
       addClickPreview($("navigation"));
       addClickHover($("navigation"));
