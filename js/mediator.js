@@ -42,7 +42,7 @@ if (!window.nW1) {
         slider(mypath);
       }
     },
-    sliders = [slider, slidermatch],
+    strategies = [slider, slidermatch],
     displayInplay = ptL(invokeMethod, document.body.classList),
     exec = displayInplay("add"),
     undo = displayInplay("remove"),
@@ -69,15 +69,15 @@ if (!window.nW1) {
     }
     exit() {
       onExit();
-      sliders.reverse();
+      strategies.reverse();
       this.run = null;
     }
     advance(data) {
-      sliders[0](data);
+      strategies[0](data);
     }
     init(data, type) {
       //ensure this runs once!
-      this.run = this.run || sliders.reverse();
+      this.run = this.run || strategies.reverse();
     }
     static from(...args) {
       return new nW1.Mediator(...args);
