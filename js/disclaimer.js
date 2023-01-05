@@ -7,6 +7,7 @@
     window.nW1 = {};
   }
 
+
   function getUrlParameter(sParam) {
     let sPageURL = window.location.search.substring(1),
       sURLVariables = sPageURL.split("&"),
@@ -45,20 +46,13 @@
       doMake = utils.doMake,
       head = meta.$Q("header"),
       anc = meta.$Q("header a"),
-      text1 = curry2(utils.setInnerHTML)(intro1),
-      text2 = curry2(utils.setInnerHTML)(intro2),
-      text3 = curry2(utils.setInnerHTML)(intro3),
-      text4 = curry2(utils.setInnerHTML)(intro4),
-      //need fresh refs to paras
-      para1 = compose(utils.getParent, text1.wrap(meta.pass), append(doMake("p"))),
-      para2 = compose(utils.getParent, text2.wrap(meta.pass), append(doMake("p"))),
-      para3 = compose(utils.getParent, text3.wrap(meta.pass), append(doMake("p"))),
-      para4 = compose(text4, append(doMake("p"))),
+      setHTML = curry2(utils.setInnerHTML),
+      intros = [intro4, intro3, intro2, intro1],
+      dopara = text => compose(utils.getParent, text.wrap(meta.pass), append(doMake("p"))),
+      texts = intros.map(intro => setHTML(intro)),
+      paras = texts.map(dopara),
       doLink = compose(
-        para4,
-        para3,
-        para2,
-        para1,
+        ...paras,
         utils.getParent2,
         append(utils.doTextNow("close")),
         utils.setHref,
