@@ -241,8 +241,7 @@ nW1.meta = (function () {
      // console.log(o,m,k,v);
       return getResult(o)[m](k, v);
     },
-    soInvoke = (o, m, ...rest) => o[m](...rest),
-    nOp = () => undefined;
+    soInvoke = (o, m, ...rest) => o[m](...rest);
   return {
     $: byId,
     $$: byIdDefer,
