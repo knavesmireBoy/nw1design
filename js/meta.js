@@ -130,7 +130,7 @@ nW1.meta = (function () {
     },
     //for signatures resistant to straightforward partial application or currying
     mittelFactory = (arg) => {
-      if (isBoolean(arg)) {
+      if (arg && isBoolean(arg)) {
         return (f, o, v = undefined) =>
         //dynamic method (add/remove etc)
           (m) =>

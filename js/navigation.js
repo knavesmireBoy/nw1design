@@ -295,7 +295,7 @@
       //
       looper.build(getMyLinks(), utils.incrementer, []);
       $painter = nW1.Painter.from(getById("slide"), getById("base"), $player);
-      $mediator = nW1.Mediator.from(looper, $painter, $player);
+      $mediator = nW1.mediatorFactory(looper, $painter).from();
 
       attach(looper, null, [
         [displayer],

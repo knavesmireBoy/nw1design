@@ -21,28 +21,6 @@ if (!window.nW1) {
       doSliderInput(i + 1);
       doSliderOutput(i + 1);
     },
-    getCurrentIndex = (path) => {
-      let mypath = meta.getResult(path),
-        members = nW1.Looper.get("members"),
-        i = members.findIndex(curry2((a, b) => a === b)(mypath)),
-        l = members.length - 1,
-        member = members[i],
-        //reached end
-        j = !member ? 0 : i;
-      //looper members zero indexed...
-      /*also as it stands looper reverses the array when the back button is pressed
-     before counting forwards. may have to fix that but at the moment this undoes that */
-      return nW1.Looper.get("rev") ? l - i : j;
-    },
-    slider = compose(doSliders, getCurrentIndex),
-    slidermatch = function (path) {
-      const mypath = meta.getResult(path),
-        txt = nW1.utils.getLast(meta.$("slide").src.split("/"));
-      if (mypath.match(txt)) {
-        slider(mypath);
-      }
-    },
-    strategies = [slider, slidermatch],
     displayInplay = ptL(invokeMethod, document.body.classList),
     exec = displayInplay("add"),
     undo = displayInplay("remove"),
@@ -52,20 +30,40 @@ if (!window.nW1) {
     defer = best([noOp, onEnter], meta.$$Q(".inplay")),
     setPlayStatus = meta.compose(invoke, defer);
 
-  nW1.Mediator = class {
-    constructor(looper, painter, player) {
-      this.painter = painter;
-      this.player = player;
-      this.looper = looper;
+  nW1.mediatorFactory = (looper, painter) => {
+    let getCurrentIndex = (path) => {
+      let mypath = meta.getResult(path),
+        members = looper.get("members"),
+        i = members.findIndex(curry2((a, b) => a === b)(mypath)),
+        l = members.length - 1,
+        member = members[i],
+        //reached end
+        j = !member ? 0 : i;
+      //looper members zero indexed...
+      /*also as it stands looper reverses the array when the back button is pressed
+     before counting forwards. may have to fix that but at the moment this undoes that */
+      return looper.get("rev") ? l - i : j;
+    },
+    slider = compose(doSliders, getCurrentIndex),
+    slidermatch = function (path) {
+      const mypath = meta.getResult(path),
+        txt = nW1.utils.getLast(meta.$("slide").src.split("/"));
+      if (mypath.match(txt)) {
+        slider(mypath);
+      }
+    },
+    strategies = [slider, slidermatch];
+    return class Mediator {
+    constructor() {
       this.run = null;
     }
     next(data, type) {
-      this.painter.updatePath(this.looper.forward().value, type);
+      painter.updatePath(looper.forward().value, type);
     }
     update(flag, type) {
       setPlayStatus();
-      this.painter.updatePath(this.looper.get(), "slide");
-      this.painter.update(flag, type);
+      painter.updatePath(looper.get(), "slide");
+      painter.update(flag, type);
     }
     exit() {
       onExit();
@@ -80,7 +78,8 @@ if (!window.nW1) {
       this.run = this.run || strategies.reverse();
     }
     static from(...args) {
-      return new nW1.Mediator(...args);
+      return new Mediator(...args);
     }
   };
+};
 }());

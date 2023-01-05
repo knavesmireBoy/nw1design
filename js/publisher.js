@@ -2,7 +2,6 @@
 /*global nW1: false */
 /* eslint-disable indent */
 
-
 class Publisher {
     constructor() {
         this.handlers = {"any": []};
