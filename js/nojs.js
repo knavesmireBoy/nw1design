@@ -5,6 +5,9 @@
 if (!window.nW1) {
   window.nW1 = {};
 }
+/*in a no-js scenario we can rely on a pure css accordion utilising input/label
+this script replaces the labels with link elements
+*/
 
 let mymeta = nW1.meta,
   utils = nW1.utils,
