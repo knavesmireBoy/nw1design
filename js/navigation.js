@@ -37,7 +37,7 @@
   const meta = nW1.meta,
     utils = nW1.utils,
     $broadcaster = Publisher.from(),
-    looper = nW1.Looper,
+    $looper = nW1.Looper,
     $ = meta.$,
     $$ = meta.$$,
     $Q = meta.$Q,
@@ -76,7 +76,7 @@
       curry2(meta.getter)("nodeName"),
       utils.getTarget
     ),
-    //ES5; need access to this
+    //ES5; need access to this as called in context of an image element
     makePortrait = function (el = nW1.meta.$("wrapper")) {
       let kls = this.naturalHeight > this.naturalWidth ? "portrait" : "";
       $wrapper.notify(kls);
@@ -139,7 +139,7 @@
     },
     attach = Publisher.attachAll,
     $player = nW1.playerMaker(300, 99, 1, true),
-    routes = nW1.router($player),
+    $routes = nW1.router($player),
     prepAttrs = (keys, vals) => curryL33(meta.zip)("map")(keys)(vals),
     prep2Append = (doEl, doAttrs) =>
       compose(
@@ -162,7 +162,7 @@
       $$Q("#navigation a", true)
     ),
     addClickPreview = curry2(ptL(meta.lazyVal, "addEventListener", "click"))(
-      routes.sidebar
+      $routes.sidebar
     ).wrap(meta.pass),
     m = meta.mittelFactory(),
     f = m(meta.setter, "classList"),
@@ -218,10 +218,9 @@
           setSrc(getResult(data))(meta.$Q("#slidepreview img"));
         },
         displayer = curryL2(resolvePath)($$("base")),
-        //projector = curryL2(resolvePath)($$("slide")),
         $thumbs = Thumbs.from($Q("#navigation ul li", true)),
         addPlayClick = curry2(ptL(meta.lazyVal, "addEventListener", "click"))(
-          routes.menu
+          $routes.menu
         ).wrap(meta.pass),
         buttontext = ["start", "back", "play", "forward", "end"].map(
           utils.doTextCBNow
@@ -291,13 +290,12 @@
         [$thumbs.setFinder.bind($thumbs)],
         [previewer]
       ]);
-      $broadcaster.notify(src);
-      //
-      looper.build(getMyLinks(), utils.incrementer, []);
+      $broadcaster.notify(src);//reveal submenu onload
+      $looper.build(getMyLinks(), utils.incrementer, []);
       $painter = nW1.Painter.from(getById("slide"), getById("base"), $player);
-      $mediator = nW1.mediatorFactory(looper, $painter).from();
+      $mediator = nW1.mediatorFactory($looper, $painter).from();
 
-      attach(looper, null, [
+      attach($looper, null, [
         [displayer],
         [$broadcaster.notify.bind($broadcaster)],
         [$mediator.advance.bind($mediator)]
@@ -323,7 +321,7 @@
         ["next", "base"],
         ["update", "update"]
       ]);
-      $slider.attach(looper.set.bind(looper), "input");
+      $slider.attach($looper.set.bind($looper), "input");
       $painter.attach($player.setPlayer.bind($player), "query");
       $painter.attach($mediator.init.bind($mediator), "init");
       sliderActions();

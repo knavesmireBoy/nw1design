@@ -9,18 +9,7 @@ if (!window.nW1) {
 
 nW1.Looper = (function () {
   "use strict";
-/*
-  function preNotify(type = "any") {
-    this.notify(this.get(), type);
-    this.position = this.advance(this.position);
-    return this.status();
-  }
-  function postNotify(type = "any") {
-    this.position = this.advance(this.position);
-    this.notify(this.get(), type);
-    return this.status();
-  }
-*/
+
   function preNotify() {
     this.notify(this.get());
     this.position = this.advance(this.position);
