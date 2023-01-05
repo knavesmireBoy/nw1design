@@ -26,8 +26,8 @@
       throttlePause = false;
     }, time);
   }
-
-  let $wrapper = {}, //await domContent...
+  //await domContent...
+  let $wrapper = Publisher.from(),
     $slider = {},
     $painter = {},
     $mediator = {},
@@ -36,8 +36,8 @@
 
   const meta = nW1.meta,
     utils = nW1.utils,
-    broadcaster = Publisher.from(),
-    looper = nW1.Looper,
+    $broadcaster = Publisher.from(),
+    $looper = nW1.Looper,
     $ = meta.$,
     $$ = meta.$$,
     $Q = meta.$Q,
@@ -76,6 +76,7 @@
       curry2(meta.getter)("nodeName"),
       utils.getTarget
     ),
+    //ES5; need access to this as called in context of an image element
     makePortrait = function (el = nW1.meta.$("wrapper")) {
       let kls = this.naturalHeight > this.naturalWidth ? "portrait" : "";
       $wrapper.notify(kls);
@@ -91,6 +92,7 @@
             ? src.replace("thumbs", "fullsize").replace("tmb", "fs")
             : src;
       setSrc(repl)(el);
+      //preview pic ensures makePortrait runs on slideshow
       el.onload = el.onload || makePortrait.bind(el, tgt);
     },
     hover = (e) => {
@@ -112,7 +114,6 @@
     setId = utils.setId,
     setAlt = utils.setAlt,
     setSrc = utils.setSrc,
-    setter = meta.setter,
     toArray = meta.toArray,
     negate = meta.negate,
     abbr = (el, repl) => {
@@ -136,9 +137,9 @@
         return o;
       };
     },
-    attach = window.nW1.Publish.attachAll,
-    $recur = nW1.recurMaker(300, 99, 1, true).init(),
-    routes = nW1.router($recur),
+    attach = Publisher.attachAll,
+    $player = nW1.playerMaker(300, 99, 1, true),
+    $routes = nW1.router($player),
     prepAttrs = (keys, vals) => curryL33(meta.zip)("map")(keys)(vals),
     prep2Append = (doEl, doAttrs) =>
       compose(
@@ -160,10 +161,8 @@
       curry2(toArray)(curryL2(negate)(utils.matchPath)),
       $$Q("#navigation a", true)
     ),
-    doSliderOutput = ptL(setter, $$("tracked"), "innerHTML"),
-    doSliderInput = ptL(setter, $$("myrange"), "value"),
     addClickPreview = curry2(ptL(meta.lazyVal, "addEventListener", "click"))(
-      routes.sidebar
+      $routes.sidebar
     ).wrap(meta.pass),
     m = meta.mittelFactory(),
     f = m(meta.setter, "classList"),
@@ -174,7 +173,6 @@
     loader = function () {
       getDesktop = Mod.mq(ipad) ? getDesktop : pApply(negate, getDesktop);
       //post creation of sidebar
-      $wrapper = nW1.Publish().makepublisher(meta.$$("wrapper"));
       $wrapper.attach(prepClassListNav);
       addClickPreview($("navigation"));
       addClickHover($("navigation"));
@@ -215,15 +213,14 @@
           doImg,
           prepAttrs([setSrc, setAlt, setId], [src, "current", "slide"])
         ),
-        previewer = ptL(resolvePath, $$Q("#slidepreview img")),
+        previewer = pApply(resolvePath, $$Q("#slidepreview img")),
         previewUpdate = (data) => {
           setSrc(getResult(data))(meta.$Q("#slidepreview img"));
         },
         displayer = curryL2(resolvePath)($$("base")),
-        //projector = curryL2(resolvePath)($$("slide")),
         $thumbs = Thumbs.from($Q("#navigation ul li", true)),
         addPlayClick = curry2(ptL(meta.lazyVal, "addEventListener", "click"))(
-          routes.menu
+          $routes.menu
         ).wrap(meta.pass),
         buttontext = ["start", "back", "play", "forward", "end"].map(
           utils.doTextCBNow
@@ -242,27 +239,6 @@
           curry2(insertB4)($$("tracked")),
           curry2(insertB4)($$("max"))
         ],
-        doSliders = (i) => {
-          doSliderInput(i);
-          doSliderOutput(i);
-        },
-        sliderBridge = function (path) {
-          let mypath = getResult(path),
-            members = looper.get("members"),
-            i = members.findIndex(curry2((a, b) => a === b)(mypath)),
-            l = members.length,
-            member = members[i],
-            //reached end
-            j = !member ? 1 : i + 1,
-            txt = utils.getLast($("slide").src.split("/"));
-          //looper members zero indexed...
-          /*also as it stands looper reverses the array when the back button is pressed
-                      before counting forwards. may have to fix that but at the moment this undoes that */
-          j = looper.get("rev") ? l - i : j;
-          if (!$("slide").onload || mypath.match(txt)) {
-            doSliders(j);
-          }
-        },
         fixInnerHTML = (el) =>
           compose(
             utils.clearInnerHTML,
@@ -285,6 +261,7 @@
         machBase,
         setInnerDiv,
         climb,
+        //required for read out Image x of last
         append(utils.doTextNow(pg)),
         setSpan2,
         utils.getParent2,
@@ -306,24 +283,24 @@
         .map(curry2(invoke)($("buttons")))
         .map(buttonCb);
       meta.zip("forEach", sliderspans, slidertext);
-
       $slider = sliderFactory($$("myrange"));
 
-      attach(broadcaster, null, [
+      attach($broadcaster, null, [
         [$headers.setFinder.bind($headers)],
         [$thumbs.setFinder.bind($thumbs)],
         [previewer]
       ]);
-      broadcaster.notify(src);
-      looper.build(getMyLinks(), utils.incrementer, []);
-      attach(looper, null, [
+      $broadcaster.notify(src);//reveal submenu onload
+      $looper.build(getMyLinks(), utils.incrementer, []);
+      $painter = nW1.Painter.from(getById("slide"), getById("base"), $player);
+      $mediator = nW1.mediatorFactory($looper, $painter).from();
+
+      attach($looper, null, [
         [displayer],
-        [broadcaster.notify.bind(broadcaster)],
-        [sliderBridge]
+        [$broadcaster.notify.bind($broadcaster)],
+        [$mediator.advance.bind($mediator)]
       ]);
-      $painter = nW1.Painter.from(getById("slide"), getById("base"));
-      $mediator = nW1.Mediator.from(looper, $painter, $recur),
-      attach($recur, $painter, [
+      attach($player, $painter, [
         ["updateOpacity", "opacity"],
         ["cleanup", "delete"]
       ]);
@@ -333,21 +310,20 @@
         null,
         [
           [previewUpdate],
-          [sliderBridge],
+          [$mediator.advance.bind($mediator)],
           [$thumbs.setFinder.bind($thumbs)],
           [$headers.setFinder.bind($headers)]
         ],
         "swap"
       );
-      attach($recur, null, [
-        [$mediator.next.bind($mediator), "base"],
-        [$mediator.update.bind($mediator), "update"]
+      attach($player, $mediator, [
+        ["exit", "delete"],
+        ["next", "base"],
+        ["update", "update"]
       ]);
-
-      $slider.attach(looper.set.bind(looper));
-
-      $painter.attach($recur.setPlayer.bind($recur), "query");
-      $recur.attach($mediator.exit, "delete");
+      $slider.attach($looper.set.bind($looper), "input");
+      $painter.attach($player.setPlayer.bind($player), "query");
+      $painter.attach($mediator.init.bind($mediator), "init");
       sliderActions();
       window.addEventListener(
         "resize",

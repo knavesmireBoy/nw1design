@@ -48,8 +48,8 @@ nW1.Looper = (function () {
     };
 
   class LoopIterator extends Publisher {
-    constructor(group = [], advancer = () => 1, handlers = [], flag = false) {
-      super(handlers);
+    constructor(group = [], advancer = () => 1, flag = false) {
+      super();
       this.group = group;
       this.position = 0;
       this.rev = false;
@@ -119,8 +119,8 @@ nW1.Looper = (function () {
     visit(cb) {
       this.group.visit(cb);
     }
-    static from(coll, advancer, handlers = []) {
-      return new LoopIterator(Group.from(coll), advancer, handlers);
+    static from(coll, advancer) {
+      return new LoopIterator(Group.from(coll), advancer);
     }
   }
   class Group {
@@ -158,8 +158,8 @@ nW1.Looper = (function () {
       getSubject: function () {
         return this.$subject;
       },
-      build: function (coll, advancer, handlers = [], flag) {
-        this.setSubject(LoopIterator.from(coll, advancer(coll), handlers));
+      build: function (coll, advancer) {
+        this.setSubject(LoopIterator.from(coll, advancer(coll)));
       }
     },
     doGet = curry22(getter),
@@ -179,7 +179,7 @@ nW1.Looper = (function () {
     ];
 
   return makeProxyIterator(
-    LoopIterator.from([], incrementer, []),
+    LoopIterator.from([], incrementer),
     target,
     methods
     );

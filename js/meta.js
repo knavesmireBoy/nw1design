@@ -130,7 +130,7 @@ nW1.meta = (function () {
     },
     //for signatures resistant to straightforward partial application or currying
     mittelFactory = (arg) => {
-      if (isBoolean(arg)) {
+      if (arg && isBoolean(arg)) {
         return (f, o, v = undefined) =>
         //dynamic method (add/remove etc)
           (m) =>
@@ -241,8 +241,7 @@ nW1.meta = (function () {
      // console.log(o,m,k,v);
       return getResult(o)[m](k, v);
     },
-    soInvoke = (o, m, ...rest) => o[m](...rest),
-    nOp = () => undefined;
+    soInvoke = (o, m, ...rest) => o[m](...rest);
   return {
     $: byId,
     $$: byIdDefer,
