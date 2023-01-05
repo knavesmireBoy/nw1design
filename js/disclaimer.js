@@ -42,13 +42,15 @@
       curry2 = meta.curryRight(2),
       curryL2 = meta.curryLeft(2),
       compose = meta.compose,
+      pass = meta.pass,
       append = utils.append,
       doMake = utils.doMake,
       head = meta.$Q("header"),
       anc = meta.$Q("header a"),
       setHTML = curry2(utils.setInnerHTML),
+      //reverse order to utilise spread syntax below ...paras
       intros = [intro4, intro3, intro2, intro1],
-      dopara = text => compose(utils.getParent, text.wrap(meta.pass), append(doMake("p"))),
+      dopara = text => compose(utils.getParent, text.wrap(pass), append(doMake("p"))),
       texts = intros.map(intro => setHTML(intro)),
       paras = texts.map(dopara),
       doLink = compose(
@@ -56,13 +58,13 @@
         utils.getParent2,
         append(utils.doTextNow("close")),
         utils.setHref,
-        utils.setId("exit").wrap(meta.pass),
+        utils.setId("exit").wrap(pass),
         append(doMake("a"))
       ),
       ptl = meta.mittelFactory(false)(meta.invokePair, "insertBefore", anc);
     compose(
       doLink,
-      utils.setId("intro").wrap(meta.pass),
+      utils.setId("intro").wrap(pass),
       curryL2(ptl)(head),
       doMake
     )("div");
