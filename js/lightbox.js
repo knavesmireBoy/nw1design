@@ -6,15 +6,6 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 
-if (typeof Function.prototype.wrap === "undefined") {
-  Function.prototype.wrap = function (wrapper, ..._vs) {
-    let _method = this; //the function
-    return function (...vs) {
-      return wrapper.apply(this, [_method.bind(this), ..._vs, ...vs]);
-    };
-  };
-}
-
 const meta = nW1.meta,
   utils = nW1.utils,
   isFunction = meta.tagTester("Function"),

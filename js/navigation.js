@@ -64,9 +64,7 @@
       "setProperty"
     ),
     sliderFactory = function (element) {
-      let $s = new Slider();
-      $s.init(element);
-      return $s;
+      return new Slider(element);
     },
     setDisplay = setProperty("display"),
     hide = compose(curry2(setDisplay)("none")),
@@ -215,9 +213,6 @@
           prepAttrs([setSrc, setAlt, setId], [src, "current", "slide"])
         ),
         previewer = pApply(resolvePath, $$Q("#slidepreview img")),
-        previewUpdate = (data) => {
-          setSrc(getResult(data))(meta.$Q("#slidepreview img"));
-        },
         options = [() => false, pApply(resolvePath, $$("base"))],
         //run for base pic when NOT in slideshow mode, as setting src is taken care of elsewhere
         displayer = compose( (fn) => fn(), pApply(meta.doBest, options, slideMode), meta.always),
@@ -313,7 +308,7 @@
         $painter,
         null,
         [
-          [previewUpdate],
+          [previewer],
           [$mediator.advance.bind($mediator)],
           [$thumbs.setFinder.bind($thumbs)],
           [$headers.setFinder.bind($headers)]

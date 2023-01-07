@@ -8,6 +8,7 @@ if (!window.nW1) {
 }
 
 const curry3 = nW1.meta.curryRight(3),
+getResult = nW1.meta.getResult,
   getLinks = (grp) => {
     const get = curry3(nW1.utils.getTargetNode)("firstChild")(/^a$/i);
     return grp.map((lis) => nW1.meta.compose(nW1.utils.getAttrs("href"), get)(lis));
@@ -97,5 +98,16 @@ class Thumbs extends Finder {
   }
   static from(grp, kls = "active") {
     return new Thumbs(grp, kls);
+  }
+}
+
+class Slider extends Publisher {
+  constructor(el) {
+    super();
+    this.el = getResult(el);
+    const that = this;
+    this.el.oninput = function () {
+      that.notify(this.value, 'input');
+    };
   }
 }
