@@ -219,7 +219,7 @@
           setSrc(getResult(data))(meta.$Q("#slidepreview img"));
         },
         options = [() => false, pApply(resolvePath, $$("base"))],
-        //run for base pic when NOT in slideshow mode
+        //run for base pic when NOT in slideshow mode, as setting src is taken care of elsewhere
         displayer = compose( (fn) => fn(), pApply(meta.doBest, options, slideMode), meta.always),
         $thumbs = Thumbs.from($Q("#navigation ul li", true)),
         addPlayClick = curry2(ptL(meta.lazyVal, "addEventListener", "click"))(
