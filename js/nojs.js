@@ -6,7 +6,7 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 /*in a no-js scenario we can rely on a pure css accordion utilising input/label
-this script replaces the labels with link elements
+this script restores a "proper" DOM structure
 */
 
 let mymeta = nW1.meta,
