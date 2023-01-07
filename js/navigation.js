@@ -307,7 +307,8 @@
         ["updateOpacity", "opacity"],
         ["cleanup", "delete"]
       ]);
-      //when "base" pic is hidden we need "slide" pic to inform subscribers of the new path to image
+      /*when "base" pic is hidden we need "slide" pic to
+      inform subscribers of the new path to image */
       attach(
         $painter,
         null,
