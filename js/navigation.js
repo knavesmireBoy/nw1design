@@ -85,15 +85,16 @@
         el.classList = kls;
       }
     },
+    slideMode = curry22(meta.getter)("onload")($$('slide')),
     resolvePath = (o, src, tgt = meta.$("wrapper")) => {
       let el = getResult(o),
         repl =
           el.alt === "currentpicture"
             ? src.replace("thumbs", "fullsize").replace("tmb", "fs")
             : src;
-      setSrc(repl)(el);
+         setSrc(repl)(el);
       //preview pic ensures makePortrait runs on slideshow
-      el.onload = el.onload || makePortrait.bind(el, tgt);
+    el.onload = el.onload || makePortrait.bind(el, tgt);
     },
     hover = (e) => {
       const preview = meta.$Q("#slidepreview img");
@@ -102,7 +103,7 @@
         return;
       }
       if (matchImg(e) && e.target !== preview) {
-        resolvePath(preview, utils.getImgPath(e), meta.$("navigation"));
+      resolvePath(preview, utils.getImgPath(e), meta.$("navigation"));
       }
     },
     addClickHover = curry2(ptL(meta.lazyVal, "addEventListener", "mouseover"))(
@@ -217,7 +218,9 @@
         previewUpdate = (data) => {
           setSrc(getResult(data))(meta.$Q("#slidepreview img"));
         },
-        displayer = curryL2(resolvePath)($$("base")),
+        options = [() => false, pApply(resolvePath, $$("base"))],
+        //run for base pic when NOT in slideshow mode
+        displayer = compose( (fn) => fn(), pApply(meta.doBest, options, slideMode), meta.always),
         $thumbs = Thumbs.from($Q("#navigation ul li", true)),
         addPlayClick = curry2(ptL(meta.lazyVal, "addEventListener", "click"))(
           $routes.menu
