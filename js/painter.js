@@ -26,10 +26,14 @@
       meta.invokePair,
       "setProperty"
     ),
+    removeStyle = curry3(invokeMethod)('style')('removeAttribute'),
     setDisplay = setProperty("display"),
     setOpacity = setProperty("opacity"),
+    setFloat = setProperty("float"),
     hide = compose(curry2(setDisplay)("none")),
     show = compose(curry2(setDisplay)("block")),
+    doFloat = meta.pApply(invokeMethod, [$$('base'), $$('slide')], 'forEach', compose(curry2(setFloat)("left"))),
+    undoStyle = meta.pApply(invokeMethod, [$$('base'), $$('slide')], 'forEach', removeStyle),
     displayPause = ptL(
       meta.invokeMethodV,
       $$("slideshow"),
@@ -60,6 +64,7 @@
       postQueryHeight(bool, base, slide);
       return bool;
     };
+
   nW1.Painter = class extends Publisher {
     constructor(slide, base) {
       super();
@@ -69,6 +74,7 @@
     updateOpacity(o) {
       if (!this.slide.onload) {
         show(this.slide);
+       doFloat();
         this.notify(null, "init");
       }
       setOpacity(this.slide, o);
@@ -101,6 +107,8 @@
       resetMargin(this.slide);
       this.base.onload = null;
       this.slide.onload = null;
+      undoStyle();
+      hide(meta.$("slide"));
     }
     static from(...args) {
       return new nW1.Painter(...args);

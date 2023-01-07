@@ -37,11 +37,6 @@
   margin: 1vw 10vw;
 }
 
-/*class of inplay required for styling*/
-.inplay #display img {
-  float: left;
-}
-
 #buttons {
   padding: 0.25em;
   border: solid 1px yellow;
@@ -111,6 +106,7 @@
 #back {
   background-image: url(../../assets/bg/sprites/backward.png);
 }
+/*class of inplay required for styling*/
 
 #play,
 .inplay .pause #play {
