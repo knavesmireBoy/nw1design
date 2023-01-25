@@ -81,6 +81,7 @@ const meta = nW1.meta,
     getAttrs
   );
 lightbox.addEventListener("click", (e) => {
+  alert(meta.supportsES6);
   e.preventDefault();
   e.stopPropagation();
   document.body.scrollTop = document.documentElement.scrollTop = 0;

@@ -18,6 +18,15 @@ if (typeof Function.prototype.wrap === "undefined") {
 nW1.meta = (function () {
   "use strict";
 
+ const supportsES6 = (function() {
+      try {
+        new Function("(a = 0) => a");
+        return true;
+      } catch (err) {
+        return false;
+      }
+    }());
+
   function pApply(fn, ...cache) {
     return (...args) => {
       const all = cache.concat(args);
@@ -326,6 +335,7 @@ nW1.meta = (function () {
     doTest: function (x) {
       console.log(x);
       return x;
-    }
+    },
+    supportsES6: supportsES6
   };
 }());
