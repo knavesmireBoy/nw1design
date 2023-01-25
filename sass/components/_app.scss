@@ -147,6 +147,7 @@ header {
   border: 1em solid #fff;
   background-position: 2% 0, left top;
   background-repeat: no-repeat;
+  background-color: azure;
   @include gradient(top, $gradlist-rev);
 }
 

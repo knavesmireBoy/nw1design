@@ -254,6 +254,7 @@ header {
   border: 1em solid #fff;
   background-position: 2% 0, left top;
   background-repeat: no-repeat;
+  background-color: azure;
   background-image: -webkit-linear-gradient(top, #fff, #8cb8bf);
   background-image: -moz-linear-gradient(top, #fff, #8cb8bf);
   background-image: -o-linear-gradient(top, #fff, #8cb8bf);
