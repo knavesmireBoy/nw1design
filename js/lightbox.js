@@ -6,6 +6,10 @@ if (!window.nW1) {
   window.nW1 = {};
 }
 
+if( nw1.meta.supportsES6){
+  alert('good');
+}
+
 const meta = nW1.meta,
   utils = nW1.utils,
   isFunction = meta.tagTester("Function"),
@@ -81,7 +85,6 @@ const meta = nW1.meta,
     getAttrs
   );
 lightbox.addEventListener("click", (e) => {
-  alert(meta.supportsES6);
   e.preventDefault();
   e.stopPropagation();
   document.body.scrollTop = document.documentElement.scrollTop = 0;
