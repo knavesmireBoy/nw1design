@@ -8,6 +8,8 @@ body {
 main > * {
   border: solid 1em #fff;
   background-color: #e0ded7;
+  background-color: #e4eff1;
+  background-color: rgb(228, 239, 241);
   background-color: hsl(190, 30%, 92%);
 }
 
@@ -120,6 +122,7 @@ main aside section {
   padding: 0 0 1em;
   line-height: 1.4;
   margin: 0 0 1.5em;
+  background-color: azure;
   @include gradient(top, $sidebar-gradlist);
   & a {
     color: $col-hi;
@@ -147,7 +150,6 @@ header {
   border: 1em solid #fff;
   background-position: 2% 0, left top;
   background-repeat: no-repeat;
-  background-color: azure;
   @include gradient(top, $gradlist-rev);
 }
 

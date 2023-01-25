@@ -114,6 +114,8 @@ body {
 main > * {
   border: solid 1em #fff;
   background-color: #e0ded7;
+  background-color: #e4eff1;
+  background-color: rgb(228, 239, 241);
   background-color: hsl(190deg, 30%, 92%);
 }
 
@@ -224,6 +226,7 @@ main aside section {
   padding: 0 0 1em;
   line-height: 1.4;
   margin: 0 0 1.5em;
+  background-color: azure;
   background-image: -webkit-linear-gradient(top, hsl(190deg, 30%, 74%), #fff 60%);
   background-image: -moz-linear-gradient(top, hsl(190deg, 30%, 74%), #fff 60%);
   background-image: -o-linear-gradient(top, hsl(190deg, 30%, 74%), #fff 60%);
@@ -254,7 +257,6 @@ header {
   border: 1em solid #fff;
   background-position: 2% 0, left top;
   background-repeat: no-repeat;
-  background-color: azure;
   background-image: -webkit-linear-gradient(top, #fff, #8cb8bf);
   background-image: -moz-linear-gradient(top, #fff, #8cb8bf);
   background-image: -o-linear-gradient(top, #fff, #8cb8bf);
