@@ -21,6 +21,7 @@ nW1.meta = (function () {
  const supportsES6 = (function() {
       try {
         new Function("(a = 0) => a");
+        alert('ohgood')
         return true;
       } catch (err) {
         alert('ohno')
