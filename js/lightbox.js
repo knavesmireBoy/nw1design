@@ -9,6 +9,9 @@ if (!window.nW1) {
 if( nw1.meta.supportsES6){
   alert('good');
 }
+else {
+  alert('bad');
+}
 
 const meta = nW1.meta,
   utils = nW1.utils,
