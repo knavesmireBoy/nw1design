@@ -23,6 +23,7 @@ nW1.meta = (function () {
         new Function("(a = 0) => a");
         return true;
       } catch (err) {
+        alert('ohno')
         return false;
       }
     }());
