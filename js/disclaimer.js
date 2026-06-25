@@ -24,7 +24,7 @@
     return false;
   }
   const intro1a =
-      "My colleague, Lylaani Dixon, has very kindly allowed me to repurpose one of her old sites as a playground for learning React. The existing site - maintained largely for sentimental reasons - deploys an <a href='http://www.projectseven.com/support/updatepages/ssm.htm' target='_blank'>old dreamweaver javascript library</a> on the portfolio pages to deliver a rather complex gallery/slideshow/accordion that would provide a challenge to recreate both in React and pure ES6.",
+      "My colleague, Lylaani Dixon, has very kindly allowed me to repurpose one of her <a href ='https://nw1design.com/index_oldsite.html'>old sites</a> as a playground for learning React. The existing site - maintained largely for sentimental reasons - deploys an <a href='http://www.projectseven.com/support/updatepages/ssm.htm' target='_blank'>old dreamweaver javascript library</a> on the portfolio pages to deliver a rather complex gallery/slideshow/accordion that would provide a challenge to recreate both in React and pure ES6.",
       intro1 =
       "My colleague, Lylaani Dixon, has very kindly allowed me to repurpose one of her old sites as a playground for learning React. The original site deployed an old dreamweaver <a href='http://www.projectseven.com/support/updatepages/ssm.htm' target='_blank'>js library</a> on the portfolio pages to deliver a rather complex gallery/slideshow/accordion that would provide a worthy challenge to emulate in both React and pure ES6.",
     intro2 =
